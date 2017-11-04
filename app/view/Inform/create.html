@@ -5,49 +5,55 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Inform/index">通知公告</a></li>
-            <li>新建通知</li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Inform/index">会诊申请</a></li>
+            <!--<li>新建通知</li>-->
         </ul>
         <div class="form-wrapper">
             <form class="form-horizontal" method="post" id="new-inform-form">
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label for="new-inform-form-title" class="col-sm-2 control-label">通知标题：</label>
-                    <div class="col-sm-4">
-                        <input class="form-control" type="text" name="title" value="" placeholder="请输入通知标题" id="new-inform-form-title">
-                        <p class="help-block">{{errors.title}}</p>
-                    </div>
-                </div>
 
                 <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
-                    <label for="new-inform-form-priority" class="col-sm-2 control-label">优先级别：</label>
+                    <label for="new-inform-form-priority" class="col-sm-2 control-label">会诊类型：</label>
                     <div class="col-sm-4" id="new-inform-form-priority" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="priority1" name="priority" value="1">
                                 <label for="priority1"></label>
                             </div>
-                            <div class="inline-block vertical-top">高</div>
+                            <div class="inline-block vertical-top">紧急</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="priority2" name="priority" value="2">
                                 <label for="priority2"></label>
                             </div>
-                            <div class="inline-block vertical-top">中</div>
+                            <div class="inline-block vertical-top">非紧急</div>
                         </div>
-                        <div class="radio inline-block">
+
+
+                        <!--<div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="priority3" name="priority" value="3" checked>
                                 <label for="priority3"></label>
                             </div>
                             <div class="inline-block vertical-top">低</div>
-                        </div>
-                    </div>
+                        </div>-->
+                     </div>
                     <p class="help-block">{{errors.priority}}</p>
                 </div>
 
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="new-inform-form-priority" class="col-sm-2 control-label">会诊医院：</label>
+                    <label for="new-inform-form-priority" class="col-sm-1 control-label">附二医院</label>
+
+                    <!--<div class="col-sm-4">
+                        <input class="form-control" type="text" name="title" value="" placeholder="请输入通知标题" id="new-inform-form-title">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>-->
+                </div>
+
                 <div :class="['form-group', errors.target_user_id != '' ? 'has-error' : '']" >
-                    <label for="new-inform-form-target" class="col-sm-2 control-label">通知用户：</label>
+                    <label for="new-inform-form-target" class="col-sm-2 control-label">会诊科室：</label>
                     <div class="col-sm-4">
                         <select multiple="multiple" class="multiple" id="new-inform-form-target" name="target_user_ids">
                             {foreach name="target_users" item="model"}
@@ -57,6 +63,16 @@
                         <p class="help-block">{{errors.target_user_id}}</p>
                     </div>
                 </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="new-inform-form-title" class="col-sm-2 control-label">通知标题：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="title" value="" placeholder="请输入通知标题" id="new-inform-form-title">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+
 
                 <div  :class="['form-group', errors.content != '' ? 'has-error' : '']" >
                     <label class="col-sm-2 control-label">通知内容：</label>

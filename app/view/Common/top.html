@@ -358,6 +358,18 @@
                     </li>
                     {/if}
 
+                    {if condition="authority('Inform')"}
+                    <li class="bg-palette1" id="consensus-nav-inform">
+                        <a href="__PRO_PATH__/Inform/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-envelope fa-lg"></i></span>
+								<span class="text m-left-sm">会诊申请</span>
+                            </span>
+                            <span class="menu-content-hover block">Inform</span>
+                        </a>
+                    </li>
+                    {/if}
+
                     {if condition="authority('DataWarn')"}
                     <li class="openable bg-palette3" id="consensus-nav-data-warn">
                         <a href="javascript:;">
@@ -407,7 +419,7 @@
                                         <i class="fa fa-angle-right" aria-hidden="true"></i>
                                     </span>
                                 </a>
-                            </li>
+
                             {if condition="authority('DataAnalysisIndex')"}
                             <li id="consensus-nav-data-analysis-sub0">
                                 <a href="__PRO_PATH__/DataAnalysis/index">
@@ -539,18 +551,6 @@
                             </li>
                             {/if}
                         </ul>
-                    </li>
-                    {/if}
-
-                    {if condition="authority('Inform')"}
-                    <li class="bg-palette1" id="consensus-nav-inform">
-                        <a href="__PRO_PATH__/Inform/index">
-                            <span class="menu-content block">
-                                <span class="menu-icon"><i class="fa fa-envelope fa-lg"></i></span>
-								<span class="text m-left-sm">通知公告</span>
-                            </span>
-                            <span class="menu-content-hover block">Inform</span>
-                        </a>
                     </li>
                     {/if}
 
