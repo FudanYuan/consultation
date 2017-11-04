@@ -210,5 +210,15 @@ class UserAdmin extends Common{
 		}
 		$this->jsonReturn($ret);
 	}
+
+    /**
+     * 获取用户名称
+     */
+	public function getUserName(){
+        $user_id = $this->getUserId();
+        $ret = ['errorcode' => 0, 'msg' => ''];
+        $ret['username'] = D('UserAdmin')->getById($user_id)['username'];
+        $this->jsonReturn($ret);
+    }
 }
 ?>

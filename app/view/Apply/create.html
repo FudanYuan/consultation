@@ -5,7 +5,7 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Inform/index">会诊申请</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
             <!--<li>新建通知</li>-->
         </ul>
         <div class="form-wrapper">
@@ -86,7 +86,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-inform-form-save" @click="createNewInform">保存</a>
+                        <a class="btn btn-success" id="new-inform-form-save" @click="createApply">保存</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    $('#consensus-nav-inform').addClass('active');
+    $('#consulation-nav-apply').addClass('active');
 
     var ue = UE.getEditor('editor');
 
@@ -119,12 +119,12 @@
             }
         },
         methods: {
-            createNewInform: function () {
+            createApply: function () {
                 getParams();
-                $.post('__PRO_PATH__/Inform/create', vm.params, function(res){
+                $.post('__PRO_PATH__/Apply/create', vm.params, function(res){
                     if(res.code == 1){
                         popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Inform/index';
+                        window.location.href = '__PRO_PATH__/Apply/index';
                     }else if(res.code == 2){
                         $.each(res.errors, function(k, v){
                             vm.errors[k] = v;
@@ -147,7 +147,7 @@
     });
 
     $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Inform/index';
+        window.location.href = '__PRO_PATH__/Apply/index';
     });
 
     function getParams(){

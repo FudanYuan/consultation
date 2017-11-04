@@ -50,7 +50,7 @@ function formatTime($time)
     $curTime = time();
     $interval = $curTime - $time;
     if ($interval >= 3600 * 24) {
-        $formatTime = date('m月d日', $time);
+        $formatTime = date('Y年m月d日', $time);
     } elseif ($interval >= 3600) {
         $formatTime = floor($interval / 3600) . '小时前';
     } else {

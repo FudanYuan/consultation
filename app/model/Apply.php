@@ -1,6 +1,6 @@
 <?php
 /**
- * 通知公告模型
+ * 会诊申请模型
  * Author yzs
  * Create 2017.10.26
  */
@@ -8,7 +8,7 @@ namespace app\model;
 
 use think\Model;
 
-class Inform extends Model{
+class Apply extends Model{
     protected $table = 'vox_inform';
     protected $pk = 'id';
     protected $fields = array(

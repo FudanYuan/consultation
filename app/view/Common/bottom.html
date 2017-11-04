@@ -1,10 +1,10 @@
-{include file="Common/analysis_task" /}
+{include file="Common/popup_preview" /}
 <footer class="footer">
 				<span class="footer-brand">
 					<strong class="text-danger" id="time">正在获取系统时间...</strong>
 				</span>
     <p class="no-margin pull-right">
-        &copy; 2017 <strong>华夏经纬舆情监测系统</strong>. ALL Rights Reserved.
+        &copy; 2017 <strong>眼科医联体远程诊疗平台</strong>. ALL Rights Reserved.
     </p>
 </footer>
 </div><!-- /wrapper -->
@@ -142,7 +142,7 @@
     });
 
     $('.contact').on('click', function () {
-        popWarn('请联系管理员：Admin <br/><br/> 联系方式：1234567890');
+        popWarn('请联系管理员：Jeremy <br/><br/> 联系方式：18508437068');
     });
 
     Array.prototype.remove = function (val) {
@@ -182,70 +182,70 @@
         return s;
     }
 
-    $('#analysis_task').click(function () {
-        $('#tasks-list-sidebar-menu').toggle().animate({"left":240}, 500);
-        var taskIcon = $('.analysis-tasks-icon i');
-        var className = String(taskIcon.attr("class"));
-        if(className == "fa fa-angle-left"){
-            taskIcon.removeClass().addClass('fa fa-angle-right');
-        } else{
-            taskIcon.removeClass().addClass('fa fa-angle-left');
-        }
-    });
-
-    // 更改分析的任务
-    function changeTask(task, task_id, callback) {
-        $('#analysis_task').html(task);
-        $('#analysis_task_id').html(task_id);
-        $('#tasks-list-sidebar-menu').animate({"left":0}, 500).hide();
-        var taskIcon = $('.analysis-tasks-icon i');
-        var className = String(taskIcon.attr("class"));
-        if(className == "fa fa-angle-left"){
-            taskIcon.removeClass().addClass('fa fa-angle-right');
-        } else{
-            taskIcon.removeClass().addClass('fa fa-angle-left');
-        }
-        changeAnalysisUrl(task_id);
-        if(arguments.length == 3){callback();}
-    }
-
-    // 修改链接
-    function changeAnalysisUrl(task_id) {
-        $('#consensus-nav-data-analysis-sub0 a').attr("href","__PRO_PATH__/DataAnalysis/index?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub1 a').attr("href","__PRO_PATH__/DataAnalysis/trend?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub2 a').attr("href","__PRO_PATH__/DataAnalysis/searchwords?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub3 a').attr("href","__PRO_PATH__/DataAnalysis/opinion?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub4 a').attr("href","__PRO_PATH__/DataAnalysis/media?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub5 a').attr("href","__PRO_PATH__/DataAnalysis/spread?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub6 a').attr("href","__PRO_PATH__/DataAnalysis/audience?task_id="+task_id);
-        $('#consensus-nav-data-analysis-sub7 a').attr("href","__PRO_PATH__/DataAnalysis/event?task_id="+task_id);
-    }
-
-    // 获取task任务列表
-    function getTaskList() {
-        $.post('__PRO_PATH__/Task/getTaskList', {}, function (res) {
-            if(res.errorcode==0){
-                $('#analysis_task').html(res.data[0]['name']);
-                $('#analysis_task_id').html(res.data[0]['id']);
-                changeAnalysisUrl(res.data[0]['id']);
-                console.log('first');
-                var content = '<li style="font-size: large;">任务列表</li>';
-                for(var i=0;i<res.data.length;i++){
-                    content += "<li>" +
-                            "<a onclick=\"changeTask('" + res.data[i]['name']  + "', "+
-                            res.data[i]['id'] +", function() { submit(); })\">"+
-                            res.data[i]['name'] +
-                            "</a>" +
-                            "</li>";
+    var vm2 = new Vue({
+        el: '#nav-notification',
+        data: {
+            total: 0,
+            list: []
+        },
+        methods:{
+            getApply: function () {
+                $.post('__PRO_PATH__/Apply/getApplyList', {}, function (res) {
+                    if(res.errorcode == 0){
+                        vm2.total = res.total;
+                        vm2.list = res.data;
+                        console.log(JSON.stringify(vm2.list));
+                    }
+                })
+            },
+            info: function (index) {
+                popupPreview(vm2.list[index]);
+                if(vm2.list[index]['status'] == 0){
+                    $.post('__PRO_PATH__/Apply/markRead', {ids: vm2.list[index]['id']}, function (res) {
+                        if (res['code'] == 1) {
+                            //submit();
+                        }
+                    });
                 }
-                $('#tasks-list').html(content);
             }
-        });
-        return true;
-    }
-
-    $('#dataAnalysis').click(function () {
-        var task_id = $('#analysis_task_id').html();
-        getTaskList();
+        }
     });
+    setInterval(function () {
+        vm2.getApply();
+    }, 1000);
+
+    // 获得用户名称
+    var vm3 = new Vue({
+        el: '#user_big',
+        data: {
+            user: ''
+        },
+        methods:{
+            getUser: function () {
+                $.post('__PRO_PATH__/UserAdmin/getUserName', {}, function (res) {
+                    if(res.errorcode == 0){
+                        vm3.user = res.username;
+                    }
+                });
+            }
+        }
+    });
+    vm3.getUser();
+
+    var vm4 = new Vue({
+        el: '#user_small',
+        data: {
+            user: ''
+        },
+        methods:{
+            getUser: function () {
+                $.post('__PRO_PATH__/UserAdmin/getUserName', {}, function (res) {
+                    if(res.errorcode == 0){
+                        vm4.user = res.username;
+                    }
+                });
+            }
+        }
+    });
+    vm4.getUser();
 </script>
