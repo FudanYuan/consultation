@@ -1,0 +1,61 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+	<div class="padding-md">
+		<ul class="breadcrumb">
+			<li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+			<li>角色设置</li>	 	 
+		</ul>
+		<div class="list-search">
+			<form action="" class="form-inline" method="get" >
+			</form>
+		</div>
+		<div class="list-btns">
+			{if condition="authority('Role_add')"}
+			<button type="button" class="btn btn-success" id="addItem">新建</button>
+			{/if}
+			{if condition="authority('Role_del')"}
+			<button type="button" class="btn btn-default" id="removeItem">删除</button>
+			{/if}
+		</div>
+		<table class="table table-hover" style="background:#fff;">
+		  <thead>
+		  	<tr>
+		  		<th><input type="checkbox" id="checkbox-all"/></th>
+		  		<th>序号</th>
+		  		<th>角色名称</th>
+		  		<th>备注</th>
+		  		<th>创建时间</th>
+		  		<th>操作</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+			{foreach name="list" item="model"}
+				<tr>
+					<td><input type="checkbox" name="select" value="{$model.id}" /></td>
+					<td>{$model.id}</td>
+					<td>{$model.name}</td>
+					<td>{$model.remark}</td>
+					<td>{if condition="$model.createtime"}{:date('Y-m-d H:i:s',$model.createtime)}{/if}</td>
+					<td>
+						{if condition="authority('Role_edit')"}
+						<a href="__PRO_PATH__/UserAdmin/roleedit?id={$model.id}">编辑</a>
+						{/if}
+					</td>
+				</tr>
+			{/foreach}
+		  </tbody>
+		</table>
+	</div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/bottom" /}
+<script>
+	$('#consensus-nav-setting').addClass('active open');
+	$('#consensus-nav-setting-sub3').addClass('active');
+	popupList({
+		create:'__PRO_PATH__/UserAdmin/rolecreate',
+		remove:'__PRO_PATH__/UserAdmin/roleremove'
+	});
+</script>

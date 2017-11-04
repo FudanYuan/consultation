@@ -1,0 +1,57 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+	<div class="padding-md">
+		<ul class="breadcrumb">
+			<li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+			<li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Tag/index"> 标签设置</a></li>
+			<li>编辑</li>
+		</ul>
+		<div class="form-wrapper">
+			<form class="form-horizontal" method="post">
+				<input type="hidden" name="id" value="{$data.id}" />
+				<div class="form-group {$errors.position ?= 'has-error'}">
+					<label for="form-title" class="col-sm-2 control-label">板块名称：</label>
+					<div class="col-sm-4">
+						<select name="section" class="form-control" style="width:100px" id="select-sec">
+							{foreach name="sections" item="model" key="k"}
+							<option value="{$k}">{$model.title}</option>
+							{/foreach}
+						</select>
+						<span class="help-block"></span>
+					</div>
+				</div>
+				<div class="form-group {$errors.title ?= 'has-error'}">
+					<label for="form-title" class="col-sm-2 control-label">标签：</label>
+					<div class="col-sm-4">
+						<input name="title" type="text" class="form-control" id="form-title" value="{$data.title??''}">
+						<span class="help-block">{$errors.title??''}</span>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10 lab-btns">
+						<button type="submit" class="btn btn-success">保存</button>
+						<a id="form-cancel" class="btn btn-info">取消</a>
+						<a id="form-delete" class="btn btn-default">删除</a>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_edit"}
+<script>
+	$('#select-sec').val('{$data.section ?? 1}');
+	$('#lab-nav6').addClass('open active');
+	$('#lab-nav6-sub1').addClass('active');
+	$('#form-cancel').on('click', function(){
+		window.location.href = '__PRO_PATH__/Tag/index';
+	});
+	popupEdit({
+		id:'{$data.id}',
+		list:'__PRO_PATH__/Tag/index',
+		remove:'__PRO_PATH__/Tag/remove'
+	});
+</script>
+{include file="Common/bottom" /}

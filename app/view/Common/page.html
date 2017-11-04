@@ -1,0 +1,37 @@
+<div>
+    <ul class="pagination" v-if="pages > 1">
+        <li :class="{disabled : current_page==1}">
+            <a href="javascript:;" @click="gotoPage(1)">«</a>
+        </li>
+
+        <template v-for="index in fore_pages">
+            <li :class="{active : index == current_page}">
+                <a href="javascript:;" @click="gotoPage(index)">{{index}}</a>
+            </li>
+        </template>
+
+        <li class="disabled" v-if="fore_omit">
+            <a href="javascript:;">···</a>
+        </li>
+
+        <template v-for="index in mid_pages">
+            <li :class="{active : index == current_page}">
+                <a href="javascript:;" @click="gotoPage(index)">{{index}}</a>
+            </li>
+        </template>
+
+        <li class="disabled" v-if="back_omit">
+            <a href="javascript:;">···</a>
+        </li>
+
+        <template v-for="index in back_pages">
+            <li :class="{active : index == current_page}">
+                <a href="javascript:;" @click="gotoPage(index)">{{index}}</a>
+            </li>
+        </template>
+
+        <li :class="{disabled : current_page==pages}">
+            <a href="javascript:;" @click="gotoPage(pages)">»</a>
+        </li>
+    </ul>
+</div>

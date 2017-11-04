@@ -1,0 +1,125 @@
+<!--  必须包含
+	Common/calendar
+	Common/upload
+	Common/popup_warn   
+	
+	调用popupForm(板块,内容ID)
+-->
+<div class="custom-popup" id="form-popup" style="width:300px;padding-bottom:30px;">
+	<div class="popup-body" style="text-align:left">
+		<form id="top-form">
+		  <input type="hidden" name="conid" id="top-form-conid" />
+		  <input type="hidden" name="section" id="top-form-sec" />
+		  <div class="form-group">
+		    <label for="top-form-pos">位置</label>
+		    <select class="form-control" id="top-form-pos" name="position">
+		    	<option value="1">位置1</option>
+		    	<option value="2">位置2</option>
+		    	<option value="3">位置3</option>
+		    	<option value="4">位置4</option>
+		    	<option value="5">位置5</option>
+		    </select>
+		    <p class="help-block"></p>
+		  </div>
+		  <div class="form-group">
+		    <label for="top-form-stime">开始时间</label>
+		    <input id="top-form-stime" name="begintime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr">
+		  	<p class="help-block"></p>
+		  </div>
+		  <div class="form-group">
+		    <label for="top-form-etime">结束时间</label>
+		    <input id="top-form-etime" name="endtime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr">
+		    <p class="help-block"></p>
+		  </div>
+		  <div class="form-group">
+		    <label>封面图：</label>
+		    <div style="margin-left:20px;">
+		      <div id="filelist-top">
+		      	
+		      </div>
+			  <div id="upload-wrapper-top">
+			    <a id="pickfiles-top" href="javascript:;">选择文件</a> 
+			    <a id="uploadfiles-top" href="javascript:;">上传</a>
+			  </div>
+			  <input type="hidden" name="img" />
+			  <input type="hidden" name="img_origin" />
+		      <span class="help-block"></span>
+		    </div>
+		  </div>
+			<div class="form-group">
+				<div id="top-form-all"></div>
+				<p class="help-block"></p>
+			</div>
+		  <div class="form-group">
+		    <div class="col-sm-offset-2 col-sm-10 lab-btns">
+		      <a id="top-form-save" class="btn btn-success">保存</a>
+		      <a id="top-form-cancel" class="btn btn-info">取消</a>
+		    </div>
+		  </div>
+		</form>
+	</div>
+</div>
+<script>
+function popupForm(section, id){
+	if(!id){
+		popWarn('ID不能为空');
+		return;
+	}
+	clearFormData();
+	$('#top-form-conid').val(id);
+	$('#top-form-sec').val(section);
+	$('#form-popup').popup({blur:false});
+	$('#form-popup').popup('show');
+}
+$('#top-form-cancel').on('click', function(){
+	$('#form-popup').popup('hide');
+});
+$('#top-form-save').on('click', function(){
+	$('#top-form .form-group').removeClass('has-error');
+	$('#top-form .help-block').html('');
+	var params = {};
+	var data = $('#top-form').serializeArray();
+	$.each(data, function() {
+		params[this.name] = this.value;
+    });
+	params['position'] = $('#top-form-pos').val();
+	$.post('__PRO_PATH__/Banner/dotop', params, function(res){
+		if(res.code == 1){
+			$('#form-popup').popup('hide');
+			popWarn('置顶成功');
+		}else if(res.code == 2){
+			$.each(res.errors, function(k, v){
+				if(k == 'begintime' || k == 'endtime') k += '_str';
+				var obj = k == 'all' ? $('#top-form-all') : $('#top-form [name="'+k+'"]');
+				obj.siblings('.help-block').html(v);
+				obj.parent().addClass('has-error');
+			})
+		}
+	});
+});
+function clearFormData(){
+	$('#top-form')[0].reset();
+	$('#filelist').html('');
+	$('#top-form .help-block').html('');
+}
+
+$(".flatpickr").flatpickr({time_24hr:true});
+
+myupload({
+	container:'upload-wrapper-top',
+	browse:'pickfiles-top',
+	url:'__PRO_PATH__/Media/upload?dir=banner',
+	img_types:'jpg,gif,png',
+	zip_types:'zip',
+	filelist:'filelist-top',
+	uploadfiles:'uploadfiles-top',
+	file_size:'10mb',
+	onUploaded: function(up, file, result){
+		$("input[name='img_origin']").val(file.name);
+		var res = JSON.parse(result.response);
+		$("input[name='img']").val(res.result.file);
+	},
+	isMulti:false
+});
+
+</script>

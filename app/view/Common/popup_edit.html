@@ -1,0 +1,41 @@
+<!-- 必须包含
+	Common/popup_warn
+	
+	调用：popupEdit(配置);
+ -->
+<div class="custom-popup" id="confirm-popup" style="width:200px;">
+	<div class="popup-body text-center">
+		<h5>您确定要删除吗？</h5>
+		<div class="text-center m-top-lg">
+			<a class="btn btn-success m-right-sm confirm-do">删除</a>
+			<a class="btn btn-default confirm-cancel">取消</a>
+		</div>
+	</div>
+</div>
+<script>
+function popupEdit(config){
+	$('#form-delete').on('click', function(){
+		$('#confirm-popup').popup('show');
+	});
+	$('.confirm-do').on('click', function(){
+		$('#confirm-popup').popup('hide');
+		$.get(config.remove, {ids: config.id}, function(res){
+			if(res['code'] == 1){
+				window.location.href = config.list;
+			}else{
+				popWarn('删除失败');
+			}
+		});
+	});
+}
+$('.confirm-cancel').on('click', function(){
+	$('#confirm-popup').popup('hide');
+});
+$(function(){
+	//Delete Widget Confirmation
+	$('#confirm-popup').popup({
+		vertical: 'top',
+		transition: 'all 0.3s'
+	});
+});
+</script>

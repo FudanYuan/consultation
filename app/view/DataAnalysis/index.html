@@ -1,0 +1,692 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<style>
+    .emphsis{
+        padding: 10px;
+        font-weight: 900;
+        font-size: large;
+        color: blue;
+    }
+
+    .noemphsis{
+        padding: 10px;
+        font-weight: 500;
+        font-size: medium;
+        color: black;
+    }
+
+    .params{
+        display: inline;
+        color: white;
+        margin-left: 10px;
+        padding: 0 10px 15px 10px;
+    }
+
+    .params-active{
+        display: inline;
+        color: black;
+        margin-left: 10px;
+        padding: 0 10px 15px 10px;
+        border-bottom: 5px #17232c solid;
+    }
+
+    .event-list{
+        width: 100%;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .event-list>tbody>tr>td, .event-list>tbody>tr>th, .event-list>tfoot>tr>td, .event-list>tfoot>tr>th, .event-list>thead>tr>td, .event-list>thead>tr>th{
+        padding: 7px;
+        line-height: 1.42857143;
+        vertical-align: top;
+    }
+
+    .event-index{
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        background: #f8f8f9;
+        -webkit-border-radius: 9px;
+        -moz-border-radius: 9px;
+        border-radius: 9px;
+        font-style: normal;
+        text-align: center;
+        color: #37424e;
+        font-size: 12px;
+        float: left;
+    }
+
+    .hot{
+        color: #fff;
+        background: #ffa63c;
+    }
+</style>
+<div class="main-container">
+    <div class="padding-md" id="analysisIndex">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li><a href="__PRO_PATH__/DataAnalysis/index">舆情分析</a></li>
+            <li>舆情概览</li>
+        </ul>
+
+        <!-- 舆情概览 -->
+        <div class="row">
+            <!-- 舆情指数 -->
+            <div class="col-lg-8">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        舆情指数
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm" style="height: 175px;">
+                                <table class="table" style="background:#fff; margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>舆情指数</th>
+                                            <th>搜索指数</th>
+                                            <th>微博量</th>
+                                            <th>发帖量</th>
+                                            <th>新闻发布量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template v-if="index.length != 0">
+                                            <tr v-for="(model, i) in index">
+                                                <td>{{i | getIndexItem}}</td>
+                                                <td :class="i == 0 ? 'emphsis' : 'noemphsis'">{{model.count}}</td>
+                                                <td :class="i == 0 ? 'emphsis' : 'noemphsis'">{{model.search}}</td>
+                                                <td :class="i == 0 ? 'emphsis' : 'noemphsis'">{{model.weibo}}</td>
+                                                <td :class="i == 0 ? 'emphsis' : 'noemphsis'">{{model.note}}</td>
+                                                <td :class="i == 0 ? 'emphsis' : 'noemphsis'">{{model.news}}</td>
+                                            </tr>
+                                        </template>
+                                        <template v-else>
+                                            <tr>
+                                                <td colspan="6" class="nodata">暂无数据</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+
+            <!-- 舆情属性 -->
+            <div class="col-lg-4">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        舆情属性
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm">
+                                <div id="nature_pie_chart" style="height: 155px"></div>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+        </div>
+
+        <div class="row">
+            <!-- 舆情趋势 -->
+            <div class="col-lg-8">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        舆情趋势
+                        <a href="javascript:;" @click="showTrendLine(0)" :class="active.timeRange == 0 ? 'params-active' : 'params'">最近24小时</a>
+                        <a href="javascript:;" @click="showTrendLine(1)" :class="active.timeRange == 1 ? 'params-active' : 'params'">最近7日</a>
+                        <a href="javascript:;" @click="showTrendLine(2)" :class="active.timeRange == 2 ? 'params-active' : 'params'">最近30日</a>
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm">
+                                <div id="trend_line_chart" style="height: 320px;"></div>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+
+            <!-- 热门事件 -->
+            <div class="col-lg-4">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        热门事件
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm" style="height: 340px;">
+                                <table class="event-list" style="background:#fff; margin-bottom: 0;">
+                                    <tbody>
+                                    <template v-if="event.length != 0">
+                                        <tr v-for="(model, i) in event">
+                                            <td><i :class="['event-index', i <= 2 ? 'hot' : '']">{{i+1}}</i></td>
+                                            <td><a :href="'__PRO_PATH__/DataAnalysis/event?id='+model.id">{{model.name | formatText(30, model.name)}}</a></td>
+                                            <td>{{model.count}}</td>
+                                        </tr>
+                                    </template>
+                                    <template v-else>
+                                        <tr>
+                                            <td colspan="3" class="nodata">暂无数据</td>
+                                        </tr>
+                                    </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+        </div>
+
+        <div class="row">
+            <!-- 舆情内容 -->
+            <div class="col-lg-8">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        舆情内容
+                        <a href="javascript:;" @click="getPublicList(0)" :class="active.public == 0 ? 'params-active' : 'params'" style="margin-left: 20px">最新</a>
+                        <a href="javascript:;" @click="getPublicList(1)" :class="active.public == 1 ? 'params-active' : 'params'">负面</a>
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm" style="height: 400px">
+                                <table class="table table-hover" style="background:#fff; margin-bottom: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th>标题</th>
+                                            <th>媒体类型</th>
+                                            <th>舆情属性</th>
+                                            <th>发布时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template v-if="publicList.length != 0">
+                                            <tr v-for="model in publicList">
+                                                <td>{{model.title | formatText(40, model.title)}}</td>
+                                                <td>{{model.media_type}}</td>
+                                                <td>{{model.nature}}</td>
+                                                <td>{{model.publishtime | moment}}</td>
+                                            </tr>
+                                        </template>
+                                        <template v-else>
+                                            <tr>
+                                                <td colspan="4" class="nodata">暂无数据</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+
+            <!-- 热门搜索词 -->
+            <div class="col-lg-4">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        热门搜索词
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm">
+                                <div id="wordcloud" style="height: 380px"></div>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+<script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
+<script src="__PUBLIC__/js/moment.js"></script>
+<script src="__PUBLIC__/js/word-cloud/js/require.js"></script>
+<script>
+    $('#consensus-nav-data-analysis').addClass('active open');
+    $('#consensus-nav-data-analysis-sub0').addClass('active');
+
+    var vm = new Vue({
+        el: '#analysisIndex',
+        data: {
+            task_id: {$params.task_id},
+            index: [],
+            nature: {},
+            trend: [],
+            event: [],
+            publicList: [],
+            keywords: [],
+            active:{
+                'timeRange': 0,
+                'public': 0
+            }
+        },
+        methods:{
+            showTrendLine: function (value) {
+                this.active['timeRange'] = value;
+                var params = {};
+                params['obj'] = 'media';
+                params['task_id'] = this.task_id;
+
+                if(value == 0) { // 最近24时
+                    params['begintime_str'] = moment().startOf('day').format('YYYY-MM-DD');
+                    params['endtime_str'] = moment().format('YYYY-MM-DD');
+                } else if (value == 1){
+                    params['begintime_str'] = moment().subtract(6, 'days').format('YYYY-MM-DD');
+                    params['endtime_str'] = moment().format('YYYY-MM-DD');
+                } else {
+                    params['begintime_str'] = moment().subtract(29, 'days').format('YYYY-MM-DD');
+                    params['endtime_str'] = moment().format('YYYY-MM-DD');
+                }
+                var chartDom = document.getElementById('trend_line_chart');
+                var myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom);
+                myChart.showLoading();
+                console.log(params);
+                $.post('__PRO_PATH__/DataAnalysis/getTrendLine', params, function (res) {
+                    if(res.errorcode==0){
+                        vm.trend = res.data;
+                        var xAixs = res.xAixs;
+                        var option = {};
+                        var legend = [];
+                        var data = [];
+                        for(var i=0;i<vm.trend.length;i++){
+                            var type = vm.trend[i]['media_type'];
+                            var d = vm.trend[i]['data'];
+                            legend.push(type);
+                            if(i == vm.trend-1){
+                                data.push({
+                                    name: type,
+                                    type:'line',
+                                    stack: '总量',
+                                    label: {
+                                        normal: {
+                                            show: true,
+                                            position: 'top'
+                                        }
+                                    },
+                                    areaStyle: {normal: {}},
+                                    data: d,
+                                    smooth: true,
+                                });
+                            } else {
+                                data.push({
+                                    name: type,
+                                    type:'line',
+                                    stack: '总量',
+                                    areaStyle: {normal: {}},
+                                    data: d,
+                                    smooth: true,
+                                });
+                            }
+                        }
+                        option = {
+                            backgroundColor: '#fff',
+                            tooltip : {
+                                trigger: 'axis',
+                                axisPointer: {
+                                    type: 'cross',
+                                    label: {
+                                        backgroundColor: '#6a7985'
+                                    }
+                                }
+                            },
+                            legend: {
+                                data: legend
+                            },
+                            xAxis : [
+                                {
+                                    type : 'category',
+                                    boundaryGap : false,
+                                    data: xAixs,
+                                    axisPointer: {
+                                        type: 'shadow'
+                                    }
+                                }
+                            ],
+                            yAxis : [
+                                {
+                                    type : 'value'
+                                }
+                            ],
+                            series : data,
+                            grid: {
+                                left: '1%',
+                                right: '3%',
+                                bottom: '1%',
+                                containLabel: true
+                            }
+                        };
+
+                        myChart.hideLoading();
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                        //用于使chart自适应高度和宽度
+                        window.onresize = myChart.resize();
+                    }
+                });
+
+            },
+            getPublicList: function (value) {
+                this.active['public'] = value;
+                $.post('__PRO_PATH__/DataAnalysis/getPublicList', {task_id: this.task_id, nature: value}, function (res) {
+                    if(res.errorcode==0){
+                        vm.publicList = res.data;
+                    }
+                });
+            },
+            showNatuePie: function () {
+                var chartDom = document.getElementById('nature_pie_chart');
+                var myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom);
+                var option = {
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b}: {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'center',
+                        x: 'right',
+                        y: 'center',
+                        data: ['正面', '中立', '负面']
+                    },
+                    series: [
+                        {
+                            name:'舆情属性',
+                            type:'pie',
+                            radius: ['70%', '90%'],
+                            center: ['30%', '50%'],
+                            avoidLabelOverlap: false,
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'center'
+                                },
+                                emphasis: {
+                                    show: true,
+                                    textStyle: {
+                                        fontSize: '30',
+                                        fontWeight: 'bold'
+                                    }
+                                }
+                            },
+                            labelLine: {
+                                normal: {
+                                    show: false
+                                }
+                            },
+                            data: vm.nature
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+                //用于使chart自适应高度和宽度
+                window.onresize = myChart.resize();
+            }
+        },
+        filters:{
+            getIndexItem: function (index) {
+                var ret = '';
+                if(index == 0){
+                    ret = '今日';
+                }
+                else if(index == 1){
+                    ret = '昨日';
+                }
+                else if(index == 2){
+                    ret = '近7日';
+                }
+                return ret;
+            },
+            moment: function (value, formatString) {
+                formatString = formatString || 'YYYY-MM-DD HH:mm';
+                return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+            },
+            formatText: function (text, len) {
+                return cutString(text, len);
+            }
+        }
+    });
+
+    // 异步提交数据
+    function submit() {
+        console.log('second');
+        //getWordCloud();
+        $.post('__PRO_PATH__/DataAnalysis/getAnalysisIndex', {task_id: vm.task_id}, function (res) {
+            if (res.errorcode == 0) {
+                vm.task_id = res.task_id;
+                vm.index = res.index;
+                vm.nature = res.nature;
+                vm.event = res.event;
+                vm.showNatuePie();
+                console.log(vm.task_id);
+            }
+        });
+
+        vm.showTrendLine(0);
+        vm.getPublicList(0);
+    }
+
+    if(getTaskList()){
+        submit();
+    }
+
+    function getWordCloud() {
+        require.config({
+            baseUrl:"__PUBLIC__/js/word-cloud/js/wordcloud",
+            paths: {
+                jquery:'../jquery-1.11.1.min',
+                wCloud:"wordcloud"
+            }
+        });
+
+        require(["jquery","wCloud"], function($,w) {
+            //ource-out
+            var wcld = w;
+            var option = {
+                styleType:"vertical",//normal ；vertical tilt（45°）
+                data:[
+                    {"word":"这里","frq":22,"otherMsg":"tip Messege"},
+                    {"word":"没有","frq":23,"otherMsg":"tip Messege"},
+                    {"word":"旅行社","frq":14,"otherMsg":"tip Messege"},
+                    {"word":"厦门","frq":43,"otherMsg":"tip Messege"},
+                    {"word":"会展中心","frq":25,"otherMsg":"tip Messege"},
+                    {"word":"鼓浪屿","frq":14,"otherMsg":"tip Messege"},
+                    {"word":"旅行社","frq":14,"otherMsg":"tip Messege"},
+                    {"word":"这里","frq":12,"otherMsg":"tip Messege"},
+                    {"word":"没有","frq":13,"otherMsg":"tip Messege"},
+                    {"word":"这里","frq":12,"otherMsg":"tip Messege"},
+                    {"word":"没有","frq":13,"otherMsg":"tip Messege"},
+                    {"word":"这里","frq":12,"otherMsg":"tip Messege"},
+                    {"word":"没有","frq":13,"otherMsg":"tip Messege"},
+                    {"word":"这里","frq":22,"otherMsg":"tip Messege"},
+                    {"word":"没有","frq":13,"otherMsg":"tip Messege"},
+                    {"word":"这里","frq":12,"otherMsg":"tip Messege"},
+                    {"word":"没有","frq":13,"otherMsg":"tip Messege"},
+                    {"word":"公交车","frq":17,"otherMsg":"tip Messege"},
+                    {"word":"喜欢","frq":24,"otherMsg":"tip Messege"},
+                    {"word":"大海","frq":18,"otherMsg":"tip Messege"},
+                    {"word":"大海","frq":28,"otherMsg":"tip Messege"}
+                ]
+            };
+            var wd = wcld.init($("#wordcloud")[0]);
+            wd = wd.setOption(option);
+        });
+    }
+</script>

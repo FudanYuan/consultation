@@ -1,0 +1,622 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<style>
+    .unit{
+        font-size: 25%;
+    }
+</style>
+
+<div class="main-container">
+    <div class="padding-md">
+        <!-- 总览 -->
+        <div class="row m-top-md">
+            <div class="col-lg-2 col-sm-2">
+                <div class="statistic-box bg-success m-bottom-md" style="background-color: #1b6d85">
+                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/DataMonitor/index">文章总数</a></div>
+                    <div class="statistic-value">7798<span class="unit"></span></div>
+                    <div class="statistic-icon-background">
+                        <i class="ion-eye"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-2">
+                <div class="statistic-box bg-success m-bottom-md">
+                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/DataMonitor/index">正面舆情</a></div>
+                    <div class="statistic-value">7621<span class="unit"></span></div>
+                    <div class="statistic-icon-background">
+                        <i class="ion-eye"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-2">
+                <div class="statistic-box bg-danger m-bottom-md">
+                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Company/index">负面舆情</a></div>
+                    <div class="statistic-value">177<span class="unit"></span></div>
+                    <div class="statistic-icon-background">
+                        <i class="ion-stats-bars"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-2">
+                <div class="statistic-box bg-info m-bottom-md">
+                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Theme/index">舆情跟踪</a></div>
+                    <div class="statistic-value">20<span class="unit"></span></div>
+                    <div class="statistic-icon-background">
+                        <i class="ion-person-add"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-2">
+                <div class="statistic-box bg-purple m-bottom-md">
+                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Media/index">今日预警</a></div>
+                    <div class="statistic-value">0<span class="unit"></span></div>
+                    <div class="statistic-icon-background">
+                        <i class="ion-ios7-cart-outline"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-sm-2">
+                <div class="statistic-box bg-success m-bottom-md" style="background-color: #00AA88">
+                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Media/index">舆情级别</a></div>
+                    <div class="statistic-value"><span style="font-size: 25px">一般</span></div>
+                    <div class="statistic-icon-background">
+                        <i class="ion-ios7-cart-outline"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 任务图 -->
+        <!--<div class="row">-->
+            <!--<div class="task-widget smart-widget-collapsed">-->
+                <!--<div class="task-widget-body clearfix">-->
+                    <!--<div class="pie-chart-wrapper">-->
+                        <!--<div class="chart task-pie-chart line-normal" data-percent="{$task.percent}">-->
+                            <!--<h1 class="m-top-lg m-bottom-none">{$task.percent}</h1>-->
+                            <!--<div>Percent</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="widget-detail">-->
+                        <!--<small class="text-upper text-muted block font-sm">本周任务</small>-->
+                        <!--<h1 class="no-margin">{$count.task}<span class="unit"></span></h1>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="task-widget-statatistic">-->
+                    <!--<ul class="clearfix">-->
+                        <!--<li class="bg-grey border-success">-->
+                            <!--<div class="text-muted text-upper font-sm">已完成</div>-->
+                            <!--{$task.completed}<span class="unit">条</span>-->
+                        <!--</li>-->
+                        <!--<li class="bg-grey border-danger">-->
+                            <!--<div class="text-muted text-upper font-sm">未处理</div>-->
+                            <!--{$task.todeal}<span class="unit">条</span>-->
+                        <!--</li>-->
+                        <!--<li class="bg-grey border-purple">-->
+                            <!--<div class="text-muted text-upper font-sm">预计耗时</div>-->
+                            <!--{$task.time_consume}<span class="unit">h</span>-->
+                        <!--</li>-->
+                    <!--</ul>&lt;!&ndash; ./row &ndash;&gt;-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!-- 数据总览 -->
+        <!--<div class="row">-->
+            <!--&lt;!&ndash; 企业信息 &ndash;&gt;-->
+            <!--<div class="col-lg-6">-->
+                <!--<p id="bubble_num_limit" hidden="hidden">-1</p>-->
+                <!--<div class="smart-widget widget-green">-->
+                    <!--<div class="smart-widget-header">-->
+                        <!--企业数据-->
+                        <!--<span class="smart-widget-option">-->
+                            <!--<span class="refresh-icon-animated">-->
+                                <!--<i class="fa fa-circle-o-notch fa-spin"></i>-->
+                            <!--</span>-->
+                            <!--<a href="javascript:;" class="widget-toggle-hidden-option">-->
+                                <!--<i class="fa fa-cog"></i>-->
+                            <!--</a>-->
+                            <!--<a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">-->
+                                <!--<i class="fa fa-chevron-up"></i>-->
+                            <!--</a>-->
+                            <!--<a href="javascript:;" class="widget-refresh-option">-->
+                                <!--<i class="fa fa-refresh"></i>-->
+                            <!--</a>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="smart-widget-inner">-->
+                        <!--<div class="smart-widget-hidden-section">-->
+                            <!--<ul class="widget-color-list clearfix">-->
+                                <!--<li style="background-color:#20232b;" data-color="widget-dark"></li>-->
+                                <!--<li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>-->
+                                <!--<li style="background-color:#23b7e5;" data-color="widget-blue"></li>-->
+                                <!--<li style="background-color:#2baab1;" data-color="widget-green"></li>-->
+                                <!--<li style="background-color:#edbc6c;" data-color="widget-yellow"></li>-->
+                                <!--<li style="background-color:#fbc852;" data-color="widget-orange"></li>-->
+                                <!--<li style="background-color:#e36159;" data-color="widget-red"></li>-->
+                                <!--<li style="background-color:#7266ba;" data-color="widget-purple"></li>-->
+                                <!--<li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>-->
+                                <!--<li style="background-color:#fff;" data-color="reset"></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div class="smart-widget-body no-padding">-->
+                            <!--<div class="padding-sm">-->
+                                <!--<div class="btn-group">-->
+                                    <!--<button type="button" class="btn btn-default dropdown-toggle"-->
+                                            <!--data-toggle="dropdown">-->
+                                        <!--显示数量<span class="caret"></span>-->
+                                    <!--</button>-->
+                                    <!--<ul class="dropdown-menu pull-left" role="menu">-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(1, 10)">Top 10</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(1, 20)">Top 20</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(1, 30)">Top 30</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(1, 40)">Top 40</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(1, 50)">Top 50</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(1, -1)">全部</a></li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                                <!--<div id="company_theme_bubble_chart" class="echarts" style="height:300px;"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>&lt;!&ndash; ./smart-widget-inner &ndash;&gt;-->
+                <!--</div>&lt;!&ndash; ./smart-widget &ndash;&gt;-->
+            <!--</div>&lt;!&ndash; ./col &ndash;&gt;-->
+
+            <!--&lt;!&ndash; 主题气泡图 &ndash;&gt;-->
+            <!--<p id="theme_bubble_limit" hidden="hidden"></p>-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="smart-widget widget-green">-->
+                    <!--<div class="smart-widget-header">-->
+                        <!--主题数据-->
+                        <!--<span class="smart-widget-option">-->
+                            <!--<span class="refresh-icon-animated">-->
+                                <!--<i class="fa fa-circle-o-notch fa-spin"></i>-->
+                            <!--</span>-->
+                            <!--<a href="javascript:;" class="widget-toggle-hidden-option">-->
+                                <!--<i class="fa fa-cog"></i>-->
+                            <!--</a>-->
+                            <!--<a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">-->
+                                <!--<i class="fa fa-chevron-up"></i>-->
+                            <!--</a>-->
+                            <!--<a href="javascript:;" class="widget-refresh-option">-->
+                                <!--<i class="fa fa-refresh"></i>-->
+                            <!--</a>-->
+                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="smart-widget-inner">-->
+                        <!--<div class="smart-widget-hidden-section">-->
+                            <!--<ul class="widget-color-list clearfix">-->
+                                <!--<li style="background-color:#20232b;" data-color="widget-dark"></li>-->
+                                <!--<li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>-->
+                                <!--<li style="background-color:#23b7e5;" data-color="widget-blue"></li>-->
+                                <!--<li style="background-color:#2baab1;" data-color="widget-green"></li>-->
+                                <!--<li style="background-color:#edbc6c;" data-color="widget-yellow"></li>-->
+                                <!--<li style="background-color:#fbc852;" data-color="widget-orange"></li>-->
+                                <!--<li style="background-color:#e36159;" data-color="widget-red"></li>-->
+                                <!--<li style="background-color:#7266ba;" data-color="widget-purple"></li>-->
+                                <!--<li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>-->
+                                <!--<li style="background-color:#fff;" data-color="reset"></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div class="smart-widget-body no-padding">-->
+                            <!--<div class="padding-sm">-->
+                                <!--<div class="btn-group">-->
+                                    <!--<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">-->
+                                        <!--显示数量<span class="caret"></span>-->
+                                    <!--</button>-->
+                                    <!--<ul class="dropdown-menu pull-left" role="menu">-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(2, 10)">Top 10</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(2, 20)">Top 20</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(2, 30)">Top 30</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(2, 40)">Top 40</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(2, 50)">Top 50</a>-->
+                                        <!--</li>-->
+                                        <!--<li><a href="javascript:;" onclick="changeNumBubble(2, -1)">全部</a></li>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                                <!--<div id="theme_company_bubble_chart" class="echarts" style="height:300px;"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>&lt;!&ndash; ./smart-widget-inner &ndash;&gt;-->
+                <!--</div>&lt;!&ndash; ./smart-widget &ndash;&gt;-->
+            <!--</div>&lt;!&ndash; ./col &ndash;&gt;-->
+        <!--</div>-->
+
+        <!-- 企业分布 -->
+        <!--<div class="row">-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="smart-widget widget-green smart-widget-collapsed">-->
+                    <!--<div class="smart-widget-header">-->
+                        <!--企业信息-->
+                        <!--<span class="smart-widget-option">-->
+										<!--<span class="refresh-icon-animated">-->
+											<!--<i class="fa fa-circle-o-notch fa-spin"></i>-->
+										<!--</span>-->
+			                            <!--<a href="javascript:;" class="widget-toggle-hidden-option">-->
+			                                <!--<i class="fa fa-cog"></i>-->
+			                            <!--</a>-->
+			                            <!--<a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">-->
+			                                <!--<i class="fa fa-chevron-up"></i>-->
+			                            <!--</a>-->
+			                            <!--<a href="javascript:;" class="widget-refresh-option">-->
+			                                <!--<i class="fa fa-refresh"></i>-->
+			                            <!--</a>-->
+			                            <!--<a href="javascript:;" class="widget-remove-option">-->
+			                                <!--<i class="fa fa-times"></i>-->
+			                            <!--</a>-->
+			                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="smart-widget-inner">-->
+                        <!--<div class="smart-widget-hidden-section">-->
+                            <!--<ul class="widget-color-list clearfix">-->
+                                <!--<li style="background-color:#20232b;" data-color="widget-dark"></li>-->
+                                <!--<li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>-->
+                                <!--<li style="background-color:#23b7e5;" data-color="widget-blue"></li>-->
+                                <!--<li style="background-color:#2baab1;" data-color="widget-green"></li>-->
+                                <!--<li style="background-color:#edbc6c;" data-color="widget-yellow"></li>-->
+                                <!--<li style="background-color:#fbc852;" data-color="widget-orange"></li>-->
+                                <!--<li style="background-color:#e36159;" data-color="widget-red"></li>-->
+                                <!--<li style="background-color:#7266ba;" data-color="widget-purple"></li>-->
+                                <!--<li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>-->
+                                <!--<li style="background-color:#fff;" data-color="reset"></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div class="smart-widget-body no-padding">-->
+                            <!--<div class="padding-sm">-->
+                                <!--<div id="company_rank_chart" class="echarts" style="height:400px;"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>&lt;!&ndash; ./smart-widget-inner &ndash;&gt;-->
+                <!--</div>&lt;!&ndash; ./smart-widget &ndash;&gt;-->
+            <!--</div>&lt;!&ndash; ./col &ndash;&gt;-->
+            <!--<div class="col-lg-6">-->
+                <!--<div class="smart-widget widget-green smart-widget-collapsed">-->
+                    <!--<div class="smart-widget-header">-->
+                        <!--TOTAL SALES-->
+                        <!--<span class="smart-widget-option">-->
+										<!--<span class="refresh-icon-animated">-->
+											<!--<i class="fa fa-circle-o-notch fa-spin"></i>-->
+										<!--</span>-->
+			                            <!--<a href="javascript:;" class="widget-toggle-hidden-option">-->
+			                                <!--<i class="fa fa-cog"></i>-->
+			                            <!--</a>-->
+			                            <!--<a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">-->
+			                                <!--<i class="fa fa-chevron-up"></i>-->
+			                            <!--</a>-->
+			                            <!--<a href="javascript:;" class="widget-refresh-option">-->
+			                                <!--<i class="fa fa-refresh"></i>-->
+			                            <!--</a>-->
+			                            <!--<a href="javascript:;" class="widget-remove-option">-->
+			                                <!--<i class="fa fa-times"></i>-->
+			                            <!--</a>-->
+			                        <!--</span>-->
+                    <!--</div>-->
+                    <!--<div class="smart-widget-inner">-->
+                        <!--<div class="smart-widget-hidden-section">-->
+                            <!--<ul class="widget-color-list clearfix">-->
+                                <!--<li style="background-color:#20232b;" data-color="widget-dark"></li>-->
+                                <!--<li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>-->
+                                <!--<li style="background-color:#23b7e5;" data-color="widget-blue"></li>-->
+                                <!--<li style="background-color:#2baab1;" data-color="widget-green"></li>-->
+                                <!--<li style="background-color:#edbc6c;" data-color="widget-yellow"></li>-->
+                                <!--<li style="background-color:#fbc852;" data-color="widget-orange"></li>-->
+                                <!--<li style="background-color:#e36159;" data-color="widget-red"></li>-->
+                                <!--<li style="background-color:#7266ba;" data-color="widget-purple"></li>-->
+                                <!--<li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>-->
+                                <!--<li style="background-color:#fff;" data-color="reset"></li>-->
+                            <!--</ul>-->
+                        <!--</div>-->
+                        <!--<div class="smart-widget-body no-padding">-->
+                            <!--<div class="padding-sm">-->
+                                <!--<div id="placeholder" style="height:400px;"></div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>&lt;!&ndash; ./smart-widget-inner &ndash;&gt;-->
+                <!--</div>&lt;!&ndash; ./smart-widget &ndash;&gt;-->
+            <!--</div>&lt;!&ndash; ./col &ndash;&gt;-->
+        <!--</div>-->
+
+        <!-- 数据总览 -->
+        <div class="row">
+            <!-- 最新舆情 -->
+            <div class="col-lg-6">
+                <p id="bubble_num_limit" hidden="hidden">-1</p>
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        最新舆情
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm">
+                                <table class="table table-hover" style="background:#fff;">
+                                    <tbody>
+                                    {foreach name="news" item="model" key="k"}
+                                    <tr>
+                                        <td><a target="_blank" href="{$model.url}">{:formatText($model.title,18)}</a></td>
+                                        <td>{:formatText($model.origin,4)}</td>
+                                        <td>{:formatTime($model.time)}</td>
+                                        <td><i class="fa fa-times" aria-hidden="true"></i></td>
+                                    </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+
+            <!-- 媒体覆盖 -->
+            <p id="theme_bubble_limit" hidden="hidden"></p>
+            <div class="col-lg-6">
+                <div class="smart-widget widget-green">
+                    <div class="smart-widget-header">
+                        媒体覆盖
+                        <span class="smart-widget-option">
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="javascript:;" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-collapse-option" data-toggle="collapse">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="javascript:;" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body no-padding">
+                            <div class="padding-sm">
+                                <div id="meida_distribution_pie_chart" style="height: 300px"></div>
+                            </div>
+                        </div>
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom"/}
+
+<script>
+    $('#tax-nav-dashborad').addClass('active');
+
+    //Flot Chart (Total Sales)
+    var d1 = [];
+    for (var i = 0; i <= 10; i += 1) {
+        //d1.push([i, parseInt(Math.random() * 30)]);
+        d1 = [[0,700],[1,1200],[2,1100],[3,900],[4,500],[5,700],[6,500],[7,600],[8,1200],[9,1700],[10,1200]];
+    }
+
+    function plotWithOptions() {
+        $.plot("#placeholder", [d1], {
+            series: {
+                lines: {
+                    show: true,
+                    fill: true,
+                    fillColor: '#eee',
+                    steps: false,
+
+                },
+                points: {
+                    show: true,
+                    fill: false
+                }
+            },
+
+            grid: {
+                color: '#fff',
+                hoverable: true,
+                autoHighlight: true,
+            },
+            colors: [ '#bbb'],
+        });
+    }
+
+    $("<div id='tooltip'></div>").css({
+        position: "absolute",
+        display: "none",
+        border: "1px solid #222",
+        padding: "4px",
+        color: "#fff",
+        "border-radius": "4px",
+        "background-color": "rgb(0,0,0)",
+        opacity: 0.90
+    }).appendTo("body");
+
+    $("#placeholder").bind("plothover", function (event, pos, item) {
+
+        var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";
+        $("#hoverdata").text(str);
+
+        if (item) {
+            var x = item.datapoint[0],
+                    y = item.datapoint[1];
+
+            $("#tooltip").html("Total Sales : " + y)
+                    .css({top: item.pageY+5, left: item.pageX+5})
+                    .fadeIn(200);
+        } else {
+            $("#tooltip").hide();
+        }
+    });
+
+    //plotWithOptions();
+
+    //Morris Chart (Total Visits)
+//    var totalVisitChart = Morris.Bar({
+//        element: 'totalSalesChart',
+//        data: [
+//            { y: '2008', a: 100, b: 90 },
+//            { y: '2009', a: 75,  b: 65 },
+//            { y: '2010', a: 50,  b: 40 },
+//            { y: '2011', a: 75,  b: 65 },
+//            { y: '2012', a: 50,  b: 40 },
+//            { y: '2013', a: 75,  b: 65 },
+//            { y: '2014', a: 100, b: 90 }
+//        ],
+//        xkey: 'y',
+//        ykeys: ['a', 'b'],
+//        labels: ['Total Visits', 'Bounce Rate'],
+//        barColors: ['#999', '#eee'],
+//        grid: false,
+//        gridTextColor: '#777',
+//    });
+
+    var params = {};
+    // 获取参数设置
+    function getParams(){
+        var tblimit = $('#theme_bubble_limit').text();
+        params['limit'] = parseInt(tblimit);
+        var bnlimit = $('#bubble_num_limit').text();
+        params['bubble_num_limit'] = parseInt(bnlimit);
+    }
+
+    // 改变气泡图显示数量
+    function changeNumBubble(obj, num){
+        switch(obj){
+            case 1:
+                $('#bubble_num_limit').text(num);
+                getParams();
+                showCompanyBubble(params);
+                break;
+            case 2:
+                $('#theme_bubble_limit').text(num);
+                getParams();
+                showThemeBubble(params);
+                break;
+        }
+    }
+
+    $(function () {
+        $('.chart').easyPieChart({
+            easing: 'easeOutBounce',
+            size: '140',
+            lineWidth: '7',
+            barColor: '#7266ba',
+            onStep: function (from, to, percent) {
+                $(this.el).find('.percent').text(Math.round(percent));
+            }
+        });
+
+        $('#bubble_num_limit').text(10);
+        $('#theme_bubble_limit').text(10);
+        getParams();
+
+//        showThemeBubble(params);
+//        showCompanyBubble(params);
+        showMedia();
+        //showCompanyRankPie(params);
+        $('.sortable-list').sortable();
+
+        $('.todo-checkbox').click(function () {
+
+            var _activeCheckbox = $(this).find('input[type="checkbox"]');
+
+            if (_activeCheckbox.is(':checked')) {
+                $(this).parent().addClass('selected');
+            }
+            else {
+                $(this).parent().removeClass('selected');
+            }
+
+        });
+
+        //Delete Widget Confirmation
+        $('#deleteWidgetConfirm').popup({
+            vertical: 'top',
+            pagecontainer: '.container',
+            transition: 'all 0.3s'
+        });
+    });
+</script>
+<script src="__PUBLIC__/js/simplify/simplify_dashboard.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/backbonejs/1.2.2/backbone-min.js" integrity="sha256-p6bkfFqmxtebrKOS+wyGi+Qf3d111eWUQP67keyXJ6Q=" crossorigin="anonymous"></script>-->
+<!--<script src="__PUBLIC__/js/MyJs/search.js"></script>-->
+
+<script type="text/template" id="results-template">
+            <h2 class="page-header">Search for '<span class="text-color-default"><%- content.query %></span>'</h2>
+                                               <% if (content.nbHits > 0) { %>
+    <div class="row fontawesome-icon-list">
+        <%= results %>
+                </div>
+                <% } else { %>
+    <div class="alert alert-danger text-lg" role="alert">
+                <h3 class="margin-top margin-bottom-lg"><i class="fa fa-meh-o" aria-hidden="true"></i> Oops! No icons matched your query.</h3>
+        A few things that might help:
+                <ol>
+        <li>
+        Use <a class="alert-link" href="https://fortawesome.com">Fort Awesome</a> (our latest project) to add your
+        own icons and take your icon game to the next level!
+        </li>
+        <li>
+        Really, really want to see an icon in Font Awesome?
+    <a class="alert-link" href="mailto:dave@fortawesome.com">Drop me an email</a> to commission the icons you need!
+        </li>
+        <li>
+        Are we missing something in our search results?
+    <a class="alert-link" href="https://github.com/FortAwesome/Font-Awesome/issues/new">Open an issue on GitHub!</a>
+        (Make sure to <a class="alert-link" href="https://github.com/FortAwesome/Font-Awesome/issues">search existing
+        issues first</a>.)
+    </li>
+        </ol>
+        </div>
+        <% } %>
+</script>

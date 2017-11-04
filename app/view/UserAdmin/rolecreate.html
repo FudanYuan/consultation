@@ -1,0 +1,154 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<script src="__PUBLIC__/js/dtree/dtree.js"></script>
+<link href="__PUBLIC__/js/dtree/dtree.css" rel="stylesheet"/>
+<style>
+    .col-md-1, .col-md4 {
+        padding: 0;
+    }
+
+    .col-md-1 {
+        line-height: 34px;
+        margin-left: 10px;
+    }
+
+    .row {
+        padding-bottom: 20px;
+    }
+
+    #dd0 > .dTreeNode {
+        display: none;
+    }
+
+    #authority {
+        padding: 20px 150px;
+    }
+
+    #authority ul {
+        background: lightgray;
+        margin-right: 100px;
+    }
+
+    #authority ul li {
+        list-style: none;
+        cursor: pointer;
+        border-bottom: 1px solid #fff;
+        width: 100px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        font-size: 12px;
+        background: #8dacc4;
+        color: #fff;
+    }
+
+    #authority ul li:hover, #authority ul li.cur {
+        background: none;
+        color: #000;
+    }
+
+</style>
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/UserAdmin/roles">角色设置</a></li>
+            <li>新建</li>
+        </ul>
+        <div class="form-wrapper">
+            <form class="form-horizontal" method="post" id="main-form">
+                <div class="row" style="border-bottom:1px dotted lightgray;">
+                    <div class="col-md-1">
+                        角色名称：
+                    </div>
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" name="name"/>
+                    </div>
+                    <div class="col-md-1">
+                        备注：
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="remark"/>
+                    </div>
+                </div>
+                <div class="clearFix" id="authority">
+                    <div class="tree fl"></div>
+                    <ul class="fr"></ul>
+                </div>
+                <div class="row" style="text-align:center;">
+                    <a id="form-save" class="btn btn-success">保存</a>
+                    <a href="__PRO_PATH__/UserAdmin/roles" class="btn btn-info" style="margin-left:50px;">取消</a>
+                    <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
+                </div>
+                <script type="text/javascript">
+                    var rootNodes = [];
+                    var d = new dTree('d');
+                    $.get('__PRO_PATH__/UserAdmin/authority', {}, function (res) {
+                        d.add(0, -1, '权限管理');
+                        for (var i = 0; i < res.length; i++) {
+                            /*dTree实例属性以此为：  节点ID，父类ID，chechbox的名称，chechbox的值，chechbox的显示名称，
+                             chechbox是否被选中--默认是不选，chechbox是否可用：默认是可用，节点链接：默认是虚链接*/
+                            d.add(res[i]['id'], res[i]['pid'], 'authority', res[i]['id'], res[i]['name']);
+                            res[i]['pid'] == 0 && rootNodes.push([res[i]['id'], res[i]['name']]);
+                        }
+                        var lis = '';
+                        for (var i = 0; i < rootNodes.length; i++) {
+                            lis += '<li onclick="showRoot(' + rootNodes[i][0] + ')">' + rootNodes[i][1] + '</li>';
+                        }
+                        $('#authority .tree').html(d.toString());
+                        $('#authority ul').html(lis);
+                        d.oAll(1);
+                        $('#dd0>.dTreeNode').hide();
+                        $('#dd0>.clip').hide();
+                        $('#authority_' + rootNodes[0][0]).parent().parent().show();
+                        $('#dd' + rootNodes[0][0]).show();
+                    });
+                    function showRoot(id) {
+                        $('#dd0>.dTreeNode').hide();
+                        $('#dd0>.clip').hide();
+                        $('#authority_' + rootNodes[id - 1][0]).parent().parent().show();
+                        $('#dd' + rootNodes[id - 1][0]).show();
+                    }
+                </script>
+            </form>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/bottom" /}
+<script>
+    $('#consensus-nav-setting').addClass('active open');
+    $('#consensus-nav-setting-sub3').addClass('active');
+    $('#form-save').on('click', function () {
+        var data = getFromData('#main-form');
+        if (!data.name) {
+            popWarn('角色名称不能为空');
+            return;
+        }
+        var authority = [];
+        $('input[name="authority"]:checked').each(function () {
+            authority.push(this.value);
+        });
+        if (authority.length <= 0) {
+            popWarn('选择权限');
+            return;
+        }
+        data.authority = JSON.stringify(authority);
+        $.post('__PRO_PATH__/UserAdmin/rolecreate', data, function (res) {
+            if (res.errorcode == 0) {
+                window.location.href = '__PRO_PATH__/UserAdmin/roles';
+            } else {
+                popWarn(res.msg);
+                return;
+            }
+        });
+    });
+    function getFromData(ele) {
+        var d = {};
+        var data = $(ele).serializeArray();
+        $.each(data, function () {
+            d[this.name] = this.value;
+        });
+        return d;
+    }
+</script>

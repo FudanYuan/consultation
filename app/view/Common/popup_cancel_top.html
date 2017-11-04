@@ -1,0 +1,69 @@
+<!-- 必须包含
+	Common/popup_warn
+	
+	调用：popupList(配置);
+ -->
+<div class="custom-popup" id="confirm-popup" style="width:200px;">
+	<div class="popup-body text-center">
+		<h5>您确定要取消置顶吗？</h5>
+		<div class="text-center m-top-lg">
+			<a class="btn btn-success m-right-sm confirm-do">确定</a>
+			<a class="btn btn-default confirm-cancel">取消</a>
+		</div>
+	</div>
+</div>
+<script>
+function popuCancel(config){
+	$('#removeItem').on('click', function(){
+		$('#confirm-popup').popup('show');
+	});
+	$('.confirm-do').on('click', function(){
+		$('#confirm-popup').popup('hide');
+		var ids = [];
+		$("input[name='select']:checked").each(function(){
+			ids.push(this.value);
+		});
+		if(ids.length <= 0){
+			$('#warn-popup h5').html('请选择至少一条');
+			$('#warn-popup').popup('show');
+			return;
+		}
+		$.get(config.remove, {ids: ids.join(',')}, function(res){
+			if(res['code'] == 1){
+				window.location.reload();
+			}else{
+				popWarn('取消置顶失败');
+			}
+		});
+	});
+}
+$('.confirm-cancel').on('click', function(){
+	$('#confirm-popup').popup('hide');
+});
+var len = $("input[name='select']").length;
+$('#checkbox-all').on('click', function(){
+	if(this.checked){
+		$("input[name='select']").prop('checked', true);
+	}else{
+		$("input[name='select']").prop('checked', false);
+	}
+});
+$("input[name='select']").on('click', function(){
+	if($("input[name='select']:checked").length == len){
+		$('#checkbox-all').prop('checked', true);
+	}else{
+		$('#checkbox-all').prop('checked', false);
+	}
+});
+$(function(){
+	//Delete Widget Confirmation
+	$('#confirm-popup').popup({
+		vertical: 'top',
+		transition: 'all 0.3s'
+	});
+	$('#form-popup').popup({
+		vertical: 'top',
+		transition: 'all 0.3s'
+	});
+});
+</script>

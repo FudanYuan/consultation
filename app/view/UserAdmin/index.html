@@ -1,0 +1,80 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+	<div class="padding-md">
+		<ul class="breadcrumb">
+			<li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+			<li>权限设置</li>	 	 
+		</ul>
+		<div class="list-search">
+			<form action="" class="form-inline" method="get" >
+			  <div class="form-group">
+			    <label for="select-status">使用状态：</label>
+			    <select name="status" class="form-control" style="width:100px" id="select-status">
+				  <option value="">全部</option>
+				  <option value="1">使用中</option>
+				  <option value="3">已禁用</option>
+				</select>
+			  </div>
+			  <div class="form-group">
+				<input name="username" class="form-control" style="width:200px" value="{$cond.username ?? ''}" placeholder="账号" />
+			  </div>
+			  <button type="submit" class="btn btn-info">查询</button>
+			  <script>
+			  	$('#select-status').val('{$cond.status ?? ""}');
+			  </script>
+			</form>
+		</div>
+		<div class="list-btns">
+			{if condition="authority('Authority_add')"}
+			<button type="button" class="btn btn-success" id="addItem">新建</button>
+			{/if}
+			{if condition="authority('Authority_del')"}
+			<button type="button" class="btn btn-default" id="removeItem">删除</button>
+			{/if}
+		</div>
+		<table class="table table-hover" style="background:#fff;">
+		  <thead>
+		  	<tr>
+		  		<th><input type="checkbox" id="checkbox-all"/></th>
+		  		<th>序号</th>
+		  		<th>账号名称</th>
+		  		<th>使用状态</th>
+		  		<th>创建时间</th>
+		  		<th>最后登录时间</th>
+		  		<th>备注</th>
+		  		<th>操作</th>
+		  	</tr>
+		  </thead>
+		  <tbody>
+			{foreach name="list" item="model"}
+				<tr>
+					<td><input type="checkbox" name="select" value="{$model.id}" /></td>
+					<td>{$model.id}</td>
+					<td>{$model.username}</td>
+					<td>{$model.status == 1 ? '使用中' : '禁用'}</td>
+					<td>{if condition="$model.createtime"}{:date('Y-m-d H:i:s', $model.createtime)}{/if}</td>
+					<td>{if condition="$model.logintime"}{:date('Y-m-d H:i:s', $model.logintime)}{/if}</td>
+					<td>{$model.remark}</td>
+					<td>
+						{if condition="authority('Authority_edit')"}
+						<a href="__PRO_PATH__/UserAdmin/edit?id={$model.id}">编辑</a>
+						{/if}
+					</td>
+				</tr>
+			{/foreach}
+		  </tbody>
+		</table>
+	</div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/bottom" /}
+<script>
+	$('#consensus-nav-setting').addClass('active open');
+	$('#consensus-nav-setting-sub2').addClass('active');
+	popupList({
+		create:'__PRO_PATH__/UserAdmin/create',
+		remove:'__PRO_PATH__/UserAdmin/remove'
+	});
+</script>

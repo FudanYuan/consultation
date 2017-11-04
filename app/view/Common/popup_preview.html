@@ -1,0 +1,35 @@
+<!--  必须包含
+	Common/calendar
+	Common/upload
+	Common/popup_warn
+
+	调用popupForm(板块,内容ID)
+-->
+<style>.row{padding:10px;}</style>
+<div class="custom-popup" id="form-popup-preview" style="width:600px;padding:0 30px 30px;  display: none">
+    <div class="popup-body" style="color: black; text-align:left">
+
+    </div>
+</div>
+<script>
+    function popupPreview(data){
+        $('#form-popup-preview .popup-body').html(
+                '<div class="row">'+
+                '	<div class="col-md-12" style="text-align: center">'+
+                '       <div class="block h4"><strong>'+ data['title'] +'</strong></div>'+
+                '   </div>'+
+                '</div>'+
+                '<p>'+ data['content'] +'</p>'+
+                '<div class="row fr">'+
+                '	<div class="col-md-12">'+myMoment(data['createtime'])+'</div>'+
+                '</div>'+
+                '<div class="col-sm-offset-5 col-sm-10 csad-btns">'+
+                '  <a id="preview-form-cancel" class="btn btn-info" onclick="previewCancel();">返回</a>'+
+                '</div>');
+        $('#form-popup-preview').popup({blur:false});
+        $('#form-popup-preview').popup('show');
+    }
+    function previewCancel(){
+        $('#form-popup-preview').popup('hide');
+    }
+</script>

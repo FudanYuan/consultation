@@ -1,0 +1,715 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md" style="overflow: auto">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li>舆情预警</li>
+            <li>预警设置</li>
+        </ul>
+
+        <div class="smart-widget" id="main-container">
+            <div class="smart-widget-inner">
+                <ul class="nav nav-tabs tab-style2">
+                    <li class="active">
+                        <a href="#keywordsTab" data-toggle="tab">
+                            <span class="icon-wrapper"><i class="fa fa-key" aria-hidden="true"></i></span>
+                            <span class="text-wrapper">预警关键词</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#thresholdTab" data-toggle="tab">
+                            <span class="icon-wrapper"><i class="fa fa-signal" aria-hidden="true"></i></span>
+                            <span class="text-wrapper">预警警戒线</span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="smart-widget-body">
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active"  id="keywordsTab">
+                            <div class="list-btns">
+                               <form action="" class="form-inline" method="get" id="switch-form" >
+                                    <div class="form-group">
+                                        <div id="keywordsSwitch" class="switch" data-on="success" data-off="warning">
+                                            {if condition="authority('KeywordsWarn_switch')"}
+                                            <input type="checkbox" name="keywordsSwitch" checked/>
+                                            {/if}
+                                        </div>
+                                        <label style="position: relative; top: -10px;">关键词预警: 根据添加的关键词和条件，从抓取的舆情当中提取相关联的文章，呈现在“舆情预警－预警舆情”模块。</label>
+                                    </div>
+                                </form>
+                                <hr/>
+                            </div>
+
+                            <div class="padding-md" v-if="keywordsConditionResult">
+                                <div class="block h4"><strong>预警条件</strong></div>
+                                <div class="form-wrapper">
+                                    <form class="form-horizontal" method="post" id="keywordsConditionResult-form">
+                                        <div class="form-group">
+                                            <label for="keywordsList" class="col-sm-2 control-label">关键词：</label>
+                                            <div class="col-sm-10" id="keywordsList">
+                                                <strong class="font-14 block" style="margin-top: 5px">{{keywords | showList}}</strong>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">舆情属性：</label>
+                                            <div class="col-lg-10">
+                                                <strong class="font-14 block" style="margin-top: 5px">{{natureChecked | showList}}</strong>
+                                            </div><!-- /.col -->
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">媒体类型：</label>
+                                            <div class="col-lg-10">
+                                                <strong class="font-14 block" style="margin-top: 5px">{{mediaChecked | showList}}</strong>
+                                            </div><!-- /.col -->
+                                        </div>
+
+                                        <div class="form-group" v-if="debug">
+                                            <p>选中：{{natureChecked}}</p>
+                                        </div>
+
+                                        <div class="form-group"v-if="debug">
+                                            <p>选中：{{mediaChecked}}</p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                                                {if condition="authority('KeywordsWarn_edit')"}
+                                                <a class="btn btn-success" id="warn-config-form-edit" @click="editKeywordsConfig">修改</a>
+                                                {/if}
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="padding-md" v-if="keywordsConditionSet">
+                                <div class="block h4"><strong>预警条件</strong></div>
+                                <div class="form-wrapper">
+                                    <form class="form-horizontal" method="post" id="condition-set-form">
+                                        <div :class="['form-group', errors.keywords != '' ? 'has-error' : '']" >
+                                            <label for="addKeywords" class="col-sm-2 control-label">关键词：</label>
+                                            <div class="col-sm-4">
+                                                <input class="form-control" type="text" v-model.trim="addKeywords"
+                                                       name="addKeywords" placeholder="请输入关键词..." id="addKeywords">
+                                            </div>
+                                            <a href="javascript:;" class="col-sm-1 btn btn-success" @click="pushKeywords(addKeywords)">添加</a>
+                                        </div>
+
+                                        <div :class="['form-group', errors.keywords != '' ? 'has-error' : '']" >
+                                            <div class="col-sm-2"></div>
+                                            <div class="col-sm-10">
+                                                <div class="keywords-content">
+                                                    <template  v-for="keyword in keywords">
+                                                        <div class="keyword-item">
+                                                            <span>{{keyword}}</span>
+                                                            <a href="javascript:;" class="keyword-del" @click="deleteKeyword(keyword)" :title="'删除 '+keyword">x</a>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <span class="help-block">{{errors.keywords}}</span>
+                                            </div>
+                                        </div>
+
+                                        <div :class="['form-group', errors.nature != '' ? 'has-error' : '']" >
+                                            <label class="col-sm-2 control-label">舆情属性：</label>
+                                            <div class="col-lg-10">
+                                                <template v-for="(value, key, index) in nature">
+                                                    <div class="checkbox inline-block" style="padding-right: 10px;">
+                                                        <div class="custom-checkbox">
+                                                            <input type="checkbox" :id="'nature-'+index" :value="key" v-model="natureChecked">
+                                                            <label :for="'nature-'+index"></label>
+                                                        </div>
+                                                        <label class="inline-block vertical-top" :for="'nature-'+index" style="padding-left: 0;">{{key}}</label>
+                                                    </div>
+                                                </template>
+                                                <span class="help-block">{{errors.nature}}</span>
+                                            </div><!-- /.col -->
+                                        </div>
+
+                                        <div :class="['form-group', errors.media != '' ? 'has-error' : '']" >
+                                            <label class="col-sm-2 control-label">媒体类型：</label>
+                                            <div class="col-lg-10">
+                                                <template v-for="(value, key, index) in media">
+                                                    <div class="checkbox inline-block" style="padding-right: 10px;">
+                                                        <div class="custom-checkbox">
+                                                            <input type="checkbox" :id="'media-'+index" :value="key" v-model="mediaChecked">
+                                                            <label :for="'media-'+index"></label>
+                                                        </div>
+                                                        <label class="inline-block vertical-top" :for="'media-'+index" style="padding-left: 0;">{{key}}</label>
+                                                    </div>
+                                                </template>
+                                                <span class="help-block">{{errors.media}}</span>
+                                            </div><!-- /.col -->
+                                        </div>
+
+                                        <div class="form-group" v-if="debug">
+                                            <p>选中：{{natureChecked}}</p>
+                                        </div>
+
+                                        <div class="form-group" v-if="debug">
+                                            <p>选中：{{mediaChecked}}</p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                                                <a class="btn btn-success" id="keywords-config-form-save" @click="saveEditKeywordsConfig">保存</a>
+                                                <a id="keywords-config-form-cancel" class="btn btn-info" @click="cancelEditKeywordsConfig">取消</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div><!-- ./tab-pane -->
+                        <div class="tab-pane fade" id="thresholdTab">
+                            <div class="list-btns" v-if="thresholdConditionResult">
+                                <form action="" class="form-inline" method="post" id="threshold-result-form" >
+                                    <div class="form-group">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-primary" href="javascript:;" @click="addThresholdConfig">添加预警</a>
+                                            <label>警戒线预警: 根据添加的关键词和条件，从抓取的舆情当中提取相关联的文章，呈现在“实时舆情－预警舆情”模块。</label>
+                                        </div>
+                                    </div>
+                                </form>
+                                <hr/>
+                            </div>
+
+                            <div class="padding-md" v-if="thresholdConditionResult">
+                                <table class="table table-hover" style="background:#fff;">
+                                    <thead>
+                                    <tr>
+                                        <th>预警类目</th>
+                                        <th>每日舆情总量（条）</th>
+                                        <th>每日负面舆情（条）</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <template v-for="(model, index) in thresholdConfigList">
+                                        <tr>
+                                            <td hidden><input type="checkbox" name="select" :value="model.id"/></td>
+                                            <td>{{model.task}}</td>
+                                            <td>{{model.dayAllCount}}</td>
+                                            <td>{{model.dayNegativeCount}}</td>
+                                            <td>
+                                                <span class="label label-success" v-if="model.status == 1">
+                                                    预警中
+                                                </span>
+                                                <span class="label label label-danger" v-else>
+                                                    关闭
+                                                </span>
+                                            </td>
+                                            <td>
+                                                {if condition="authority('ThresholdWarn_close')"}
+                                                <a href="javascript:;" @click="thresholdWarningClose(index)" :title="model.status | getWarningStatus">
+                                                    <i :class="['fa fa-power-off fa-lg', model.status==1 ? 'isClosed' : '']" style="margin-right: 10px"></i>
+                                                </a>
+                                                {/if}
+
+                                                {if condition="authority('ThresholdWarn_edit')"}
+                                                <a href="javascript:;" @click="thresholdWarningEdit(index)" title="编辑" :id="'from-edit'+model.id">
+                                                    <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                                                </a>
+                                                {/if}
+
+                                                {if condition="authority('ThresholdWarn_remote')"}
+                                                <a href="javascript:;" @click="thresholdWarningRemove(model.id)" title="删除">
+                                                    <i class="fa fa-trash fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
+                                                </a>
+                                                {/if}
+                                            </td>
+                                        </tr>
+                                    </template>
+                                    </tbody>
+                                </table>
+                                {include file="Common/page" /}
+                            </div>
+
+                            <div class="padding-md" v-if="thresholdConditionCreate">
+                                <ul class="breadcrumb">
+                                    <li><a @click="back" href="javascript:;">警戒线预警设置</a></li>
+                                    <li>添加预警</li>
+                                </ul>
+                                <form action="" class="form-horizontal" method="post" id="threshold-create-form" >
+                                    <div class="block h4"><strong>预警条件</strong></div>
+                                    <div :class="['form-group', errors.task != '' ? 'has-error' : '']" >
+                                        <label for="TaskItem" class="col-sm-2 control-label">类目名称：</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" v-model.trim="taskSelected"
+                                                   name="TaskItem" id="TaskItem" v-if="debug">
+                                            <div class="form-control task-item-selected-show" @click="showTasksList">{{taskSelected}}</div>
+                                            <div class="tasks-list-content col-sm-4" v-if="tasksListSeen">
+                                                <template v-for="task in tasks">
+                                                    <div :class="['task-item', taskSelected==task ? 'task-item-selected' : '']"
+                                                         @click="selectTaskItem(task)">
+                                                        <span>{{task}}</span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                            <span class="help-block">{{errors.task}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div :class="['form-group', errors.dayAllCount != '' ? 'has-error' : '']" >
+                                        <label for="dayAllCount" class="col-sm-2 control-label">每日舆情总量</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" v-model.trim="dayAllCount"
+                                                   name="dayAllCount" placeholder="请输入每日舆情总量..." id="dayAllCount">
+                                            <span class="help-block">{{errors.dayAllCount}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div :class="['form-group', errors.dayNegativeCount != '' ? 'has-error' : '']" >
+                                        <label for="dayNegativeCount" class="col-sm-2 control-label">每日负面舆情</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" v-model.trim="dayNegativeCount"
+                                                   name="dayNegativeCount" placeholder="请输入每日负面舆情..." id="dayNegativeCount">
+                                            <span class="help-block">{{errors.dayNegativeCount}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                                            <a class="btn btn-success" @click="createThresholdConfig">保存</a>
+                                            <a class="btn btn-info" @click="cancelThresholdConfig">取消</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="padding-md" v-if="thresholdConditionEdit">
+                                <ul class="breadcrumb">
+                                    <li><a @click="back" href="javascript:;">警戒线预警设置</a></li>
+                                    <li>编辑预警</li>
+                                </ul>
+                                <form action="" class="form-horizontal" method="post" id="threshold-edit-form" >
+                                    <div class="block h4"><strong>预警条件</strong></div>
+                                    <div class="form-group">
+                                        <label for="edit_TaskItem" class="col-sm-2 control-label">类目名称：</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" v-model.trim="taskSelected"
+                                                   name="TaskItem" id="edit_TaskItem" v-if="debug">
+                                            <div class="form-control task-item-selected-show" @click="showTasksList">{{taskSelected}}</div>
+                                            <div class="tasks-list-content col-sm-4" v-if="tasksListSeen">
+                                                <template v-for="task in tasks">
+                                                    <div :class="['task-item', taskSelected==task ? 'task-item-selected' : '']"
+                                                         @click="selectTaskItem(task)">
+                                                        <span>{{task}}</span>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div :class="['form-group', errors.dayAllCount != '' ? 'has-error' : '']" >
+                                        <label for="edit_dayAllCount" class="col-sm-2 control-label">每日舆情总量</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" v-model.trim="edit_dayAllCount"
+                                                   name="edit_dayAllCount" placeholder="请输入每日舆情总量..." id="edit_dayAllCount">
+                                            <span class="help-block">{{errors.dayAllCount}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div :class="['form-group', errors.dayNegativeCount != '' ? 'has-error' : '']" >
+                                        <label for="edit_dayNegativeCount" class="col-sm-2 control-label">每日负面舆情</label>
+                                        <div class="col-sm-4">
+                                            <input class="form-control" type="text" v-model.trim="edit_dayNegativeCount"
+                                                   name="dayNegativeCount" placeholder="请输入每日负面舆情..." id="edit_dayNegativeCount">
+                                            <span class="help-block">{{errors.dayNegativeCount}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                                            <a class="btn btn-success" @click="saveEditThresholdConfig">保存</a>
+                                            <a class="btn btn-info" @click="cancelThresholdConfig">取消</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div><!-- ./tab-pane -->
+                    </div><!-- ./tab-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/popup_verify" /}
+{include file="Common/calendar" /}
+{include file="Common/bottom" /}
+<script src="__PUBLIC__/js/bootstrap-switch/js/bootstrapSwitch.js"></script>
+<script>
+    $('#consensus-nav-data-warn').addClass('active open');
+    $('#consensus-nav-data-warn-sub2').addClass('active');
+
+    // 初始化vue
+    var vm = new Vue({
+        el: '#main-container',
+        data: {
+            keywordsConditionResult: true,
+            keywordsConditionSet: false,
+            keywordsSwitch: false,
+            addKeywords: '',
+            keywords: [],
+            nature: {},
+            media: {},
+            natureChecked: [],
+            mediaChecked: [],
+            debug: false,
+
+            thresholdConditionResult: true,
+            thresholdConditionCreate: false,
+            thresholdConditionEdit: false,
+            tasksListSeen: false,
+            thresholdConfigList: [],
+            tasks: [],
+            taskSelected: '',
+            dayAllCount: -1,
+            dayNegativeCount: -1,
+
+            edit_thresholdItemId: -1,
+            edit_dayAllCount: -1,
+            edit_dayNegativeCount: -1,
+
+            total: 0,
+            per_page: 10,
+            current_page: 1,
+            pages: 1,
+            fore_omit: false,
+            back_omit: false,
+            fore_pages: [],
+            mid_pages: [],
+            back_pages: [],
+            side: 3,
+            window: 6,
+
+            errors: {
+                'keywords':'',
+                'nature':'',
+                'media':'',
+                'task':'',
+                'dayAllCount':'',
+                'dayNegativeCount':''
+            },
+        },
+        updated: function () {
+            this.fore_pages = [];
+            this.mid_pages = [];
+            this.back_pages = [];
+            if(this.pages < this.window + 6){
+                this.fore_omit = false;
+                this.back_omit = false;
+                for(var i=1; i<=this.pages; i++){
+                    this.fore_pages.push(i);
+                }
+            }
+            else if(this.current_page <= this.window){
+                this.fore_omit = false;
+                this.back_omit = true;
+                for(var i=1; i<= this.window + 2; i++){
+                    this.fore_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+            else if(this.current_page > this.pages - this.window){
+                this.fore_omit = true;
+                this.back_omit = false;
+                for(var i=this.pages-(this.window+2); i<= this.pages; i++){
+                    this.back_pages.push(i);
+                }
+                this.fore_pages = [1, 2];
+            }
+            else{
+                this.fore_omit = true;
+                this.back_omit = true;
+                this.fore_pages = [1, 2];
+                for(var i=parseInt(this.current_page) - parseInt(this.side);
+                    i <= parseInt(this.current_page) + parseInt(this.side); i++){
+                    this.mid_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+        },
+        methods:{
+            // 转到某页
+            gotoPage: function (page) {
+                if(page == this.current_page) return;
+                this.current_page = page;
+                submit();
+            },
+            resetKeywordsConfigParams: function () {
+                this.addKeywords = '';
+                this.keywords = [];
+                this.nature = {};
+                this.media = {};
+                this.natureChecked = [];
+                this.mediaChecked = [];
+                this.errors['keywords'] = '';
+                this.errors['nature'] = '';
+                this.errors['media'] = '';
+            },
+            resetThresholdConfigParams: function () {
+                this.thresholdConfigList = [];
+                this.tasks = [];
+                this.taskSelected = '';
+                this.dayAllCount = -1;
+                this.dayNegativeCount = -1;
+                this.errors['dayAllCount'] = '';
+                this.errors['dayNegativeCount'] = '';
+                this.thresholdConditionResult = true;
+                this.thresholdConditionCreate = false;
+                this.thresholdConditionEdit = false;
+            },
+            resetThresholdConfigEditParams: function () {
+                this.edit_thresholdItemId = -1;
+                this.taskSelected = '';
+                this.edit_dayAllCount = -1;
+                this.edit_dayNegativeCount = -1;
+            },
+            pushKeywords: function (value) {
+                if(value != ""){
+                    this.keywords.push(value);
+                    this.addKeywords = '';
+                    console.log(value);
+                }
+            },
+            deleteKeyword:function (item) {
+                console.log(item);
+                Array.prototype.remove = function(val) {
+                    var index = this.indexOf(val);
+                    if (index > -1) {
+                        this.splice(index, 1);
+                    }
+                };
+                this.keywords.remove(item);
+            },
+            editKeywordsConfig: function () {
+                this.keywordsConditionSet = true;
+                this.keywordsConditionResult = false;
+                this.thresholdConditionEdit = false;
+                getKeywordsConfig();
+            },
+            cancelEditKeywordsConfig: function () {
+                this.keywordsConditionSet = false;
+                this.keywordsConditionResult = true;
+                this.thresholdConditionEdit = false;
+                getKeywordsConfig();
+            },
+            saveEditKeywordsConfig: function () {
+                setKeywordsConfig();
+            },
+            showTasksList: function () {
+                this.tasksListSeen = !this.tasksListSeen;
+            },
+            selectTaskItem: function (item) {
+                this.tasksListSeen = false;
+                this.taskSelected = item;
+            },
+            thresholdWarningClose: function (index) {
+                console.log(index);
+                var params = {};
+                params['id'] = this.thresholdConfigList[index]['id'];
+                var status = this.thresholdConfigList[index]['status'];
+                if(status == 1){
+                    params['status'] = 2;
+                } else{
+                    params['status'] = 1;
+                }
+                editThresholdConfig(params);
+            },
+            thresholdWarningEdit: function (index) {
+                console.log(index);
+                this.thresholdConditionResult = false;
+                this.thresholdConditionCreate = false;
+                this.thresholdConditionEdit = true;
+                this.edit_thresholdItemId = this.thresholdConfigList[index]['id'];
+                this.taskSelected = this.thresholdConfigList[index]['task'];
+                this.edit_dayAllCount = this.thresholdConfigList[index]['dayAllCount'];
+                this.edit_dayNegativeCount = this.thresholdConfigList[index]['dayNegativeCount'];
+            },
+            thresholdWarningRemove: function (id) {
+                $.post('__PRO_PATH__/DataMonitor/removeThresholdConfig', {'ids':id}, function (res) {
+                    if(res.code == 1){
+                        getThresholdConfig();
+                    } else {
+                        popWarn(res.msg);
+                    }
+                });
+            },
+            addThresholdConfig: function () {
+                this.thresholdConditionResult = false;
+                this.thresholdConditionCreate = true;
+                this.thresholdConditionEdit = false;
+            },
+            createThresholdConfig:function () {
+                var params = {};
+                params['task'] = this.taskSelected;
+                params['dayAllCount'] = this.dayAllCount;
+                params['dayNegativeCount'] = this.dayNegativeCount;
+                $.post('__PRO_PATH__/DataMonitor/createThresholdConfig', params, function (res) {
+                    if (res.errorcode == 0) {
+                        getThresholdConfig();
+                    } else {
+                        $.each(res.errors, function (key, value) {
+                            vm.errors[key] = value;
+                        });
+                    }
+                });
+            },
+            saveEditThresholdConfig: function () {
+                var params = {};
+                params['id'] = this.edit_thresholdItemId;
+                params['task'] = this.taskSelected;
+                params['dayAllCount'] = this.edit_dayAllCount;
+                params['dayNegativeCount'] = this.edit_dayNegativeCount;
+                editThresholdConfig(params);
+            },
+            cancelThresholdConfig: function () {
+                this.thresholdConditionResult = true;
+                this.thresholdConditionCreate = false;
+                this.thresholdConditionEdit = false;
+            },
+            back: function () {
+                this.resetThresholdConfigEditParams();
+                this.thresholdConditionResult = true;
+                this.thresholdConditionCreate = false;
+                this.thresholdConditionEdit = false;
+            },
+            gotoPage: function (page) {
+                console.log(page);
+                this.current_page = page;
+                getThresholdConfig();
+                console.log(this.current_page);
+            }
+        },
+        filters:{
+            showList: function (list) {
+                var res = "";
+                $.each(list, function (index, value) {
+                    res += value+'   ';
+                });
+                return res;
+            },
+            getWarningStatus: function (status) {
+                var res = '';
+                if(status == 2){
+                    res = '预警中';
+                } else{
+                    res = '关闭';
+                }
+                return res;
+            }
+        }
+    });
+
+    // 关键词预警开关
+    $('#keywordsSwitch').on('switch-change', function (e, data) {
+        var value = data.value;
+        if(!value){
+            vm.keywordsSwitch = false;
+            $('#keywordsTab .padding-md').hide();
+        } else{
+            vm.keywordsSwitch = true;
+            $('#keywordsTab .padding-md').show();
+        }
+        setKeywordsConfig();
+    });
+
+    // 获取关键词配置
+    function getKeywordsConfig() {
+        vm.resetKeywordsConfigParams();
+        $.post('__PRO_PATH__/DataMonitor/getKeywordsConfig', {}, function (res) {
+            if (res.errorcode == 0) {
+                if(!res.switch){
+                    vm.keywordsSwitch = false;
+                    $('#keywordsSwitch').bootstrapSwitch('setState', res.switch); // true || false
+                    $('#keywordsTab .padding-md').hide();
+                } else {
+                    vm.keywordsSwitch = true;
+                    vm.keywords = res.keywords;
+                    vm.nature = res.nature;
+                    vm.media = res.media;
+
+                    $.each(res.nature, function (key, value) {
+                        if(value == 1){
+                            vm.natureChecked.push(key);
+                        }
+                    });
+
+                    $.each(res.media, function (key, value) {
+                        if(value == 1){
+                            vm.mediaChecked.push(key);
+                        }
+                    });
+                }
+            } else {
+                popWarn(res.msg);
+            }
+        });
+    }
+
+    // 设置关键词配置
+    function setKeywordsConfig() {
+        var params = {};
+        params['keywordsSwitch'] = vm.keywordsSwitch;
+        params['keywords'] = vm.keywords;
+        params['nature'] = vm.natureChecked;
+        params['media'] = vm.mediaChecked;
+        $.post('__PRO_PATH__/DataMonitor/setKeywordsConfig', params, function (res) {
+            if (res.errorcode == 0) {
+                vm.cancelEditKeywordsConfig();
+            } else {
+                $.each(res.errors, function (key, value) {
+                    vm.errors[key] = value;
+                });
+                console.log(JSON.stringify(vm.errors));
+            }
+        });
+    }
+
+    // 获取警戒线配置列表
+    function getThresholdConfig() {
+        vm.resetThresholdConfigParams();
+        var params = {};
+        params['per_page'] = vm.per_page;
+        params['current_page'] = vm.current_page;
+        $.post('__PRO_PATH__/DataMonitor/getThresholdConfig', params, function (res) {
+            if (res.errorcode == 0) {
+                vm.total = res.total;
+                vm.pages = Math.ceil(res.total / vm.per_page);
+                vm.current_page = res.current_page;
+                vm.thresholdConfigList = res.list;
+                vm.tasks = res.tasks;
+            } else {
+                popWarn(res.msg);
+            }
+        });
+    }
+
+    // 编辑警戒线配置
+    function editThresholdConfig(params) {
+        $.post('__PRO_PATH__/DataMonitor/saveThresholdConfig', params, function (res) {
+            if (res.errorcode == 0) {
+                vm.thresholdConditionResult = true;
+                vm.thresholdConditionCreate = false;
+                vm.thresholdConditionEdit = false;
+                getThresholdConfig();
+            } else {
+                $.each(res.errors, function (key, value) {
+                    vm.errors[key] = value;
+                });
+                console.log(JSON.stringify(vm.errors));
+            }
+        });
+    }
+
+    // 初始化
+    getKeywordsConfig();
+    getThresholdConfig();
+</script>

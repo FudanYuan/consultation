@@ -1,0 +1,32 @@
+<div class="custom-popup" id="warn-popup" style="width:200px;display:none;">
+	<div class="popup-body text-center">
+		<h5></h5>
+		<div class="text-center m-top-lg">
+			<a class="btn btn-success m-center-sm warn-do">返回</a>
+		</div>
+	</div>
+</div>
+<script>
+var url = "";
+function popWarn(con, href){
+	href = href || '';
+	if(href!=''){
+		url = href;
+	}
+	$('#warn-popup h5').html(con);
+	$('#warn-popup').popup('show');
+}
+$('.warn-do').on('click', function(){
+	$('#warn-popup').popup('hide');
+	if(url != ''){
+		window.location.href = url;
+	}
+});
+$(function(){
+	//Delete Widget Confirmation
+	$('#confirm-popup').popup({
+		vertical: 'top',
+		transition: 'all 0.3s'
+	});
+});
+</script>

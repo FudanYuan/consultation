@@ -1,0 +1,14 @@
+<!--弹窗-->
+<div class="custom-popup" id="toast-popup" style="width:200px;display:none;">
+    <div class="popup-body text-center">
+        <h5></h5>
+    </div>
+</div>
+<script>
+    function popupToast(con){
+        $('#toast-popup h5').html(con);
+        setTimeout(function () {
+            $('#toast-popup').popup('show');
+        }, 2000);
+    }
+</script>

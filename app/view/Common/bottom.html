@@ -1,0 +1,251 @@
+{include file="Common/analysis_task" /}
+<footer class="footer">
+				<span class="footer-brand">
+					<strong class="text-danger" id="time">正在获取系统时间...</strong>
+				</span>
+    <p class="no-margin pull-right">
+        &copy; 2017 <strong>华夏经纬舆情监测系统</strong>. ALL Rights Reserved.
+    </p>
+</footer>
+</div><!-- /wrapper -->
+
+<a href="javascript:;" class="scroll-to-top hidden-print"><i class="fa fa-chevron-up fa-lg"></i></a>
+</body>
+</html>
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<!-- Bootstrap -->
+<script src="__PUBLIC__/js/bootstrap.min.js"></script>
+
+<!-- Flot -->
+<script src='__PUBLIC__/js/jquery.flot.min.js'></script>
+
+<!-- Slimscroll -->
+<script src='__PUBLIC__/js/jquery.slimscroll.min.js'></script>
+
+<!-- Morris -->
+<script src='__PUBLIC__/js/rapheal.min.js'></script>
+<script src='__PUBLIC__/js/morris.min.js'></script>
+
+<!-- Datepicker -->
+<script src='__PUBLIC__/js/uncompressed/datepicker.js'></script>
+
+<!-- Sparkline -->
+<script src='__PUBLIC__/js/sparkline.min.js'></script>
+
+<!-- Skycons -->
+<script src='__PUBLIC__/js/uncompressed/skycons.js'></script>
+
+<!-- Popup Overlay -->
+<script src='__PUBLIC__/js/jquery.popupoverlay.min.js'></script>
+
+<!-- Easy Pie Chart -->
+<script src='__PUBLIC__/js/jquery.easypiechart.min.js'></script>
+
+<!-- Sortable -->
+<script src='__PUBLIC__/js/uncompressed/jquery.sortable.js'></script>
+
+<!-- Owl Carousel -->
+<script src='__PUBLIC__/js/owl.carousel.min.js'></script>
+
+<!-- Modernizr -->
+<script src='__PUBLIC__/js/modernizr.min.js'></script>
+
+<!-- Echarts -->
+<script src="__PUBLIC__/js/Echarts/echarts.js"></script>
+
+<!-- Simplify -->
+<script src="__PUBLIC__/js/simplify/simplify.js"></script>
+
+<!-- Moment -->
+<script src="__PUBLIC__/js/moment.js"></script>
+
+<!-- labelauty -->
+<script src="__PUBLIC__/js/labelauty/labelauty.js"></script>
+
+{include file="Common/popup_warn" /}
+<!-- show time -->
+<script>
+    function startTime() {
+        var today = new Date();//定义日期对象
+        var yyyy = today.getFullYear();//通过日期对象的getFullYear()方法返回年
+        var MM = today.getMonth() + 1;//通过日期对象的getMonth()方法返回年
+        var dd = today.getDate();//通过日期对象的getDate()方法返回年
+        var hh = today.getHours();//通过日期对象的getHours方法返回小时
+        var mm = today.getMinutes();//通过日期对象的getMinutes方法返回分钟
+        var ss = today.getSeconds();//通过日期对象的getSeconds方法返回秒
+        // 如果分钟或小时的值小于10，则在其值前加0，比如如果时间是下午3点20分9秒的话，则显示15：20：09
+        hh = checkTime(hh);
+        MM = checkTime(MM);
+        dd = checkTime(dd);
+        mm = checkTime(mm);
+        ss = checkTime(ss);
+        var day; //用于保存星期（getDay()方法得到星期编号）
+        if (today.getDay() == 0)   day = "星期日 ";
+        if (today.getDay() == 1)   day = "星期一 ";
+        if (today.getDay() == 2)   day = "星期二 ";
+        if (today.getDay() == 3)   day = "星期三 ";
+        if (today.getDay() == 4)   day = "星期四 ";
+        if (today.getDay() == 5)   day = "星期五 ";
+        if (today.getDay() == 6)   day = "星期六 ";
+        document.getElementById('time').innerHTML = hh + ":" + mm + ":" + ss + "  " + yyyy + "-" + MM + "-" + dd + " " + day;
+    }
+
+    function checkTime(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    setInterval(startTime, 1000);//每一秒中重新加载startTime()方法
+
+    function myMoment(value, formatString) {
+        formatString = formatString || 'YYYY-MM-DD HH:mm';
+        return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+    }
+
+    $('.logout').on('click', function () {
+        $.get('__PRO_PATH__/UserAdmin/dologout', {}, function (res) {
+            if (res.errorcode == 0) {
+                window.location.href = '__PRO_PATH__/UserAdmin/login';
+            } else {
+                popWarn(res.msg);
+            }
+        });
+    });
+
+    $('#clearCache').on('click', function () {
+        $.get('__PRO_PATH__/Index/clearcache', function (res) {
+            if (res.errorcode == 0) {
+                popWarn('清空缓存成功');
+            } else {
+                popWarn('清空缓存失败');
+            }
+        });
+    });
+
+    $('#logout').on('click', function () {
+        $.get('__PRO_PATH__/UserAdmin/dologout', {}, function (res) {
+            if (res.errorcode == 0) {
+                window.location.href = '__PRO_PATH__/UserAdmin/login';
+            } else {
+                popWarn(res.msg);
+            }
+        });
+    });
+
+    $('#searchToggle').on('click', function () {
+        $('#searchDiv').toggle({transition: 'all 0.3s'});
+    });
+
+    $('.contact').on('click', function () {
+        popWarn('请联系管理员：Admin <br/><br/> 联系方式：1234567890');
+    });
+
+    Array.prototype.remove = function (val) {
+        var index = this.indexOf(val);
+        if (index > -1) {
+            this.splice(index, 1);
+        }
+    };
+
+    /**参数说明：
+     * 根据长度截取先使用字符串，超长部分追加…
+     * str 对象字符串
+     * len 目标字节长度
+     * 返回值： 处理结果字符串
+     */
+    function cutString(str, len) {
+        //length属性读出来的汉字长度为1
+        if (str.length * 2 <= len) {
+            return str;
+        }
+        var strlen = 0;
+        var s = "";
+        for (var i = 0; i < str.length; i++) {
+            s = s + str.charAt(i);
+            if (str.charCodeAt(i) > 128) {
+                strlen = strlen + 2;
+                if (strlen >= len) {
+                    return s.substring(0, s.length - 1) + "...";
+                }
+            } else {
+                strlen = strlen + 1;
+                if (strlen >= len) {
+                    return s.substring(0, s.length - 2) + "...";
+                }
+            }
+        }
+        return s;
+    }
+
+    $('#analysis_task').click(function () {
+        $('#tasks-list-sidebar-menu').toggle().animate({"left":240}, 500);
+        var taskIcon = $('.analysis-tasks-icon i');
+        var className = String(taskIcon.attr("class"));
+        if(className == "fa fa-angle-left"){
+            taskIcon.removeClass().addClass('fa fa-angle-right');
+        } else{
+            taskIcon.removeClass().addClass('fa fa-angle-left');
+        }
+    });
+
+    // 更改分析的任务
+    function changeTask(task, task_id, callback) {
+        $('#analysis_task').html(task);
+        $('#analysis_task_id').html(task_id);
+        $('#tasks-list-sidebar-menu').animate({"left":0}, 500).hide();
+        var taskIcon = $('.analysis-tasks-icon i');
+        var className = String(taskIcon.attr("class"));
+        if(className == "fa fa-angle-left"){
+            taskIcon.removeClass().addClass('fa fa-angle-right');
+        } else{
+            taskIcon.removeClass().addClass('fa fa-angle-left');
+        }
+        changeAnalysisUrl(task_id);
+        if(arguments.length == 3){callback();}
+    }
+
+    // 修改链接
+    function changeAnalysisUrl(task_id) {
+        $('#consensus-nav-data-analysis-sub0 a').attr("href","__PRO_PATH__/DataAnalysis/index?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub1 a').attr("href","__PRO_PATH__/DataAnalysis/trend?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub2 a').attr("href","__PRO_PATH__/DataAnalysis/searchwords?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub3 a').attr("href","__PRO_PATH__/DataAnalysis/opinion?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub4 a').attr("href","__PRO_PATH__/DataAnalysis/media?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub5 a').attr("href","__PRO_PATH__/DataAnalysis/spread?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub6 a').attr("href","__PRO_PATH__/DataAnalysis/audience?task_id="+task_id);
+        $('#consensus-nav-data-analysis-sub7 a').attr("href","__PRO_PATH__/DataAnalysis/event?task_id="+task_id);
+    }
+
+    // 获取task任务列表
+    function getTaskList() {
+        $.post('__PRO_PATH__/Task/getTaskList', {}, function (res) {
+            if(res.errorcode==0){
+                $('#analysis_task').html(res.data[0]['name']);
+                $('#analysis_task_id').html(res.data[0]['id']);
+                changeAnalysisUrl(res.data[0]['id']);
+                console.log('first');
+                var content = '<li style="font-size: large;">任务列表</li>';
+                for(var i=0;i<res.data.length;i++){
+                    content += "<li>" +
+                            "<a onclick=\"changeTask('" + res.data[i]['name']  + "', "+
+                            res.data[i]['id'] +", function() { submit(); })\">"+
+                            res.data[i]['name'] +
+                            "</a>" +
+                            "</li>";
+                }
+                $('#tasks-list').html(content);
+            }
+        });
+        return true;
+    }
+
+    $('#dataAnalysis').click(function () {
+        var task_id = $('#analysis_task_id').html();
+        getTaskList();
+    });
+</script>

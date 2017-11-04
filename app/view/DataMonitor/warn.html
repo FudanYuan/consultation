@@ -1,0 +1,445 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md" style="overflow: auto">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li>舆情预警</li>
+            <li>预警舆情</li>
+        </ul>
+
+        <!-- 搜索条件 -->
+        <div class="list-search">
+            <form action="" class="form-inline" method="get" id="main-form" >
+                <div class="form-group">
+                    <label for="dateTimeRange">时间范围：</label>
+                    <input type="text" class="form-control date-picker" id="dateTimeRange" value="" style="width: 190px"/>
+                    <input type="hidden" name="begintime_str" id="begintime_str" value=""/>
+                    <input type="hidden" name="endtime_str" id="endtime_str" value=""/>
+                </div>
+
+                <div class="form-group">
+                    <label for="nature">舆情属性：</label>
+                    <ul class="radio-group" id="nature">
+                        <li class="radio-list">
+                            <input type="radio" name="nature" class="labelauty" id="nature-all" value="-1" style="display: none;" checked>
+                            <label for="nature-all">
+                                <span class="labelauty-unchecked">全部</span>
+                                <span class="labelauty-checked">全部</span>
+                            </label>
+                        </li>
+                        <li class="radio-list">
+                            <input type="radio" name="nature" class="labelauty" id="nature-pos" value="0" style="display: none;">
+                            <label for="nature-pos">
+                                <span class="labelauty-unchecked">正面</span>
+                                <span class="labelauty-checked">正面</span>
+                            </label>
+                        </li>
+                        <li class="radio-list">
+                            <input type="radio" name="nature" class="labelauty" id="nature-neu" value="1" style="display: none;">
+                            <label for="nature-neu">
+                                <span class="labelauty-unchecked">中立</span>
+                                <span class="labelauty-checked">中立</span>
+                            </label>
+                        </li>
+                        <li class="radio-list">
+                            <input type="radio" name="nature" class="labelauty" id="nature-neg" value="2" style="display: none;">
+                            <label for="nature-neg">
+                                <span class="labelauty-unchecked">负面</span>
+                                <span class="labelauty-checked">负面</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label for="media_type">媒体类型：</label>
+                    <select name="media_type" class="form-control" id="media_type" style="width:100px">
+                        <option value="-1">全部</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <input type="hidden" name="sortCol" class="form-control" id="sortCol" value="">
+                </div>
+
+                {if condition="authority('MonitorData_export')"}
+                <a href="__PRO_PATH__/DataMonitor/export" target="_blank" type="button"
+                   class="btn btn-default fr">导出</a>
+                {/if}
+            </form>
+        </div>
+
+        <div id="data">
+            <div class="result-count">
+                经过筛选，共<span> {{total}} </span>条数据符合条件
+            </div>
+            <!-- 数据表 -->
+            <table class="table table-hover" style="background:#fff;">
+                <thead>
+                <tr>
+                    <th>标题</th>
+                    <th></th>
+                    <th>来源</th>
+                    <th>媒体类型</th>
+                    <th>舆情属性</th>
+                    <th>发表时间
+                        <a href="javascript:;" id="sort_publishtime" onclick="setSortCol('publishtime')" title="asc">
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </a>
+                    </th>
+                    <th>关联度
+                        <a href="javascript:;" id="sort_relevance" onclick="setSortCol('relevance')" title="asc">
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </a>
+                    </th>
+                    <th>相似文章
+                        <a href="javascript:;" id="sort_similar_num" onclick="setSortCol('similar_num')" title="asc">
+                            <i class="fa fa-sort" aria-hidden="true"></i>
+                        </a>
+                    </th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <template v-if="list.length != 0">
+                    <template v-for="model in list">
+                        <tr>
+                            <td hidden><input type="checkbox" name="select" :value="model.id"/></td>
+                            <td><a :href="model.url" target="_blank" :title="model.title">{{model.title | formatText(40, model.title)}}</a></td>
+                            <td><a href="javascript:;" @click="digestItem(model.id)"><i class="fa fa-chevron-circle-down" aria-hidden="true" :id="'chevron_'+model.id"></i></a></td>
+                            <td>{{model.source}}</td>
+                            <td>{{model.media_type}}</td>
+                            <td>{{model.nature}}</td>
+                            <td>{{model.publishtime | moment}}</td>
+                            <td :title="model.relevance">
+                                <div class="bg"><!--这里是背景，也就是灰色的星星-->
+                                    <!--说明，这里的width就是设置分数啦，以我写的为例，一个星星的长度是16px，也就是1分16px-->
+                                    <div class="over" :style="{ width: model.relevance * 8 + 'px' }"></div><!--这里是遮罩，设置宽度以达到评分的效果-->
+                                </div>
+                            </td>
+                            <td>{{model.similar_num}}</td>
+                            <td>
+                                {if condition="authority('Data_collect')"}
+                                <a href="javascript:;" @click="dataCollect(model.id, model.is_collect)" :title="model.is_collect | collectStatus">
+                                    <i :class="['fa fa-heart fa-lg', model.is_collect ? 'collected' : '']" aria-hidden="true" :id="'collect_' + model.id" style= "margin-right: 10px"></i>
+                                </a>
+                                {/if}
+
+                                {if condition="authority('Data_edit')"}
+                                <a href="javascript:;" @click="popupVerify(model.id, model.nature, model.relevance)" title="编辑" :id="'from-verify'+model.id">
+                                    <i class="fa fa-pencil-square-o  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                                </a>
+                                {/if}
+
+                                {if condition="authority('Data_remote')"}
+                                <a href="javascript:;" @click="dataRemove(model.id)" title="删除">
+                                    <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
+                                </a>
+                                {/if}
+                            </td>
+                        </tr>
+                        <tr class="digestItem" :id="'digestItem_'+model.id">
+                            <td colspan="10">
+                                <div>
+                                    <p>
+                                        <b>内容概要:</b>
+                                        {{model.digest}}
+                                    </p>
+                                    <p v-if="model.userID!=''">
+                                        <b>用户:</b>
+                                        {{model.userID}}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </template>
+                <template v-else>
+                    <tr>
+                        <td colspan="9" class="nodata">暂无数据</td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
+            {include file="Common/page" /}
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/popup_verify" /}
+{include file="Common/calendar" /}
+{include file="Common/bottom" /}
+<script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
+<script>
+    $('#consensus-nav-data-warn').addClass('active open');
+    $('#consensus-nav-data-warn-sub1').addClass('active');
+    // 时间选择器
+    $(function () {
+        $('#dateTimeRange')
+                .daterangepicker({
+                    applyClass: 'btn-sm btn-success',
+                    cancelClass: 'btn-sm btn-default',
+                    locale: {
+                        applyLabel: '确认',
+                        cancelLabel: '取消',
+                        fromLabel: '起始时间',
+                        toLabel: '结束时间',
+                        customRangeLabel: '自定义',
+                        daysOfWeek: ['日', '一', '二', '三', '四', '五', '六'],
+                        monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                        firstDay: 1
+                    },
+                    ranges: {
+                        '全部': [0, moment()],
+                        '今日': [moment().startOf('day'), moment()],
+                        '昨日': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                        '最近7日': [moment().subtract(6, 'days'), moment()],
+                        '最近30日': [moment().subtract(29, 'days'), moment()],
+                        // '本月': [moment().startOf("month"), moment().endOf("month")],
+                        // '上个月': [moment().subtract(1, "month").startOf("month"), moment().subtract(1, "month").endOf("month")],
+                        // '最近90日': [moment().subtract('days', 89), moment()],
+                        // '本季度': [moment().startOf("quarter"), moment()],
+                        // '上个季度': [moment().subtract(1, "quarter").startOf("quarter"), moment().subtract(1, "quarter").endOf("quarter")],
+                        // '今年': [moment().startOf("year"), moment()],
+                        // '去年': [moment().subtract(1, "year").startOf("year"), moment().subtract(1, "year").endOf("year")]
+                    },
+                    opens: 'right',    // 日期选择框的弹出位置
+                    separator: ' 至 ',
+                    showWeekNumbers: true,     // 是否显示第几周
+
+                    //timePicker: true,
+                    //timePickerIncrement : 10, // 时间的增量，单位为分钟
+                    //timePicker12Hour : false, // 是否使用12小时制来显示时间
+
+                    maxDate: moment(),           // 最大时间
+                    format: 'YYYY-MM-DD'
+
+                }, function (start, end, label) { // 格式化日期显示框
+                    $('#begintime_str').val(start.format('YYYY-MM-DD'));
+                    $('#endtime_str').val(end.format('YYYY-MM-DD'));
+                }).next().on('click', function () {
+            $(this).prev().focus();
+        });
+    });
+
+    $('#sortCol').val('a.publishtime desc');
+    var sort = $('#sortCol').val();
+    getSortCol(sort);
+
+    var vm = new Vue({
+        el: '#data',
+        data: {
+            list: [],
+            params: {},
+            total: 0,
+            per_page: 10,
+            current_page: 1,
+            pages: 1,
+            fore_omit: false,
+            back_omit: false,
+            fore_pages: [],
+            mid_pages: [],
+            back_pages: [],
+            side: 3,
+            window: 6
+        },
+        updated: function () {
+            this.fore_pages = [];
+            this.mid_pages = [];
+            this.back_pages = [];
+            if(this.pages < this.window + 6){
+                this.fore_omit = false;
+                this.back_omit = false;
+                for(var i=1; i<=this.pages; i++){
+                    this.fore_pages.push(i);
+                }
+            }
+            else if(this.current_page <= this.window){
+                this.fore_omit = false;
+                this.back_omit = true;
+                for(var i=1; i<= this.window + 2; i++){
+                    this.fore_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+            else if(this.current_page > this.pages - this.window){
+                this.fore_omit = true;
+                this.back_omit = false;
+                for(var i=this.pages-(this.window+2); i<= this.pages; i++){
+                    this.back_pages.push(i);
+                }
+                this.fore_pages = [1, 2];
+            }
+            else{
+                this.fore_omit = true;
+                this.back_omit = true;
+                this.fore_pages = [1, 2];
+                for(var i=parseInt(this.current_page) - parseInt(this.side);
+                    i <= parseInt(this.current_page) + parseInt(this.side); i++){
+                    this.mid_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+        },
+        methods:{
+            // 转到某页
+            gotoPage: function (page) {
+                if(page == this.current_page) return;
+                this.current_page = page;
+                submit();
+            }
+        },
+        filters:{
+            moment: function (value, formatString) {
+                formatString = formatString || 'YYYY-MM-DD HH:mm';
+                return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+            },
+            collectStatus: function (value) {
+                var res = '';
+                if(value == 1){
+                    res = '取消收藏';
+                } else{
+                    res = '收藏';
+                }
+                return res;
+            },
+            formatText: function (text, len) {
+                return cutString(text, len);
+            }
+        }
+    });
+
+    submit();
+    
+    // 异步提交数据
+    function submit() {
+        getParams();
+        $.post('__PRO_PATH__/DataMonitor/getPublicList', vm.params, function (res) {
+            if (res.errorcode == 0) {
+                vm.total = res.total;
+                vm.pages = Math.ceil(res.total / vm.per_page);
+                vm.current_page = res.current_page;
+                vm.list = res.data;
+                vm.params = res.params;
+            }
+        });
+    }
+
+    // 摘要
+    function digestItem(id){
+        var curClass = $('#chevron_'+id).prop("className");
+        console.log(curClass);
+        if(curClass == 'fa fa-chevron-circle-up'){
+            $('#chevron_'+id).removeClass('fa fa-chevron-circle-up').addClass('fa fa-chevron-circle-down');
+        } else{
+            $('#chevron_'+id).removeClass('fa fa-chevron-circle-down').addClass('fa fa-chevron-circle-up');
+        }
+        $('#digestItem_'+id).toggle();
+    }
+
+    // 获取参数设置
+    function getParams() {
+        var data = $('#main-form').serializeArray();
+        $.each(data, function () {
+            vm.params[this.name] = this.value;
+        });
+        vm.params['is_warn'] = 1;
+        vm.params['per_page'] = vm.per_page;
+        vm.params['current_page'] = vm.current_page;
+        console.log(JSON.stringify(vm.params));
+    }
+
+    // 改变排序方向
+    function changeSort(sort) {
+        if (sort == 'asc') {
+            return 'desc';
+        } else {
+            return 'asc';
+        }
+    }
+
+    // 设置排序参数
+    function setSortCol(col) {
+        var sort = $('#sortCol');
+        var title;
+        switch (col) {
+            case 'publishtime':
+                title = $("#sort_publishtime").attr('title');
+                sort.val("a.publishtime " + title);
+                $("#sort_publishtime").attr({"title": changeSort(title)});
+                $("#sort_publishtime i").removeClass().addClass('fa fa-sort-' + changeSort(title));
+                break;
+            case 'relevance':
+                title = $("#sort_relevance").attr('title');
+                sort.val("a.relevance " + title);
+                $("#sort_relevance").attr({"title": changeSort(title)});
+                $("#sort_relevance i").removeClass().addClass('fa fa-sort-' + changeSort(title));
+                break;
+            case 'similar_num':
+                title = $("#sort_similar_num").attr('title');
+                sort.val("a.similar_num " + title);
+                $("#sort_similar_num").attr({"title": changeSort(title)});
+                $("#sort_similar_num i").removeClass().addClass('fa fa-sort-' + changeSort(title));
+                break;
+        }
+    }
+
+    // 获取排序参数
+    function getSortCol(sortcol) {
+        var col = sortcol.split(' ');
+        var title = col[1];
+        switch (col[0]) {
+            case 'a.publishtime':
+                $("#sort_publishtime").attr({"title": changeSort(title)});
+                $("#sort_publishtime i").removeClass().addClass('fa fa-sort-' + changeSort(title));
+                break;
+            case 'a.relevance':
+                $("#sort_relevance").attr({"title": changeSort(title)});
+                $("#sort_relevance i").removeClass().addClass('fa fa-sort-' + changeSort(title));
+                break;
+            case 'a.similar_num':
+                $("#sort_similar_num").attr({"title": changeSort(title)});
+                $("#sort_similar_num i").removeClass().addClass('fa fa-sort-' + changeSort(title));
+                break;
+        }
+    }
+
+    // 收藏
+    function dataCollect(id, isCollected) {
+        console.log(id + ' ' + isCollected);
+        $.post('__PRO_PATH__/DataMonitor/doCollect', {'id': id, 'is_collect' : isCollected}, function (res) {
+            if(res.errorcode == 0){
+                submit();
+            } else {
+                popWarn(res.msg);
+            }
+        });
+    }
+
+    // 删除
+    popupList({
+        remove: '__PRO_PATH__/DataMonitor/remove'
+    }, function () {
+        submit();
+    });
+
+    // 删除舆情
+    function dataRemove(id) {
+        console.log(id);
+        $("input[name='select']").each(function() {
+            if(this.value != id){
+                this.checked=false;
+            }
+            else{
+                this.checked=true;
+            }
+        });
+        $('#confirm-popup').popup('show');
+    }
+
+    setInterval(function () {
+        submit();
+    }, 5000);
+</script>

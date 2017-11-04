@@ -1,0 +1,126 @@
+<!--  必须包含
+	Common/calendar
+	Common/upload
+	Common/popup_warn
+
+	调用popupForm(板块,内容ID)
+-->
+<script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
+<div class="custom-popup" id="form-popup" style="width:300px;padding-bottom:30px;">
+    <div class="popup-body" style="text-align:left">
+        <form action="" id="new-task-form" method="post">
+            <div class="form-group {$errors.loop ?= 'has-error'}">
+                <label for="new-task-form-loop">爬取周期</label>
+                <select class="form-control" id="new-task-form-loop" name="loop">
+                    <option value="-1">--请选择--</option>
+                    <option value="0">每天</option>
+                    <option value="1">每周</option>
+                    <option value="2">每月</option>
+                </select>
+                <p class="help-block">{$errors.loop??''}</p>
+            </div>
+
+            <button id="getSelectsBtn"></button>
+            <div class="form-group {$errors.theme ?= 'has-error'}">
+                <label for="new-task-form-theme">爬取主题</label>
+                <select multiple="multiple" class="multiple" id="new-task-form-theme" name="theme">
+                    {foreach name="theme_list" item="t1"}
+                    <optgroup label="{$t1.t1_name}">
+                        {foreach name="t1['t1_content']" item="t2"}
+                        <option value="{$t2.t2_id}">{$t2.t2_name}</option>
+                        {/foreach}
+                    </optgroup>
+                    {/foreach}
+                </select>
+                <p class="help-block">{$errors.loop??''}</p>
+            </div>
+
+            <div class="form-group {$errors.website ?= 'has-error'}">
+                <label for="new-task-form-web">爬取网站</label>
+                <select multiple="multiple" class="multiple" id="new-task-form-web" name="website">
+                    {foreach name="website_list" item="website"}
+                    <option value="{$website.id}">{$website.type}</option>
+                    {/foreach}
+                </select>
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group {$errors.begintime_str ?= 'has-error'}">
+                <label for="new-task-form-stime">开始时间</label>
+                <input id="new-task-form-stime" name="begintime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr">
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+                <div id="new-task-form-all"></div>
+                <p class="help-block"></p>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                    <a id="new-task-form-save" class="btn btn-success">保存</a>
+                    <a id="new-task-form-cancel" class="btn btn-info">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(".multiple").multipleSelect({
+        filter: true,
+        multiple: true,
+        width: 270,
+        selectAll: true
+    });
+//    $("#setSelectsBtn").click(function() {
+//        $("select").multipleSelect("checkAll");
+//    });
+    $(function () {
+        $("#new-task-form-theme").multipleSelect("checkAll");
+        $("#new-task-form-web").multipleSelect("checkAll");
+    });
+    function popupNewTask(){
+        clearFormData();
+        $('#form-popup').popup({blur:false});
+        $('#form-popup').popup('show');
+    }
+    $('#new-task-form-cancel').on('click', function(){
+        $('#form-popup').popup('hide');
+    });
+    $('#new-task-form-save').on('click', function(){
+        $('#new-task-form .form-group').removeClass('has-error');
+        $('#new-task-form .help-block').html('');
+        var params = {};
+        params['theme'] = [];
+        params['website'] = [];
+        var data = $('#new-task-form').serializeArray();
+        console.log(JSON.stringify(data));
+        $.each(data, function() {
+            if(this.name == 'theme' || this.name == 'website'){
+                params[this.name].push(this.value);
+            }
+            else{
+                params[this.name] = this.value;
+            }
+        });
+        console.log(JSON.stringify(params));
+        $.post('__PRO_PATH__/Task/create', params, function(res){
+            if(res.code == 1){
+                $('#form-popup').popup('hide');
+                popWarn('新建成功');
+            }else if(res.code == 2){
+                $.each(res.errors, function(k, v){
+                    if(k == 'begintime' || k == 'endtime') k += '_str';
+                    var obj = k == 'all' ? $('#new-task-form-all') : $('#new-task-form [name="'+k+'"]');
+                    obj.siblings('.help-block').html(v);
+                    obj.parent().addClass('has-error');
+                })
+            }
+        });
+    });
+    function clearFormData(){
+        $('#new-task-form')[0].reset();
+        $('#new-task-form .help-block').html('');
+    }
+
+    $(".flatpickr").flatpickr({time_24hr:true});
+</script>

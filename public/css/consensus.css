@@ -1,0 +1,210 @@
+@CHARSET "UTF-8";
+.list-search {
+    /*background:#fff;*/
+    padding: 10px 0;
+}
+
+.result-count{
+    /*background:#fff;*/
+    padding: 10px 0;
+    text-align: center;
+    background-color: #fff;
+    font-size: 13px;
+}
+
+.nodata{
+    text-align: center;
+}
+
+.list-btns {
+    margin: 10px 0 5px;
+}
+
+.list-search .form-group {
+    margin-right: 20px;
+}
+
+.main-container .form-wrapper {
+    padding: 20px;
+    width: 100%;
+    background: #fff;
+}
+
+.lab-btns .btn {
+    margin-right: 20px;
+}
+
+table td {
+    valign: middle;
+}
+
+.clearFix:after {
+    display: block;
+    content: '';
+    clear: both;
+}
+
+.clearFix {
+    zoom: 1;
+}
+
+.fl {
+    float: left;
+    margin-left: 10px;
+}
+
+.fr {
+    float: right;
+    margin-left: 10px;
+}
+
+.nav-container .glyphicon {
+    color: black;
+    font-size: 20px;
+}
+
+.nav-container .btn {
+    border: none;
+}
+
+.nav-container .drop_text{
+    top: -5px;
+    margin-left: 5px;
+    vertical-align: middle;
+    align-content: center;
+    font-size: 15px;
+}
+
+.btn-group {
+    border: none;
+    margin: 0 10px 0 0;
+    font-size: 20px;
+}
+
+#searchDiv{
+    margin-top: 5px;
+    margin-left: 240px;
+}
+
+#search {
+    position: relative;
+    font-size: 18px;
+    padding-top: 10px;
+    margin: -10px auto 0;
+}
+
+#search label {
+    position: absolute;
+    left: 17px;
+    top: 22px;
+}
+
+#search #search-input, #search .hint {
+    padding-left: 43px;
+    padding-right: 43px;
+    border-radius: 23px;
+    font-size: 15px;
+}
+
+#search .hint {
+    color: #aaa
+}
+
+#search #search-clear {
+    text-decoration: none;
+    position: absolute;
+    right: 17px;
+    top: 22px;
+    color: #b3b3b3;
+}
+
+#search #search-clear:hover {
+    color: #8f8f8f
+}
+
+#search-results em {
+    font-style: normal;
+    text-decoration: underline
+}
+
+.bg{
+    width: 80px;
+    height: 22px;
+    background: url("/public/images/star/star_gray.png");
+}
+.over{
+    height:22px;
+    background:url("/public/images/star/star_org.png") no-repeat;
+}
+
+.collected{
+    color: red;
+}
+
+.digestItem{
+    background-color: rgba(26, 173, 25, 0);
+    display: none;
+}
+
+#data span{
+    color: red;
+}
+
+.keywords-content{
+    max-height: 300px;
+    margin-top: 0;
+    padding: 15px 5px;
+    border: 1px solid #eee;
+    overflow: auto;
+}
+
+.keyword-item{
+    display: inline-block;
+    background-color: #f5f5f6;
+    border: solid 1px #eee;
+    margin: 5px;
+    padding: 5px;
+    font-weight: 900;
+    color: black;
+}
+
+.keyword-del{
+    padding-left: 5px;
+    cursor: pointer;
+}
+
+.tasks-list-content{
+    margin-top: 0;
+    padding: 5px 0;
+    border: 1px solid #eee;
+    max-height: 200px;
+    overflow-x:scroll;
+    overflow-y:scroll;
+    width: 100%;
+    cursor: pointer;
+}
+
+.task-item, .task-item-selected-show{
+    display: inline-block;
+    background-color: #f5f5f6;
+    height: 34px;
+    padding: 9px;
+    margin-bottom: 1px;
+    border: solid 1px #eee;
+    font-weight: 900;
+    color: black;
+    width: 100%;
+    cursor: pointer;
+}
+
+.task-item:hover{
+    background-color: #00AA70;
+}
+
+.task-item-selected{
+    background-color: #00AA88;
+}
+
+.isClosed{
+    color: red;
+}

@@ -1,0 +1,84 @@
+<!--  必须包含
+	Common/calendar
+	Common/upload
+	Common/popup_warn
+
+	调用popupForm(板块,内容ID)
+-->
+{include file="Common/pop_toast"}
+<div class="custom-popup" id="form-popup-recomm" style="width:300px;padding-bottom:30px;display:none;">
+    <div class="popup-body" style="text-align:left">
+        <form id="recomm-form">
+            <input type="hidden" name="conid" id="recomm-form-conid" />
+            <div class="form-group">
+                <label for="recomm-form-pos">位置</label>
+                <select class="form-control" id="recomm-form-pos" name="recomm_pos">
+                    <option value="1">位置1</option>
+                    <option value="2">位置2</option>
+                    <option value="3">位置3</option>
+                    <option value="4">位置4</option>
+                    <option value="5">位置5</option>
+                    <option value="6">位置6</option>
+                </select>
+                <p class="help-block"></p>
+            </div>
+            <div class="form-group">
+                <label for="recomm-form-stime">开始时间</label>
+                <input id="recomm-form-stime" name="recomm_begintime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr">
+                <p class="help-block"></p>
+            </div>
+            <div class="form-group">
+                <label for="recomm-form-etime">结束时间</label>
+                <input id="recomm-form-etime" name="recomm_endtime_str" data-enable-time=true data-time_24hr=true class="form-control flatpickr">
+                <p class="help-block"></p>
+            </div>
+            <div class="form-group">
+                <div id="recomm-form-all"></div>
+                <p class="help-block"></p>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                    <a id="recomm-form-save" class="btn btn-success">保存</a>
+                    <a id="recomm-form-cancel" class="btn btn-info">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function popupRecomm(uri, id, data){
+        if(!id){
+            popWarn('ID不能为空');
+            return;
+        }
+        $('#recomm-form-conid').val(id);
+        $('#form-popup-recomm').popup('show');
+        $('#recomm-form-cancel').on('click', function(){
+            $('#form-popup-recomm').popup('hide');
+        });
+        $('#recomm-form-save').on('click', function(){
+            $('#recomm-form .form-group').removeClass('has-error');
+            $('#recomm-form .help-block').html('');
+            var params = {};
+            var data = $('#recomm-form').serializeArray();
+            $.each(data, function() {
+                params[this.name] = this.value;
+            });
+            $.post(uri, params, function(res){
+                if(res.code == 1){
+                    $('#form-popup-recomm').popup('hide');
+                    popupToast('推荐成功');
+                    window.location.reload();
+                }else if(res.code == 2){
+                    $.each(res.errors, function(k, v){
+                        if(k == 'recomm_begintime' || k == 'recomm_endtime') k += '_str';
+                        var obj = k == 'all' ? $('#recomm-form-all') : $('#recomm-form [name="'+k+'"]');
+                        obj.siblings('.help-block').html(v);
+                        obj.parent().addClass('has-error');
+                    })
+                }
+            });
+        });
+    }
+    $(".flatpickr").flatpickr();
+</script>

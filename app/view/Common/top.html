@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>华夏经纬舆情监测系统</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE">
+    [metas]
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="华夏经纬舆情监测系统">
+    <meta name="author" content="yzs">
+
+    <!-- ionicons -->
+    <!--<link rel="shortcut icon" href="__PUBLIC__/__PUBLIC__/images/logo.ico" />-->
+    <!--<link rel="bookmark" href="__PUBLIC__/__PUBLIC__/images/logo.ico" />-->
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/js/bootstrap/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- Slider -->
+    <link href="__PUBLIC__/css/bootstrap-slider.css" rel="stylesheet"/>
+
+    <!-- Tag Input -->
+    <link href="__PUBLIC__/css/jquery.tagsinput.css" rel="stylesheet">
+
+    <!-- Date Time Picker -->
+    <!--<link href="__PUBLIC__/css/datetimepicker.css" rel="stylesheet">-->
+
+    <!-- Select2 -->
+    <!--<link href="__PUBLIC__/css/select2/select2.css" rel="stylesheet"/>-->
+
+    <!-- Morris -->
+    <link href="__PUBLIC__/css/morris.css" rel="stylesheet"/>
+
+    <!-- Datepicker -->
+    <link href="__PUBLIC__/css/datepicker.css" rel="stylesheet"/>
+
+    <!-- Animate -->
+    <link href="__PUBLIC__/css/animate.min.css" rel="stylesheet">
+
+    <!-- Owl Carousel -->
+    <link href="__PUBLIC__/css/owl.carousel.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/owl.theme.default.min.css" rel="stylesheet">
+
+    <!-- jQuery steps -->
+    <!--<link href="__PUBLIC__/css/jquery.steps.css" rel="stylesheet"/>-->
+
+    <!-- Gritter -->
+    <!--<link href="__PUBLIC__/css/gritter/jquery.gritter.css" rel="stylesheet">-->
+
+    <!-- Dropzone -->
+    <!--<link href="__PUBLIC__/css/dropzone/css/dropzone.css" rel="stylesheet">-->
+
+    <!-- Simplify -->
+    <link href="__PUBLIC__/css/simplify.min.css" rel="stylesheet">
+
+    <!-- DataRangePicker -->
+    <link href="__PUBLIC__/js/datapicker/daterangepicker.css" rel="stylesheet">
+
+    <!-- MyCss -->
+    <link href="__PUBLIC__/css/consensus.css" rel="stylesheet">
+    <link href="__PUBLIC__/js/multiple-select/multiple-select.css" rel="stylesheet">
+
+    <!-- labelauty -->
+    <link href="__PUBLIC__/js/labelauty/labelauty.css" rel="stylesheet">
+
+    <!-- switch -->
+    <link rel="stylesheet" href="__PUBLIC__/js/bootstrap-switch/css/bootstrapSwitch.css">
+
+    <!-- warnKeywords -->
+    <link rel="stylesheet" href="__PUBLIC__/css/warnKeywords.css">
+
+    <!-- Jquery -->
+    <script src="__PUBLIC__/js/jquery.min.js"></script>
+
+    <!-- MyJs-->
+    <script src="__PUBLIC__/js/myJs/myChart.js"></script>
+
+    <!-- Vue -->
+    <script src="__PUBLIC__/js/vue.min.js"></script>
+</head>
+<body class="overflow-hidden">
+<div class="wrapper preload">
+    <header class="top-nav">
+        <div class="top-nav-inner">
+            <!-- 小屏显示 -->
+            <div class="nav-header">
+                <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleSM">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <ul class="nav-notification pull-right">
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
+                        <span class="badge badge-danger bounceIn">1</span>
+                        <ul class="dropdown-menu dropdown-sm pull-right user-dropdown">
+                            <li class="user-avatar">
+                                <img src="__PUBLIC__/images/profile/profile1.jpg" alt="" class="img-circle">
+                                <div class="user-content">
+                                    <h5 class="no-m-bottom">管理员</h5>
+                                    <div class="m-top-xs">
+                                        <a href="javascript:;" class="logout">安全退出</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="#">账户设置</a>
+                            </li>
+                            <li>
+                                <a href="#">通知管理</a>
+                            </li>
+                            <li>
+                                <a href="#">操作记录</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    系统消息
+                                    <span class="badge badge-purple bounceIn animation-delay3 pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <a href="__PRO_PATH__/" class="brand">
+                    <i class="fa fa-database"></i><span class="brand-name">华夏经纬舆情监测系统</span>
+                </a>
+            </div><!-- 小屏显示 -->
+
+            <!-- 大屏显示 -->
+            <div class="nav-container">
+                <button type="button" class="navbar-toggle pull-left sidebar-toggle" id="sidebarToggleLG">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <ul class="nav-notification">
+                    <li class="search-list">
+                        <!--<div class="search-input-wrapper">-->
+                            <!--<div class="search-input">-->
+                                <!--<input type="text" class="form-control input-sm inline-block" placeholder="搜索">-->
+                                <!--<a href="#" class="input-icon text-normal"><i class="ion-ios7-search-strong"></i></a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!-- 搜索栏 -->
+                    </li>
+                </ul>
+
+                <div class="pull-right m-right-sm">
+                    <div class="user-block hidden-xs">
+                        <a href="#" id="userToggle" data-toggle="dropdown">
+                            <img src="__PUBLIC__/images/profile/profile2.jpg" alt=""
+                                 class="img-circle inline-block user-profile-pic">
+                            <div class="user-detail inline-block">
+                                管理员
+                                <i class="fa fa-angle-down"></i>
+                            </div>
+                        </a>
+                        <div class="panel border dropdown-menu user-panel">
+                            <div class="panel-body paddingTB-sm">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">账户设置</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-inbox fa-lg"></i>
+                                            <span class="m-left-xs">通知管理</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-bookmark-o fa-lg"></i>
+                                            <span class="m-left-xs">操作记录</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" id="clearCache">清除缓存</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 信息推送 -->
+                    <ul class="nav-notification">
+                        <li><a href="javascript:;" id="searchToggle"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
+                        <li>
+                            <a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
+                            <span class="badge badge-purple bounceIn animation-delay5 active">2</span>
+                            <ul class="dropdown-menu message pull-right">
+                                <li><a>You have 4 new unread messages</a></li>
+                                <li>
+                                    <a class="clearfix" href="#">
+                                        <img src="__PUBLIC__/images/profile/profile2.jpg" alt="User Avatar">
+                                        <div class="detail">
+                                            <strong>John Doe</strong>
+                                            <p class="no-margin">
+                                                Lorem ipsum dolor sit amet...
+                                            </p>
+                                            <small class="text-muted"><i class="fa fa-check text-success"></i> 27m ago
+                                            </small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="clearfix" href="#">
+                                        <img src="__PUBLIC__/images/profile/profile3.jpg" alt="User Avatar">
+                                        <div class="detail">
+                                            <strong>Jane Doe</strong>
+                                            <p class="no-margin">
+                                                Lorem ipsum dolor sit amet...
+                                            </p>
+                                            <small class="text-muted"><i class="fa fa-check text-success"></i> 5hr ago
+                                            </small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="clearfix" href="#">
+                                        <img src="__PUBLIC__/images/profile/profile4.jpg" alt="User Avatar">
+                                        <div class="detail m-left-sm">
+                                            <strong>Bill Doe</strong>
+                                            <p class="no-margin">
+                                                Lorem ipsum dolor sit amet...
+                                            </p>
+                                            <small class="text-muted"><i class="fa fa-reply"></i> Yesterday</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="clearfix" href="#">
+                                        <img src="__PUBLIC__/images/profile/profile5.jpg" alt="User Avatar">
+                                        <div class="detail">
+                                            <strong>Baby Doe</strong>
+                                            <p class="no-margin">
+                                                Lorem ipsum dolor sit amet...
+                                            </p>
+                                            <small class="text-muted"><i class="fa fa-reply"></i> 9 Feb 2013</small>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li><a href="#">View all messages</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" data-toggle="dropdown"><i class="fa fa-bell fa-lg"></i></a>
+                            <span class="badge badge-info bounceIn animation-delay6 active">4</span>
+                            <ul class="dropdown-menu notification dropdown-3 pull-right">
+                                <li><a href="#">You have 5 new notifications</a></li>
+                                <li>
+                                    <a href="#">
+												<span class="notification-icon bg-warning">
+													<i class="fa fa-warning"></i>
+												</span>
+                                        <span class="m-left-xs">Server #2 not responding.</span>
+                                        <span class="time text-muted">Just now</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+												<span class="notification-icon bg-success">
+													<i class="fa fa-plus"></i>
+												</span>
+                                        <span class="m-left-xs">New user registration.</span>
+                                        <span class="time text-muted">2m ago</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+												<span class="notification-icon bg-danger">
+													<i class="fa fa-bolt"></i>
+												</span>
+                                        <span class="m-left-xs">Application error.</span>
+                                        <span class="time text-muted">5m ago</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+												<span class="notification-icon bg-success">
+													<i class="fa fa-usd"></i>
+												</span>
+                                        <span class="m-left-xs">2 items sold.</span>
+                                        <span class="time text-muted">1hr ago</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+												<span class="notification-icon bg-success">
+													<i class="fa fa-plus"></i>
+												</span>
+                                        <span class="m-left-xs">New user registration.</span>
+                                        <span class="time text-muted">1hr ago</span>
+                                    </a>
+                                </li>
+                                <li><a href="#">View all notifications</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript:;" class="logout">
+                                <i class="fa fa-power-off fa-lg"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div><!-- 大屏显示 -->
+            </div>
+        </div><!-- ./top-nav-inner -->
+    </header>
+    <aside class="sidebar-menu fixed">
+        <div class="sidebar-inner scrollable-sidebar">
+            <div class="main-menu">
+                <ul class="accordion">
+                    <li class="menu-header">
+                        DashBoard
+                    </li>
+                    <li class="bg-palette1" id="consensus-nav-dashborad">
+                        <a href="__PRO_PATH__/">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
+                                <span class="text m-left-sm">舆情概况</span>
+                            </span>
+                            <span class="menu-content-hover block">Home</span>
+                        </a>
+                    </li>
+
+                    {if condition="authority('DataMonitor')"}
+                    <li class="openable bg-palette2" id="consensus-nav-monitor">
+                        <a href="javascript:;">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-comments fa-lg" aria-hidden="true"></i></span>
+								<span class="text m-left-sm">实时舆情</span>
+                                <span class="submenu-icon"></span>
+                            </span>
+                            <span class="menu-content-hover block">Data</span>
+                        </a>
+                        <ul class="submenu bg-palette2">
+                            {if condition="authority('DataMonitorIndex')"}
+                            <li id="consensus-nav-monitor-sub1">
+                                <a href="__PRO_PATH__/DataMonitor/index">
+                                    <span class="submenu-label">全部舆情</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataMonitorCollect')"}
+                            <li id="consensus-nav-monitor-sub2"><a href="__PRO_PATH__/DataMonitor/collect"><span
+                                    class="submenu-label">我的收藏</span></a></li>
+                            {/if}
+                        </ul>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('DataWarn')"}
+                    <li class="openable bg-palette3" id="consensus-nav-data-warn">
+                        <a href="javascript:;">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-bell fa-lg" aria-hidden="true"></i></span>
+								<span class="text m-left-sm">舆情预警</span>
+                                <span class="submenu-icon"></span>
+                            </span>
+                            <span class="menu-content-hover block">Warn</span>
+                        </a>
+                        <ul class="submenu bg-palette3">
+                            {if condition="authority('DataWarnInfo')"}
+                            <li id="consensus-nav-data-warn-sub1">
+                                <a href="__PRO_PATH__/DataMonitor/warn">
+                                    <span class="submenu-label">预警舆情</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataWarnConfig')"}
+                            <li id="consensus-nav-data-warn-sub2">
+                                <a href="__PRO_PATH__/DataMonitor/warn_config">
+                                    <span class="submenu-label">预警设置</span>
+                                </a>
+                            </li>
+                            {/if}
+                        </ul>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('DataAnalysis')"}
+                    <li class="openable bg-palette4" id="consensus-nav-data-analysis">
+                        <a href="javascript:;" id="dataAnalysis">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-line-chart fa-lg" aria-hidden="true"></i></span>
+								<span class="text m-left-sm">舆情分析</span>
+                                <span class="submenu-icon"></span>
+                            </span>
+                            <span class="menu-content-hover block">Analysis</span>
+                        </a>
+
+                        <ul class="submenu bg-palette4">
+                            <li id="consensus-nav-data-analysis-tasks">
+                                <a href="javascript:;" style="background-color: #0b1014; color: white; font-size: 13px;">
+                                    <span class="submenu-label" id="analysis_task"></span>
+                                    <span class="submenu-label" id="analysis_task_id" style="display: none"></span>
+                                    <span class="analysis-tasks-icon">
+                                        <i class="fa fa-angle-right" aria-hidden="true"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            {if condition="authority('DataAnalysisIndex')"}
+                            <li id="consensus-nav-data-analysis-sub0">
+                                <a href="__PRO_PATH__/DataAnalysis/index">
+                                    <span class="submenu-label">舆情概览</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisTrend')"}
+                            <li id="consensus-nav-data-analysis-sub1">
+                                <a href="__PRO_PATH__/DataAnalysis/trend">
+                                    <span class="submenu-label">趋势分析</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisSearchWords')"}
+                            <li id="consensus-nav-data-analysis-sub2">
+                                <a href="__PRO_PATH__/DataAnalysis/searchwords">
+                                    <span class="submenu-label">搜索词分析</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisOpinion')"}
+                            <li id="consensus-nav-data-analysis-sub3">
+                                <a href="__PRO_PATH__/DataAnalysis/opinion">
+                                    <span class="submenu-label">观点分析</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisMedia')"}
+                            <li id="consensus-nav-data-analysis-sub4">
+                                <a href="__PRO_PATH__/DataAnalysis/media">
+                                    <span class="submenu-label">媒体分布</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisSpread')"}
+                            <li id="consensus-nav-data-analysis-sub5">
+                                <a href="__PRO_PATH__/DataAnalysis/spread">
+                                    <span class="submenu-label">传播分析</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisAudience')"}
+                            <li id="consensus-nav-data-analysis-sub6">
+                                <a href="__PRO_PATH__/DataAnalysis/audience">
+                                    <span class="submenu-label">受众分析</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('DataAnalysisEvent')"}
+                            <li id="consensus-nav-data-analysis-sub7">
+                                <a href="__PRO_PATH__/DataAnalysis/event">
+                                    <span class="submenu-label">事件分析</span>
+                                </a>
+                            </li>
+                            {/if}
+                        </ul>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('DataReport')"}
+                    <li class="bg-palette1" id="consensus-nav-data-report">
+                        <a href="__PRO_PATH__/DataReport/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+								<span class="text m-left-sm">舆情报告</span>
+                            </span>
+                            <span class="menu-content-hover block">Report</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('Task')"}
+                    <li class="bg-palette2" id="consensus-nav-task">
+                        <a href="__PRO_PATH__/Task/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="block fa fa-cloud fa-lg"></i></span>
+								<span class="text m-left-sm">舆情采集</span>
+                            </span>
+                            <span class="menu-content-hover block">Task</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    <li class="openable bg-palette3" id="consensus-nav-warehouse">
+                        <a href="javascript:;">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="block fa fa-bank fa-lg"></i></span>
+								<span class="text m-left-sm">库管理</span>
+                                <span class="submenu-icon"></span>
+                            </span>
+                            <span class="menu-content-hover block">Warehouse</span>
+                        </a>
+                        <ul class="submenu bg-palette3">
+                            {if condition="authority('Theme')"}
+                            <li id="consensus-nav-warehouse-sub2">
+                                <a href="__PRO_PATH__/Theme/index">
+                                    <span class="submenu-label">主题库</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('Media')"}
+                            <li id="consensus-nav-warehouse-sub3"><a href="__PRO_PATH__/Media/index"><span
+                                    class="submenu-label">媒体库</span></a></li>
+                            {/if}
+                        </ul>
+                    </li>
+
+                    {if condition="authority('DataProcess')"}
+                    <li class="openable bg-palette4" id="consensus-nav-data-process">
+                        <a href="javascript:;">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="block fa fa-database fa-lg"></i></span>
+								<span class="text m-left-sm">数据管理</span>
+                                <span class="submenu-icon"></span>
+                            </span>
+                            <span class="menu-content-hover block">Process</span>
+                        </a>
+                        <ul class="submenu bg-palette4">
+                            {if condition="authority('DataProcessClean')"}
+                            <li id="consensus-nav-data-process-sub1"><a href="__PRO_PATH__/DataProcess/clean"><span
+                                    class="submenu-label">数据清洗</span></a></li>
+                            {/if}
+                            {if condition="authority('Update_Backup')"}
+                            <li id="consensus-nav-data-process-sub2">
+                                <a href="__PRO_PATH__/DataProcess/update_backup">
+                                    <span class="submenu-label">更新备份</span>
+                                </a>
+                            </li>
+                            {/if}
+                        </ul>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('Inform')"}
+                    <li class="bg-palette1" id="consensus-nav-inform">
+                        <a href="__PRO_PATH__/Inform/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-envelope fa-lg"></i></span>
+								<span class="text m-left-sm">通知公告</span>
+                            </span>
+                            <span class="menu-content-hover block">Inform</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('OperationLog')"}
+                    <li class="bg-palette2" id="consensus-nav-log">
+                        <a href="__PRO_PATH__/OperationLog/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-bookmark-o fa-lg"></i></span>
+								<span class="text m-left-sm">操作日志</span>
+                            </span>
+                            <span class="menu-content-hover block">Log</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('Account')"}
+                    <li class="bg-palette3" id="consensus-nav-account" hidden>
+                        <a href="__PRO_PATH__/UserAdmin/account">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-user fa-lg"></i></span>
+								<span class="text m-left-sm">账户信息</span>
+                            </span>
+                            <span class="menu-content-hover block">Account</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    <li class="openable bg-palette4" id="consensus-nav-setting">
+                        <a href="javascript:;">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="block fa fa-cog fa-lg"></i></span>
+								<span class="text m-left-sm">系统设置</span>
+                                <span class="submenu-icon"></span>
+                            </span>
+                            <span class="menu-content-hover block">Setting</span>
+                        </a>
+                        <ul class="submenu bg-palette4">
+                            {if condition="authority('Tag')"}
+                            <li id="consensus-nav-setting-sub1"><a href="__PRO_PATH__/Tag/index"><span
+                                    class="submenu-label">标签设置</span></a></li>
+                            {/if}
+                            {if condition="authority('Authority')"}
+                            <li id="consensus-nav-setting-sub2">
+                                <a href="__PRO_PATH__/UserAdmin/index">
+                                    <span class="submenu-label">权限设置</span>
+                                </a>
+                            </li>
+                            {/if}
+                            {if condition="authority('Role')"}
+                            <li id="consensus-nav-setting-sub3">
+                                <a href="__PRO_PATH__/UserAdmin/roles">
+                                    <span class="submenu-label">角色设置</span>
+                                </a>
+                            </li>
+                            {/if}
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="sidebar-fix-bottom clearfix">
+                <div class="user-dropdown dropup pull-left">
+                    <a href="#" class="dropdwon-toggle font-18" data-toggle="dropdown"><i class="ion-person-add"></i>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="inbox.html">
+                                Inbox
+                                <span class="badge badge-danger bounceIn animation-delay2 pull-right">1</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                Notification
+                                <span class="badge badge-purple bounceIn animation-delay3 pull-right">2</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="sidebarRight-toggle">
+                                Message
+                                <span class="badge badge-success bounceIn animation-delay4 pull-right">7</span>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">Setting</a>
+                        </li>
+                    </ul>
+                </div>
+                <a href="lockscreen.html" class="pull-right font-18"><i class="ion-log-out"></i></a>
+            </div>
+        </div><!-- sidebar-inner -->
+    </aside>

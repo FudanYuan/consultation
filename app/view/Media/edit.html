@@ -1,0 +1,65 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Media/index">媒体库</a></li>
+            <li>编辑</li>
+        </ul>
+        <div class="form-wrapper">
+            <form class="form-horizontal" method="post">
+                <input type="hidden" name="id" value="{$data.id}"/>
+                <div class="form-group {$errors.type_id ?= 'has-error'}">
+                    <label for="type_id" class="col-sm-2 control-label">媒体标签：</label>
+                    <div class="col-sm-4">
+                        <select name="type_id" class="form-control" style="width:200px" id="type_id">
+                            <option value="-1">--请选择--</option>
+                            {foreach name="typeList" item="model" key="k"}
+                            <option value="{$model.type_id}">{$model.type_name}</option>
+                            {/foreach}
+                        </select>
+                        <span class="help-block">{$errors.id??''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.name ?= 'has-error'}">
+                    <label for="name" class="col-sm-2 control-label">媒体名称：</label>
+                    <div class="col-sm-4">
+                        <input name="name" type="text" class="form-control" id="name" value="{$data.name??''}">
+                        <span class="help-block">{$errors.name??''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.url ?= 'has-error'}">
+                    <label for="url" class="col-sm-2 control-label">媒体链接：</label>
+                    <div class="col-sm-4">
+                        <input name="url" type="text" class="form-control" id="url" value="{$data.url??''}">
+                        <span class="help-block">{$errors.url??''}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                        <button type="submit" class="btn btn-success">保存</button>
+                        <a id="form-cancel" class="btn btn-info">取消</a>
+                        <a id="form-delete" class="btn btn-default">删除</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_edit" /}
+{include file="Common/bottom" /}
+<script>
+    $('#type_id').val('{$data.type_id ?? -1}');
+    $('#consensus-nav-warehouse').addClass('open active');
+    $('#consensus-nav-warehouse-sub3').addClass('active');
+    $('#form-cancel').on('click', function(){
+        window.location.href = '__PRO_PATH__/Media/index';
+    });
+    popupEdit({
+        id:'{$data.id}',
+        list:'__PRO_PATH__/Media/index',
+        remove:'__PRO_PATH__/Media/remove'
+    });
+</script>

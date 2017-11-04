@@ -1,0 +1,103 @@
+<!-- 必须包含
+	Common/popup_warn
+
+	调用：popupImport(配置);
+ -->
+<div class="custom-popup" id="form-popup" style="width:300px;padding-bottom:30px;">
+    <div class="popup-body" style="text-align:left">
+        <form action="" id="import-form" method="post">
+            <div class="form-group {$errors.file ?= 'has-error'}">
+                <div class="col-sm-12">
+                    <label for="filelist-file">导入文件：</label>
+                    <div id="filelist-file" class="form-control">
+                        <div>{$data.file_origin??''}<b></b></div>
+                    </div>
+                    <br/>
+                    <div id="upload-wrapper-file">
+                        <a id="pickfiles-file" href="javascript:;">选择文件</a>
+                        <a id="uploadfiles-file" href="javascript:;">上传</a>
+                    </div>
+                    <input type="hidden" name="file" value="{$data.file??''}"/>
+                    <input type="hidden" name="file_origin" value="{$data.file_origin??''}"/>
+                    <span class="help-block">{$errors.file ?? ''}</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div id="import-form-all"></div>
+                <p class="help-block"></p>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                    <a id="form-import" class="btn btn-primary">导入</a>
+                    <a id="form-cancel" class="btn btn-info">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function popupImport(config) {
+        $('#form-import').on('click', function () {
+            var file = $("input[name='file']").val();
+            var params = {};
+            params['file'] = file;
+            $.post(config.import, params, function (res) {
+                console.log(JSON.stringify(res));
+                if (res['code'] == 1) {
+                    $('#form-popup').popup('hide');
+                    clearFormData();
+                    popWarn(res.msg+res.count+'条', config.import);
+                } else if(res.code == 2){
+                    $.each(res.errors, function(k, v){
+                        var obj = k == 'all' ? $('#import-form-all') : $('#import-form [name="'+k+'"]');
+                        obj.siblings('.help-block').html(v);
+                        obj.parent().addClass('has-error');
+                    });
+                } else if(res.code == 3){
+                    popWarn(res.msg);
+                }
+            });
+        });
+
+        $('#importItem').on('click', function () {
+            $('#form-popup').popup('show');
+        });
+
+        $('#form-cancel').on('click', function () {
+            clearFormData();
+            $('#form-popup').popup('hide');
+        });
+    }
+
+    $(function () {
+        $('#form-popup').popup({
+            vertical: 'middle',
+            transition: 'all 0.3s'
+        });
+    });
+
+    myupload({
+        container:'upload-wrapper-file',
+        browse:'pickfiles-file',
+        url:'__PRO_PATH__/Media/upload?dir=import',
+        img_types:'jpg,gif,png',
+        zip_types:'zip',
+        filelist:'filelist-file',
+        uploadfiles:'uploadfiles-file',
+        file_size:'10mb',
+        onUploaded: function(up, file, result){
+            $("input[name='file_origin']").val(file.name);
+            var res = JSON.parse(result.response);
+            $("input[name='file']").val(res.result.file);
+        },
+        isMulti:false
+    });
+
+    function clearFormData(){
+        $('#import-form')[0].reset();
+        $('#filelist-file').html('');
+        $('.col-sm-12').removeClass('has-error');
+    }
+</script>

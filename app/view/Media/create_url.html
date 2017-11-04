@@ -1,0 +1,55 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Media/index">媒体库</a></li>
+            <li>新建媒体</li>
+        </ul>
+        <div class="form-wrapper">
+            <form class="form-horizontal" method="post">
+                <div class="form-group {$errors.type_id ?= 'has-error'}">
+                    <label for="type_id" class="col-sm-2 control-label">媒体类型：</label>
+                    <div class="col-sm-4">
+                        <select name="type_id" class="form-control" style="width:200px" id="type_id">
+                            {foreach name="typeList" item="model"}
+                            <option value="{$model.type_id}">{$model.type_name}</option>
+                            {/foreach}
+                        </select>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.name ?= 'has-error'}">
+                    <label for="name" class="col-sm-2 control-label">媒体名称：</label>
+                    <div class="col-sm-4">
+                        <input name="name" type="text" class="form-control" id="name" value="{$data.name??''}">
+                        <span class="help-block">{$errors.name??''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.url ?= 'has-error'}">
+                    <label for="form-url" class="col-sm-2 control-label">媒体链接：</label>
+                    <div class="col-sm-4">
+                        <input name="url" type="text" class="form-control" id="form-url" value="{$data.url??''}">
+                        <span class="help-block">{$errors.url??''}</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                        <button type="submit" class="btn btn-success">保存</button>
+                        <a id="form-cancel" class="btn btn-info">取消</a>
+                        <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- /main-container -->
+<script>
+    $('#consensus-nav-warehouse').addClass('open active');
+    $('#consensus-nav-warehouse-sub3').addClass('active');
+    $('#form-cancel').on('click', function(){
+        window.location.href = '__PRO_PATH__/Media/index';
+    });
+</script>
+{include file="Common/bottom" /}

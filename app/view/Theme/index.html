@@ -1,0 +1,198 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li>主题库</li>
+        </ul>
+        <div class="list-search">
+            <form action="" class="form-inline" method="get" id="main-form">
+                <div class="form-group">
+                    <label for="keywords">关键词：</label>
+                    <input name="keywords" class="form-control" id="keywords" style="width:150px"
+                           value="{$cond.keywords ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="sortCol" class="form-control" id="sortCol"
+                           value="{$cond.sortCol ?? ''}">
+                </div>
+                <button type="submit" class="btn btn-info">查询</button>
+            </form>
+        </div>
+        <div class="list-btns">
+            {if condition="authority('Theme_add')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                    新建<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-left" role="menu">
+                    {if condition="authority('Theme1_add')"}
+                    <li><a href="javascript:;" id="addFirstItem">一级主题</a></li>
+                    {/if}
+                    {if condition="authority('Theme2_add')"}
+                    <li><a href="javascript:;" id="addSecondItem">二级主题</a></li>
+                    {/if}
+                    {if condition="authority('Theme3_add')"}
+                    <li><a href="javascript:;" id="addThirdItem">三级主题</a></li>
+                    {/if}
+                </ul>
+            </div>
+            {/if}
+            {if condition="authority('Theme_del')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="removeItem">删除</button>
+            </div>
+            {/if}
+
+            {if condition="authority('Theme_export')"}
+            <div class="btn-group fr">
+                <a href="__PRO_PATH__/Theme/export" target="_blank" type="button" class="btn btn-default">导出</a>
+            </div>
+            {/if}
+            {if condition="authority('Theme_import')"}
+            <div class="btn-group fr">
+                <button type="button" class="btn btn-default" id="importItem">导入</button>
+            </div>
+            {/if}
+        </div>
+        <table class="table table-hover" style="background:#fff;">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="checkbox-all"/></th>
+                <th>序号
+                    <a href="javascript:;" id="sort_id" onclick="setSortCol('id')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>一级主题
+                    <a href="javascript:;" id="sort_t1" onclick="setSortCol('t1')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>二级主题
+                    <a href="javascript:;" id="sort_t2" onclick="setSortCol('t2')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>三级主题
+                    <a href="javascript:;" id="sort_t3" onclick="setSortCol('t3')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="model"}
+            <tr>
+                <!--id,t2_id,name-->
+                <td><input type="checkbox" name="select" value="{$model.t3_id}" /></td>
+                <td>{$model.t3_id}</td>
+                <td>{$model.t1_name}</td>
+                <td>{$model.t2_name}</td>
+                <td>{$model.t3_name}</td>
+                <td>
+                    {if condition="authority('Theme_edit')"}
+                    <a href="__PRO_PATH__/Theme/edit?id={$model.t3_id}&page={$cond.page ?? ''}">编辑</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {$list->render()}
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/bottom" /}
+{include file="Common/upload" /}
+{include file="Common/popup_import" /}
+<script>
+    $('#consensus-nav-warehouse').addClass('active open');
+    $('#consensus-nav-warehouse-sub2').addClass('active');
+
+    // 改变排序方向
+    function changeSort(sort) {
+        if (sort == 'asc'){
+            return 'desc';
+        }else{
+            return 'asc';
+        }
+    }
+
+    // 设置排序参数
+    function setSortCol(col) {
+        var sort = $('#sortCol');
+        var title;
+        switch(col) {
+            case 'id':
+                title = $("#sort_id").attr('title');
+                sort.val("a.id " + title);
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 't1':
+                title = $("#sort_t1").attr('title');
+                sort.val("c.name " + title);
+                $("#sort_t1").attr({"title" : changeSort(title)});
+                $("#sort_t1 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 't2':
+                title = $("#sort_t2").attr('title');
+                sort.val("b.name " + title);
+                $("#sort_t2").attr({"title" : changeSort(title)});
+                $("#sort_t2 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 't3':
+                title = $("#sort_t3").attr('title');
+                sort.val("a.name " + title);
+                $("#sort_t3").attr({"title" : changeSort(title)});
+                $("#sort_t3 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+        $('#main-form').submit();
+    }
+
+    // 获取排序参数
+    function getSortCol(sortcol) {
+        var col = sortcol.split(' ');
+        var title = col[1];
+        switch(col[0]) {
+            case 'a.id':
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'c.name':
+                $("#sort_t1").attr({"title" : changeSort(title)});
+                $("#sort_t1 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'b.name':
+                $("#sort_t2").attr({"title" : changeSort(title)});
+                $("#sort_t2 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'a.name':
+                $("#sort_t3").attr({"title" : changeSort(title)});
+                $("#sort_t3 i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+    }
+
+    $('#keywords').val('{$cond.keywords ?? ""}');
+    $('#sortCol').val('{$cond.sortCol ?? ""}');
+    var sort = $('#sortCol').val();
+    getSortCol(sort);
+
+    // common
+    popupList({
+        createFirst: '__PRO_PATH__/Theme/create_t1',
+        createSecond: '__PRO_PATH__/Theme/create_t2',
+        createThird: '__PRO_PATH__/Theme/create_t3',
+        remove: '__PRO_PATH__/Theme/remove'
+    });
+
+    popupImport({
+        import: '__PRO_PATH__/Theme/import'
+    });
+</script>

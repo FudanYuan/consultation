@@ -1,0 +1,199 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li>媒体库</li>
+        </ul>
+        <div class="list-search">
+            <form action="" class="form-inline" method="get" id="main-form">
+                <div class="form-group">
+                    <label for="type_id">媒体标签：</label>
+                    <select name="type_id" class="form-control" style="width:100px" id="type_id">
+                        <option value="-1">全部</option>
+                        {foreach name="typeList" item="model"}
+                        <option value="{$model.type_id}">{$model.type_name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="keywords">关键词：</label>
+                    <input name="keywords" class="form-control" id="keywords" style="width:150px"
+                           value="{$cond.keywords ?? ''}"/>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="sortCol" class="form-control" id="sortCol"
+                           value="{$cond.sortCol ?? ''}">
+                </div>
+                <button type="submit" class="btn btn-info">查询</button>
+            </form>
+        </div>
+        <div class="list-btns">
+            {if condition="authority('Media_add')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                    新建<span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-left" role="menu">
+                    {if condition="authority('MediaType_add')"}
+                    <li><a href="javascript:;" id="addFirstItem">标签</a></li>
+                    {/if}
+                    {if condition="authority('MediaName_add')"}
+                    <li><a href="javascript:;" id="addSecondItem">网址</a></li>
+                    {/if}
+                </ul>
+            </div>
+            {/if}
+            {if condition="authority('Media_del')"}
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" id="removeItem">删除</button>
+            </div>
+            {/if}
+
+            {if condition="authority('Media_export')"}
+            <div class="btn-group fr">
+                <a href="__PRO_PATH__/Media/export" target="_blank" type="button" class="btn btn-default">导出</a>
+            </div>
+            {/if}
+            {if condition="authority('Media_import')"}
+            <div class="btn-group fr">
+                <a href="__PRO_PATH__/Media/import" target="_blank" type="button" class="btn btn-default">导入</a>
+            </div>
+            {/if}
+        </div>
+        <table class="table table-hover" style="background:#fff;">
+            <thead>
+            <tr>
+                <th><input type="checkbox" id="checkbox-all"/></th>
+                <th>序号
+                    <a href="javascript:;" id="sort_id" onclick="setSortCol('id')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>名称
+                    <a href="javascript:;" id="sort_name" onclick="setSortCol('name')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>标签
+                    <a href="javascript:;" id="sort_type" onclick="setSortCol('type')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>链接
+                    <a href="javascript:;" id="sort_url" onclick="setSortCol('url')" title="asc">
+                        <i class="fa fa-sort" aria-hidden="true"></i>
+                    </a>
+                </th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            {foreach name="list" item="model"}
+            <tr>
+                <!--id,t2_id,name-->
+                <td><input type="checkbox" name="select" value="{$model.id}" /></td>
+                <td>{$model.id}</td>
+                <td>{$model.name}</td>
+                <td>{$model.type_name}</td>
+                <td><a href="{$model.url}">{$model.url}</a></td>
+                <td>
+                    {if condition="authority('Media_edit')"}
+                    <a href="__PRO_PATH__/Media/edit?id={$model.id}">编辑</a>
+                    {/if}
+                </td>
+            </tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {$list->render()}
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/bottom" /}
+<script>
+    $('#consensus-nav-warehouse').addClass('active open');
+    $('#consensus-nav-warehouse-sub3').addClass('active');
+
+    // 改变排序方向
+    function changeSort(sort) {
+        if (sort == 'asc'){
+            return 'desc';
+        }else{
+            return 'asc';
+        }
+    }
+
+    // 设置排序参数
+    function setSortCol(col) {
+        var sort = $('#sortCol');
+        var title;
+        switch(col) {
+            case 'id':
+                title = $("#sort_id").attr('title');
+                sort.val("a.id " + title);
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'name':
+                title = $("#sort_name").attr('title');
+                sort.val("a.name " + title);
+                $("#sort_name").attr({"title" : changeSort(title)});
+                $("#sort_name i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'type':
+                title = $("#sort_type").attr('title');
+                sort.val("b.name " + title);
+                $("#sort_type").attr({"title" : changeSort(title)});
+                $("#sort_type i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'url':
+                title = $("#sort_url").attr('title');
+                sort.val("a.url " + title);
+                $("#sort_url").attr({"title" : changeSort(title)});
+                $("#sort_url i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+        $('#main-form').submit();
+    }
+
+    // 获取排序参数
+    function getSortCol(sortcol) {
+        var col = sortcol.split(' ');
+        var title = col[1];
+        switch(col[0]) {
+            case 'a.id':
+                $("#sort_id").attr({"title": changeSort(title)});
+                $("#sort_id i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'a.name':
+                $("#sort_name").attr({"title" : changeSort(title)});
+                $("#sort_name i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'b.name':
+                $("#sort_type").attr({"title" : changeSort(title)});
+                $("#sort_type i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+            case 'a.url':
+                $("#sort_url").attr({"title" : changeSort(title)});
+                $("#sort_url i").removeClass().addClass('fa fa-sort-'+changeSort(title));
+                break;
+        }
+    }
+
+    $('#type_id').val('{$cond.type_id ?? -1}');
+    $('#keywords').val('{$cond.keywords ?? ""}');
+    $('#sortCol').val('{$cond.sortCol ?? ""}');
+    var sort = $('#sortCol').val();
+    getSortCol(sort);
+
+    // common
+    popupList({
+        createFirst: '__PRO_PATH__/Media/create_type',
+        createSecond: '__PRO_PATH__/Media/create_url',
+        remove: '__PRO_PATH__/Media/remove'
+    });
+
+</script>

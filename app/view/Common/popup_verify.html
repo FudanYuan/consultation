@@ -1,0 +1,111 @@
+<!-- 必须包含
+	Common/popup_warn
+
+	调用：popupEdit(配置);
+ -->
+<div class="custom-popup" id="verify-confirm-popup" style="width:250px;padding-bottom:30px;">
+    <div class="popup-body" style="text-align:left">
+        <form action="" id="verify-form" method="post" id="verify">
+            <div class="form-group">
+                <label for="ver_nature">舆情属性：</label>
+                <div id="ver_nature">
+                    <div class="radio inline-block">
+                        <div class="custom-radio m-right-xs">
+                            <input type="radio" id="nature1" name="ver_nature" value="正面">
+                            <label for="nature1"></label>
+                        </div>
+                        <div class="inline-block vertical-top">正面</div>
+                    </div>
+                    <div class="radio inline-block">
+                        <div class="custom-radio m-right-xs">
+                            <input type="radio" id="nature2" name="ver_nature" value="中立">
+                            <label for="nature2"></label>
+                        </div>
+                        <div class="inline-block vertical-top">中立</div>
+                    </div>
+                    <div class="radio inline-block">
+                        <div class="custom-radio m-right-xs">
+                            <input type="radio" id="nature3" name="ver_nature" value="负面">
+                            <label for="nature3"></label>
+                        </div>
+                        <div class="inline-block vertical-top">负面</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for>相关性：</label>
+                <div class="bg"><!--这里是背景，也就是灰色的星星-->
+                    <!--说明，这里的width就是设置分数啦，以我写的为例，一个星星的长度是12px，也就是1分12px，如果是4.3分，就是4.3*12px = 51.6px的长度，当然这个一般是取得数据后用js或者其他模板语言去控制的-->
+                    <div class="over" id="ver_relevance" style="width:0"></div><!--这里是遮罩，设置宽度以达到评分的效果-->
+                    <input type="number" name="ver_relevance" hidden>
+                </div>
+            </div>
+            <div class="form-group">
+                <div id="new-task-form-all"></div>
+                <p class="help-block"></p>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                    <a id="verify-form-submit" class="btn btn-success">提交</a>
+                    <a id="verify-form-cancel" class="btn btn-info">取消</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    var ver_params = {};
+    function popupVerify(id, nature, relevance){
+        $("input[name='ver_nature'][value='"+nature+"']").attr("checked",true);  //根据Value值设置Radio为选中状态
+        $('#ver_relevance').width(relevance*8);
+        $("input[name='ver_relevance']").val(relevance);
+        $('#verify-confirm-popup').popup('show');
+        ver_params['id'] = id;
+    }
+
+    $('#verify-form-submit').on('click', function(){
+        getVerParams();
+        console.log(JSON.stringify(ver_params));
+        $('#verify-confirm-popup').popup('hide');
+        $.post('__PRO_PATH__/DataMonitor/edit', ver_params, function(res){
+            if(res['errorcode'] == 0){
+                popWarn(res['msg']);
+                submit();
+            }else{
+                popWarn(res['msg']);
+            }
+        });
+    });
+
+    $('#verify-form-cancel').on('click', function(){
+        $('#verify-confirm-popup').popup('hide');
+    });
+
+    $(function(){
+        //Delete Widget Confirmation
+        $('#verify-confirm-popup').popup({
+            vertical: 'top',
+            transition: 'all 0.3s'
+        });
+    });
+
+    $('.bg').mousemove(function(e) {
+        var positionX=e.pageX-$(this).offset().left; //获取当前鼠标相对该元素的X坐标
+        $('#ver_relevance').width(positionX);
+        $("input[name='ver_relevance']").val(Math.round(positionX / 8.0));
+    });
+
+    function getVerParams() {
+        // 获取参数
+        var data = $('#verify-form').serializeArray();
+        $.each(data, function() {
+            if(this.name == 'ver_nature'){
+                ver_params['nature'] = this.value;
+            }
+            else if(this.name == 'ver_relevance'){
+                ver_params['relevance'] = this.value;
+            }
+        });
+    }
+</script>

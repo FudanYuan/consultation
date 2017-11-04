@@ -1,0 +1,196 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<style>
+    .params{
+        display: inline;
+        color: black;
+        margin-left: 10px;
+        padding: 0 10px 15px 10px;
+    }
+
+    .params-active{
+        display: inline;
+        color: black;
+        margin-left: 10px;
+        padding: 0 10px 15px 10px;
+        border-bottom: 5px green solid;
+    }
+</style>
+<div class="main-container" id="analysisMedia">
+    <div class="padding-md" style="overflow: auto">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li><a href="__PRO_PATH__/DataAnalysis/index">舆情分析</a></li>
+            <li>媒体分布</li>
+        </ul>
+        <!--:style="{display: active.trend == 0 ? 'inline' : 'none'}"-->
+        <div class="col-lg-8" style="background-color: #fff">
+            <div id="media_pie_chart" style="height: 400px;"></div>
+        </div>
+
+        <div class="col-lg-4" style="background-color: #fff">
+            <div id="media_list" style="height: 400px;">
+                <div class="list-search">
+                    <a href="javascript:;" @click="changeSection(0)" :class="active.type == 0 ? 'params-active' : 'params'">媒体类型</a>
+                    <a href="javascript:;" @click="changeSection(1)" :class="active.type == 1 ? 'params-active' : 'params'">媒体来源</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/popup_verify" /}
+{include file="Common/calendar" /}
+{include file="Common/bottom" /}
+<script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
+<script>
+    $('#consensus-nav-data-analysis').addClass('active open');
+    $('#consensus-nav-data-analysis-sub4').addClass('active');
+
+    // 初始化vue
+    var vm = new Vue({
+        el: '#analysisMedia',
+        data: {
+            task_id: {$params['task_id']},
+            media: [],
+            params: {},
+            active:{
+                type: 0
+            }
+        },
+        methods:{
+            changeSection: function (value) {
+                this.active['type'] = value;
+            },
+            showMediaPie: function () {
+                var chartDom = document.getElementById('media_pie_chart');
+                var myChart = echarts.getInstanceByDom(chartDom) || echarts.init(chartDom);
+                myChart.showLoading();
+                $.post('__PRO_PATH__/DataAnalysis/getMediaDistrubution', vm.params, function (res) {
+                    if(res.errorcode==0){
+                        vm.media = res.data;
+                        var option = {
+                            tooltip: {
+                                trigger: 'item',
+                                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                            },
+                            legend: {
+                                orient: 'vertical',
+                                x: 'left',
+                                data:['直达','营销广告','搜索引擎','邮件营销','联盟广告','视频广告','百度','谷歌','必应','其他']
+                            },
+                            series: [
+                                {
+                                    name:'访问来源',
+                                    type:'pie',
+                                    selectedMode: 'single',
+                                    radius: [0, '30%'],
+
+                                    label: {
+                                        normal: {
+                                            position: 'inner'
+                                        }
+                                    },
+                                    labelLine: {
+                                        normal: {
+                                            show: false
+                                        }
+                                    },
+                                    data:[
+                                        {value:335, name:'直达', selected:true},
+                                        {value:679, name:'营销广告'},
+                                        {value:1548, name:'搜索引擎'}
+                                    ]
+                                },
+                                {
+                                    name:'访问来源',
+                                    type:'pie',
+                                    radius: ['45%', '50%'],
+                                    label: {
+                                        normal: {
+                                            formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                                            backgroundColor: '#eee',
+                                            borderColor: '#aaa',
+                                            borderWidth: 1,
+                                            borderRadius: 4,
+                                            // shadowBlur:3,
+                                            // shadowOffsetX: 2,
+                                            // shadowOffsetY: 2,
+                                            // shadowColor: '#999',
+                                            // padding: [0, 7],
+                                            rich: {
+                                                a: {
+                                                    color: '#999',
+                                                    lineHeight: 22,
+                                                    align: 'center'
+                                                },
+                                                // abg: {
+                                                //     backgroundColor: '#333',
+                                                //     width: '100%',
+                                                //     align: 'right',
+                                                //     height: 22,
+                                                //     borderRadius: [4, 4, 0, 0]
+                                                // },
+                                                hr: {
+                                                    borderColor: '#aaa',
+                                                    width: '100%',
+                                                    borderWidth: 0.5,
+                                                    height: 0
+                                                },
+                                                b: {
+                                                    fontSize: 16,
+                                                    lineHeight: 33
+                                                },
+                                                per: {
+                                                    color: '#eee',
+                                                    backgroundColor: '#334455',
+                                                    padding: [2, 4],
+                                                    borderRadius: 2
+                                                }
+                                            }
+                                        }
+                                    },
+                                    data:[
+                                        {value:335, name:'直达'},
+                                        {value:310, name:'邮件营销'},
+                                        {value:234, name:'联盟广告'},
+                                        {value:135, name:'视频广告'},
+                                        {value:1048, name:'百度'},
+                                        {value:251, name:'谷歌'},
+                                        {value:147, name:'必应'},
+                                        {value:102, name:'其他'}
+                                    ]
+                                }
+                            ]
+                        };
+                        myChart.hideLoading();
+                        // 使用刚指定的配置项和数据显示图表。
+                        myChart.setOption(option);
+                        //用于使chart自适应高度和宽度
+                        window.onresize = myChart.resize();
+                    }
+                });
+            }
+        },
+        filters:{
+
+        }
+    });
+
+    if(getTaskList()){
+        submit();
+    }
+
+    // 异步提交数据
+    function submit() {
+        getParams();
+        vm.showMediaPie();
+    }
+
+    // 获取参数
+    function getParams() {
+        vm.params['task_id'] = vm.task_id;
+        console.log(JSON.stringify(vm.params));
+    }
+</script>
