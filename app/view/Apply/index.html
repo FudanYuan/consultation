@@ -26,8 +26,14 @@
                 <tr>
                     <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
                     <th>状态</th>
-                    <th>标题</th>
-                    <th>时间</th>
+                    <th>申请类型</th>
+                    <th>申请医院</th>
+                    <th>申请医师</th>
+                    <th>联系方式</th>
+                    <th>申请项目</th>
+                    <th>预约时间</th>
+                    <th>处理进度</th>
+                    <th>是否缴费</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -59,7 +65,7 @@
                 </template>
                 <template v-else>
                     <tr>
-                        <td colspan="5" class="nodata">暂无会诊申请！</td>
+                        <td colspan="11" class="nodata">暂无会诊申请！</td>
                     </tr>
                 </template>
                 </tbody>
@@ -239,6 +245,7 @@
                 vm.pages = Math.ceil(res.total / vm.per_page);
                 vm.current_page = res.current_page;
                 vm.list = res.data;
+                console.log(JSON.stringify(vm.list));
             }
         });
     }

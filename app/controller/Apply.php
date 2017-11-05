@@ -25,7 +25,6 @@ class Apply extends Common
      */
     public function getApplyList(){
         $params = input('post.');
-
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
         $ret = ['errorcode' => 0, 'data' => [], 'msg' => ""];
@@ -44,7 +43,18 @@ class Apply extends Common
             $this->jsonReturn($ret);
         }
         else{
-            $list = D('Apply')->getList($cond);
+            //$list = D('Apply')->getList($cond);
+            $list = [];
+            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
+                'doctor_id' => 1, 'doctor_name' => '张三', 'apply_type' => 1,
+                'apply_project' => 1, 'apply_date' => 1509871680, 'status' => 0,
+                'is_charge' => 0
+            ];
+            $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
+                'doctor_id' => 1, 'doctor_name' => '张三', 'apply_type' => 1,
+                'apply_project' => 1, 'apply_date' => 1509871680, 'status' => 0,
+                'is_charge' => 0
+            ];
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total
