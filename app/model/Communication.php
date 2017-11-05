@@ -1,30 +1,26 @@
 <?php
 /**
- * 会诊申请模型
- * Author yzs
- * Create 2017.10.26
+ * 会诊沟通模型
+ * Author FeiYu
+ * Create 2017.11.5
  */
 namespace app\model;
 
 use think\Model;
 
-class Apply extends Model{
-    protected $table = 'consultation_apply';
+class Communication extends Model{
+    protected $table = 'consultation_communication';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'patient_id','delivery_user_id', 'apply_type',
-        'illness_state', 'eyesill_type','vision_left','vision_right',
-        'pressure_left','pressure_right','eye_photo_left','eye_photo_right',
-        'diagnose_state','consultation_goal','apply_project','other_apply',
-        'is_definte_purpose','apply_doctor_ids','consultation_doctor',
-        'consultation_office','apply_date','is_consultation','consultation_result',
-        'price','is_charge','other_apply_result','status','createtime','updatetime'
+        'id', 'apply_id','source_user_id','target_user_id','words_info', 'files_info',
+        'time','status','createtime','updatetime'
     );
     protected $type = [
         'id' => 'integer',
-        'patient_id' => 'integer',
-        'delivery_user_id' => 'integer',
-        'apply_date' => 'integer',
+        'apply_id' => 'integer',
+        'source_user_id' => 'integer',
+        'target_user_id' => 'integer',
+        'time' => 'integer',
         'createtime' => 'integer',
         'updatetime' => 'integer'
     ];
