@@ -66,14 +66,16 @@ CREATE TABLE `consultation_hospital` (
   `url` VARCHAR(200) DEFAULT NULL COMMENT '网址',
   `email` VARCHAR(100) DEFAULT NULL COMMENT '邮箱',
   `address` VARCHAR(200) DEFAULT NULL COMMENT '地址',
+  `role` TINYINT NOT NULL COMMENT '医院角色：1->可会诊医院; 2->不可会诊医院',
   `status` TINYINT DEFAULT NULL COMMENT '状态：1->启用；2->关闭',
   `createtime` INT DEFAULT NULL COMMENT '创建时间',
   `updatetime` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `consultation_hospital` (`name`, `phone`, `url`, `email`, `address`, `status`, `createtime`, `updatetime`) VALUES
-('眼科医联体远程诊疗平台', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市', 1, 1503037656, NULL);
+
+INSERT INTO `consultation_hospital` (`name`, `phone`, `url`, `email`, `address`,  `role`, `status`, `createtime`, `updatetime`) VALUES
+('眼科医联体远程诊疗平台', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市', 1, 1, 1503037656, NULL);
 
 
 # Dump of table consultation_office
