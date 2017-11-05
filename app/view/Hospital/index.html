@@ -1,6 +1,18 @@
 {include file="Common/top" title="首页" metas='' /}
 {include file="Common/search" /}
+<style>
+    .table img{
+        width: 40px;
+        height: 40px;
+        border-radius: 50em;
+        -moz-border-radius: 50em;
+        -webkit-border-radius: 50em;
+    }
 
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+        vertical-align: middle;
+    }
+</style>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
@@ -25,15 +37,11 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
-                    <th>状态</th>
-                    <th>申请类型</th>
-                    <th>申请医院</th>
-                    <th>申请医师</th>
+                    <th>医院名称</th>
+                    <th>医院标志</th>
                     <th>联系方式</th>
-                    <th>申请项目</th>
-                    <th>预约时间</th>
-                    <th>处理进度</th>
-                    <th>是否缴费</th>
+                    <th>电子邮箱</th>
+                    <th>医院地址</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -41,27 +49,17 @@
                 <template  v-if="list.length != 0">
                     <tr v-for="(model, index) in list">
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
-                        <td v-if="model.status==1">
-                            <span style="color: purple">
-                                <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
-                            </span>
-                        </td>
-                        <td v-else>
-                            <span style="color: darkgrey">
-                                <i class="fa fa-envelope-open fa-lg" aria-hidden="true"></i>
-                            </span>
-                        </td>
-                        <td>{{model.hospital_type | getHospitalType}}</td>
-                        <td>{{model.hospital_name}}</td>
-                        <td>{{model.doctor_name}}</td>
+                        <td>{{model.name}}</td>
+                        <td><img :src="model.logo != '' ? 'model.logo' : '__PUBLIC__/images/profile/profile2.jpg' " alt="model.name"></td>
                         <td>{{model.phone}}</td>
-                        <td>{{model.hospital_project}}</td>
-                        <td>{{model.hospital_date | moment}}</td>
-                        <td>{{model.status | getHospitalStatus}}</td>
-                        <td>{{model.is_charge | getChargeStatus}}</td>
+                        <td>{{model.email}}</td>
+                        <td>{{model.address}}</td>
                         <td>
                             <a href="javascript:;" @click="info(index)" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                            </a>
+                            <a href="__PRO_PATH__/Hospital/edit?id=model.id" title="编辑">
+                                <i class="fa fa-pencil-square  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
                                 <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
@@ -82,6 +80,7 @@
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
+{include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
@@ -181,7 +180,6 @@
                 }
                 this.check_all = !this.check_all;
             },
-
             info: function (index) {
 
             },

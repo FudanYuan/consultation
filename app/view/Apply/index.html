@@ -272,7 +272,7 @@
         getParams();
         vm.resetParams();
         $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
-            if (res['error_code'] == 0) {
+            if (res.error_code == 0) {
                 vm.total = res.total;
                 vm.pages = Math.ceil(res.total / vm.per_page);
                 vm.current_page = res.current_page;
