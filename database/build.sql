@@ -281,3 +281,21 @@ CREATE TABLE `consultation_role_action_admin` (
   FOREIGN KEY (roleid) REFERENCES consultation_role_admin(id),
   FOREIGN KEY (actionid) REFERENCES consultation_action_admin(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# Dump of table consultation_operation_log
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `consultation_operation_log`;
+
+CREATE TABLE `consultation_operation_log` (
+  `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `user_id` VARCHAR(100) DEFAULT NULL COMMENT '外键，用户id',
+  `IP` VARCHAR(20) DEFAULT NULL COMMENT 'IP地址',
+  `section` VARCHAR(100) DEFAULT NULL COMMENT '操作板块',
+  `action_descr` VARCHAR(100) DEFAULT NULL COMMENT '操作详情',
+  `status` TINYINT DEFAULT NULL COMMENT '状态：1->启用；2->关闭',
+  `createtime` INT DEFAULT NULL COMMENT '创建时间',
+  `updatetime` INT DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (user_id) REFERENCES consultation_user_admin(id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;

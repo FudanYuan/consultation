@@ -10,7 +10,7 @@ use think\Model;
 use think\Db;
 
 class Role extends Model{
- 	protected $table = 'vox_role_admin';
+ 	protected $table = 'consultation_role_admin';
  	protected $pk = 'id';
  	protected $fields = array(
  		'id', 'name','remark','status','createtime','updatetime'
@@ -44,7 +44,7 @@ class Role extends Model{
  		if(!$roleid) return false;
  		$res = $this->field('id,name,remark')->where(['id' => $roleid, 'status' => 1])->find();
  		if(!empty($res)){
- 			$actions = Db::table('vox_role_action_admin')->where(['roleid' => $roleid, 'status' => 1])->column('actionid');
+ 			$actions = Db::table('consultation_role_action_admin')->where(['roleid' => $roleid, 'status' => 1])->column('actionid');
  			$res['actions'] = $actions;
  		}
  		return $res;
@@ -149,13 +149,13 @@ class Role extends Model{
  		foreach($actionids as $v){
  			array_push($data, ['actionid' => $v, 'roleid' => $roleid, 'status' => 1, 'createtime' => $time, 'updatetime' => $time]);
  		}
- 		return Db::table('tax_role_action_admin')->insertAll($data);
+ 		return Db::table('consultation_role_action_admin')->insertAll($data);
  	}
  	/**
  	 * 获取角色权限列表
  	 */
  	public function getRoleActions($roleid){
- 		return Db::table('tax_role_action_admin')->where(['roleid' => $roleid, 'status' => 1])->column('actionid');
+ 		return Db::table('consultation_role_action_admin')->where(['roleid' => $roleid, 'status' => 1])->column('actionid');
  	}
 
     /**
@@ -165,7 +165,7 @@ class Role extends Model{
      * @return int
      */
  	public function removeRoleActions($roleid, $actionids){
- 		return Db::table('tax_role_action_admin')->where(['roleid' => $roleid, 'actionid' => ['in', $actionids]])->delete();
+ 		return Db::table('consultation_role_action_admin')->where(['roleid' => $roleid, 'actionid' => ['in', $actionids]])->delete();
  	}
  	/**
  	 * 根据角色获取操作列表
@@ -173,8 +173,8 @@ class Role extends Model{
  	public function getActionsByRoleId($roleid){
  		if(!$roleid) return [];
  		$res = [];
- 		$actions = Db::table('tax_role_action_admin')->alias('a')->field('b.id,b.name,b.tag,b.pid,b.pids,level')
- 			->where(['a.roleid' => $roleid, 'a.status' => 1])->join('tax_action_admin b', 'a.actionid=b.id', 'LEFT')
+ 		$actions = Db::table('consultation_role_action_admin')->alias('a')->field('b.id,b.name,b.tag,b.pid,b.pids,level')
+ 			->where(['a.roleid' => $roleid, 'a.status' => 1])->join('consultation_action_admin b', 'a.actionid=b.id', 'LEFT')
  			->column('tag');
  		return $actions;
  	}

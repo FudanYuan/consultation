@@ -127,20 +127,6 @@
         });
     });
 
-    $('#logout').on('click', function () {
-        $.get('__PRO_PATH__/UserAdmin/dologout', {}, function (res) {
-            if (res.errorcode == 0) {
-                window.location.href = '__PRO_PATH__/UserAdmin/login';
-            } else {
-                popWarn(res.msg);
-            }
-        });
-    });
-
-    $('#searchToggle').on('click', function () {
-        $('#searchDiv').toggle({transition: 'all 0.3s'});
-    });
-
     $('.contact').on('click', function () {
         popWarn('请联系管理员：Jeremy <br/><br/> 联系方式：18508437068');
     });
@@ -210,9 +196,10 @@
             }
         }
     });
-    setInterval(function () {
-        vm2.getApply();
-    }, 1000);
+
+//    setInterval(function () {
+//        vm2.getApply();
+//    }, 1000);
 
     // 获得用户名称
     var vm3 = new Vue({

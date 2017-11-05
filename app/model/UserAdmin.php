@@ -10,13 +10,14 @@ use think\Model;
 use think\Debug;
 
 class UserAdmin extends Model{
- 	protected $table = 'vox_user_admin';
+ 	protected $table = 'consultation_user_admin';
  	protected $pk = 'id';
  	protected $fields = array(
- 		'id', 'username','pass','roleid','remark','status','logintime','createtime','updatetime'
+ 		'id', 'doctor_id', 'username','pass','roleid','remark','status','logintime','createtime','updatetime'
  	);
  	protected $type = [
  			'id' => 'integer',
+            'doctor_id' => 'integer',
  			'roleid' => 'integer',
  			'status' => 'integer'
  		];
@@ -46,6 +47,38 @@ class UserAdmin extends Model{
             ->where('id', $id)
             ->find();
  	}
+
+    /**
+     * 根据医生ID获取用户
+     * @param $doctor_id
+     * @return mixed
+     */
+    public function getUserByDoctorId($doctor_id){
+        return $this->field('id,username,pass,status,roleid')
+            ->where(['doctor_id' => $doctor_id, 'status' => ['<>', 2]])
+            ->find();
+    }
+
+    /**
+     * 根据token获取用户
+     * @param $token
+     * @return array|mixed
+     */
+    public function getUserByToken($token){
+        if(!$token) return [];
+        return json_decode(cache_hash_hget(self::TOKEN_USER, $token), true);
+    }
+
+    /**
+     * 根据用户名获取用户
+     * @param $username
+     * @return mixed
+     */
+    public function getUserByUsername($username){
+        return $this->field('id,username,pass,status,roleid')
+            ->where(['username' => $username, 'status' => ['<>', 2]])
+            ->find();
+    }
 
     /**
      * 创建管理员用户
@@ -82,27 +115,6 @@ class UserAdmin extends Model{
  		$res = $this->save(['status' => 2], $cond);
  		if($res === false) throw new MyException('2', '删除失败');
  		return $res;
- 	}
-
-    /**
-     * 根据token获取用户
-     * @param $token
-     * @return array|mixed
-     */
- 	public function getUserByToken($token){
- 		if(!$token) return [];
- 		return json_decode(cache_hash_hget(self::TOKEN_USER, $token), true);
- 	}
-
-    /**
-     * 根据用户名获取用户
-     * @param $username
-     * @return mixed
-     */
- 	public function getUserByUsername($username){
- 		return $this->field('id,username,pass,status,roleid')
-            ->where(['username' => $username, 'status' => ['<>', 2]])
-            ->find();
  	}
 
     /**

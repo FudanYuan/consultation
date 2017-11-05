@@ -9,7 +9,7 @@ namespace app\model;
 use think\Model;
 
 class OperationLog extends Model{
-    protected $table = 'vox_operationlog';
+    protected $table = 'consultation_operation_log';
     protected $pk = 'id';
     protected $fields = array(
         'id', 'user_id','section', 'IP', 'action_descr', 'status','createtime','updatetime'

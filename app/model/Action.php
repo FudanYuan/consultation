@@ -10,7 +10,7 @@ use think\Model;
 use think\Db;
 
 class Action extends Model{
- 	protected $table = 'vox_action_admin';
+ 	protected $table = 'consultation_action_admin';
  	protected $pk = 'id';
  	protected $fields = array(
  		'id', 'name','tag','pid','pids','level','status','createtime','updatetime'

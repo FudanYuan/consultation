@@ -9,7 +9,7 @@ namespace app\model;
 use think\Model;
 
 class Apply extends Model{
-    protected $table = 'vox_inform';
+    protected $table = 'consultation_apply';
     protected $pk = 'id';
     protected $fields = array(
         'id', 'source_user_id','target_user_id', 'content',

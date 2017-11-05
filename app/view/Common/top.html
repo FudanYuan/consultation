@@ -61,7 +61,7 @@
     <link href="__PUBLIC__/js/datapicker/daterangepicker.css" rel="stylesheet">
 
     <!-- MyCss -->
-    <link href="__PUBLIC__/css/consulation.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/consultation.css" rel="stylesheet">
     <link href="__PUBLIC__/js/multiple-select/multiple-select.css" rel="stylesheet">
 
     <!-- labelauty -->
@@ -94,7 +94,7 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <ul class="nav-notification pull-right" id="user_small">
+                <ul class="nav-notification pull-right">
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
                         <span class="badge badge-danger bounceIn">1</span>
@@ -102,7 +102,7 @@
                             <li class="user-avatar">
                                 <!--<img src="__PUBLIC__/images/profile/profile1.jpg" alt="" class="img-circle">-->
                                 <div class="user-content">
-                                    <h5 class="no-m-bottom">{{user}}</h5>
+                                    <h5 class="no-m-bottom" id="user_small">{{user}}</h5>
                                     <div class="m-top-xs">
                                         <a href="javascript:;" class="logout">安全退出</a>
                                     </div>
@@ -134,10 +134,10 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <div class="pull-right m-right-sm" id="user_big">
+                <div class="pull-right m-right-sm">
                     <div class="user-block hidden-xs">
                         <a href="#" id="userToggle" data-toggle="dropdown">
-                            <div class="user-detail inline-block">
+                            <div class="user-detail inline-block" id="user_big">
                                 {{user}}
                                 <i class="fa fa-angle-down"></i>
                             </div>
@@ -171,9 +171,8 @@
                     </div>
 
                     <!-- 信息推送 -->
-                    <ul class="nav-notification" id="nav-notification">
-                        <li><a href="javascript:;" id="searchToggle"><i class="fa fa-search fa-lg" aria-hidden="true"></i></a></li>
-                        <li>
+                    <ul class="nav-notification">
+                        <li id="nav-notification">
                             <a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
                             <span class="badge badge-purple bounceIn animation-delay5 active" v-if="total != 0">{{total}}</span>
                             <ul class="dropdown-menu message pull-right">
@@ -199,7 +198,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;" class="logout" title="退出登录">
+                            <a href="javascript:;" class="logout" title="安全退出">
                                 <i class="fa fa-power-off fa-lg"></i>
                             </a>
                         </li>
@@ -216,7 +215,7 @@
                     <li class="menu-header">
                         DashBoard
                     </li>
-                    <li class="bg-palette1" id="consulation-nav-dashborad">
+                    <li class="bg-palette1" id="consultation-nav-dashborad">
                         <a href="__PRO_PATH__/">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
@@ -227,7 +226,7 @@
                     </li>
 
                     {if condition="authority('Apply')"}
-                    <li class="bg-palette1" id="consulation-nav-apply">
+                    <li class="bg-palette1" id="consultation-nav-apply">
                         <a href="__PRO_PATH__/Apply/index">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-envelope fa-lg"></i></span>
@@ -238,7 +237,7 @@
                     </li>
                     {/if}
 
-                    <li class="openable bg-palette3" id="consulation-nav-warehouse">
+                    <li class="openable bg-palette3" id="consultation-nav-warehouse">
                         <a href="javascript:;">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="block fa fa-bank fa-lg"></i></span>
@@ -249,21 +248,21 @@
                         </a>
                         <ul class="submenu bg-palette3">
                             {if condition="authority('Theme')"}
-                            <li id="consulation-nav-warehouse-sub2">
+                            <li id="consultation-nav-warehouse-sub2">
                                 <a href="__PRO_PATH__/Theme/index">
                                     <span class="submenu-label">主题库</span>
                                 </a>
                             </li>
                             {/if}
                             {if condition="authority('Media')"}
-                            <li id="consulation-nav-warehouse-sub3"><a href="__PRO_PATH__/Media/index"><span
+                            <li id="consultation-nav-warehouse-sub3"><a href="__PRO_PATH__/Media/index"><span
                                     class="submenu-label">媒体库</span></a></li>
                             {/if}
                         </ul>
                     </li>
 
                     {if condition="authority('OperationLog')"}
-                    <li class="bg-palette2" id="consulation-nav-log">
+                    <li class="bg-palette2" id="consultation-nav-log">
                         <a href="__PRO_PATH__/OperationLog/index">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-bookmark-o fa-lg"></i></span>
@@ -275,7 +274,7 @@
                     {/if}
 
                     {if condition="authority('Account')"}
-                    <li class="bg-palette3" id="consulation-nav-account" hidden>
+                    <li class="bg-palette3" id="consultation-nav-account" hidden>
                         <a href="__PRO_PATH__/UserAdmin/account">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-user fa-lg"></i></span>
@@ -286,7 +285,7 @@
                     </li>
                     {/if}
 
-                    <li class="openable bg-palette4" id="consulation-nav-setting">
+                    <li class="openable bg-palette4" id="consultation-nav-setting">
                         <a href="javascript:;">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="block fa fa-cog fa-lg"></i></span>
@@ -297,14 +296,14 @@
                         </a>
                         <ul class="submenu bg-palette4">
                             {if condition="authority('Authority')"}
-                            <li id="consulation-nav-setting-sub2">
+                            <li id="consultation-nav-setting-sub2">
                                 <a href="__PRO_PATH__/UserAdmin/index">
                                     <span class="submenu-label">权限设置</span>
                                 </a>
                             </li>
                             {/if}
                             {if condition="authority('Role')"}
-                            <li id="consulation-nav-setting-sub3">
+                            <li id="consultation-nav-setting-sub3">
                                 <a href="__PRO_PATH__/UserAdmin/roles">
                                     <span class="submenu-label">角色设置</span>
                                 </a>
