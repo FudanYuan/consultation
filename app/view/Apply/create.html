@@ -1,282 +1,288 @@
 {include file="Common/top" title="首页" metas='' /}
 {include file="Common/search" /}
-
+<script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li>新建任务</li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Inform/index">会诊申请</a></li>
+            <!--<li>新建申请</li>-->
         </ul>
+        <div class="form-wrapper">
+            <form class="form-horizontal" method="post" id="new-inform-form">
 
-        <div id="inform">
-            <div class="list-btns">
-                {if condition="authority('InformCreate')"}
-                <div class="btn-group">
-                    <button type="button" class="btn btn-success" @click="createInform">新建</button>
+                <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
+                    <label for="new-inform-form-priority" class="col-sm-2 control-label">会诊类型：</label>
+                    <div class="col-sm-4" id="new-inform-form-priority" >
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="priority1" name="priority" value="1">
+                                <label for="priority1"></label>
+                            </div>
+                            <div class="inline-block vertical-top">紧急</div>
+                        </div>
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="priority2" name="priority" value="2">
+                                <label for="priority2"></label>
+                            </div>
+                            <div class="inline-block vertical-top">非紧急</div>
+                        </div>
+                    </div>
+                    <p class="help-block">{{errors.priority}}</p>
                 </div>
-                {/if}
-                {if condition="authority('InformMarkRead')"}
-                <div class="btn-group">
-                    <a href="javascript:;" class="btn btn-success" @click="markRead([])">标为已读</a>
+
+
+                <div :class="['form-group']" >
+                    <label for="new-inform-form-priority" class="col-sm-2 control-label">会诊医院：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="hospital_name" value="附二医院" disabled>
+
+                    </div>
+
+                    <!--<div class="col-sm-4">
+                        <input class="form-control" type="text" name="title" value="" placeholder="请输入通知标题" id="new-inform-form-title">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>-->
                 </div>
-                {/if}
-                {if condition="authority('InformRemove')"}
-                <div class="btn-group">
-                    <a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
+
+                <div :class="['form-group', errors.target_user_id != '' ? 'has-error' : '']" >
+                    <label for="new-inform-form-target" class="col-sm-2 control-label">会诊科室：</label>
+                    <div class="col-sm-4">
+                        <select multiple="multiple" class="multiple" id="new-inform-form-target" name="target_user_ids">
+                            <option value="-1">外科</option>
+                            <option value="haha">内科</option>
+                            <option value="haha">骨科</option>
+                            <!--{foreach name="target_users" item="model"}
+                            <option value="{$model.id}" >{$model.username}</option>
+                            {/foreach}-->
+                        </select>
+                        <p class="help-block">{{errors.target_user_id}}</p>
+                    </div>
                 </div>
-                {/if}
-            </div>
-            <table class="table table-hover" style="background:#fff;">
-                <thead>
-                <tr>
-                    <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
-                    <th>状态</th>
-                    <th>标题</th>
-                    <th>时间</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <template  v-if="list.length != 0">
-                    <tr v-for="(model, index) in list">
-                        <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
-                        <td v-if="model.status==0">
-                            <span style="color: purple">
-                                <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
-                            </span>
-                        </td>
-                        <td v-else>
-                            <span style="color: darkgrey">
-                                <i class="fa fa-envelope-open fa-lg" aria-hidden="true"></i>
-                            </span>
-                        </td>
-                        <td>{{model.title | formatText(40, model.title)}}</td>
-                        <td>{{model.createtime | moment}}</td>
-                        <td>
-                            <a href="javascript:;" @click="info(index)" title="详情">
-                                <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
-                            </a>
-                            <a href="javascript:;" @click="markRead([model.id])" v-if="model.status == 0" title="标为已读">
-                                <i class="fa fa-envelope-open fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
-                            </a>
-                            <a href="javascript:;" @click="remove([model.id])" title="删除">
-                                <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
-                            </a>
-                        </td>
-                    </tr>
-                </template>
-                <template v-else>
-                    <tr>
-                        <td colspan="5" class="nodata">暂无通知公告！</td>
-                    </tr>
-                </template>
-                </tbody>
-            </table>
-            {include file="Common/page" /}
-            <p v-if="0">{{select}}</p>
+
+                <div :class="['form-group']" >
+                    <label for="id_doctor" class="col-sm-2 control-label">会诊医师：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="doctor" value="" placeholder="请输入会诊医师名" id="id_doctor">
+                    </div>
+                </div>
+
+                <br><br>
+
+                <div :class="['form-group']" >
+                    <label for="id_ID_number_Patient" class="col-sm-2 control-label">患者身份证号：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="ID_number_Patient" value="" placeholder="请输入患者身份证号" id="id_ID_number_Patient">
+
+                    </div>
+                </div>
+
+                <div :class="['form-group']" >
+                    <label for="id_name_Patient" class="col-sm-2 control-label">患者姓名：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="name_Patient" value="" placeholder="请输入患者姓名" id="id_name_Patient">
+
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
+                    <label for="new-inform-form-priority" class="col-sm-2 control-label">患者性别：</label>
+                    <div class="col-sm-4" id="new-inform-form-priority" >
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="man" name="sex" value="1">
+                                <label for="man"></label>
+                            </div>
+                            <div class="inline-block vertical-top">男</div>
+                        </div>
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="female" name="sex" value="2">
+                                <label for="female"></label>
+                            </div>
+                            <div class="inline-block vertical-top">女</div>
+                        </div>
+                    </div>
+                    <p class="help-block">{{errors.priority}}</p>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_age_Patient" class="col-sm-2 control-label">患者年龄：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="age_Patient" value="" placeholder="请输入患者年龄" id="id_age_Patient">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_contact_Patient" class="col-sm-2 control-label">联系方式：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="contact_Patient" value="" placeholder="请输入患者联系方式" id="id_contact_Patient">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">简要病情：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="condition_Patient" value="" placeholder="请输入患者简要病情" id="id_condition_Patient">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+                <!---->
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">诊疗情况：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="Diagnosis_Patient" value="" placeholder="请输入患者诊疗情况" id="id_Diagnosis_Patient">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">简要病情：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="condition_Patient" value="" placeholder="请输入患者简要病情" id="id_condition_Patient">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label  class="col-sm-2 control-label"></label>
+                    <div class="col-sm-4">
+                        <input  type="file" name="condition_file" value="上传病例文件"/>
+                        <!--<input type="submit" value="上传病例文件" />-->
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">会诊目的：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="purpose_Patient" value="" placeholder="请输入会诊目的" id="id_purpose_Patient">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">其他申请意愿：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="other_wishes" value="" placeholder="请输入其他申请意愿" id="id_other_wishes">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">预约时间：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="time_appointment" value="" placeholder="请输入要预约的时间" id="id_time_appointment">
+                        <!--<p class="help-block">{{errors.title}}</p>-->
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">申请科室：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="apply_department" value="" placeholder="请输入您所在的科室" id="id_apply_department">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="id_condition_Patient" class="col-sm-2 control-label">申请人：</label>
+                    <div class="col-sm-4">
+                        <input class="form-control" type="text" name="Applicant" value="" placeholder="请输入您的姓名" id="id_Applicant">
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <!--
+                <div  :class="['form-group', errors.content != '' ? 'has-error' : '']" >
+                    <label class="col-sm-2 control-label">通知内容：</label>
+                    <span class="help-block">{{errors.content}}</span>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <script id="editor" type="text/plain" style="width:100%;height:100px;" name="content"></script>
+                    </div>
+                </div>-->
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                        <a class="btn btn-success" id="new-inform-form-save" @click="createNewInform">申请</a>
+                        <a id="form-cancel" class="btn btn-info">取消</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div><!-- /main-container -->
-{include file="Common/bottom" /}
+{include file="Common/calendar" /}
+{include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
-{include file="Common/popup_preview" /}
-<script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
+{include file="Common/bottom" /}
+{include file="Common/upload"}
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
     $('#consensus-nav-inform').addClass('active');
 
+    var ue = UE.getEditor('editor');
+
     var vm = new Vue({
-        el: '#inform',
+        el: '#new-inform-form',
         data: {
-            list: [],
             params: {},
-            check_all: false,
-            select: [],
-            total: 0,
-            per_page: 10,
-            current_page: 1,
-            pages: 1,
-            fore_omit: false,
-            back_omit: false,
-            fore_pages: [],
-            mid_pages: [],
-            back_pages: [],
-            side: 3,
-            window: 6
-        },
-        updated: function () {
-            this.fore_pages = [];
-            this.mid_pages = [];
-            this.back_pages = [];
-            if(this.pages < this.window + 6){
-                this.fore_omit = false;
-                this.back_omit = false;
-                for(var i=1; i<=this.pages; i++){
-                    this.fore_pages.push(i);
-                }
-            }
-            else if(this.current_page <= this.window){
-                this.fore_omit = false;
-                this.back_omit = true;
-                for(var i=1; i<= this.window + 2; i++){
-                    this.fore_pages.push(i);
-                }
-                this.back_pages = [this.pages - 1, this.pages];
-            }
-            else if(this.current_page > this.pages - this.window){
-                this.fore_omit = true;
-                this.back_omit = false;
-                for(var i=this.pages-(this.window+2); i<= this.pages; i++){
-                    this.back_pages.push(i);
-                }
-                this.fore_pages = [1, 2];
-            }
-            else{
-                this.fore_omit = true;
-                this.back_omit = true;
-                this.fore_pages = [1, 2];
-                for(var i=parseInt(this.current_page) - parseInt(this.side);
-                    i <= parseInt(this.current_page) + parseInt(this.side); i++){
-                    this.mid_pages.push(i);
-                }
-                this.back_pages = [this.pages - 1, this.pages];
+            errors:{
+                title: '',
+                content: '',
+                priority: '',
+                target_user_id: ''
             }
         },
-        methods:{
-            resetParams: function () {
-                this.select = [];
-                this.check_all = false;
-            },
-            // 转到某页
-            gotoPage: function (page) {
-                if(page == this.current_page) return;
-                this.current_page = page;
-                submit();
-            },
-            selectClick: function (id) {
-                if(this.select.indexOf(id) == -1){
-                    this.select.push(id);
-                }
-                else{
-                    this.select.remove(id);
-                }
-                if(this.list.length == this.select.length){
-                    this.check_all = true;
-                } else {
-                    this.check_all = false;
-                }
-            },
-            checkAll: function () {
-                if(!this.check_all){
-                    for(var i=0;i<this.list.length;i++){
-                        var id = this.list[i]['id'];
-                        if(this.select.indexOf(id) == -1){
-                            this.select.push(id);
-                        }
+        methods: {
+            createNewInform: function () {
+                getParams();
+                $.post('__PRO_PATH__/Inform/create', vm.params, function(res){
+                    if(res.code == 1){
+                        popWarn('新建成功');
+                        window.location.href = '__PRO_PATH__/Inform/index';
+                    }else if(res.code == 2){
+                        $.each(res.errors, function(k, v){
+                            vm.errors[k] = v;
+                        });
+                        console.log(JSON.stringify(vm.errors));
                     }
-                } else {
-                    this.select = [];
-                }
-                this.check_all = !this.check_all;
-            },
-            info: function (index) {
-                console.log(index);
-                popupPreview(this.list[index]);
-                console.log(this.list[index]);
-                if(this.list[index]['status'] == 0){
-                    $.post('__PRO_PATH__/Inform/markRead', {ids: this.list[index]['id']}, function (res) {
-                        if (res['code'] == 1) {
-                            submit();
-                        }
-                    });
-                }
-            },
-            createInform: function () {
-                window.location.href = '__PRO_PATH__/Inform/create';
-            },
-            markRead: function (id) {
-                var ids = [];
-                if(id.length==0){
-                    ids = this.select;
-                }
-                else{
-                    if(this.select.indexOf(id[0]) == -1){
-                        this.select.push(id[0]);
-                    }
-                    ids = id;
-                }
-                this.select = ids;
-                // 标为已读
-                popupList({
-                    mark: '__PRO_PATH__/Inform/markRead',
-                    ids: vm.select
-                }, function () {
-                    submit();
                 });
-                $('#mark-confirm-popup').popup('show');
-            },
-            remove: function (id) {
-                var ids = [];
-                if(id.length==0){
-                    ids = this.select;
-                }
-                else{
-                    if(this.select.indexOf(id[0]) == -1){
-                        this.select.push(id[0]);
-                    }
-                    ids = id;
-                }
-                this.select = ids;
-                // 删除
-                popupList({
-                    remove: '__PRO_PATH__/Inform/remove',
-                    ids: vm.select
-                }, function () {
-                    submit();
-                });
-                $('#confirm-popup').popup('show');
-            }
-        },
-        filters:{
-            moment: function (value, formatString) {
-                formatString = formatString || 'YYYY-MM-DD HH:mm';
-                return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
-            },
-            getInformStatus: function (value) {
-                var ret = "";
-                if(value==0){
-                    ret = "未读";
-                }
-                if(value==1){
-                    ret = "已读";
-                }
-                return ret;
-            },
-            formatText: function (text, len) {
-                return cutString(text, len);
             }
         }
     });
 
-    submit();
+    $(".multiple").multipleSelect({
+        filter: true,
+        multiple: true,
+        selectAll: true
+    });
 
-    // 异步提交数据
-    function submit() {
-        getParams();
-        vm.resetParams();
-        $.post('__PRO_PATH__/Inform/getInformList', vm.params, function (res) {
-            if (res.errorcode == 0) {
-                vm.total = res.total;
-                vm.pages = Math.ceil(res.total / vm.per_page);
-                vm.current_page = res.current_page;
-                vm.list = res.data;
+    $(function () {
+        $("#new-inform-form-target").multipleSelect("checkAll");
+    });
+
+    $('#form-cancel').on('click', function(){
+        window.location.href = '__PRO_PATH__/Inform/index';
+    });
+
+    function getParams(){
+        vm.params['target_user_ids'] = [];
+        var data = $('#new-inform-form').serializeArray();
+        $.each(data, function() {
+            if(this.name == 'target_user_ids'){
+                vm.params[this.name].push(this.value);
+            } else {
+                vm.params[this.name] = this.value;
             }
         });
+        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(vm.params));
     }
-
-    // 获取参数设置
-    function getParams() {
-        vm.params['per_page'] = vm.per_page;
-        vm.params['current_page'] = vm.current_page;
-    }
-
 </script>
