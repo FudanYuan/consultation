@@ -86,7 +86,7 @@
             popWarn('请选择角色');
             return;
         }
-        $.get('', data, function (res) {
+        $.post('', data, function (res) {
             if (res.error_code == 0) {
                 window.location.href = '__PRO_PATH__/UserAdmin/index';
             } else {

@@ -139,10 +139,10 @@ CREATE TABLE `consultation_doctor` (
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
   `update_time` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (office_id) REFERENCES consultation_hospital_office(id)
+  FOREIGN KEY (`hospital_office_id`) REFERENCES consultation_hospital_office(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `consultation_doctor` (`office_id`, `name`, `post`, `phone`, `address`, `status`, `create_time`, `update_time`) VALUES
+INSERT INTO `consultation_doctor` (`hospital_office_id`, `name`, `post`, `phone`, `address`, `status`, `create_time`, `update_time`) VALUES
 (1, 'Smith', '博导', '13623614251', '湖南省长沙市', 1, 1503037656, NULL);
 
 

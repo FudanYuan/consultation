@@ -127,8 +127,7 @@ class UserAdmin extends Common{
 				$ret['error_code'] = 1;
 				$ret['msg'] = '编辑用户失败';
 			}
-            $list = D('UserAdmin')->getList();
-            return view('', ['list' => $list, 'cond' => []]);
+            $this->jsonReturn($ret);
 		}
 
 		$id = input('get.id');
