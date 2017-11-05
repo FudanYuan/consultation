@@ -165,7 +165,7 @@ class UserAdmin extends Common{
 	/**
 	 * 新建角色
 	 */
-	public function rolecreate(){
+	public function roleCreate(){
 		$data = input('post.');
 		if(!empty($data)){
 			$ret = ['errorcode' => 0, 'msg' => ''];
@@ -181,7 +181,7 @@ class UserAdmin extends Common{
 	/**
 	 * 编辑角色
 	 */
-	public function roleedit(){
+	public function roleEdit(){
 		$data = input('post.');
 		if(!empty($data)){
 			$ret = ['errorcode' => 0, 'msg' => ''];
@@ -199,7 +199,7 @@ class UserAdmin extends Common{
 	/**
 	 * 批量删除
 	 */
-	public function roleremove(){
+	public function roleRemove(){
 		$ret = ['code' => 1, 'msg' => '成功'];
 		$ids = input('get.ids');
 		try{

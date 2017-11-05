@@ -68,11 +68,10 @@
                 return;
             }
             $.post('', {username: username, pass: pass}, function (res) {
-                if (res.errorcode == 0) {
+                if (res.error_code == 0) {
                     window.location.href = '__PRO_PATH__/';
                 } else {
                     popWarn(res.msg);
-                    return;
                 }
             });
         });

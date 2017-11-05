@@ -19,7 +19,7 @@
                 <tbody>
                 <template  v-if="list.length != 0">
                     <tr v-for="model in list">
-                        <td>{{model.createtime | moment}}</td>
+                        <td>{{model.create_time | moment}}</td>
                         <td>{{model.IP}}</td>
                         <td>{{model.section}}</td>
                         <td>{{model.action_descr}}</td>

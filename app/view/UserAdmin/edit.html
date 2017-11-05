@@ -29,7 +29,7 @@
                 <div class="form-group {$errors.role ?= 'has-error'}">
                     <label class="col-sm-2 control-label">角色权限：</label>
                     <div class="col-sm-4">
-                        <select name="roleid" class="form-control" style="width:100px;">
+                        <select name="role_id" class="form-control" style="width:100px;">
                             <option value="">--选择角色--</option>
                             {foreach name="roles" item="role"}
                             <option value="{$role.id}">{$role.name}</option>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <script>
-                    $('select[name="roleid"]').val('{$data.roleid??""}');
+                    $('select[name="role_id"]').val('{$data.role_id??""}');
                     $('select[name="status"]').val('{$data.status??""}');
                 </script>
                 <div class="form-group {$errors.remark ?= 'has-error'}">
@@ -82,12 +82,12 @@
             popWarn('账号名称不能为空');
             return;
         }
-        if (!data.roleid) {
+        if (!data.role_id) {
             popWarn('请选择角色');
             return;
         }
         $.post('', data, function (res) {
-            if (res.errorcode == 0) {
+            if (res.error_code == 0) {
                 window.location.href = '__PRO_PATH__/UserAdmin/index';
             } else {
                 popWarn(res.msg);

@@ -39,7 +39,7 @@
 					<td>{if condition="$model.createtime"}{:date('Y-m-d H:i:s',$model.createtime)}{/if}</td>
 					<td>
 						{if condition="authority('Role_edit')"}
-						<a href="__PRO_PATH__/UserAdmin/roleedit?id={$model.id}">编辑</a>
+						<a href="__PRO_PATH__/UserAdmin/roleEdit?id={$model.id}">编辑</a>
 						{/if}
 					</td>
 				</tr>
@@ -55,7 +55,7 @@
 	$('#consultation-nav-setting').addClass('active open');
 	$('#consultation-nav-setting-sub3').addClass('active');
 	popupList({
-		create:'__PRO_PATH__/UserAdmin/rolecreate',
-		remove:'__PRO_PATH__/UserAdmin/roleremove'
+		create:'__PRO_PATH__/UserAdmin/roleCreate',
+		remove:'__PRO_PATH__/UserAdmin/roleRemove'
 	});
 </script>

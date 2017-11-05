@@ -53,23 +53,22 @@
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/UserAdmin/roles">角色设置</a></li>
-            <li>编辑</li>
+            <li>新建</li>
         </ul>
         <div class="form-wrapper">
             <form class="form-horizontal" method="post" id="main-form">
-                <input type="hidden" value="{$role.id}" name="id"/>
                 <div class="row" style="border-bottom:1px dotted lightgray;">
                     <div class="col-md-1">
                         角色名称：
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" name="name" value="{$role.name}"/>
+                        <input type="text" class="form-control" name="name"/>
                     </div>
                     <div class="col-md-1">
                         备注：
                     </div>
                     <div class="col-md-6">
-                        <input type="text" class="form-control" name="remark" value="{$role.remark}"/>
+                        <input type="text" class="form-control" name="remark"/>
                     </div>
                 </div>
                 <div class="clearFix" id="authority">
@@ -78,20 +77,18 @@
                 </div>
                 <div class="row" style="text-align:center;">
                     <a id="form-save" class="btn btn-success">保存</a>
-                    <a href="__PRO_PATH__/UserAdmin/roles" id="form-cancel" class="btn btn-info" style="margin-left:20px;">取消</a>
-                    <a id="form-delete" class="btn btn-default" style="margin-left:20px;">删除</a>
+                    <a href="__PRO_PATH__/UserAdmin/roles" class="btn btn-info" style="margin-left:50px;">取消</a>
+                    <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
                 </div>
                 <script type="text/javascript">
                     var rootNodes = [];
                     var d = new dTree('d');
-                    var actions = {:json_encode($role.actions)};
                     $.get('__PRO_PATH__/UserAdmin/authority', {}, function (res) {
                         d.add(0, -1, '权限管理');
                         for (var i = 0; i < res.length; i++) {
                             /*dTree实例属性以此为：  节点ID，父类ID，chechbox的名称，chechbox的值，chechbox的显示名称，
                              chechbox是否被选中--默认是不选，chechbox是否可用：默认是可用，节点链接：默认是虚链接*/
-                            var checked = ($.inArray(res[i]['id'], actions) != -1);
-                            d.add(res[i]['id'], res[i]['pid'], 'authority', res[i]['id'], res[i]['name'], checked);
+                            d.add(res[i]['id'], res[i]['pid'], 'authority', res[i]['id'], res[i]['name']);
                             res[i]['pid'] == 0 && rootNodes.push([res[i]['id'], res[i]['name']]);
                         }
                         var lis = '';
@@ -118,7 +115,6 @@
     </div>
 </div><!-- /main-container -->
 {include file="Common/popup_warn" /}
-{include file="Common/popup_edit"}
 {include file="Common/bottom" /}
 <script>
     $('#consultation-nav-setting').addClass('active open');
@@ -138,19 +134,14 @@
             return;
         }
         data.authority = JSON.stringify(authority);
-        $.post('__PRO_PATH__/UserAdmin/roleedit', data, function (res) {
-            if (res.errorcode == 0) {
+        $.post('__PRO_PATH__/UserAdmin/roleCreate', data, function (res) {
+            if (res.error_code == 0) {
                 window.location.href = '__PRO_PATH__/UserAdmin/roles';
             } else {
                 popWarn(res.msg);
                 return;
             }
         });
-    });
-    popupEdit({
-        id: '{$role.id}',
-        list: '__PRO_PATH__/UserAdmin/roles',
-        remove: '__PRO_PATH__/UserAdmin/roleremove'
     });
     function getFromData(ele) {
         var d = {};

@@ -13,12 +13,12 @@ class UserAdmin extends Model{
  	protected $table = 'consultation_user_admin';
  	protected $pk = 'id';
  	protected $fields = array(
- 		'id', 'doctor_id', 'username','pass','roleid','remark','status','logintime','createtime','updatetime'
+ 		'id', 'doctor_id', 'username','pass','role_id','remark','status','login_time','create_time','update_time'
  	);
  	protected $type = [
  			'id' => 'integer',
             'doctor_id' => 'integer',
- 			'roleid' => 'integer',
+ 			'role_id' => 'integer',
  			'status' => 'integer'
  		];
  	const USER_TOKEN = 'admin_user_token';
@@ -32,7 +32,7 @@ class UserAdmin extends Model{
  		if(!isset($cond['status'])){
  			$cond['status'] = ['<>', 2];
  		}
- 		return $this->field('id,username,status,createtime,logintime,remark')
+ 		return $this->field('id,username,status,create_time,login_time,remark')
             ->where($cond)
             ->paginate(10);
  	}
@@ -43,7 +43,7 @@ class UserAdmin extends Model{
      * @return mixed
      */
  	public function getById($id){
- 		return $this->field('id,username,pass,roleid,remark,status')
+ 		return $this->field('id,username,pass,role_id,remark,status')
             ->where('id', $id)
             ->find();
  	}
@@ -54,7 +54,7 @@ class UserAdmin extends Model{
      * @return mixed
      */
     public function getUserByDoctorId($doctor_id){
-        return $this->field('id,username,pass,status,roleid')
+        return $this->field('id,username,pass,status,role_id')
             ->where(['doctor_id' => $doctor_id, 'status' => ['<>', 2]])
             ->find();
     }
@@ -75,7 +75,7 @@ class UserAdmin extends Model{
      * @return mixed
      */
     public function getUserByUsername($username){
-        return $this->field('id,username,pass,status,roleid')
+        return $this->field('id,username,pass,status,role_id')
             ->where(['username' => $username, 'status' => ['<>', 2]])
             ->find();
     }
@@ -88,7 +88,7 @@ class UserAdmin extends Model{
  	public function addData($data){
         if(!isset($data['status']))
             $data['status'] = 1;
- 		$data['createtime'] = $data['updatetime'] = $_SERVER['REQUEST_TIME'];
+ 		$data['create_time'] = $data['update_time'] = $_SERVER['REQUEST_TIME'];
  		if(isset($data['pass']) && $data['pass']) $data['pass'] = md5($data['pass']);
  		return $this->save($data);
  	}
@@ -100,7 +100,7 @@ class UserAdmin extends Model{
      * @return false|int
      */
  	public function saveData($id, $data){
- 		$data['updatetime'] = $_SERVER['REQUEST_TIME'];
+ 		$data['update_time'] = $_SERVER['REQUEST_TIME'];
  		if(isset($data['pass']) && $data['pass']) $data['pass'] = md5($data['pass']);
  		return $this->save($data, ['id' => $id]);
  	}
@@ -172,12 +172,12 @@ class UserAdmin extends Model{
  		//存储token-用户
  		$data = [
  			'id' => $user['id'],
- 			'createtime' => $_SERVER['REQUEST_TIME'],
+ 			'create_time' => $_SERVER['REQUEST_TIME'],
  			'username'  => $user['username'],
- 			'roleid' => $user['roleid']
+ 			'role_id' => $user['role_id']
  		];
  		cache_hash_hset(self::TOKEN_USER, $token, json_encode($data));
- 		$res = $this->save(['logintime' => $_SERVER['REQUEST_TIME'], 'updatetime' => $_SERVER['REQUEST_TIME']], ['id' => $user['id']]);
+ 		$res = $this->save(['login_time' => $_SERVER['REQUEST_TIME'], 'update_time' => $_SERVER['REQUEST_TIME']], ['id' => $user['id']]);
  		if(!$res) throw new MyException('登录失败');
  		session('token', $token);
  	}
