@@ -13,7 +13,7 @@ class Action extends Model{
  	protected $table = 'consultation_action_admin';
  	protected $pk = 'id';
  	protected $fields = array(
- 		'id', 'name','tag','pid','pids','level','status','createtime','updatetime'
+ 		'id', 'name','tag','pid','pids','level','status','create_time','update_time'
  	);
  	protected $type = [
  			'id' => 'integer',

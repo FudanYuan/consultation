@@ -22,7 +22,7 @@ class Index extends Common{
 	 * 清除缓存
 	 */
 	public function clearcache(){
-		$ret = ['errorcode' => 0, 'msg' => '成功'];
+		$ret = ['error_code' => 0, 'msg' => '成功'];
 		cache_del(CACHE_NAME);
 		$this->jsonReturn($ret);
 	}

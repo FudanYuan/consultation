@@ -47,7 +47,7 @@ CREATE TABLE `consultation_patient` (
   `record_time` int(11) DEFAULT NULL COMMENT '记录时间',
   `narrator` VARCHAR(100) DEFAULT NULL COMMENT '叙述者',
   `main_narrate` TEXT DEFAULT NULL COMMENT '主诉',
-  `presentill_history` TEXT DEFAULT NULL COMMENT '现病史',
+  `present_ill_history` TEXT DEFAULT NULL COMMENT '现病史',
   `past_history` TEXT DEFAULT NULL COMMENT '既往史',
   `system_retrospect` TEXT DEFAULT NULL COMMENT '系统回顾',
   `personal_history` TEXT DEFAULT NULL COMMENT '个人史',
@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `consultation_doctor`;
 
 CREATE TABLE `consultation_doctor` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `office_id` INT DEFAULT NULL COMMENT '科室id,外键',
+  `hospital_office_id` INT DEFAULT NULL COMMENT '科室id,外键',
   `name` VARCHAR(100) DEFAULT NULL COMMENT '姓名',
   `post` VARCHAR(100) DEFAULT NULL COMMENT '职称',
   `phone` VARCHAR(20) DEFAULT NULL COMMENT '手机号',
@@ -169,7 +169,6 @@ CREATE TABLE `consultation_apply` (
   `apply_project` TINYINT DEFAULT NULL COMMENT '申请会诊项目:1->咨询;2->住院;3->手术;4->其他',
   `other_apply` VARCHAR(1000) DEFAULT NULL COMMENT '其他申请意愿',
   `is_definte_purpose` TINYINT DEFAULT NULL COMMENT '是否明确意向：0->不明确；1->明确',
-  `apply_doctor_ids` VARCHAR(100) DEFAULT NULL COMMENT '诊断医生id，可多个',
   `consultation_doctor` VARCHAR(200) DEFAULT NULL COMMENT '会诊医生id，可多个',
   `consultation_office` VARCHAR(200) DEFAULT NULL COMMENT '会诊科室id，可多个',
   `apply_date` INT(11) DEFAULT NULL COMMENT '申请会诊日期',

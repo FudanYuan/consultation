@@ -36,7 +36,7 @@
 					<td>{$model.id}</td>
 					<td>{$model.name}</td>
 					<td>{$model.remark}</td>
-					<td>{if condition="$model.createtime"}{:date('Y-m-d H:i:s',$model.createtime)}{/if}</td>
+					<td>{if condition="$model.create_time"}{:date('Y-m-d H:i:s',$model.create_time)}{/if}</td>
 					<td>
 						{if condition="authority('Role_edit')"}
 						<a href="__PRO_PATH__/UserAdmin/roleEdit?id={$model.id}">编辑</a>

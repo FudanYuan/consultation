@@ -13,7 +13,7 @@ class Role extends Model{
  	protected $table = 'consultation_role_admin';
  	protected $pk = 'id';
  	protected $fields = array(
- 		'id', 'name','remark','status','createtime','updatetime'
+ 		'id', 'name','remark','status','create_time','update_time'
  	);
  	protected $type = [
  			'id' => 'integer',
@@ -26,7 +26,7 @@ class Role extends Model{
  	 */
  	public function getList($cond = []){
  		$cond['status'] = 1;
- 		return $this->field('id,name,remark,createtime')->where($cond)->paginate(10);
+ 		return $this->field('id,name,remark,create_time')->where($cond)->paginate(10);
  	}
  	/**
  	 * 获取角色列表
@@ -37,14 +37,14 @@ class Role extends Model{
 
     /**
      * 根据ID获取角色信息
-     * @param $roleid
+     * @param $role_id
      * @return bool
      */
- 	public function getById($roleid){
- 		if(!$roleid) return false;
- 		$res = $this->field('id,name,remark')->where(['id' => $roleid, 'status' => 1])->find();
+ 	public function getById($role_id){
+ 		if(!$role_id) return false;
+ 		$res = $this->field('id,name,remark')->where(['id' => $role_id, 'status' => 1])->find();
  		if(!empty($res)){
- 			$actions = Db::table('consultation_role_action_admin')->where(['roleid' => $roleid, 'status' => 1])->column('actionid');
+ 			$actions = Db::table('consultation_role_action_admin')->where(['role_id' => $role_id, 'status' => 1])->column('action_id');
  			$res['actions'] = $actions;
  		}
  		return $res;
@@ -63,13 +63,13 @@ class Role extends Model{
  		}
         if(!isset($data['status']))
             $data['status'] = 1;
- 		$data['createtime'] = $data['updatetime'] = $_SERVER['REQUEST_TIME'];
+ 		$data['create_time'] = $data['update_time'] = $_SERVER['REQUEST_TIME'];
  		Db::startTrans();
  		$flag = true;
  		$res = $this->save($data);
  		if($res && $authority){
- 			$roleid = $this->id;
- 			$lines = $this->addRoleAction($roleid, $authority);
+ 			$role_id = $this->id;
+ 			$lines = $this->addRoleAction($role_id, $authority);
  			if($lines != count($authority)){
  				$flag = false;
  			}
@@ -87,11 +87,11 @@ class Role extends Model{
 
     /**
      * 编辑角色
-     * @param $roleid
+     * @param $role_id
      * @param $data
      * @return bool
      */
- 	public function saveData($roleid, $data){
+ 	public function saveData($role_id, $data){
  		$authority = false;
  		if(isset($data['authority']) && !empty($data['authority'])){
  			$authority = json_decode($data['authority'], true);
@@ -100,19 +100,19 @@ class Role extends Model{
  		$data['updatetime'] = $_SERVER['REQUEST_TIME'];
  		Db::startTrans();
  		$flag = true;
- 		$res = $this->save($data, ['id' => $roleid]);
+ 		$res = $this->save($data, ['id' => $role_id]);
  		if($res){
- 			$actions = $this->getRoleActions($roleid);
+ 			$actions = $this->getRoleActions($role_id);
  			$removes = array_diff($actions, $authority);
  			$adds = array_diff($authority, $actions);
  			if(!empty($removes)){
-	 			$res2 = $this->removeRoleActions($roleid, $removes);
+	 			$res2 = $this->removeRoleActions($role_id, $removes);
 	 			if($res2 != count($removes)){
 	 				$flag = false;
 	 			}
  			}
  			if(!empty($adds)){
-	 			$res3 = $this->addRoleAction($roleid, $adds);
+	 			$res3 = $this->addRoleAction($role_id, $adds);
 	 			if($res3 != count($adds)){
 	 				$flag = false;
 	 			}
@@ -143,38 +143,38 @@ class Role extends Model{
  	/**
  	 * 添加角色权限
  	 */
- 	public function addRoleAction($roleid, $actionids){
+ 	public function addRoleAction($role_id, $action_ids){
  		$data = [];
  		$time = $_SERVER['REQUEST_TIME'];
- 		foreach($actionids as $v){
- 			array_push($data, ['actionid' => $v, 'roleid' => $roleid, 'status' => 1, 'createtime' => $time, 'updatetime' => $time]);
+ 		foreach($action_ids as $v){
+ 			array_push($data, ['action_id' => $v, 'role_id' => $role_id, 'status' => 1, 'create_time' => $time, 'update_time' => $time]);
  		}
  		return Db::table('consultation_role_action_admin')->insertAll($data);
  	}
  	/**
  	 * 获取角色权限列表
  	 */
- 	public function getRoleActions($roleid){
- 		return Db::table('consultation_role_action_admin')->where(['roleid' => $roleid, 'status' => 1])->column('actionid');
+ 	public function getRoleActions($role_id){
+ 		return Db::table('consultation_role_action_admin')->where(['role_id' => $role_id, 'status' => 1])->column('action_id');
  	}
 
     /**
      * 删除角色权限
-     * @param $roleid
-     * @param $actionids
+     * @param $role_id
+     * @param $action_ids
      * @return int
      */
- 	public function removeRoleActions($roleid, $actionids){
- 		return Db::table('consultation_role_action_admin')->where(['roleid' => $roleid, 'actionid' => ['in', $actionids]])->delete();
+ 	public function removeRoleActions($role_id, $action_ids){
+ 		return Db::table('consultation_role_action_admin')->where(['role_id' => $role_id, 'action_id' => ['in', $action_ids]])->delete();
  	}
  	/**
  	 * 根据角色获取操作列表
  	 */
- 	public function getActionsByRoleId($roleid){
- 		if(!$roleid) return [];
+ 	public function getActionsByRoleId($role_id){
+ 		if(!$role_id) return [];
  		$res = [];
  		$actions = Db::table('consultation_role_action_admin')->alias('a')->field('b.id,b.name,b.tag,b.pid,b.pids,level')
- 			->where(['a.roleid' => $roleid, 'a.status' => 1])->join('consultation_action_admin b', 'a.actionid=b.id', 'LEFT')
+ 			->where(['a.role_id' => $role_id, 'a.status' => 1])->join('consultation_action_admin b', 'a.action_id=b.id', 'LEFT')
  			->column('tag');
  		return $actions;
  	}

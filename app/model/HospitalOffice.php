@@ -9,17 +9,17 @@ namespace app\model;
 use think\Model;
 
 class HospitalOffice extends Model{
-    protected $table = 'consultation_hospotial_office';
+    protected $table = 'consultation_hospital_office';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'hospital_id','office_id','status','createtime','updatetime'
+        'id', 'hospital_id','office_id','status','create_time','update_time'
     );
     protected $type = [
         'id' => 'integer',
         'hospital_id'=> 'integer',
         'office_id' =>'integer',
-        'createtime' => 'integer',
-        'updatetime' => 'integer'
+        'create_time' => 'integer',
+        'update_time' => 'integer'
     ];
 
     /**
@@ -31,8 +31,8 @@ class HospitalOffice extends Model{
             $cond['status'] = ['<>', 2];
         }
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
-            ->order('priority asc, createtime desc')
+        operation,priority,status,create_time')
+            ->order('priority asc, create_time desc')
             ->where($cond)
             ->select();
         return $res;
@@ -45,7 +45,7 @@ class HospitalOffice extends Model{
      */
     public function getById($id){
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
+        operation,priority,status,create_time')
             ->where(['id' => $id])
             ->find();
         return $res;
@@ -61,7 +61,7 @@ class HospitalOffice extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
-            $data['updatetime'] = time();
+            $data['update_time'] = time();
             $this->save($data, ['id' => $id]);
         }
         return $ret;

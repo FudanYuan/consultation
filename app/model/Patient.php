@@ -13,10 +13,10 @@ class Patient extends Model{
     protected $pk = 'id';
     protected $fields = array(
         'id', 'name','ID_number', 'gender','age','occupation','height','weight',
-        'phone','birthplace','address','workunit','postcode','inhospital_time',
-        'recordtime','other_apply','narrator','main_narrate','presentill_history',
-        'past_history','system_retrospect','personal_history','physical_examrecord',
-        'status','createtime','updatetime'
+        'phone','birthplace','address','work_unit','postcode','in_hospital_time',
+        'record_time','other_apply','narrator','main_narrate','present_ill_history',
+        'past_history','system_retrospect','personal_history','physical_exam_record',
+        'status','create_time','update_time'
     );
     protected $type = [
         'id' => 'integer',
@@ -36,8 +36,8 @@ class Patient extends Model{
             $cond['status'] = ['<>', 2];
         }
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
-            ->order('priority asc, createtime desc')
+        operation,priority,status,create_time')
+            ->order('priority asc, create_time desc')
             ->where($cond)
             ->select();
         return $res;
@@ -50,7 +50,7 @@ class Patient extends Model{
      */
     public function getById($id){
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
+        operation,priority,status,create_time')
             ->where(['id' => $id])
             ->find();
         return $res;
@@ -66,7 +66,7 @@ class Patient extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
-            $data['updatetime'] = time();
+            $data['update_time'] = time();
             $this->save($data, ['id' => $id]);
         }
         return $ret;

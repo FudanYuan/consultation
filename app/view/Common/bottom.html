@@ -109,7 +109,7 @@
 
     $('.logout').on('click', function () {
         $.get('__PRO_PATH__/UserAdmin/dologout', {}, function (res) {
-            if (res.errorcode == 0) {
+            if (res.error_code == 0) {
                 window.location.href = '__PRO_PATH__/UserAdmin/login';
             } else {
                 popWarn(res.msg);
@@ -119,7 +119,7 @@
 
     $('#clearCache').on('click', function () {
         $.get('__PRO_PATH__/Index/clearcache', function (res) {
-            if (res.errorcode == 0) {
+            if (res.error_code == 0) {
                 popWarn('清空缓存成功');
             } else {
                 popWarn('清空缓存失败');
@@ -177,7 +177,7 @@
         methods:{
             getApply: function () {
                 $.post('__PRO_PATH__/Apply/getApplyList', {}, function (res) {
-                    if(res.errorcode == 0){
+                    if(res.error_code == 0){
                         vm2.total = res.total;
                         vm2.list = res.data;
                     }
@@ -208,7 +208,7 @@
         methods:{
             getUser: function () {
                 $.post('__PRO_PATH__/UserAdmin/getUserName', {}, function (res) {
-                    if(res.errorcode == 0){
+                    if(res.error_code == 0){
                         vm3.user = res.username;
                     }
                 });
@@ -225,7 +225,7 @@
         methods:{
             getUser: function () {
                 $.post('__PRO_PATH__/UserAdmin/getUserName', {}, function (res) {
-                    if(res.errorcode == 0){
+                    if(res.error_code == 0){
                         vm4.user = res.username;
                     }
                 });

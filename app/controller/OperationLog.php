@@ -29,7 +29,7 @@ class OperationLog extends Common
         $user_id = $this->getUserId();
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
-        $ret = ['errorcode' => 0, 'data' => [], 'msg' => ""];
+        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond['user_id'] = ['=', $user_id];
         $list = D('OperationLog')->getList();
         //分页时需要获取记录总数，键值为 total

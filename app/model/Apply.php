@@ -13,20 +13,20 @@ class Apply extends Model{
     protected $pk = 'id';
     protected $fields = array(
         'id', 'patient_id','delivery_user_id', 'apply_type',
-        'illness_state', 'eyesill_type','vision_left','vision_right',
+        'illness_state', 'eyes_ill_type','vision_left','vision_right',
         'pressure_left','pressure_right','eye_photo_left','eye_photo_right',
         'diagnose_state','consultation_goal','apply_project','other_apply',
-        'is_definte_purpose','apply_doctor_ids','consultation_doctor',
+        'is_definite_purpose','apply_doctor_ids','consultation_doctor',
         'consultation_office','apply_date','is_consultation','consultation_result',
-        'price','is_charge','other_apply_result','status','createtime','updatetime'
+        'price','is_charge','other_apply_result','status','create_time','update_time'
     );
     protected $type = [
         'id' => 'integer',
         'patient_id' => 'integer',
         'delivery_user_id' => 'integer',
         'apply_date' => 'integer',
-        'createtime' => 'integer',
-        'updatetime' => 'integer'
+        'create_time' => 'integer',
+        'update_time' => 'integer'
     ];
 
     /**
@@ -38,8 +38,8 @@ class Apply extends Model{
             $cond['status'] = ['<>', 2];
         }
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
-            ->order('priority asc, createtime desc')
+        operation,priority,status,create_time')
+            ->order('priority asc, create_time desc')
             ->where($cond)
             ->select();
         return $res;
@@ -52,7 +52,7 @@ class Apply extends Model{
      */
     public function getById($id){
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
+        operation,priority,status,create_time')
             ->where(['id' => $id])
             ->find();
         return $res;
@@ -68,7 +68,7 @@ class Apply extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
-            $data['updatetime'] = time();
+            $data['update_time'] = time();
             $this->save($data, ['id' => $id]);
         }
         return $ret;

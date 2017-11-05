@@ -13,13 +13,13 @@ class Doctor extends Model{
     protected $pk = 'id';
     protected $fields = array(
         'id', 'office_id','name','post','phone','address',
-        'status','createtime','updatetime'
+        'status','create_time','update_time'
     );
     protected $type = [
         'id' => 'integer',
         'office_id' => 'integer',
-        'createtime' => 'integer',
-        'updatetime' => 'integer'
+        'create_time' => 'integer',
+        'update_time' => 'integer'
     ];
 
     /**
@@ -31,8 +31,8 @@ class Doctor extends Model{
             $cond['status'] = ['<>', 2];
         }
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
-            ->order('priority asc, createtime desc')
+        operation,priority,status,create_time')
+            ->order('priority asc, create_time desc')
             ->where($cond)
             ->select();
         return $res;
@@ -45,7 +45,7 @@ class Doctor extends Model{
      */
     public function getById($id){
         $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,createtime')
+        operation,priority,status,create_time')
             ->where(['id' => $id])
             ->find();
         return $res;
@@ -61,7 +61,7 @@ class Doctor extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
-            $data['updatetime'] = time();
+            $data['update_time'] = time();
             $this->save($data, ['id' => $id]);
         }
         return $ret;

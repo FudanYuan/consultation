@@ -28,7 +28,7 @@
                 <div class="form-group {$errors.name ?= 'has-error'}">
                     <label for="form-name" class="col-sm-2 control-label">角色权限：</label>
                     <div class="col-sm-4">
-                        <select name="roleid" class="form-control" style="width:100px;">
+                        <select name="role_id" class="form-control" style="width:100px;">
                             <option value="">--选择角色--</option>
                             {foreach name="roles" item="role"}
                             <option value="{$role.id}">{$role.name}</option>
@@ -70,7 +70,7 @@
             popWarn('账号密码不能为空');
             return;
         }
-        if (!data.roleid) {
+        if (!data.role_id) {
             popWarn('请选择角色');
             return;
         }

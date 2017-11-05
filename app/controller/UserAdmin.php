@@ -15,7 +15,7 @@ class UserAdmin extends Common{
 	public function login(){
 		$data = input('post.');
 		if(!empty($data)){
-			$ret = ['errorcode' => 0, 'msg' => '登陆成功'];
+			$ret = ['error_code' => 0, 'msg' => '登陆成功'];
 			try{
 				D('UserAdmin')->dologin($data);
                 $log['user_id'] = $this->getUserId();
@@ -24,10 +24,10 @@ class UserAdmin extends Common{
                 $log['action_descr'] = '用户登录';
                 D('OperationLog')->addData($log);
 			}catch(MyException $e){
-				$ret['errorcode'] = 1;
+				$ret['error_code'] = 1;
 				$ret['msg'] = $e->getMessage();
 			}catch(\Exception $e){
-				$ret['errorcode'] = 1;
+				$ret['error_code'] = 1;
 				$ret['msg'] = $e->getMessage();
 			}
 			$this->jsonReturn($ret);
@@ -59,7 +59,7 @@ class UserAdmin extends Common{
 	 * 登出
 	 */
 	public function dologout(){
-		$ret = ['errorcode' => 0, 'data' => [], 'msg' => ''];
+		$ret = ['error_code' => 0, 'data' => [], 'msg' => ''];
 		try{
 			$token = session('token');
 			if(!$token) $token = input('request.token');
@@ -71,10 +71,10 @@ class UserAdmin extends Common{
             D('OperationLog')->addData($log);
             D('UserAdmin')->logout($token);
 		}catch(MyException $e){
-			$ret['errorcode'] = 1;
+			$ret['error_code'] = 1;
 			$ret['msg'] = $e->getMessage();
 		}catch(\Exception $e){
-			$ret['errorcode'] = 1;
+			$ret['error_code'] = 1;
 			$ret['msg'] = '系统异常';
 			$ret['msg'] = $e->getMessage();
 		}
@@ -104,10 +104,10 @@ class UserAdmin extends Common{
 	public function create(){
 		$data = input('post.');
 		if(!empty($data)){
-			$ret = ['errorcode' => 0, 'msg' => ''];
+			$ret = ['error_code' => 0, 'msg' => ''];
 			$res = D('UserAdmin')->addData($data);
 			if(!$res){
-				$ret['errorcode'] = 1;
+				$ret['error_code'] = 1;
 				$ret['msg'] = '创建用户失败';
 			}
 			$this->jsonReturn($ret);
@@ -121,10 +121,10 @@ class UserAdmin extends Common{
 	public function edit(){
 		$data = array_filter(input('post.'));
 		if(!empty($data)){
-			$ret = ['errorcode' => 0, 'msg' => ''];
+			$ret = ['error_code' => 0, 'msg' => ''];
 			$res = D('UserAdmin')->saveData($data['id'], $data);
 			if(!$res){
-				$ret['errorcode'] = 1;
+				$ret['error_code'] = 1;
 				$ret['msg'] = '编辑用户失败';
 			}
 			$this->jsonReturn($ret);
@@ -168,10 +168,10 @@ class UserAdmin extends Common{
 	public function roleCreate(){
 		$data = input('post.');
 		if(!empty($data)){
-			$ret = ['errorcode' => 0, 'msg' => ''];
+			$ret = ['error_code' => 0, 'msg' => ''];
 			$res = D('Role')->addData($data);
 			if(!$res){
-				$ret['errorcode'] = 1;
+				$ret['error_code'] = 1;
 				$ret['msg'] = '创建角色失败';
 			}
 			$this->jsonReturn($ret);
@@ -184,10 +184,10 @@ class UserAdmin extends Common{
 	public function roleEdit(){
 		$data = input('post.');
 		if(!empty($data)){
-			$ret = ['errorcode' => 0, 'msg' => ''];
+			$ret = ['error_code' => 0, 'msg' => ''];
 			$res = D('Role')->saveData($data['id'], $data);
 			if(!$res){
-				$ret['errorcode'] = 1;
+				$ret['error_code'] = 1;
 				$ret['msg'] = '编辑角色失败';
 			}
 			$this->jsonReturn($ret);
@@ -216,7 +216,7 @@ class UserAdmin extends Common{
      */
 	public function getUserName(){
         $user_id = $this->getUserId();
-        $ret = ['errorcode' => 0, 'msg' => ''];
+        $ret = ['error_code' => 0, 'msg' => ''];
         $ret['username'] = D('UserAdmin')->getById($user_id)['username'];
         $this->jsonReturn($ret);
     }

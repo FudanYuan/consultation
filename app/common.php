@@ -324,8 +324,8 @@ function authority($tag)
 {
     static $actions;
     $user = config('user');
-    if ($user['roleid'] == 1) return true;
+    if ($user['role_id'] == 1) return true;
     if (empty($actions))
-        $actions = D('Role')->getActionsByRoleId($user['roleid']);
+        $actions = D('Role')->getActionsByRoleId($user['role_id']);
     return in_array($tag, $actions);
 }
