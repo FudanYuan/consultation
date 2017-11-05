@@ -147,7 +147,10 @@ class Apply extends Common
             }
 
         }
-        return view('', ['target_users' => $target_users]);
+        $office = [];
+        $office[0] = ['id' => 1, 'name' => '骨科'];
+        $office[1] = ['id' => 2, 'name' => '眼科'];
+        return view('', ['office' => $office]);
     }
 
 

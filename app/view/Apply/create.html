@@ -5,15 +5,14 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Inform/index">会诊申请</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
             <!--<li>新建申请</li>-->
         </ul>
         <div class="form-wrapper">
-            <form class="form-horizontal" method="post" id="new-inform-form">
-
+            <form class="form-horizontal" method="post" id="new-apply-form">
                 <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
-                    <label for="new-inform-form-priority" class="col-sm-2 control-label">会诊类型：</label>
-                    <div class="col-sm-4" id="new-inform-form-priority" >
+                    <label for="new-apply-form-priority" class="col-sm-2 control-label">会诊类型：</label>
+                    <div class="col-sm-4" id="new-apply-form-priority" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="priority1" name="priority" value="1">
@@ -34,28 +33,26 @@
 
 
                 <div :class="['form-group']" >
-                    <label for="new-inform-form-priority" class="col-sm-2 control-label">会诊医院：</label>
+                    <label for="new-apply-form-priority" class="col-sm-2 control-label">会诊医院：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="hospital_name" value="附二医院" disabled>
 
                     </div>
 
                     <!--<div class="col-sm-4">
-                        <input class="form-control" type="text" name="title" value="" placeholder="请输入通知标题" id="new-inform-form-title">
+                        <input class="form-control" type="text" name="title" value="" placeholder="请输入通知标题" id="new-apply-form-title">
                         <p class="help-block">{{errors.title}}</p>
                     </div>-->
                 </div>
 
                 <div :class="['form-group', errors.target_user_id != '' ? 'has-error' : '']" >
-                    <label for="new-inform-form-target" class="col-sm-2 control-label">会诊科室：</label>
+                    <label for="new-apply-form-target" class="col-sm-2 control-label">会诊科室：</label>
                     <div class="col-sm-4">
-                        <select multiple="multiple" class="multiple" id="new-inform-form-target" name="target_user_ids">
-                            <option value="-1">外科</option>
-                            <option value="haha">内科</option>
-                            <option value="haha">骨科</option>
-                            <!--{foreach name="target_users" item="model"}
-                            <option value="{$model.id}" >{$model.username}</option>
-                            {/foreach}-->
+                        <select multiple="multiple" class="multiple" id="new-apply-form-target" name="target_user_ids">
+                            <option value="-1">--请选择--</option>
+                            {foreach name="office" item="model"}
+                            <option value="{$model.id}" >{$model.name}</option>
+                            {/foreach}
                         </select>
                         <p class="help-block">{{errors.target_user_id}}</p>
                     </div>
@@ -67,8 +64,6 @@
                         <input class="form-control" type="text" name="doctor" value="" placeholder="请输入会诊医师名" id="id_doctor">
                     </div>
                 </div>
-
-                <br><br>
 
                 <div :class="['form-group']" >
                     <label for="id_ID_number_Patient" class="col-sm-2 control-label">患者身份证号：</label>
@@ -87,8 +82,8 @@
                 </div>
 
                 <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
-                    <label for="new-inform-form-priority" class="col-sm-2 control-label">患者性别：</label>
-                    <div class="col-sm-4" id="new-inform-form-priority" >
+                    <label for="new-apply-form-priority" class="col-sm-2 control-label">患者性别：</label>
+                    <div class="col-sm-4" id="new-apply-form-priority" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="man" name="sex" value="1">
@@ -174,8 +169,8 @@
                 <div :class="['form-group']" >
                     <label for="id_condition_Patient" class="col-sm-2 control-label">预约时间：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="time_appointment" value="" placeholder="请输入要预约的时间" id="id_time_appointment">
-                        <!--<p class="help-block">{{errors.title}}</p>-->
+                        <input placeholder="请输入要预约的时间" id="id_time_appointment" name="begintime_str" data-enable-time="true" data-time_24hr="false" class="form-control flatpickr flatpickr-input">
+                        <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
 
@@ -195,6 +190,7 @@
                     </div>
                 </div>
 
+
                 <!--
                 <div  :class="['form-group', errors.content != '' ? 'has-error' : '']" >
                     <label class="col-sm-2 control-label">通知内容：</label>
@@ -208,7 +204,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-inform-form-save" @click="createNewInform">申请</a>
+                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">申请</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>
@@ -219,18 +215,18 @@
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
+{include file="Common/calendar" /}
 {include file="Common/bottom" /}
 {include file="Common/upload"}
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    $('#consensus-nav-inform').addClass('active');
-
-    var ue = UE.getEditor('editor');
+    $('#consensus-nav-apply').addClass('active');
+    $(".flatpickr").flatpickr({time_24hr:true});
 
     var vm = new Vue({
-        el: '#new-inform-form',
+        el: '#new-apply-form',
         data: {
             params: {},
             errors:{
@@ -241,12 +237,12 @@
             }
         },
         methods: {
-            createNewInform: function () {
+            createNewApply: function () {
                 getParams();
-                $.post('__PRO_PATH__/Inform/create', vm.params, function(res){
+                $.post('__PRO_PATH__/Apply/create', vm.params, function(res){
                     if(res.code == 1){
                         popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Inform/index';
+                        window.location.href = '__PRO_PATH__/Apply/index';
                     }else if(res.code == 2){
                         $.each(res.errors, function(k, v){
                             vm.errors[k] = v;
@@ -265,16 +261,16 @@
     });
 
     $(function () {
-        $("#new-inform-form-target").multipleSelect("checkAll");
+        $("#new-apply-form-target").multipleSelect("checkAll");
     });
 
     $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Inform/index';
+        window.location.href = '__PRO_PATH__/Apply/index';
     });
 
     function getParams(){
         vm.params['target_user_ids'] = [];
-        var data = $('#new-inform-form').serializeArray();
+        var data = $('#new-apply-form').serializeArray();
         $.each(data, function() {
             if(this.name == 'target_user_ids'){
                 vm.params[this.name].push(this.value);

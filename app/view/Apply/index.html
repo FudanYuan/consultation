@@ -5,22 +5,17 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li>新建任务</li>
+            <li>会诊申请</li>
         </ul>
 
-        <div id="inform">
+        <div id="apply">
             <div class="list-btns">
-                {if condition="authority('InformCreate')"}
+                {if condition="authority('ApplyCreate')"}
                 <div class="btn-group">
-                    <button type="button" class="btn btn-success" @click="createInform">新建</button>
+                    <button type="button" class="btn btn-success" @click="create">新建</button>
                 </div>
                 {/if}
-                {if condition="authority('InformMarkRead')"}
-                <div class="btn-group">
-                    <a href="javascript:;" class="btn btn-success" @click="markRead([])">标为已读</a>
-                </div>
-                {/if}
-                {if condition="authority('InformRemove')"}
+                {if condition="authority('ApplyRemove')"}
                 <div class="btn-group">
                     <a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
                 </div>
@@ -56,9 +51,6 @@
                             <a href="javascript:;" @click="info(index)" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
-                            <a href="javascript:;" @click="markRead([model.id])" v-if="model.status == 0" title="标为已读">
-                                <i class="fa fa-envelope-open fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
-                            </a>
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
                                 <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
                             </a>
@@ -67,7 +59,7 @@
                 </template>
                 <template v-else>
                     <tr>
-                        <td colspan="5" class="nodata">暂无通知公告！</td>
+                        <td colspan="5" class="nodata">暂无会诊申请！</td>
                     </tr>
                 </template>
                 </tbody>
@@ -79,13 +71,12 @@
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
 {include file="Common/popup_list" /}
-{include file="Common/popup_preview" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
-    $('#consensus-nav-inform').addClass('active');
+    $('#consultation-nav-apply').addClass('active');
 
     var vm = new Vue({
-        el: '#inform',
+        el: '#apply',
         data: {
             list: [],
             params: {},
@@ -178,43 +169,21 @@
                 }
                 this.check_all = !this.check_all;
             },
+
             info: function (index) {
-                console.log(index);
                 popupPreview(this.list[index]);
-                console.log(this.list[index]);
                 if(this.list[index]['status'] == 0){
-                    $.post('__PRO_PATH__/Inform/markRead', {ids: this.list[index]['id']}, function (res) {
+                    $.post('__PRO_PATH__/Apply/markRead', {ids: this.list[index]['id']}, function (res) {
                         if (res['code'] == 1) {
                             submit();
                         }
                     });
                 }
             },
-            <!--df-->
-            createInform: function () {
+            create: function () {
                 window.location.href = '__PRO_PATH__/Apply/create';
             },
-            markRead: function (id) {
-                var ids = [];
-                if(id.length==0){
-                    ids = this.select;
-                }
-                else{
-                    if(this.select.indexOf(id[0]) == -1){
-                        this.select.push(id[0]);
-                    }
-                    ids = id;
-                }
-                this.select = ids;
-                // 标为已读
-                popupList({
-                    mark: '__PRO_PATH__/Inform/markRead',
-                    ids: vm.select
-                }, function () {
-                    submit();
-                });
-                $('#mark-confirm-popup').popup('show');
-            },
+
             remove: function (id) {
                 var ids = [];
                 if(id.length==0){
@@ -229,7 +198,7 @@
                 this.select = ids;
                 // 删除
                 popupList({
-                    remove: '__PRO_PATH__/Inform/remove',
+                    remove: '__PRO_PATH__/Apply/remove',
                     ids: vm.select
                 }, function () {
                     submit();
@@ -242,7 +211,7 @@
                 formatString = formatString || 'YYYY-MM-DD HH:mm';
                 return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
             },
-            getInformStatus: function (value) {
+            getApplyStatus: function (value) {
                 var ret = "";
                 if(value==0){
                     ret = "未读";
@@ -264,7 +233,7 @@
     function submit() {
         getParams();
         vm.resetParams();
-        $.post('__PRO_PATH__/Inform/getInformList', vm.params, function (res) {
+        $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
             if (res.errorcode == 0) {
                 vm.total = res.total;
                 vm.pages = Math.ceil(res.total / vm.per_page);
