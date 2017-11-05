@@ -52,8 +52,9 @@ class Hospital extends Model{
 
     /**
      * 更新通知公告
-     * {@inheritDoc}
-     * @see \think\Model::save()
+     * @param $id
+     * @param $data
+     * @return array
      */
     public function saveData($id, $data){
         $ret = [];

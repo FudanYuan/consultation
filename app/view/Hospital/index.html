@@ -5,17 +5,17 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li>会诊申请</li>
+            <li>医院信息</li>
         </ul>
 
-        <div id="apply">
+        <div id="hospital">
             <div class="list-btns">
-                {if condition="authority('ApplyCreate')"}
+                {if condition="authority('HospitalCreate')"}
                 <div class="btn-group">
                     <button type="button" class="btn btn-success" @click="create">新建</button>
                 </div>
                 {/if}
-                {if condition="authority('ApplyRemove')"}
+                {if condition="authority('HospitalRemove')"}
                 <div class="btn-group">
                     <a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
                 </div>
@@ -51,13 +51,13 @@
                                 <i class="fa fa-envelope-open fa-lg" aria-hidden="true"></i>
                             </span>
                         </td>
-                        <td>{{model.apply_type | getApplyType}}</td>
+                        <td>{{model.hospital_type | getHospitalType}}</td>
                         <td>{{model.hospital_name}}</td>
                         <td>{{model.doctor_name}}</td>
                         <td>{{model.phone}}</td>
-                        <td>{{model.apply_project}}</td>
-                        <td>{{model.apply_date | moment}}</td>
-                        <td>{{model.status | getApplyStatus}}</td>
+                        <td>{{model.hospital_project}}</td>
+                        <td>{{model.hospital_date | moment}}</td>
+                        <td>{{model.status | getHospitalStatus}}</td>
                         <td>{{model.is_charge | getChargeStatus}}</td>
                         <td>
                             <a href="javascript:;" @click="info(index)" title="详情">
@@ -71,7 +71,7 @@
                 </template>
                 <template v-else>
                     <tr>
-                        <td colspan="11" class="nodata">暂无会诊申请！</td>
+                        <td colspan="11" class="nodata">暂无医院信息！</td>
                     </tr>
                 </template>
                 </tbody>
@@ -85,10 +85,10 @@
 {include file="Common/popup_list" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
-    $('#consultation-nav-apply').addClass('active');
+    $('#consultation-nav-hospital').addClass('active');
 
     var vm = new Vue({
-        el: '#apply',
+        el: '#hospital',
         data: {
             list: [],
             params: {},
@@ -183,17 +183,10 @@
             },
 
             info: function (index) {
-                popupPreview(this.list[index]);
-                if(this.list[index]['status'] == 0){
-                    $.post('__PRO_PATH__/Apply/markRead', {ids: this.list[index]['id']}, function (res) {
-                        if (res['code'] == 1) {
-                            submit();
-                        }
-                    });
-                }
+
             },
             create: function () {
-                window.location.href = '__PRO_PATH__/Apply/create';
+                window.location.href = '__PRO_PATH__/Hospital/create';
             },
 
             remove: function (id) {
@@ -210,7 +203,7 @@
                 this.select = ids;
                 // 删除
                 popupList({
-                    remove: '__PRO_PATH__/Apply/remove',
+                    remove: '__PRO_PATH__/Hospital/remove',
                     ids: vm.select
                 }, function () {
                     submit();
@@ -223,7 +216,7 @@
                 formatString = formatString || 'YYYY-MM-DD HH:mm';
                 return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
             },
-            getApplyStatus: function (value) {
+            getHospitalStatus: function (value) {
                 var ret = "";
                 if(value==1){
                     ret = "待处理";
@@ -239,7 +232,7 @@
                 }
                 return ret;
             },
-            getApplyType: function (value) {
+            getHospitalType: function (value) {
                 var ret = '';
                 if(value == 1){
                     ret = '一般';
@@ -271,7 +264,7 @@
     function submit() {
         getParams();
         vm.resetParams();
-        $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
+        $.post('__PRO_PATH__/Hospital/getHospitalList', vm.params, function (res) {
             if (res['error_code'] == 0) {
                 vm.total = res.total;
                 vm.pages = Math.ceil(res.total / vm.per_page);

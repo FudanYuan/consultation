@@ -227,7 +227,7 @@
                     </li>
 
                     {if condition="authority('Apply')"}
-                    <li class="bg-palette1" id="consultation-nav-apply">
+                    <li class="bg-palette2" id="consultation-nav-apply">
                         <a href="__PRO_PATH__/Apply/index">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-envelope fa-lg"></i></span>
@@ -238,29 +238,17 @@
                     </li>
                     {/if}
 
-                    <li class="openable bg-palette3" id="consultation-nav-warehouse">
-                        <a href="javascript:;">
+                    {if condition="authority('Hospital')"}
+                    <li class="bg-palette3" id="consultation-nav-hospital">
+                        <a href="__PRO_PATH__/Hospital/index">
                             <span class="menu-content block">
-                                <span class="menu-icon"><i class="block fa fa-bank fa-lg"></i></span>
-								<span class="text m-left-sm">库管理</span>
-                                <span class="submenu-icon"></span>
+                                <span class="menu-icon"><i class="fa fa-envelope fa-lg"></i></span>
+								<span class="text m-left-sm">医院信息</span>
                             </span>
-                            <span class="menu-content-hover block">Warehouse</span>
+                            <span class="menu-content-hover block">Hospital</span>
                         </a>
-                        <ul class="submenu bg-palette3">
-                            {if condition="authority('Theme')"}
-                            <li id="consultation-nav-warehouse-sub2">
-                                <a href="__PRO_PATH__/Theme/index">
-                                    <span class="submenu-label">主题库</span>
-                                </a>
-                            </li>
-                            {/if}
-                            {if condition="authority('Media')"}
-                            <li id="consultation-nav-warehouse-sub3"><a href="__PRO_PATH__/Media/index"><span
-                                    class="submenu-label">媒体库</span></a></li>
-                            {/if}
-                        </ul>
                     </li>
+                    {/if}
 
                     {if condition="authority('OperationLog')"}
                     <li class="bg-palette2" id="consultation-nav-log">
