@@ -28,21 +28,16 @@ class Hospital extends Common
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-        $cond['target_user_id'] = ['=', $user_id];
 
-        //$list = D('Apply')->getList($cond);
         $list = [];
-        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
+        $list[0] = ['id' => 1, 'name' => '医院甲', 'logo' => '',
+            'phone' => '121212121212', 'email' => '121212@11.fes', 'address' => '湖南省长沙市',
+            'role' => 1, 'status' => 1, 'create_time' =>  1509871680
         ];
-        $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
+        $list[1] = ['id' => 2, 'name' => '医院乙', 'logo' => '',
+            'phone' => '121212121212', 'email' => '121212@11.fes', 'address' => '湖南省长沙市',
+            'role' => 2, 'status' => 1, 'create_time' =>  1509871680
         ];
-
 
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);

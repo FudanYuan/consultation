@@ -27,7 +27,7 @@ class Apply extends Common
         $params = input('post.');
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
-        $ret = ['errorcode' => 0, 'data' => [], 'msg' => ""];
+        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond['target_user_id'] = ['=', $user_id];
 
         if(empty($params)){
