@@ -181,10 +181,11 @@
                                     <template v-for="(model, index) in list">
                                     <li>
                                         <a class="clearfix" href="javascript:;" @click="info(index)">
+                                            <img :src="model.hospital_logo != '' ? 'model.hospital_logo' : '__PUBLIC__/images/profile/profile2.jpg' " alt="model.hospital_name">
                                             <div class="detail">
-                                                <strong>{{model.username}}</strong>
+                                                <strong>{{model.hospital_name}}</strong>
                                                 <p class="no-margin">
-                                                    {{model.title}}
+                                                    {{model.consultation_goal}}
                                                 </p>
                                                 <small class="text-muted"><i class="fa fa-check text-success"></i>
                                                     {{model.time}}

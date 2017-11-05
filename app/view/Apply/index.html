@@ -41,7 +41,7 @@
                 <template  v-if="list.length != 0">
                     <tr v-for="(model, index) in list">
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
-                        <td v-if="model.status==0">
+                        <td v-if="model.status==1">
                             <span style="color: purple">
                                 <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
                             </span>
@@ -51,8 +51,14 @@
                                 <i class="fa fa-envelope-open fa-lg" aria-hidden="true"></i>
                             </span>
                         </td>
-                        <td>{{model.title | formatText(40, model.title)}}</td>
-                        <td>{{model.createtime | moment}}</td>
+                        <td>{{model.apply_type | getApplyType}}</td>
+                        <td>{{model.hospital_name}}</td>
+                        <td>{{model.doctor_name}}</td>
+                        <td>{{model.phone}}</td>
+                        <td>{{model.apply_project}}</td>
+                        <td>{{model.apply_date | moment}}</td>
+                        <td>{{model.status | getApplyStatus}}</td>
+                        <td>{{model.is_charge | getChargeStatus}}</td>
                         <td>
                             <a href="javascript:;" @click="info(index)" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
@@ -219,11 +225,37 @@
             },
             getApplyStatus: function (value) {
                 var ret = "";
-                if(value==0){
-                    ret = "未读";
-                }
                 if(value==1){
-                    ret = "已读";
+                    ret = "待处理";
+                }
+                if(value==2){
+                    ret = "待会诊";
+                }
+                if(value==3){
+                    ret = "已会诊";
+                }
+                if(value==4){
+                    ret = "已结束";
+                }
+                return ret;
+            },
+            getApplyType: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '一般';
+                }
+                if(value == 2){
+                    ret = '紧急';
+                }
+                return ret;
+            },
+            getChargeStatus: function (value) {
+                var ret = '';
+                if(value == 0){
+                    ret = '已缴费';
+                }
+                if(value == 1){
+                    ret = '未缴费';
                 }
                 return ret;
             },

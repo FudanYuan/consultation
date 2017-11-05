@@ -180,16 +180,14 @@
                     if(res.errorcode == 0){
                         vm2.total = res.total;
                         vm2.list = res.data;
-                        console.log(JSON.stringify(vm2.list));
                     }
-                })
+                });
             },
             info: function (index) {
                 popupPreview(vm2.list[index]);
                 if(vm2.list[index]['status'] == 0){
                     $.post('__PRO_PATH__/Apply/markRead', {ids: vm2.list[index]['id']}, function (res) {
                         if (res['code'] == 1) {
-                            //submit();
                         }
                     });
                 }
@@ -197,9 +195,9 @@
         }
     });
 
-//    setInterval(function () {
-//        vm2.getApply();
-//    }, 1000);
+    setInterval(function () {
+        vm2.getApply();
+    }, 1000);
 
     // 获得用户名称
     var vm3 = new Vue({

@@ -32,11 +32,21 @@ class Apply extends Common
 
         if(empty($params)){
             $cond['status'] = ['=', 0];
-            $list = D('Apply')->getList($cond);
+//            $list = D('Apply')->getList($cond);
+            $list = [];
+            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '', 'hospital_name' => '医院甲',
+                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
+                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
+            ];
+            $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_logo' => '', 'hospital_name' => '医院乙',
+                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
+                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
+            ];
             for($i=0;$i<count($list);$i++){
-                $list[$i]['username'] = D('UserAdmin')->getById($list[$i]['source_user_id'])['username'];
-                $list[$i]['time'] = formatTime($list[$i]['createtime']);
-                $list[$i]['title'] = formatText($list[$i]['title'], 10);
+                $list[$i]['time'] = formatTime($list[$i]['create_time']);
+                $list[$i]['consultation_goal'] = formatText($list[$i]['consultation_goal'], 10);
             }
             $ret["total"] = count($list);
             $ret["data"] = $list;
@@ -46,14 +56,14 @@ class Apply extends Common
             //$list = D('Apply')->getList($cond);
             $list = [];
             $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-                'doctor_id' => 1, 'doctor_name' => '张三', 'apply_type' => 1,
-                'apply_project' => 1, 'apply_date' => 1509871680, 'status' => 0,
-                'is_charge' => 0
+                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
+                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
             ];
             $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
-                'doctor_id' => 1, 'doctor_name' => '张三', 'apply_type' => 1,
-                'apply_project' => 1, 'apply_date' => 1509871680, 'status' => 0,
-                'is_charge' => 0
+                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
+                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
             ];
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
