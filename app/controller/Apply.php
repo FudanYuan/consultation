@@ -12,8 +12,8 @@ class Apply extends Common
     public $colsText = [];
 
     /**
-     * 通知公告
-     * @return mixed
+     * 会诊申请
+     * @return \think\response\View
      */
     public function index()
     {
@@ -22,7 +22,23 @@ class Apply extends Common
     }
 
     /**
-     * 获取通知公告列表
+     * 会诊申请
+     * @return \think\response\View
+     */
+    public function info(){
+        $id = input('get.id');
+        //$list = D('Apply')->getById($id);
+        $list = [];
+        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '', 'hospital_name' => '医院甲',
+            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
+            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, ''
+        ];
+        return view('', ['list' => $list]);
+    }
+
+    /**
+     * 获取会诊申请列表
      */
     public function getApplyList(){
         $params = input('post.');
