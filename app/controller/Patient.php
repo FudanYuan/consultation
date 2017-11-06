@@ -29,7 +29,7 @@ class Patient extends Common
         $patient_data = D('Patient')->getPatientByIdNum($ID_number);
         if(empty($patient_data)){
             $ret['error_code'] = 2;
-            $ret['msg'] = '未找这名患者';
+            $ret['msg'] = '未找到这名患者';
         }else{
             $ret['patient'] = $patient_data;
         }
