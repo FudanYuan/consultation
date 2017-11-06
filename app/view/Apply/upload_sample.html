@@ -1,0 +1,111 @@
+{include file="Common/top" title="首页" metas='' /}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/ResearchArea/index">研究方向</a></li>
+            <li>新建</li>
+        </ul>
+        <div class="form-wrapper">
+            <form class="form-horizontal" method="post" id="main-form">
+                <input type="hidden" name="ispublish" value="0"/>
+                <div class="form-group {$errors.title ?= 'has-error'}">
+                    <label for="form-title" class="col-sm-2 control-label">标题：</label>
+                    <div class="col-sm-4">
+                        <input name="title" type="text" class="form-control" id="form-title" value="{$data.title??''}">
+                        <span class="help-block">{$errors.title??''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.tagid ?= 'has-error'}">
+                    <label for="form-tag" class="col-sm-2 control-label">标签：</label>
+                    <div class="col-sm-4">
+                        <select name="tagid" class="form-control" style="width:100px" id="form-tag">
+                            <option value="">--选择--</option>
+                            {foreach name="tags" item="tag"}
+                            <option value="{$tag.id}">{$tag.title}</option>
+                            {/foreach}
+                        </select>
+                        <span class="help-block">{$errors.tagid ?? ''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.digest ?= 'has-error'}">
+                    <label for="form-digest" class="col-sm-2 control-label">摘要：</label>
+                    <div class="col-sm-8">
+                        <textarea name="digest" class="form-control" id="form-digest"
+                                  rows="3">{$data.digest??''}</textarea>
+                        <span class="help-block">{$errors.digest??''}</span>
+                    </div>
+                </div>
+                <div class="form-group {$errors.img ?= 'has-error'}">
+                    <label class="col-sm-2 control-label">封面：</label>
+                    <div class="col-sm-4">
+                        <div id="filelist">
+                            <div>{$data.img_origin??''}<b></b></div>
+                        </div>
+                        <br/>
+                        <div id="upload-wrapper">
+                            <a id="pickfiles" href="javascript:;">选择文件</a>
+                            <a id="uploadfiles" href="javascript:;">上传</a>
+                        </div>
+                        <input type="hidden" name="img" value="{$data.img??''}"/>
+                        <input type="hidden" name="img_origin" value="{$data.img_origin??''}"/>
+                        <span class="help-block">{$errors.img ?? ''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.content ?= 'has-error'}">
+                    <label for="form-content" class="col-sm-2 control-label">内容：</label>
+                    <span class="help-block">{$errors.content??''}</span>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <script id="editor" type="text/plain" style="width:100%;height:500px;" name="content">
+						{$data.content??''}
+
+                        </script>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 lab-btns">
+                        <a id="form-publish" class="btn btn-primary">发布</a>
+                        <button type="submit" class="btn btn-success">保存</button>
+                        <a id="form-cancel" class="btn btn-info">取消</a>
+                        <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/upload"}
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    var ue = UE.getEditor('editor');
+    $('#lab-nav3').addClass('active');
+    $('#form-cancel').on('click', function () {
+        window.location.href = '__PRO_PATH__/ResearchArea/index';
+    });
+    $('#form-publish').on('click', function () {
+        $("input[name='ispublish']").val(1);
+        $('#main-form').submit();
+    });
+    myupload({
+        container: 'upload-wrapper',
+        browse: 'pickfiles',
+        url: '__PRO_PATH__/Media/upload?dir=research',
+        img_types: 'jpg,gif,png',
+        zip_types: 'zip',
+        filelist: 'filelist',
+        uploadfiles: 'uploadfiles',
+        file_size: '10mb',
+        onUploaded: function (up, file, result) {
+            $("input[name='img_origin']").val(file.name);
+            var res = JSON.parse(result.response);
+            $("input[name='img']").val(res.result.file);
+        },
+        isMulti: false
+    });
+</script>
+{include file="Common/bottom" /}

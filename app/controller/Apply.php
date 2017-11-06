@@ -107,64 +107,35 @@ class Apply extends Common
     }
 
     /**
-     * 新建
+     * 新建会诊申请
      */
     public function create(){
         $params = input('post.');
+        /**
+         * {"target_user_ids":[],
+         * hospital_name: '',
+         * office_name: '',
+         * "apply_type":"2",
+         * "doctor_name":"faf",
+         * "patient_ID_number":"faf",
+         * "patient_name":"faf",
+         * "patient_gender":"2",
+         * "patient_age":"fafaf",
+         * "patient_phone":"faf",
+         * "illness_state":"afaf",
+         * "diagnose_state":"afaf",
+         * "consultation_goal":"faf",
+         * "other_apply":"afaf",
+         * "apply_date":"",
+         * "apply_doctor_name":"fafa"}
+         */
         $cond = [];
-        $cond['id'] = ['<>', $this->getUserId()];
-        $target_users = D('UserAdmin')->getList($cond);
         if(!empty($params)) {
             $data = [];
-            $ret = ['code' => 1, 'msg' => '新建成功'];
-            $title = input('post.title', '');
-            $priority = input('post.priority', '');
-            if (!isset($params['target_user_ids'])) {
-                $params['target_user_ids'] = [];
-            }
-            if (!isset($params['content'])){
-                $params['content'] = '';
-            }
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
 
-            $data['source_user_id'] = $this->getUserId();
-            $data['title'] = $title;
-            $data['content'] = $params['content'];
-            $data['operation'] = '查看';
-            $data['priority'] = (int)$priority;
-            $data['status'] = 0;
-
-            $dataSet = [];
-            if(!empty($params['target_user_ids'])){
-                for($i=0;$i<count($params['target_user_ids']);$i++){
-                    $data['target_user_id'] = (int)$params['target_user_ids'][$i];
-                    array_push($dataSet, $data);
-                }
-                // 添加Apply
-                $res_apply = D('Apply')->addAllData($dataSet);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                    $this->jsonReturn($ret);
-                }
-                $log['user_id'] = $this->getUserId();
-                $log['IP'] = $this->getUserIp();
-                $log['section'] = '通知公告';
-                $log['action_descr'] = '新建通知';
-                D('OperationLog')->addData($log);
-                $this->jsonReturn($ret);
-            }
-            else{
-                $data['target_user_id'] = '';
-                // 添加Apply
-                $res_apply = D('Apply')->addData($data);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                }
-                $this->jsonReturn($ret);
-            }
+            $data['patient_id'] = $params;
+            $data['delivery_user_id'] = $this->getUserId();
         }
 
         $office = [];

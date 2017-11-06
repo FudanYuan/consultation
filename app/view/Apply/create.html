@@ -41,7 +41,7 @@
                 <div :class="['form-group']" >
                     <label  class="col-sm-2 control-label">会诊科室：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="keshi_name" value="眼科" disabled>
+                        <input class="form-control" type="text" name="office_name" value="眼科" disabled>
                     </div>
                 </div>
 
@@ -153,33 +153,21 @@
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
-                    <label  class="col-sm-2 control-label">申请科室：</label>
-                    <div class="col-sm-4">
-                        <input class="form-control" type="text" name="keshi_name" value="眼科" disabled>
-                    </div>
-                </div>
+                <!--<div :class="['form-group']" >-->
+                    <!--<label  class="col-sm-2 control-label">申请科室：</label>-->
+                    <!--<div class="col-sm-4">-->
+                        <!--<input class="form-control" type="text" name="keshi_name" value="眼科" disabled>-->
+                    <!--</div>-->
+                <!--</div>-->
 
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label for="apply_doctor_name" class="col-sm-2 control-label">申请人：</label>
-                    <div class="col-sm-4">
-                        <input class="form-control" type="text" name="apply_doctor_name" value="" placeholder="请输入您的姓名" id="apply_doctor_name">
-                        <p class="help-block">{{errors.title}}</p>
-                    </div>
-                </div>
-
-
-                <!--
-                <div  :class="['form-group', errors.content != '' ? 'has-error' : '']" >
-                    <label class="col-sm-2 control-label">通知内容：</label>
-                    <span class="help-block">{{errors.content}}</span>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <script id="editor" type="text/plain" style="width:100%;height:100px;" name="content"></script>
-                    </div>
-                </div>-->
+                <!--<div :class="['form-group', errors.title != '' ? 'has-error' : '']" >-->
+                    <!--<label for="apply_doctor_name" class="col-sm-2 control-label">申请人：</label>-->
+                    <!--<div class="col-sm-4">-->
+                        <!--<input class="form-control" type="text" name="apply_doctor_name" value="" placeholder="请输入您的姓名" id="apply_doctor_name">-->
+                        <!--<p class="help-block">{{errors.title}}</p>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
@@ -219,10 +207,10 @@
             createNewApply: function () {
                 getParams();
                 $.post('__PRO_PATH__/Apply/create', vm.params, function(res){
-                    if(res.code == 1){
+                    if(res.error_code == 0){
                         popWarn('新建成功');
                         window.location.href = '__PRO_PATH__/Apply/index';
-                    }else if(res.code == 2){
+                    }else if(res.error_code == 1){
                         $.each(res.errors, function(k, v){
                             vm.errors[k] = v;
                         });
