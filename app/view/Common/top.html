@@ -250,6 +250,30 @@
                     </li>
                     {/if}
 
+                    {if condition="authority('Doctor')"}
+                    <li class="bg-palette3" id="consultation-nav-doctor">
+                        <a href="__PRO_PATH__/Doctor/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-user-md fa-lg"></i></span>
+								<span class="text m-left-sm">医生信息</span>
+                            </span>
+                            <span class="menu-content-hover block">Doctor</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('Patient')"}
+                    <li class="bg-palette3" id="consultation-nav-patient">
+                        <a href="__PRO_PATH__/Patient/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-male fa-lg"></i></span>
+								<span class="text m-left-sm">患者信息</span>
+                            </span>
+                            <span class="menu-content-hover block">Patient</span>
+                        </a>
+                    </li>
+                    {/if}
+
                     {if condition="authority('OperationLog')"}
                     <li class="bg-palette2" id="consultation-nav-log">
                         <a href="__PRO_PATH__/OperationLog/index">
