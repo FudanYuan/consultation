@@ -23,6 +23,20 @@ class HospitalOffice extends Model{
     ];
 
     /**
+     * 获取医院和科室表
+     * @param $id
+     * @return mixed
+     */
+    public function getHospitalOfficeById($id){
+        $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+
+    //////未修改/////
+    /**
      * 获取通知列表
      * @param array $cond
      */
@@ -53,8 +67,9 @@ class HospitalOffice extends Model{
 
     /**
      * 更新通知公告
-     * {@inheritDoc}
-     * @see \think\Model::save()
+     * @param $id
+     * @param $data
+     * @return array
      */
     public function saveData($id, $data){
         $ret = [];

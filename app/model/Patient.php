@@ -29,6 +29,16 @@ class Patient extends Model{
         'update_time' => 'integer'
     ];
 
+
+    public function getPatientByIdNum($Id_Num){
+        $res = $this->field('*')
+            ->where(['ID_number' => $Id_Num])
+            ->find();
+        return $res;
+    }
+
+
+    ///////未修改///////
     /**
      * 获取患者列表
      * @param array $cond

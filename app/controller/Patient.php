@@ -1,7 +1,7 @@
 <?php
 /**
  * 患者信息--控制器
- * Created by shiren.
+ * Created by
  * time 2017.10.19
  */
 namespace app\controller;
@@ -13,11 +13,27 @@ class Patient extends Common
 
     /**
      * 患者信息
-     * @return \think\response\View
+     * @return mixed
      */
     public function index()
     {
         return view('', []);
+    }
+
+    /**
+     * 获取病人信息根据身份证号
+     */
+    public function getPatientByIDNum(){
+        $ID_number = input('post.ID_number');
+        $ret = ['error_code' => 0, 'msg' =>''];
+        $patient_data = D('Patient')->getPatientByIdNum($ID_number);
+        if(empty($patient_data)){
+            $ret['error_code'] = 2;
+            $ret['msg'] = '未找这名患者';
+        }else{
+            $ret['patient'] = $patient_data;
+        }
+        $this->jsonReturn($ret);
     }
 
     /**

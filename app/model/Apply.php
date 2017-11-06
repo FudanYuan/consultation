@@ -27,6 +27,86 @@ class Apply extends Model{
         'update_time' => 'integer'
     ];
 
+
+    /**
+     * 获取申请信息列表
+     * @param $cond_and
+     * @param $cond_or
+     * @param $order
+     * @return mixed
+     */
+    public function applyList($cond_and,$cond_or,$order){
+        if(!isset($cond_and['status'])){
+            $cond_and['status'] = ['<>', 2];
+        }
+        $res = $this->field('id,delivery_user_id,apply_type,
+                apply_project,consultation_goal,apply_date,
+                status,price,is_charge,create_time')
+                ->where($cond_and)
+                ->where($cond_or)
+                ->order($order)
+                ->select();
+        return $res;
+    }
+
+    /**
+     * 添加通知公告
+     * @param $data
+     * @return array
+     */
+    public function addData($data){
+        $ret = [];
+        $errors = $this->filterField($data);
+        $ret['errors'] = $errors;
+        if(empty($errors)){
+            $this->save($data);
+        }
+        return $ret;
+    }
+
+    /**
+     * 过滤必要字段
+     * @param $data
+     * @return array
+     */
+    private function filterField($data){
+        $ret = [];
+        $errors = [];
+        if(isset($data['patient_id']) && !$data['patient_id']){
+            $errors['patient_id'] = '病患不能为空';
+        }
+        if(isset($data['delivery_user_id']) && !$data['delivery_user_id']){
+            $errors['delivery_user_id'] = '发送用户不能为空';
+        }
+        if(isset($data['apply_type']) && !$data['apply_type']){
+            $errors['apply_type'] = '申请类型不能为空';
+        }
+        if(isset($data['consultation_goal']) && !$data['consultation_goal']){
+            $errors['consultation_goal'] = '诊疗目的不能为空';
+        }
+        if(isset($data['diagnose_state']) && !$data['diagnose_state']){
+            $errors['diagnose_state'] = '诊疗情况不能为空';
+        }
+
+        return $errors;
+    }
+
+    ///////未修改///////////
+
+    /**
+     * 去除非表字段
+     * @param $data
+     * @return array
+     */
+    public function unsetOtherField($data){
+        $list = [];
+        foreach ($this->fields as $v){
+            $list[$v] = $data[$v];
+        }
+        return $list;
+    }
+
+
     /**
      * 获取通知列表
      * @param array $cond
@@ -57,9 +137,10 @@ class Apply extends Model{
     }
 
     /**
-     * 更新通知公告
-     * {@inheritDoc}
-     * @see \think\Model::save()
+     *  更新通知公告
+     * @param $id
+     * @param $data
+     * @return array
      */
     public function saveData($id, $data){
         $ret = [];
@@ -72,20 +153,6 @@ class Apply extends Model{
         return $ret;
     }
 
-    /**
-     * 添加通知公告
-     * @param $data
-     * @return array
-     */
-    public function addData($data){
-        $ret = [];
-        $errors = $this->filterField($data);
-        $ret['errors'] = $errors;
-        if(empty($errors)){
-            $this->save($data);
-        }
-        return $ret;
-    }
 
     /**
      * 批量增加通知公告
@@ -129,33 +196,6 @@ class Apply extends Model{
         return $res;
     }
 
-    /**
-     * 过滤必要字段
-     * @param $data
-     * @return array
-     */
-    private function filterField($data){
-        $ret = [];
-        $errors = [];
-        if(isset($data['source_user_id']) && !$data['source_user_id']){
-            $errors['source_user_id'] = '发送用户不能为空';
-        }
-        if(isset($data['target_user_id']) && !$data['target_user_id']){
-            $errors['target_user_id'] = '接收用户不能为空';
-        }
-        if(isset($data['title']) && !$data['title']){
-            $errors['title'] = '标题不能为空';
-        }
-        if(isset($data['content']) && !$data['content']){
-            $errors['content'] = '内容不能为空';
-        }
-        if(isset($data['operation']) && !$data['operation']){
-            $errors['operation'] = '操作不能为空';
-        }
-        if(isset($data['priority']) && !$data['priority']){
-            $errors['priority'] = '优先级不能为空';
-        }
-        return $errors;
-    }
+
 }
 ?>

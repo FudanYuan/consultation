@@ -12,8 +12,8 @@ class Hospital extends Model{
     protected $table = 'consultation_hospital';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'name', 'logo', 'phone', 'url', 'email', 'address',
-        'role', 'status', 'create_time', 'update_time'
+        'id', 'name','phone','url','email','address','role',
+        'status','create_time','update_time'
     );
     protected $type = [
         'id' => 'integer',
@@ -23,6 +23,30 @@ class Hospital extends Model{
         'update_time' => 'integer'
     ];
 
+    /**
+     * 获取医院信息根据ID
+     * @param $id
+     * @return mixed
+     */
+    public function getHospitalById($id){
+        $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+    /**
+     * 获取医院信息
+     * @return mixed
+     */
+    public function getHospital(){
+        $res = $this->field('*')
+            ->where(['status' => 1])
+            ->select();
+        return $res;
+    }
+
+    ////未修改/////
     /**
      * 获取医院列表
      * @param array $cond
@@ -103,7 +127,7 @@ class Hospital extends Model{
     }
 
     /**
-     * 删除医院信息
+     * 删除通知公告
      * @param array $cond
      * @return false|int
      * @throws MyException

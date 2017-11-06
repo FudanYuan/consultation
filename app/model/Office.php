@@ -5,9 +5,7 @@
  * Create 2017.11.5
  */
 namespace app\model;
-
 use think\Model;
-
 class Office extends Model{
     protected $table = 'consultation_office';
     protected $pk = 'id';
@@ -20,6 +18,31 @@ class Office extends Model{
         'update_time' => 'integer'
     ];
 
+    /**
+     * 获取医院信息根据ID
+     * @param $id
+     * @return mixed
+     */
+    public function getOfficeById($id){
+        $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+    /**
+     * 获取医院信息
+     * @return mixed
+     */
+    public function getOffice(){
+        $res = $this->field('*')
+            ->where(['status' => 1])
+            ->select();
+        return $res;
+    }
+
+
+    /////未修改///
     /**
      * 获取通知列表
      * @param array $cond
@@ -51,8 +74,9 @@ class Office extends Model{
 
     /**
      * 更新通知公告
-     * {@inheritDoc}
-     * @see \think\Model::save()
+     * @param $id
+     * @param $data
+     * @return array
      */
     public function saveData($id, $data){
         $ret = [];

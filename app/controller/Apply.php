@@ -12,8 +12,8 @@ class Apply extends Common
     public $colsText = [];
 
     /**
-     * 会诊申请
-     * @return \think\response\View
+     * 通知公告
+     * @return mixed
      */
     public function index()
     {
@@ -22,23 +22,7 @@ class Apply extends Common
     }
 
     /**
-     * 会诊申请
-     * @return \think\response\View
-     */
-    public function info(){
-        $id = input('get.id');
-        //$list = D('Apply')->getById($id);
-        $list = [];
-        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '', 'hospital_name' => '医院甲',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, ''
-        ];
-        return view('', ['list' => $list]);
-    }
-
-    /**
-     * 获取会诊申请列表
+     * 获取通知公告列表
      */
     public function getApplyList(){
         $params = input('post.');
@@ -49,18 +33,19 @@ class Apply extends Common
 
         if(empty($params)){
             $cond['status'] = ['=', 0];
-//            $list = D('Apply')->getList($cond);
-            $list = [];
-            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '', 'hospital_name' => '医院甲',
-                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
-            ];
-            $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_logo' => '', 'hospital_name' => '医院乙',
-                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
-                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
-            ];
+            $list = D('Apply')->applyList([],[],[]);
+            $i=0;
+            foreach ($list as $v){
+                $doctor_data = D('Doctor')->getDoctorById($v['delivery_user_id']);
+                $list[$i]['doctor_name'] = $doctor_data['name'];
+                $list[$i]['doctor_id'] = $doctor_data['id'];
+                $list[$i]['phone'] = $doctor_data['phone'];
+                $HospitalOffice_data = D('HospitalOffice')->getHospitalOfficeById($doctor_data['office_id']);
+                $Hospital_data = D('Hospital')->getHospitalById($HospitalOffice_data['hospital_id']);
+                $list[$i]['hospital_id'] = $Hospital_data['id'];
+                $list[$i]['hospital_name'] = $Hospital_data['name'];
+                $i++;
+            }
             for($i=0;$i<count($list);$i++){
                 $list[$i]['time'] = formatTime($list[$i]['create_time']);
                 $list[$i]['consultation_goal'] = formatText($list[$i]['consultation_goal'], 10);
@@ -68,20 +53,29 @@ class Apply extends Common
             $ret["total"] = count($list);
             $ret["data"] = $list;
             $this->jsonReturn($ret);
-        }
-        else{
-            //$list = D('Apply')->getList($cond);
-            $list = [];
-            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-                'apply_project' => 1, 'other_apply_project' => '', 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
-            ];
-            $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
-                'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
-                'apply_project' => 4, 'other_apply_project' => '其他项目', 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-                'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
-            ];
+        } else {
+            $apply_type = input('post.apply_type','-1');
+            $apply_project = input('post.apply_project','-1');
+            $status = input('post.status','-1');
+            $is_charge = input('post.is_charge','');
+            $apply_date = input('post.apply_date_str','');
+            $hospital = input('post.hospital','');
+            $keywords = input('post.keywords','');
+
+            $list = D('Apply')->applyList([],[],[]);
+            $i=0;
+            foreach ($list as $v){
+                $doctor_data = D('Doctor')->getDoctorById($v['delivery_user_id']);
+                $list[$i]['doctor_name'] = $doctor_data['name'];
+                $list[$i]['doctor_id'] = $doctor_data['id'];
+                $list[$i]['phone'] = $doctor_data['phone'];
+                $ret['doctor'][$i] = $doctor_data;
+                $HospitalOffice_data = D('HospitalOffice')->getHospitalOfficeById($doctor_data['office_id']);
+                $Hospital_data = D('Hospital')->getHospitalById($HospitalOffice_data['hospital_id']);
+                $list[$i]['hospital_id'] = $Hospital_data['id'];
+                $list[$i]['hospital_name'] = $Hospital_data['name'];
+                $i++;
+            }
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total
@@ -90,36 +84,7 @@ class Apply extends Common
             $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
             $ret['current_page'] = $page;
         }
-        $this->jsonReturn($ret);
-    }
-
-    /**
-     * 删除公告
-     */
-    public function remove(){
-        $ret = ['code' => 1, 'msg' => '删除成功'];
-        $ids = input('post.ids');
-        try{
-            $res = D('Apply')->remove(['id' => ['in', $ids]]);
-        }catch(MyException $e){
-            $ret['code'] = 2;
-            $ret['msg'] = '删除失败';
-        }
-        $this->jsonReturn($ret);
-    }
-
-    /**
-     * 标为已读
-     */
-    public function markRead(){
-        $ret = ['code' => 1, 'msg' => '标记成功'];
-        $ids = input('post.ids');
-        try{
-            $res = D('Apply')->markRead(['id' => ['in', $ids]]);
-        }catch(MyException $e){
-            $ret['code'] = 2;
-            $ret['msg'] = '标记失败';
-        }
+        $ret['params'] = $params;
         $this->jsonReturn($ret);
     }
 
@@ -142,27 +107,79 @@ class Apply extends Common
         $cond = [];
         if(!empty($params)) {
             $data = [];
-            $ret = ['error_code' => 0, 'msg' => '新建成功'];
-
+            $ret = ['error_code' => 2, 'msg' => '新建成功'];
             $params['apply_doctor_name'] = input('apply_doctor_name', '');
             if($params['apply_doctor_name'] == ''){
                 $data['is_definite_purpose'] = 0;
             } else{
                 $data['is_definite_purpose'] = 1;
             }
-
-            $data['patient_id'] = input('post.patient_id', '');
+            $data['patient_id'] = input('post.patient_id','1');
             $data['delivery_user_id'] = $this->getUserId();
-            $data['apply_type'] = input('post.apply_type', '');
+            $data['apply_type'] = input('post.apply_type', '2');
+            $data['diagnose_state'] = input('post.diagnose_state','');
             $data['consultation_goal'] = input('post.consultation_goal', '');
-            $data['consultation_'] = input('post.consultation_goal', '');
-            $data['consultation_office'] = input('post.consultation_goal', '');
-            $data['consultation_office'] = input('post.consultation_goal', '');
+            $data['other_apply'] = input('post.other_apply', '');
+            $data['apply_date'] = input('post.apply_date');
+            $ret['params'] = $params;
+            $res = D('Apply')->addData($data);
+            $this->jsonReturn($ret);
         }
 
-        $office = [];
-        $office[0] = ['id' => 1, 'name' => '骨科'];
-        $office[1] = ['id' => 2, 'name' => '眼科'];
-        return view('', ['office' => $office]);
+        $hospital = D('Hospital')->getHospital();
+
+        $office = D('Office')->getOffice();
+
+        return view('', ['hospital' => $hospital,'office' => $office]);
     }
+
+    /////未修改/////
+
+    /**
+     * 删除公告
+     */
+    public function remove(){
+        $ret = ['code' => 1, 'msg' => '删除成功'];
+        $ids = input('post.ids');
+        try{
+            $res = D('Apply')->remove(['id' => ['in', $ids]]);
+        }catch(MyException $e){
+            $ret['error_code'] = 2;
+            $ret['msg'] = '删除失败';
+        }
+        $this->jsonReturn($ret);
+    }
+
+    /**
+     * 标为已读
+     */
+    public function markRead(){
+        $ret = ['error_code' => 1, 'msg' => '标记成功'];
+        $ids = input('post.ids');
+        try{
+            $res = D('Apply')->markRead(['id' => ['in', $ids]]);
+        }catch(MyException $e){
+            $ret['error_code'] = 2;
+            $ret['msg'] = '标记失败';
+        }
+        $this->jsonReturn($ret);
+    }
+
+    //            $list = D('Apply')->getList($cond);
+//            $list = [];
+//            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '',
+//                'hospital_name' => '医院甲','doctor_id' => 1, 'doctor_name' => '张三',
+//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
+//                'consultation_goal' => '12324353456', 'apply_date' => 1509871680,
+//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
+//                'create_time' =>  1509871680
+//            ];
+//            $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_logo' => '',
+//                'hospital_name' => '医院乙','doctor_id' => 1, 'doctor_name' => '张三',
+//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
+//                'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680,
+//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
+//                'create_time' =>  1509871680
+//            ];
+
 }

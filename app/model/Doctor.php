@@ -22,6 +22,18 @@ class Doctor extends Model{
         'update_time' => 'integer'
     ];
 
+
+
+    public function getDoctorById($id){
+        $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+
+
+    //////未修改/////
     /**
      * 获取通知列表
      * @param array $cond

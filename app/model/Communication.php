@@ -85,6 +85,8 @@ class Communication extends Model{
         return $ret;
     }
 
+
+
     /**
      * 批量增加通知公告
      * @param $dataSet
