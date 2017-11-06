@@ -165,8 +165,8 @@ class Apply extends Common
                 }
                 $this->jsonReturn($ret);
             }
-
         }
+
         $office = [];
         $office[0] = ['id' => 1, 'name' => '骨科'];
         $office[1] = ['id' => 2, 'name' => '眼科'];
