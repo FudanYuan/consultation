@@ -1,18 +1,18 @@
 <?php
 /**
- * 医院信息--控制器
+ * 医生信息--控制器
  * Created by shiren.
  * time 2017.10.19
  */
 namespace app\controller;
 
-class Hospital extends Common
+class Doctor extends Common
 {
     public $exportCols = [];
     public $colsText = [];
 
     /**
-     * 医院信息
+     * 医生信息
      * @return \think\response\View
      */
     public function index()
@@ -21,24 +21,26 @@ class Hospital extends Common
     }
 
     /**
-     * 获取医院信息列表
+     * 获取医生信息列表
      */
-    public function getHospitalList(){
+    public function getDoctorList(){
         $params = input('post.');
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-
+        $cond['target_user_id'] = ['=', $user_id];
+        //$list = D('Doctor')->getList($cond);
         $list = [];
-        $list[0] = ['id' => 1, 'name' => '医院甲', 'logo' => '',
-            'phone' => '121212121212', 'email' => '121212@11.fes', 'address' => '湖南省长沙市',
-            'role' => 1, 'status' => 1, 'create_time' =>  1509871680
+        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
+            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
+            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
         ];
-        $list[1] = ['id' => 2, 'name' => '医院乙', 'logo' => '',
-            'phone' => '121212121212', 'email' => '121212@11.fes', 'address' => '湖南省长沙市',
-            'role' => 2, 'status' => 1, 'create_time' =>  1509871680
+        $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
+            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
+            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
         ];
-
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
@@ -56,7 +58,7 @@ class Hospital extends Common
         $ret = ['code' => 1, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
-            $res = D('Apply')->remove(['id' => ['in', $ids]]);
+            $res = D('Doctor')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
             $ret['code'] = 2;
             $ret['msg'] = '删除失败';
@@ -65,7 +67,7 @@ class Hospital extends Common
     }
 
     /**
-     * 新建
+     * 新建医生信息
      */
     public function create(){
         $params = input('post.');
@@ -97,8 +99,8 @@ class Hospital extends Common
                     $data['target_user_id'] = (int)$params['target_user_ids'][$i];
                     array_push($dataSet, $data);
                 }
-                // 添加Apply
-                $res_apply = D('Apply')->addAllData($dataSet);
+                // 添加Doctor
+                $res_apply = D('Doctor')->addAllData($dataSet);
                 if (!empty($res_apply['errors'])) {
                     $ret['code'] = 2;
                     $ret['msg'] = '新建失败';
@@ -107,15 +109,15 @@ class Hospital extends Common
                 }
                 $log['user_id'] = $this->getUserId();
                 $log['IP'] = $this->getUserIp();
-                $log['section'] = '医院信息';
-                $log['action_descr'] = '添加医院信息';
+                $log['section'] = '医生信息';
+                $log['action_descr'] = '添加医生信息';
                 D('OperationLog')->addData($log);
                 $this->jsonReturn($ret);
             }
             else{
                 $data['target_user_id'] = '';
-                // 添加Apply
-                $res_apply = D('Apply')->addData($data);
+                // 添加Doctor
+                $res_apply = D('Doctor')->addData($data);
                 if (!empty($res_apply['errors'])) {
                     $ret['code'] = 2;
                     $ret['msg'] = '新建失败';
