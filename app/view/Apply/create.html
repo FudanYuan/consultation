@@ -66,7 +66,7 @@
                 <div :class="['form-group']" >
                     <label for="patient_ID_number" class="col-sm-2 control-label">患者身份证号：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_ID_number" value="" placeholder="请输入患者身份证号" id="patient_ID_number">
+                        <input class="form-control" type="text" v-model="patient.ID_number" value="" placeholder="请输入患者身份证号" id="patient_ID_number">
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
                 <div :class="['form-group']" >
                     <label for="patient_name" class="col-sm-2 control-label">患者姓名：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_name" value="" placeholder="请输入患者姓名" id="patient_name">
+                        <input class="form-control" type="text" v-model="patient.name" value="" placeholder="请输入患者姓名" id="patient_name">
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="patient_age" class="col-sm-2 control-label">患者年龄：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_age" value="" placeholder="请输入患者年龄" id="patient_age">
+                        <input class="form-control" type="text" v-model="patient.age" value="" placeholder="请输入患者年龄" id="patient_age">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="patient_phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_phone" value="" placeholder="请输入患者联系方式" id="patient_phone">
+                        <input class="form-control" type="text" v-model="patient.phone" value="" placeholder="请输入患者联系方式" id="patient_phone">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -185,7 +185,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="illness_state" class="col-sm-2 control-label">简要病情：</label>
                     <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" name="illness_state" id="illness_state" placeholder="请输入患者简要病情"></textarea>
+                        <textarea  class="form-control" type="text" v-model="patient.illness_state" id="illness_state" placeholder="请输入患者简要病情"></textarea>
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -218,7 +218,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="diagnose_state" class="col-sm-2 control-label">诊疗情况：</label>
                     <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" name="diagnose_state" id="diagnose_state" placeholder="请输入患者简要病情"></textarea>
+                        <textarea  class="form-control" type="text" v-model="patient.diagnose_state" id="diagnose_state" placeholder="请输入患者简要病情"></textarea>
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="consultation_goal" class="col-sm-2 control-label">会诊目的：</label>
                     <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" name="consultation_goal" id="consultation_goal" placeholder="请输入患者简要病情"></textarea>
+                        <textarea  class="form-control" type="text" v-model="patient.consultation_goal" id="consultation_goal" placeholder="请输入患者简要病情"></textarea>
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -234,7 +234,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="other_apply" class="col-sm-2 control-label">其他申请意愿：</label>
                     <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" name="other_apply" id="other_apply" placeholder="请输入患者简要病情"></textarea>
+                        <textarea  class="form-control" type="text" v-model="patient.other_apply" id="other_apply" placeholder="请输入患者简要病情"></textarea>
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -316,7 +316,16 @@
         el: '#new-apply-form',
         data: {
             params: {},
-            get_patient:{ID_number:patient_ID_number},
+            patient:{
+                ID_number: '',
+                name: '',
+                age:'',
+                phone:'',
+                illness_state:'',
+                diagnose_state:'',
+                consultation_goal:'',
+                other_apply:'',
+            },
             seen:{
                 ill_type: false
             },
@@ -344,14 +353,16 @@
             },
 
             check_by_ID_number: function () {
-                console.log("check_by_ID_number")
-                get_patient_info();
-                $.post('__PRO_PATH__/Patient/getPatientByIDNum', vm.get_patient, function (res) {
+                console.log("check_by_ID_number");
+                $.post('__PRO_PATH__/Patient/getPatientByIDNum', {'ID_number': vm.patient['ID_number']}, function (res) {
                     if (res.error_code == 2) {
-                        popWarn('未找到这名患者的信息,请手动输入');
+                        popWarn('未找到这名患者的信息 ,请手动输入');
                     } else {
-                        $.each(res.errors, function (k, v) {
-                            vm.errors[k] = v;
+                        $.each(res.patient, function (k, v) {
+                            if(k=='id'){
+                                vm.params['patient_id']=v;
+                            }
+                            vm.patient[k] = v;
                         });
                         console.log(JSON.stringify(vm.errors));
                     }
@@ -382,20 +393,6 @@
                 vm.params[this.name].push(this.value);
             } else {
                 vm.params[this.name] = this.value;
-            }
-        });
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
-    }
-
-    function get_patient_info(){
-        vm.get_patient['ID_number'] = [];
-        var data = $('#new-apply-form').serializeArray();
-        $.each(data, function() {
-            if(this.name == 'ID_number'){
-                vm.get_patient[this.name].push(this.value);
-            } else {
-                vm.get_patient[this.name] = this.value;
             }
         });
         console.log(JSON.stringify(data));
