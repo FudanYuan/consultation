@@ -112,18 +112,11 @@ class Apply extends Common
     public function create(){
         $params = input('post.');
         /**
-         * {"target_user_ids":[],
-         * hospital_name: '',
+         * {"hospital_name: '',
          * office_name: '',
          * "apply_type":"2",
          * "doctor_name":"faf",
-         * "patient_ID_number":"faf",
-         * "patient_name":"faf",
-         * "patient_gender":"2",
-         * "patient_age":"fafaf",
-         * "patient_phone":"faf",
-         * "illness_state":"afaf",
-         * "diagnose_state":"afaf",
+         * "patient_id":"faf",
          * "consultation_goal":"faf",
          * "other_apply":"afaf",
          * "apply_date":"",
@@ -134,8 +127,20 @@ class Apply extends Common
             $data = [];
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
 
-            $data['patient_id'] = $params;
+            $params['apply_doctor_name'] = input('apply_doctor_name', '');
+            if($params['apply_doctor_name'] == ''){
+                $data['is_definite_purpose'] = 0;
+            } else{
+                $data['is_definite_purpose'] = 1;
+            }
+
+            $data['patient_id'] = input('post.patient_id', '');
             $data['delivery_user_id'] = $this->getUserId();
+            $data['apply_type'] = input('post.apply_type', '');
+            $data['consultation_goal'] = input('post.consultation_goal', '');
+            $data['consultation_'] = input('post.consultation_goal', '');
+            $data['consultation_office'] = input('post.consultation_goal', '');
+            $data['consultation_office'] = input('post.consultation_goal', '');
         }
 
         $office = [];

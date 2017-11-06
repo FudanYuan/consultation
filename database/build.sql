@@ -164,25 +164,26 @@ DROP TABLE IF EXISTS `consultation_apply`;
 CREATE TABLE `consultation_apply` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `patient_id` INT DEFAULT NULL COMMENT '患者id,外键',
-  `delivery_user_id` INT DEFAULT NULL COMMENT '送诊用户,外键',
+  `source_user_id` INT DEFAULT NULL COMMENT '送诊用户id,外键',
   `apply_type` TINYINT DEFAULT NULL COMMENT '会诊类型：1->正常会诊；2->紧急会诊',
+  `is_definite_purpose` TINYINT DEFAULT NULL COMMENT '是否明确意向：0->不明确；1->明确',
+  `target_hospital_id` INT DEFAULT NULL COMMENT '会诊医院id，外键',
+  `target_office_ids` VARCHAR(200) DEFAULT NULL COMMENT '会诊科室ids，可多个',
+  `target_doctor_ids` VARCHAR(200) DEFAULT NULL COMMENT '会诊医生ids，可多个',
   `consultation_goal` TEXT DEFAULT NULL COMMENT '会诊目的',
   `apply_project` TINYINT DEFAULT NULL COMMENT '申请会诊项目:1->咨询;2->住院;3->手术;4->其他',
-  `other_apply` VARCHAR(1000) DEFAULT NULL COMMENT '其他申请意愿',
-  `is_definte_purpose` TINYINT DEFAULT NULL COMMENT '是否明确意向：0->不明确；1->明确',
-  `consultation_doctor` VARCHAR(200) DEFAULT NULL COMMENT '会诊医生id，可多个',
-  `consultation_office` VARCHAR(200) DEFAULT NULL COMMENT '会诊科室id，可多个',
+  `other_apply_project` VARCHAR(1000) DEFAULT NULL COMMENT '其他申请项目',
   `apply_date` INT(11) DEFAULT NULL COMMENT '申请会诊日期',
   `consultation_result` TEXT DEFAULT NULL COMMENT '会诊结果',
   `price` FLOAT DEFAULT NULL COMMENT '收费价格',
   `is_charge` TINYINT DEFAULT NULL COMMENT '是否缴费：0->无；1->已缴费',
-  `other_apply_result` VARCHAR(50) DEFAULT NULL COMMENT '其他申请结果',
   `status` TINYINT DEFAULT NULL COMMENT '状态：0 关闭 1 未会诊 2 已会但需病患详细信息 3 得出结果 4 未得出结果 ',
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
   `update_time` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   FOREIGN KEY (patient_id) REFERENCES consultation_patient(id),
-  FOREIGN KEY (delivery_user_id) REFERENCES consultation_user_admin(id)
+  FOREIGN KEY (source_user_id) REFERENCES consultation_user_admin(id),
+  FOREIGN KEY (target_hospital_id) REFERENCES consultation_hospital(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
