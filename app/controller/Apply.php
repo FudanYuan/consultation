@@ -27,14 +27,22 @@ class Apply extends Common
      */
     public function info(){
         $id = input('get.id');
+        return view('', ['id' => $id]);
+    }
+
+    public function getApplyInfo(){
         //$list = D('Apply')->getById($id);
-        $list = [];
-        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '', 'hospital_name' => '医院甲',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, ''
-        ];
-        return view('', ['list' => $list]);
+        $ret = ['error_code' => 0, 'msg' => ''];
+        $ret['apply_info'] = ['id' => 1, 'patient_id' => 1, 'source_user_id' => 1, 'apply_type' => 1, 'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦',
+            'apply_date' => 1509871680, 'status' => 1, 'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, 'consultation_result' => '阿娇发来的会计法阿飞饭卡飞机', 'update_time' => 1509971680];
+        $ret['patient_info'] = ['id' => 1, 'name' => '王二', 'gender' => 1, 'age' => 21, 'phone' => '1214141',
+            'ID_num' => '1212', 'vision_left' => '5.0', 'vision_right' => '5.0', 'pressure_left' => '300', 'pressure_right' => '230'];
+        $ret['source_doctor_info'] = ['id'=>1, 'hospital_id'=>1,'office_id'=>1, 'name' => '张三', 'phone'=>'2222222'];
+        $ret['source_hospital_info'] = ['id'=>1, 'name' => '医院甲'];
+        $ret['target_doctor_info'] = ['id' => 1, 'hospital_office_id' => 1, 'name' => '王五', 'phone'=>'1111111'];
+        $ret['target_office_info'] = ['id'=>1, 'name' => '眼科'];
+        $ret['target_hospital_info'] = ['id'=>1, 'name' => '湘雅医学院'];
+        $this->jsonReturn($ret);
     }
 
     /**
@@ -78,6 +86,7 @@ class Apply extends Common
             $hospital = input('post.hospital','');
             $keywords = input('post.keywords','');
 
+            /*
             $list = D('Apply')->applyList([],[],[]);
             $i=0;
             foreach ($list as $v){
@@ -91,7 +100,23 @@ class Apply extends Common
                 $list[$i]['hospital_id'] = $Hospital_data['id'];
                 $list[$i]['hospital_name'] = $Hospital_data['name'];
                 $i++;
-            }
+            }*/
+
+            $list = [];
+            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '',
+                'hospital_name' => '医院甲','doctor_id' => 1, 'doctor_name' => '张三',
+                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
+                'consultation_goal' => '12324353456', 'apply_date' => 1509871680,
+                'status' => 1, 'price' => 1000, 'is_charge' => 0,
+                'create_time' =>  1509871680
+            ];
+            $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_logo' => '',
+                'hospital_name' => '医院乙','doctor_id' => 1, 'doctor_name' => '张三',
+                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
+                'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680,
+                'status' => 1, 'price' => 1000, 'is_charge' => 0,
+                'create_time' =>  1509871680
+            ];
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total

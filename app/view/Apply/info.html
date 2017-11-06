@@ -28,17 +28,17 @@
                 </tr>
                 <tr>
                     <td>编号</td>
-                    <td colspan="4"></td>
+                    <td colspan="4">{{apply_info.id}}</td>
                     <td>预约日期</td>
-                    <td colspan="3"></td>
+                    <td colspan="3">{{apply_info.apply_date | moment}}</td>
                 </tr>
                 <tr>
                     <td>会诊医院</td>
-                    <td colspan="4"></td>
+                    <td colspan="4">{{target_hospital_info.name}}</td>
                     <td>会诊科室</td>
-                    <td></td>
+                    <td>{{target_office_info.name}}</td>
                     <td>会诊医生</td>
-                    <td></td>
+                    <td>{{target_doctor_info.name}}</td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
@@ -46,17 +46,17 @@
                 <tr></tr>
                 <tr>
                     <td>申请单位</td>
-                    <td colspan="5"></td>
+                    <td colspan="5">{{source_hospital_info.name}}</td>
                     <td>申请类型</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{{apply_info.apply_type | getApplyType}}</td>
                 </tr>
                 <tr>
                     <td>申请人</td>
-                    <td colspan="2" ></td>
+                    <td colspan="2" >{{source_doctor_info.name}}</td>
                     <td>联系电话</td>
-                    <td colspan="2" ></td>
-                    <td>预约日期</td>
-                    <td colspan="2"></td>
+                    <td colspan="2" >{{source_doctor_info.phone}}</td>
+                    <td>填表日期</td>
+                    <td colspan="2">{{apply_info.create_time | moment}}</td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
@@ -64,23 +64,23 @@
                 <tr></tr>
                 <tr>
                     <td>姓名</td>
-                    <td></td>
+                    <td>{{patient_info.name}}</td>
                     <td>性别</td>
-                    <td></td>
+                    <td>{{patient_info.gender}}</td>
                     <td>年龄</td>
-                    <td></td>
+                    <td>{{patient_info.age}}</td>
                     <td>视力(左/右)</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{patient_info.vision_left}}</td>
+                    <td>{{patient_info.vision_right}}</td>
                 </tr>
                 <tr>
                     <td>身份证号</td>
-                    <td colspan="2" ></td>
+                    <td colspan="2" >{{patient_info.ID_num}}</td>
                     <td>联系方式</td>
-                    <td colspan="2" ></td>
+                    <td colspan="2" >{{patient_info.phone}}</td>
                     <td>眼压(左/右)</td>
-                    <td></td>
-                    <td></td>
+                    <td>{{patient_info.pressure_left}}</td>
+                    <td>{{patient_info.pressure_right}}</td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
@@ -88,7 +88,7 @@
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="height: auto; padding: 20px 0;"></td>
+                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
                 </tr>
 
                 <tr>
@@ -97,15 +97,15 @@
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="height: auto; padding: 20px 0;"></td>
+                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_result}}</td>
                 </tr>
                 <tr>
                     <td>会诊医生签字</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{{target_doctor_info.name}}</td>
                     <td>会诊日期</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{{apply_info.update_time | moment}}</td>
                     <td>会诊费用</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{{apply_info.price}}元</td>
                 </tr>
             </table>
         </div>
@@ -122,7 +122,14 @@
     var vm = new Vue({
         el: '#apply-info',
         data: {
-            info: {}
+            id: {$id},
+            apply_info: {},
+            patient_info: {},
+            source_hospital_info: {},
+            source_doctor_info: {},
+            target_hospital_info: {},
+            target_office_info: {},
+            target_doctor_info: {}
         },
         methods:{
             remove: function (id) {
@@ -208,31 +215,20 @@
         }
     });
 
-    //submit();
+    submit();
 
     // 异步提交数据
     function submit() {
-        getParams();
-        vm.resetParams();
-        $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
+        $.post('__PRO_PATH__/Apply/getApplyInfo', {id: vm.id}, function (res) {
             if (res.error_code == 0) {
-                vm.total = res.total;
-                vm.pages = Math.ceil(res.total / vm.per_page);
-                vm.current_page = res.current_page;
-                vm.list = res.data;
-                console.log(JSON.stringify(vm.list));
+                vm.apply_info = res.apply_info;
+                vm.patient_info = res.patient_info;
+                vm.source_doctor_info = res.source_doctor_info;
+                vm.source_hospital_info = res.source_hospital_info;
+                vm.target_hospital_info = res.target_hospital_info;
+                vm.target_office_info = res.target_office_info;
+                vm.target_doctor_info = res.target_doctor_info;
             }
         });
     }
-
-    // 获取参数设置
-    function getParams() {
-        var data = $('#main-form').serializeArray();
-        $.each(data, function () {
-            vm.params[this.name] = this.value;
-        });
-        vm.params['per_page'] = vm.per_page;
-        vm.params['current_page'] = vm.current_page;
-    }
-
 </script>
