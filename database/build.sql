@@ -39,7 +39,7 @@ CREATE TABLE `consultation_patient` (
   `phone` VARCHAR(20) NOT NULL COMMENT '联系方式',
   `email` VARCHAR(100) DEFAULT NULL COMMENT '邮箱',
   `birthplace`VARCHAR(200) DEFAULT NULL COMMENT '出生地',
-  `addrss` VARCHAR(200) DEFAULT NULL COMMENT '现住址',
+  `address` VARCHAR(200) DEFAULT NULL COMMENT '现住址',
   `work_unit` VARCHAR(200) DEFAULT NULL COMMENT '工作单位',
   `postcode` VARCHAR(20) DEFAULT NULL COMMENT '邮编',
   `height` SMALLINT UNSIGNED DEFAULT NULL COMMENT '身高(cm)',
@@ -68,7 +68,7 @@ CREATE TABLE `consultation_patient` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `consultation_patient` (`name`, `ID_number`, `gender`, `age`, `occupation`, `height`, `weight`, `phone`, `birthplace`, `addrss`, `work_unit`, `postcode`, `ill_type`, `ill_state`, `vision_left`, `vision_right`, `pressure_left`, `pressure_right`, `eye_photo_left`, `eye_photo_right`, `diagnose_state`, `files_path`, `in_hospital_time`, `narrator`, `main_narrate`, `present_ill_history`, `past_history`, `system_retrospect`, `personal_history`, `physical_exam_record`, `status`, `create_time`, `update_time`) VALUES
+INSERT INTO `consultation_patient` (`name`, `ID_number`, `gender`, `age`, `occupation`, `height`, `weight`, `phone`, `birthplace`, `address`, `work_unit`, `postcode`, `ill_type`, `ill_state`, `vision_left`, `vision_right`, `pressure_left`, `pressure_right`, `eye_photo_left`, `eye_photo_right`, `diagnose_state`, `files_path`, `in_hospital_time`, `narrator`, `main_narrate`, `present_ill_history`, `past_history`, `system_retrospect`, `personal_history`, `physical_exam_record`, `status`, `create_time`, `update_time`) VALUES
 ('患者1', '320923199603100018', 1, 21, '学生', 178, 62.3, '15116136472', '山东泰安', '湖南长沙', '中南大学', '471500', '放假啊就发了叫拉风姜老师分来发链接啦放假啦垃圾分类叫啦放假啦安拉发了金姐分辣椒粉阿娇弗朗加利飞机爱啦放假啊就发酒疯啦减肥据了解 啊就立即发酵法律界；啊；飞机阿娇发啦； 键；发啊放假啊；发；键啊放假啊；键发福；阿娇发；安静发；阿娇发；安静；阿娇发；键；安抚啊啦键啊发了；', 1, '5.0', '5.0', '130', '120', NULL, NULL, '发福吗金姐分啊；发酵法；库放假啊； 发酵法啊放假我发就发放假阿娇放假啊；飞机；安静发酵法；安静阿肌肤了；阿肌肤； 安静； ', NULL, 1212191291, '放假啊', '发发', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
 
 
