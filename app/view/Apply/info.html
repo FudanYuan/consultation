@@ -1,6 +1,18 @@
 {include file="Common/top" title="首页" metas='' /}
 {include file="Common/search" /}
+<style>
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+        padding: 8px;
+        text-align: center;
+        line-height: 1.42857143;
+        vertical-align: middle;
+        border:1.0pt solid black;
+        width: 10%;
+        color: black;
+        font-weight: 500;
+    }
 
+</style>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
@@ -8,40 +20,96 @@
             <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
             <li>申请详情</li>
         </ul>
-        <table class="table table-bordered" style="background-color: #fff;">
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Username</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td rowspan="2">1</td>
-                <td>Karen</td>
-                <td>Martin</td>
-                <td>@karen</td>
-            </tr>
-            <tr>
-                <td>Elizabeth</td>
-                <td>Carter</td>
-                <td>@carter</td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td>Jame</td>
-                <td>Smith</td>
-                <td>@jame</td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td colspan="2">Christopher</td>
-                <td>@brown</td>
-            </tr>
-            </tbody>
-        </table>
+
+        <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-info">
+            <table class="table" style="width: auto; margin: 0 30px">
+                <tr>
+                    <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
+                </tr>
+                <tr>
+                    <td>编号</td>
+                    <td colspan="4"></td>
+                    <td>预约日期</td>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <td>会诊医院</td>
+                    <td colspan="4"></td>
+                    <td>会诊科室</td>
+                    <td></td>
+                    <td>会诊医生</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>申请单位</td>
+                    <td colspan="5"></td>
+                    <td>申请类型</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td>申请人</td>
+                    <td colspan="2" ></td>
+                    <td>联系电话</td>
+                    <td colspan="2" ></td>
+                    <td>预约日期</td>
+                    <td colspan="2"></td>
+                </tr>
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>姓名</td>
+                    <td></td>
+                    <td>性别</td>
+                    <td></td>
+                    <td>年龄</td>
+                    <td></td>
+                    <td>视力(左/右)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>身份证号</td>
+                    <td colspan="2" ></td>
+                    <td>联系方式</td>
+                    <td colspan="2" ></td>
+                    <td>眼压(左/右)</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
+                </tr>
+                <tr></tr>
+
+                <tr>
+                    <td colspan="9" style="height: auto; padding: 20px 0;"></td>
+                </tr>
+
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊单位意见</td>
+                </tr>
+                <tr></tr>
+
+                <tr>
+                    <td colspan="9" style="height: auto; padding: 20px 0;"></td>
+                </tr>
+                <tr>
+                    <td>会诊医生签字</td>
+                    <td colspan="2"></td>
+                    <td>会诊日期</td>
+                    <td colspan="2"></td>
+                    <td>会诊费用</td>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+        </div>
+
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -50,9 +118,9 @@
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
     $('#consultation-nav-apply').addClass('active');
-    $(".flatpickr").flatpickr({time_24hr:false});
+
     var vm = new Vue({
-        el: '#apply',
+        el: '#apply-info',
         data: {
             list: [],
             params: {},
