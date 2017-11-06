@@ -1,47 +1,21 @@
 {include file="Common/top" title="首页" metas='' /}
 {include file="Common/search" /}
-<style>
-    .table img{
-        width: 40px;
-        height: 40px;
-        border-radius: 50em;
-        -moz-border-radius: 50em;
-        -webkit-border-radius: 50em;
-    }
 
-    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
-        vertical-align: middle;
-    }
-</style>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li>医院信息</li>
+            <li>患者信息</li>
         </ul>
 
-        <div class="list-search">
-            <form action="" class="form-inline" method="post" id="main-form">
-                <div class="form-group">
-                    <label for="name">医院名称：</label>
-                    <input name="name" class="form-control" id="name" style="width:150px" value=""/>
-                </div>
-                <div class="form-group">
-                    <label for="district">所在地址：</label>
-                    {include file="Common/district" /}
-                </div>
-                <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
-            </form>
-        </div>
-
-        <div id="hospital">
+        <div id="patient">
             <div class="list-btns">
-                {if condition="authority('HospitalCreate')"}
+                {if condition="authority('PatientCreate')"}
                 <div class="btn-group">
                     <button type="button" class="btn btn-success" @click="create">新建</button>
                 </div>
                 {/if}
-                {if condition="authority('HospitalRemove')"}
+                {if condition="authority('PatientRemove')"}
                 <div class="btn-group">
                     <a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
                 </div>
@@ -51,11 +25,19 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
-                    <th>医院名称</th>
-                    <th>医院标志</th>
+                    <th>身份证号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>职业</th>
                     <th>联系方式</th>
-                    <th>电子邮箱</th>
-                    <th>医院地址</th>
+                    <th>籍贯</th>
+                    <th>工作单位</th>
+                    <th>身高(cm)</th>
+                    <th>体重(kg)</th>
+                    <th>视力(L)</th>
+                    <th>视力(R)</th>
+                    <th>眼压(L)</th>
+                    <th>眼压(R)</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -63,16 +45,24 @@
                 <template  v-if="list.length != 0">
                     <tr v-for="(model, index) in list">
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
+                        <td>{{model.ID_number}}</td>
                         <td>{{model.name}}</td>
-                        <td><img :src="model.logo != '' ? 'model.logo' : '__PUBLIC__/images/profile/profile2.jpg' " alt="model.name"></td>
+                        <td>{{model.gender}}</td>
+                        <td>{{model.occupation}}</td>
                         <td>{{model.phone}}</td>
-                        <td>{{model.email}}</td>
-                        <td>{{model.address}}</td>
+                        <td>{{model.birthplace}}</td>
+                        <td>{{model.work_unit}}</td>
+                        <td>{{model.height}}</td>
+                        <td>{{model.weight}}</td>
+                        <td>{{model.vision_left}}</td>
+                        <td>{{model.vision_right}}</td>
+                        <td>{{model.pressure_left}}</td>
+                        <td>{{model.pressure_right}}</td>
                         <td>
                             <a href="javascript:;" @click="info(index)" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
-                            <a href="__PRO_PATH__/Hospital/edit?id=model.id" title="编辑">
+                            <a href="__PRO_PATH__/Patient/edit?id=model.id" title="编辑">
                                 <i class="fa fa-pencil-square  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
@@ -83,7 +73,7 @@
                 </template>
                 <template v-else>
                     <tr>
-                        <td colspan="11" class="nodata">暂无医院信息！</td>
+                        <td colspan="15" class="nodata">暂无医生信息！</td>
                     </tr>
                 </template>
                 </tbody>
@@ -94,14 +84,12 @@
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
-{include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
-    $('#consultation-nav-hospital').addClass('active');
-
+    $('#consultation-nav-patient').addClass('active');
     var vm = new Vue({
-        el: '#hospital',
+        el: '#patient',
         data: {
             list: [],
             params: {},
@@ -194,11 +182,13 @@
                 }
                 this.check_all = !this.check_all;
             },
-            info: function (index) {
 
+            info: function (index) {
+                popupPreview(this.list[index]);
             },
+
             create: function () {
-                window.location.href = '__PRO_PATH__/Hospital/create';
+                window.location.href = '__PRO_PATH__/Patient/create';
             },
 
             remove: function (id) {
@@ -215,7 +205,7 @@
                 this.select = ids;
                 // 删除
                 popupList({
-                    remove: '__PRO_PATH__/Hospital/remove',
+                    remove: '__PRO_PATH__/Patient/remove',
                     ids: vm.select
                 }, function () {
                     submit();
@@ -228,7 +218,7 @@
                 formatString = formatString || 'YYYY-MM-DD HH:mm';
                 return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
             },
-            getHospitalStatus: function (value) {
+            getPatientStatus: function (value) {
                 var ret = "";
                 if(value==1){
                     ret = "待处理";
@@ -244,7 +234,7 @@
                 }
                 return ret;
             },
-            getHospitalType: function (value) {
+            getPatientType: function (value) {
                 var ret = '';
                 if(value == 1){
                     ret = '一般';
@@ -276,8 +266,8 @@
     function submit() {
         getParams();
         vm.resetParams();
-        $.post('__PRO_PATH__/Hospital/getHospitalList', vm.params, function (res) {
-            if (res['error_code'] == 0) {
+        $.post('__PRO_PATH__/Patient/getPatientList', vm.params, function (res) {
+            if (res.error_code == 0) {
                 vm.total = res.total;
                 vm.pages = Math.ceil(res.total / vm.per_page);
                 vm.current_page = res.current_page;
@@ -289,10 +279,6 @@
 
     // 获取参数设置
     function getParams() {
-        var data = $('#main-form').serializeArray();
-        $.each(data, function () {
-            vm.params[this.name] = this.value;
-        });
         vm.params['per_page'] = vm.per_page;
         vm.params['current_page'] = vm.current_page;
     }

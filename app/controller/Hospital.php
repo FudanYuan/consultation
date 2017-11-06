@@ -25,20 +25,30 @@ class Hospital extends Common
      */
     public function getHospitalList(){
         $params = input('post.');
-        // 获取当前登陆的用户id，根据此id查询表，返回结果
-        $user_id = $this->getUserId();
+        $name = input('name', '');
+        $cond = [];
+        if($name != ''){
+            $cond['name'] = ['like', '%' . $name . '%'];
+        }
+
+        // 地域筛选
+        $prov = input('prov', '不限');
+        $address = '';
+        if($prov != '不限'){
+            $address .= '%' . $prov . '%';
+            if(isset($params['city'])){
+                $address .= '%' . $params['city'] . '%';
+                if(isset($params['county'])){
+                    $address .= '%' . $params['county'] . '%';
+                }
+            }
+        }
+        if($address != ''){
+            $cond['address'] = ['like', $address];
+        }
+
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-
-        $list = [];
-        $list[0] = ['id' => 1, 'name' => '医院甲', 'logo' => '',
-            'phone' => '121212121212', 'email' => '121212@11.fes', 'address' => '湖南省长沙市',
-            'role' => 1, 'status' => 1, 'create_time' =>  1509871680
-        ];
-        $list[1] = ['id' => 2, 'name' => '医院乙', 'logo' => '',
-            'phone' => '121212121212', 'email' => '121212@11.fes', 'address' => '湖南省长沙市',
-            'role' => 2, 'status' => 1, 'create_time' =>  1509871680
-        ];
-
+        $list = D('Hospital')->getList($cond);
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
@@ -46,6 +56,7 @@ class Hospital extends Common
         //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
         $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
         $ret['current_page'] = $page;
+        $ret["address"] = $cond;
         $this->jsonReturn($ret);
     }
 

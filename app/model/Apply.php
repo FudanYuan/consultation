@@ -13,9 +13,7 @@ class Apply extends Model{
     protected $pk = 'id';
     protected $fields = array(
         'id', 'patient_id','delivery_user_id', 'apply_type',
-        'illness_state', 'eyes_ill_type','vision_left','vision_right',
-        'pressure_left','pressure_right','eye_photo_left','eye_photo_right',
-        'diagnose_state','consultation_goal','apply_project','other_apply',
+        'consultation_goal','apply_project','other_apply',
         'is_definite_purpose','apply_doctor_ids','consultation_doctor',
         'consultation_office','apply_date','is_consultation','consultation_result',
         'price','is_charge','other_apply_result','status','create_time','update_time'

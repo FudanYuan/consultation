@@ -12,33 +12,35 @@ class Hospital extends Model{
     protected $table = 'consultation_hospital';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'name','phone','url','email','address','role',
-        'status','create_time','update_time'
+        'id', 'name', 'logo', 'phone', 'url', 'email', 'address',
+        'role', 'status', 'create_time', 'update_time'
     );
     protected $type = [
         'id' => 'integer',
+        'role' => 'integer',
+        'status' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'
     ];
 
     /**
-     * 获取通知列表
+     * 获取医院列表
      * @param array $cond
      */
     public function getList($cond = []){
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
+        $res = $this->field('id, name, logo, phone, url, email, address,
+        role, status, create_time')
+            ->order('create_time desc')
             ->where($cond)
             ->select();
         return $res;
     }
 
     /**
-     * 根据ID获取通知公告
+     * 根据ID获取医院信息
      * @param $id
      * @return mixed
      */
@@ -51,7 +53,7 @@ class Hospital extends Model{
     }
 
     /**
-     * 更新通知公告
+     * 更新医院信息
      * @param $id
      * @param $data
      * @return array
@@ -68,7 +70,7 @@ class Hospital extends Model{
     }
 
     /**
-     * 添加通知公告
+     * 添加医院信息
      * @param $data
      * @return array
      */
@@ -83,7 +85,7 @@ class Hospital extends Model{
     }
 
     /**
-     * 批量增加通知公告
+     * 批量增加医院信息
      * @param $dataSet
      * @return array
      */
@@ -101,7 +103,7 @@ class Hospital extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除医院信息
      * @param array $cond
      * @return false|int
      * @throws MyException

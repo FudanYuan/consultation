@@ -35,15 +35,6 @@
         $('#addItem').on('click', function () {
             window.location.href = config.create;
         });
-        $('#addFirstItem').on('click', function () {
-            window.location.href = config.createFirst;
-        });
-        $('#addSecondItem').on('click', function () {
-            window.location.href = config.createSecond;
-        });
-        $('#addThirdItem').on('click', function () {
-            window.location.href = config.createThird;
-        });
         $('#removeItem').on('click', function () {
             $('#confirm-popup').popup('show');
         });
@@ -64,10 +55,8 @@
                 $('#warn-popup').popup('show');
                 return;
             }
-            console.log(ids)
             $.post(config.remove, {ids: ids.join(',')}, function (res) {
                 if (res['code'] == 1) {
-                    //window.location.reload();
                     callback();
                 } else {
                     popWarn('删除失败');

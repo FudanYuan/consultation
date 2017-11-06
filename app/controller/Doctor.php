@@ -32,14 +32,14 @@ class Doctor extends Common
         //$list = D('Doctor')->getList($cond);
         $list = [];
         $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
+            'office_id' => 1, 'office_name' => '眼科', 'name' => '张三',
+            'position' => '教授，博导', 'phone' => '135210263021', 'email' => '121212@11.com',
+            'address' => '湖南长沙'
         ];
-        $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
+        $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_name' => '医院甲',
+            'office_id' => 1, 'office_name' => '眼科', 'name' => '李四',
+            'position' => '教授，博导', 'phone' => '135210263021', 'email' => '121212@11.com',
+            'address' => '湖南长沙'
         ];
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
@@ -52,7 +52,7 @@ class Doctor extends Common
     }
 
     /**
-     * 删除公告
+     * 删除医生信息
      */
     public function remove(){
         $ret = ['code' => 1, 'msg' => '删除成功'];

@@ -25,22 +25,11 @@ class Patient extends Common
      */
     public function getPatientList(){
         $params = input('post.');
-        // 获取当前登陆的用户id，根据此id查询表，返回结果
-        $user_id = $this->getUserId();
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-        $cond['target_user_id'] = ['=', $user_id];
-        //$list = D('Patient')->getList($cond);
-        $list = [];
-        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
-        ];
-        $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
-            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
-            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
-            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
-        ];
+//        $user_id = $this->getUserId();
+        $cond = [];
+//        $cond['hospital_id'] = ['=', $user_id];
+        $list = D('Patient')->getList($cond);
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total

@@ -1,0 +1,9 @@
+<script src="__PUBLIC__/js/district/jquery.cityselect.js"></script>
+<div id="district"  style="display: inline">
+    <select class="form-control prov" id="province" name="prov"></select>
+    <select class="form-control city" disabled="disabled" id="city" name="city"></select>
+    <select class="form-control dist" disabled="disabled" id="county" name="county"></select>
+</div>
+<script>
+    $("#district").citySelect({prov:"不限",nodata:"none"});
+</script>

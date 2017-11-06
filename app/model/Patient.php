@@ -12,52 +12,64 @@ class Patient extends Model{
     protected $table = 'consultation_patient';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'name','ID_number', 'gender','age','occupation','height','weight',
-        'phone','birthplace','address','work_unit','postcode','in_hospital_time',
-        'record_time','other_apply','narrator','main_narrate','present_ill_history',
-        'past_history','system_retrospect','personal_history','physical_exam_record',
-        'status','create_time','update_time'
+        'id', 'name', 'ID_number', 'gender', 'age', 'occupation', 'phone',
+        'email', 'birthplace', 'addrss', 'work_unit', 'postcode', 'height',
+        'weight', 'vision_left', 'vision_right', 'pressure_left', 'pressure_right',
+        'eye_photo_left', 'eye_photo_right', 'ill_type', 'ill_state', 
+        'diagnose_state', 'files_path', 'in_hospital_time', 'narrator', 
+        'main_narrate', 'present_ill_history', 'past_history', 'system_retrospect',
+        'personal_history', 'physical_exam_record', 'status', 'create_time', 'update_time'
     );
     protected $type = [
         'id' => 'integer',
         'patient_id' => 'integer',
         'delivery_user_id' => 'integer',
         'apply_date' => 'integer',
-        'createtime' => 'integer',
-        'updatetime' => 'integer'
+        'create_time' => 'integer',
+        'update_time' => 'integer'
     ];
 
     /**
-     * 获取通知列表
+     * 获取患者列表
      * @param array $cond
      */
     public function getList($cond = []){
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
+        $res = $this->field('id, name, ID_number, gender, age, occupation, phone,
+        email, birthplace, addrss, work_unit, postcode, height,
+        weight, vision_left, vision_right, pressure_left, pressure_right,
+        eye_photo_left, eye_photo_right, ill_type, ill_state, 
+        diagnose_state, files_path, in_hospital_time, narrator, 
+        main_narrate, present_ill_history, past_history, system_retrospect,
+        personal_history, physical_exam_record, create_time')
+            ->order('create_time desc')
             ->where($cond)
             ->select();
         return $res;
     }
 
     /**
-     * 根据ID获取通知公告
+     * 根据ID获取患者信息
      * @param $id
      * @return mixed
      */
     public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
+        $res = $this->field('id, name, ID_number, gender, age, occupation, phone,
+        email, birthplace, addrss, work_unit, postcode, height,
+        weight, vision_left, vision_right, pressure_left, pressure_right,
+        eye_photo_left, eye_photo_right, ill_type, ill_state, 
+        diagnose_state, files_path, in_hospital_time, narrator, 
+        main_narrate, present_ill_history, past_history, system_retrospect,
+        personal_history, physical_exam_record, create_time')
             ->where(['id' => $id])
             ->find();
         return $res;
     }
 
     /**
-     * 更新通知公告
+     * 更新患者信息
      * {@inheritDoc}
      * @see \think\Model::save()
      */
@@ -73,7 +85,7 @@ class Patient extends Model{
     }
 
     /**
-     * 添加通知公告
+     * 添加患者信息
      * @param $data
      * @return array
      */
@@ -88,7 +100,7 @@ class Patient extends Model{
     }
 
     /**
-     * 批量增加通知公告
+     * 批量增加患者信息
      * @param $dataSet
      * @return array
      */
@@ -106,7 +118,7 @@ class Patient extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除患者信息
      * @param array $cond
      * @return false|int
      * @throws MyException
@@ -114,18 +126,6 @@ class Patient extends Model{
     public function remove($cond = []){
         $res = $this->save(['status' => 2], $cond);
         if($res === false) throw new MyException('2', '删除失败');
-        return $res;
-    }
-
-    /**
-     * 标记为已读
-     * @param array $cond
-     * @return false|int
-     * @throws MyException
-     */
-    public function markRead($cond = []){
-        $res = $this->save(['status' => 1], $cond);
-        if($res === false) throw new MyException('2', '标记失败');
         return $res;
     }
 

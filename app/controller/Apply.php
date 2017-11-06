@@ -12,16 +12,33 @@ class Apply extends Common
     public $colsText = [];
 
     /**
-     * 通知公告
+     * 会诊申请
      * @return \think\response\View
      */
     public function index()
     {
-        return view('', []);
+        $hospital = D('Hospital')->getList();
+        return view('', ['hospital' => $hospital]);
     }
 
     /**
-     * 获取通知公告列表
+     * 会诊申请
+     * @return \think\response\View
+     */
+    public function info(){
+        $id = input('get.id');
+        //$list = D('Apply')->getById($id);
+        $list = [];
+        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '', 'hospital_name' => '医院甲',
+            'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
+            'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+            'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, ''
+        ];
+        return view('', ['list' => $list]);
+    }
+
+    /**
+     * 获取会诊申请列表
      */
     public function getApplyList(){
         $params = input('post.');
@@ -57,12 +74,12 @@ class Apply extends Common
             $list = [];
             $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
                 'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021','apply_type' => 1,
-                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+                'apply_project' => 1, 'other_apply_project' => '', 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
                 'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
             ];
             $list[1] = ['id' => 2, 'hospital_id' => 2, 'hospital_name' => '医院乙',
                 'doctor_id' => 1, 'doctor_name' => '张三', 'phone' => '135210263021', 'apply_type' => 1,
-                'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
+                'apply_project' => 4, 'other_apply_project' => '其他项目', 'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680, 'status' => 1,
                 'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680
             ];
             $page = input('post.current_page',0);
@@ -148,6 +165,4 @@ class Apply extends Common
         $office[1] = ['id' => 2, 'name' => '眼科'];
         return view('', ['office' => $office]);
     }
-
-
 }
