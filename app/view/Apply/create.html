@@ -89,14 +89,14 @@
                     <div class="col-sm-4" id="patient_gender" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender1" name="patient_gender" value="1">
+                                <input type="radio" id="patient_gender1" v-model="patient.gender" value="1">
                                 <label for="patient_gender1"></label>
                             </div>
                             <div class="inline-block vertical-top">男</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender2" name="patient_gender" value="2">
+                                <input type="radio" id="patient_gender2" v-model="patient.gender" value="2">
                                 <label for="patient_gender2"></label>
                             </div>
                             <div class="inline-block vertical-top">女</div>
@@ -126,35 +126,35 @@
                     <div class="col-sm-4" id="eyes_ill_type" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type1" name="patient_gender" value="1" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type1" v-model="patient.eyes_ill_type" value="1" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type1"></label>
                             </div>
                             <div class="inline-block vertical-top">眼表</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type2" name="patient_gender" value="2" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type2" v-model="patient.eyes_ill_type" value="2" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type2"></label>
                             </div>
                             <div class="inline-block vertical-top">眼前节</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type3" name="patient_gender" value="3" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type3" v-model="patient.eyes_ill_type" value="3" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type3"></label>
                             </div>
                             <div class="inline-block vertical-top">眼底</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type4" name="patient_gender" value="4" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type4" v-model="patient.eyes_ill_type" value="4" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type4"></label>
                             </div>
                             <div class="inline-block vertical-top">视光</div>
                         </div>
                         <div class="radio inline-block" >
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type5" name="patient_gender" value="5" onclick="clickRadio(this.value)" value="2">
+                                <input type="radio" id="eyes_ill_type5" v-model="patient.eyes_ill_type" value="5" onclick="clickRadio(this.value)" value="2">
                                 <label for="eyes_ill_type5"></label>
                             </div>
                             <div class="inline-block vertical-top">其他</div>
@@ -174,10 +174,10 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="vision" class="col-sm-2 control-label">眼睛视力：</label>
                     <div class="col-sm-9">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="vision_left"    value="" placeholder="左眼视力" id="vision_left">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="vision_right"   value="" placeholder="右眼视力" id="vision_right">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.vision_left"    value="" placeholder="左眼视力" id="vision_left">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.vision_right"   value="" placeholder="右眼视力" id="vision_right">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -325,6 +325,13 @@
                 diagnose_state:'',
                 consultation_goal:'',
                 other_apply:'',
+                gender:'',
+                eyes_ill_type:'',
+                vision_left:'',
+                vision_right:'',
+                pressure_left:'',
+                pressure_right:'',
+
             },
             seen:{
                 ill_type: false
@@ -394,6 +401,9 @@
             } else {
                 vm.params[this.name] = this.value;
             }
+        });
+        $.each(vm.patient, function (k, v) {
+            vm.params[k] = v;
         });
         console.log(JSON.stringify(data));
         console.log(JSON.stringify(vm.params));
