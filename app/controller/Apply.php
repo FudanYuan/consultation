@@ -185,13 +185,13 @@ class Apply extends Common
         $cond['role'] = ['=',1];
         $hospital = D('Hospital')->getHospital($select,$cond);
         $office = D('Office')->getOffice($select,[]);
-        $apply_project=[];
+        /*$apply_project=[];
         $apply_project[0]=['id' => '1','name'=>'咨询'];
         $apply_project[1]=['id' => '2','name'=>'住院'];
         $apply_project[2]=['id' => '3','name'=>'手术'];
-        $apply_project[3]=['id' => '4','name'=>'其他'];
+        $apply_project[3]=['id' => '4','name'=>'其他'];*/
 
-        return view('', ['hospital' => $hospital,'office' => $office,'apply_project'=>$apply_project]);
+        return view('', ['hospital' => $hospital,'office' => $office]);
     }
 
     /**
