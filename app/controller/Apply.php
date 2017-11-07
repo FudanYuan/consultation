@@ -22,30 +22,6 @@ class Apply extends Common
     }
 
     /**
-     * 会诊申请
-     * @return \think\response\View
-     */
-    public function info(){
-        $id = input('get.id');
-        return view('', ['id' => $id]);
-    }
-
-    public function getApplyInfo(){
-        //$list = D('Apply')->getById($id);
-        $ret = ['error_code' => 0, 'msg' => ''];
-        $ret['apply_info'] = ['id' => 1, 'patient_id' => 1, 'source_user_id' => 1, 'apply_type' => 1, 'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦',
-            'apply_date' => 1509871680, 'status' => 1, 'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, 'consultation_result' => '阿娇发来的会计法阿飞饭卡飞机', 'update_time' => 1509971680];
-        $ret['patient_info'] = ['id' => 1, 'name' => '王二', 'gender' => 1, 'age' => 21, 'phone' => '1214141',
-            'ID_num' => '1212', 'vision_left' => '5.0', 'vision_right' => '5.0', 'pressure_left' => '300', 'pressure_right' => '230'];
-        $ret['source_doctor_info'] = ['id'=>1, 'hospital_id'=>1,'office_id'=>1, 'name' => '张三', 'phone'=>'2222222'];
-        $ret['source_hospital_info'] = ['id'=>1, 'name' => '医院甲'];
-        $ret['target_doctor_info'] = ['id' => 1, 'hospital_office_id' => 1, 'name' => '王五', 'phone'=>'1111111'];
-        $ret['target_office_info'] = ['id'=>1, 'name' => '眼科'];
-        $ret['target_hospital_info'] = ['id'=>1, 'name' => '湘雅医学院'];
-        $this->jsonReturn($ret);
-    }
-
-    /**
      * 获取会诊申请列表
      */
     public function getApplyList(){
@@ -148,23 +124,23 @@ class Apply extends Common
         $cond = [];
         if(!empty($params)) {
             $data = [];
-            $ret = ['error_code' => 2, 'msg' => '新建成功'];
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
             $params['apply_doctor_name'] = input('apply_doctor_name', '');
-            if($params['apply_doctor_name'] == ''){
+            if ($params['apply_doctor_name'] == '') {
                 $data['is_definite_purpose'] = 0;
-            } else{
+            } else {
                 $data['is_definite_purpose'] = 1;
             }
-            $data['patient_id'] = input('post.patient_id','-1');
+            $data['patient_id'] = input('post.patient_id', '-1');
             $data['delivery_user_id'] = $this->getUserId();
             $data['apply_type'] = input('post.apply_type', '2');
-            $data['diagnose_state'] = input('post.diagnose_state','');
+            $data['diagnose_state'] = input('post.diagnose_state', '');
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply'] = input('post.other_apply', '');
             $data['apply_date'] = input('post.apply_date');
             $ret['params'] = $params;
             //如果病患不存在，手动输入
-            if($data['patient_id'] == -1){
+            if ($data['patient_id'] == -1) {
                 $patient = [];
                 $patient['name'] = input('post.patient_name');
                 $patient['ID_number'] = input('post.patient_ID_number');
@@ -173,17 +149,41 @@ class Apply extends Common
                 $patient['phone'] = input('post.patient_phone');
 
             }
-
-
             $res = D('Apply')->addData($data);
             $this->jsonReturn($ret);
-
         }
-        $hospital = D('Hospital')->getHospital();
+        $hospital = D('Hospital')->getList();
 
         $office = D('Office')->getOffice();
 
         return view('', ['hospital' => $hospital,'office' => $office]);
+    }
+
+    /**
+     * 会诊申请
+     * @return \think\response\View
+     */
+    public function info(){
+        $id = input('get.id');
+        return view('', ['id' => $id]);
+    }
+
+    /**
+     * 获取申请详情
+     */
+    public function getApplyInfo(){
+        //$list = D('Apply')->getById($id);
+        $ret = ['error_code' => 0, 'msg' => ''];
+        $ret['apply_info'] = ['id' => 1, 'patient_id' => 1, 'source_user_id' => 1, 'apply_type' => 1, 'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦',
+            'apply_date' => 1509871680, 'status' => 1, 'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, 'consultation_result' => '阿娇发来的会计法阿飞饭卡飞机', 'update_time' => 1509971680];
+        $ret['patient_info'] = ['id' => 1, 'name' => '王二', 'gender' => 1, 'age' => 21, 'phone' => '1214141',
+            'ID_num' => '1212', 'vision_left' => '5.0', 'vision_right' => '5.0', 'pressure_left' => '300', 'pressure_right' => '230'];
+        $ret['source_doctor_info'] = ['id'=>1, 'hospital_id'=>1,'office_id'=>1, 'name' => '张三', 'phone'=>'2222222'];
+        $ret['source_hospital_info'] = ['id'=>1, 'name' => '医院甲'];
+        $ret['target_doctor_info'] = ['id' => 1, 'hospital_office_id' => 1, 'name' => '王五', 'phone'=>'1111111'];
+        $ret['target_office_info'] = ['id'=>1, 'name' => '眼科'];
+        $ret['target_hospital_info'] = ['id'=>1, 'name' => '湘雅医学院'];
+        $this->jsonReturn($ret);
     }
 
     /////未修改/////
