@@ -73,7 +73,7 @@ class Apply extends Common
                 $cond_or['apply_type|e.name|c.name|c.phone|'] = ['like','%'.$keywords.'%'];
             }
 
-            $list = D('Apply')->applyList($cond_or,$cond_and,[]);
+            $list = D('Apply')->getList($cond_or,$cond_and,[]);
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total
@@ -173,17 +173,48 @@ class Apply extends Common
      * 获取申请详情
      */
     public function getApplyInfo(){
-        //$list = D('Apply')->getById($id);
+        $id = input('post.id');
         $ret = ['error_code' => 0, 'msg' => ''];
-        $ret['apply_info'] = ['id' => 1, 'patient_id' => 1, 'source_user_id' => 1, 'apply_type' => 1, 'apply_project' => 1, 'consultation_goal' => '放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦放假啦减肥放假啦',
-            'apply_date' => 1509871680, 'status' => 1, 'price' => 1000, 'is_charge' => 0, 'create_time' =>  1509871680, 'consultation_result' => '阿娇发来的会计法阿飞饭卡飞机', 'update_time' => 1509971680];
-        $ret['patient_info'] = ['id' => 1, 'name' => '王二', 'gender' => 1, 'age' => 21, 'phone' => '1214141',
-            'ID_num' => '1212', 'vision_left' => '5.0', 'vision_right' => '5.0', 'pressure_left' => '300', 'pressure_right' => '230'];
-        $ret['source_doctor_info'] = ['id'=>1, 'hospital_id'=>1,'office_id'=>1, 'name' => '张三', 'phone'=>'2222222'];
-        $ret['source_hospital_info'] = ['id'=>1, 'name' => '医院甲'];
-        $ret['target_doctor_info'] = ['id' => 1, 'hospital_office_id' => 1, 'name' => '王五', 'phone'=>'1111111'];
-        $ret['target_office_info'] = ['id'=>1, 'name' => '眼科'];
-        $ret['target_hospital_info'] = ['id'=>1, 'name' => '湘雅医学院'];
+        $apply_info = D('Apply')->getById($id);
+        $patient_id = $apply_info['patient_id'];
+        $source_user_id = $apply_info['source_user_id'];
+
+        // 获取目标医院信息
+        $target_hospital_id = $apply_info['target_hospital_id'];
+        $target_hospital_info = D('Hospital')->getById($target_hospital_id);
+
+        $ret['target_hospital_info'] = $target_hospital_info;
+        $ret['target_doctor_info'] = [];
+        $ret['target_office_info'] = [];
+
+        $target_doctor_ids = $apply_info['target_doctor_ids'];
+        $target_office_ids = $apply_info['target_office_ids'];
+        $array_target_doctor_id = explode('-',$target_doctor_ids);
+        for($index=0;$index<count($array_target_doctor_id);$index++) {
+            array_push($ret['target_doctor_info'], D('Doctor')->getById((int)$array_target_doctor_id[$index]));
+        }
+        $array_target_office_id = explode('-',$target_office_ids);
+        for($index=0;$index<count($array_target_office_id);$index++) {
+            array_push($ret['target_office_info'], D('Office')->getById((int)$array_target_office_id[$index]));
+        }
+        $source_user_info = D('UserAdmin')->getById($source_user_id);
+        $source_doctor_id = $source_user_info['doctor_id'];
+        $source_doctor_info = D('Doctor')->getById($source_doctor_id);
+        $source_hospital_office_id = $source_doctor_info['hospital_office_id'];
+        $source_hospital_office = D('HospitalOffice')->getById($source_hospital_office_id);
+        $source_hospital_id = $source_hospital_office['hospital_id'];
+        $source_office_id = $source_hospital_office['office_id'];
+        $ret['debug'] = $source_user_info;
+        $source_hospital_info = D('Hospital')->getById($source_hospital_id);
+        $source_office_info = D('Office')->getById($source_office_id);
+
+        $patient_info = D('Patient')->getById($patient_id);
+
+        $ret['apply_info'] = $apply_info;
+        $ret['patient_info'] = $patient_info;
+        $ret['source_hospital_info'] = $source_hospital_info;
+        $ret['source_office_info'] = $source_office_info;
+        $ret['source_doctor_info'] = $source_doctor_info;
         $this->jsonReturn($ret);
     }
 

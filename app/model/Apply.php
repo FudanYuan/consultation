@@ -37,7 +37,7 @@ class Apply extends Model{
      * @param $order
      * @return mixed
      */
-    public function applyList($cond_and,$cond_or,$order){
+    public function getList($cond_and,$cond_or,$order){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 0];
         }
@@ -61,8 +61,21 @@ class Apply extends Model{
 //                ->select();
     }
 
+
     /**
-     * 添加通知公告
+     * 通过ID获取
+     * @param $id
+     * @return mixed
+     */
+    public function getById($id){
+        $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+    /**
+     * 添加会诊申请
      * @param $data
      * @return array
      */
@@ -124,38 +137,8 @@ class Apply extends Model{
         return $list;
     }
 
-
     /**
-     * 获取通知列表
-     * @param array $cond
-     */
-    public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
-        }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
-            ->where($cond)
-            ->select();
-        return $res;
-    }
-
-    /**
-     * 根据ID获取通知公告
-     * @param $id
-     * @return mixed
-     */
-    public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    /**
-     *  更新通知公告
+     *  更新会诊申请
      * @param $id
      * @param $data
      * @return array
@@ -173,7 +156,7 @@ class Apply extends Model{
 
 
     /**
-     * 批量增加通知公告
+     * 批量增加会诊申请
      * @param $dataSet
      * @return array
      */
@@ -191,7 +174,7 @@ class Apply extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除会诊申请公告
      * @param array $cond
      * @return false|int
      * @throws MyException

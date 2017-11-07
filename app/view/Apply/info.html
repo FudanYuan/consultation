@@ -37,9 +37,17 @@
                     <td>会诊医院</td>
                     <td colspan="4">{{target_hospital_info.name}}</td>
                     <td>会诊科室</td>
-                    <td>{{target_office_info.name}}</td>
+                    <td>
+                        <template v-for="model in target_office_info">
+                            {{model.name}}&nbsp;&nbsp;
+                        </template>
+                    </td>
                     <td>会诊医生</td>
-                    <td>{{target_doctor_info.name}}</td>
+                    <td>
+                        <template v-for="model in target_doctor_info">
+                        {{model.name}}&nbsp;&nbsp;
+                        </template>
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
@@ -76,7 +84,7 @@
                 </tr>
                 <tr>
                     <td>身份证号</td>
-                    <td colspan="2" >{{patient_info.ID_num}}</td>
+                    <td colspan="2" >{{patient_info.ID_number}}</td>
                     <td>联系方式</td>
                     <td colspan="2" >{{patient_info.phone}}</td>
                     <td>眼压(左/右)</td>
@@ -98,15 +106,27 @@
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_result}}</td>
+                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
+                        <template v-if="apply_info.status == 3">
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_result}}
+                        </template>
+                    </td>
                 </tr>
                 <tr>
                     <td>会诊医生签字</td>
-                    <td colspan="2">{{target_doctor_info.name}}</td>
+                    <td colspan="2">
+                        <template v-for="model in target_doctor_info" v-if="apply_info.status == 3">
+                            {{model.name}}
+                        </template>
+                    </td>
                     <td>会诊日期</td>
-                    <td colspan="2">{{apply_info.update_time | moment}}</td>
+                    <td colspan="2">
+                        <template v-if="apply_info.status == 3">
+                            {{apply_info.update_time | moment}}
+                        </template>
+                    </td>
                     <td>会诊费用</td>
-                    <td colspan="2">{{apply_info.price}}元</td>
+                    <td colspan="2">{{apply_info.price元}}</td>
                 </tr>
             </table>
         </div>
@@ -128,8 +148,8 @@
             source_hospital_info: {},
             source_doctor_info: {},
             target_hospital_info: {},
-            target_office_info: {},
-            target_doctor_info: {}
+            target_office_info: [],
+            target_doctor_info: []
         },
         methods:{
             remove: function (id) {

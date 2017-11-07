@@ -77,8 +77,7 @@ class Patient extends Common
         $user_info = D('UserAdmin')->getById($user_id);
         $doctor_id = $user_info['doctor_id'];
         $hospital_office = D('Doctor')->getById($doctor_id);
-        $hospital_office_id = $hospital_office['id'];
-        $ret['debug'] = $user_info;
+        $hospital_office_id = $hospital_office['hospital_office_id'];
         $hospital_office = D('HospitalOffice')->getById($hospital_office_id);
         $hospital_id = $hospital_office['hospital_id'];
         $office_id = $hospital_office['office_id'];
