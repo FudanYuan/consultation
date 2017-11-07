@@ -66,7 +66,7 @@
                 <div :class="['form-group']" >
                     <label for="patient_ID_number" class="col-sm-2 control-label">患者身份证号：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" v-model="patient.ID_number" value="" placeholder="请输入患者身份证号" id="patient_ID_number">
+                        <input class="form-control" type="text" v-model="patient.patient_ID_number" value="" placeholder="请输入患者身份证号" id="patient_ID_number">
                     </div>
                 </div>
 
@@ -80,7 +80,7 @@
                 <div :class="['form-group']" >
                     <label for="patient_name" class="col-sm-2 control-label">患者姓名：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" v-model="patient.name" value="" placeholder="请输入患者姓名" id="patient_name">
+                        <input class="form-control" type="text" v-model="patient.patient_name" value="" placeholder="请输入患者姓名" id="patient_name">
                     </div>
                 </div>
 
@@ -89,14 +89,14 @@
                     <div class="col-sm-4" id="patient_gender" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender1" v-model="patient.gender" value="1">
+                                <input type="radio" id="patient_gender1" v-model="patient.patient_gender" value="1">
                                 <label for="patient_gender1"></label>
                             </div>
                             <div class="inline-block vertical-top">男</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender2" v-model="patient.gender" value="2">
+                                <input type="radio" id="patient_gender2" v-model="patient.patient_gender" value="2">
                                 <label for="patient_gender2"></label>
                             </div>
                             <div class="inline-block vertical-top">女</div>
@@ -108,7 +108,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="patient_age" class="col-sm-2 control-label">患者年龄：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" v-model="patient.age" value="" placeholder="请输入患者年龄" id="patient_age">
+                        <input class="form-control" type="text" v-model="patient.patient_age" value="" placeholder="请输入患者年龄" id="patient_age">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label for="patient_phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" v-model="patient.phone" value="" placeholder="请输入患者联系方式" id="patient_phone">
+                        <input class="form-control" type="text" v-model="patient.patient_phone" value="" placeholder="请输入患者联系方式" id="patient_phone">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -126,35 +126,35 @@
                     <div class="col-sm-4" id="eyes_ill_type" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type1" v-model="patient.eyes_ill_type" value="1" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type1" v-model="patient.patient_eyes_type" value="1" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type1"></label>
                             </div>
                             <div class="inline-block vertical-top">眼表</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type2" v-model="patient.eyes_ill_type" value="2" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type2" v-model="patient.patient_eyes_type" value="2" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type2"></label>
                             </div>
                             <div class="inline-block vertical-top">眼前节</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type3" v-model="patient.eyes_ill_type" value="3" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type3" v-model="patient.patient_eyes_type" value="3" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type3"></label>
                             </div>
                             <div class="inline-block vertical-top">眼底</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type4" v-model="patient.eyes_ill_type" value="4" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type4" v-model="patient.patient_eyes_type" value="4" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type4"></label>
                             </div>
                             <div class="inline-block vertical-top">视光</div>
                         </div>
                         <div class="radio inline-block" >
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type5" v-model="patient.eyes_ill_type" value="5" onclick="clickRadio(this.value)" value="2">
+                                <input type="radio" id="eyes_ill_type5" v-model="patient.patient_eyes_type" value="5" onclick="clickRadio(this.value)" value="2">
                                 <label for="eyes_ill_type5"></label>
                             </div>
                             <div class="inline-block vertical-top">其他</div>
@@ -164,9 +164,9 @@
                 </div>
 
                 <div :class="['form-group']" id="other_eyes_ill_type_div" v-if="seen.ill_type">
-                    <label for="other_eyes_ill_type" class="col-sm-2 control-label">其他眼病类型：</label>
+                    <label for="patient_eyes_type" class="col-sm-2 control-label">其他眼病类型：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="other_eyes_ill_type" value="" placeholder="请输入其他眼病类型" id="other_eyes_ill_type">
+                        <input class="form-control" type="text" name="patient_eyes_type" value="" placeholder="请输入其他眼病类型" id="patient_eyes_type">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -174,24 +174,58 @@
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
                     <label class="col-sm-2 control-label">眼睛视力：</label>
                     <div class="col-sm-9">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.vision_left"    value="" placeholder="左眼视力" id="vision_left">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.vision_right"   value="" placeholder="右眼视力" id="vision_right">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
-                        <p class="help-block">{{errors.title}}</p>
-                    </div>
-                </div>
-
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label for="illness_state" class="col-sm-2 control-label">简要病情：</label>
-                    <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" v-model="patient.illness_state" id="illness_state" placeholder="请输入患者简要病情"></textarea>
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_vision_left"    value="" placeholder="左眼视力" id="vision_left">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_vision_right"   value="" placeholder="右眼视力" id="vision_right">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
 
                 <div class="form-group {$errors.img ?= 'has-error'}">
-                    <label class="col-sm-2 control-label">封面：</label>
+                    <label class="col-sm-2 control-label">左眼照片：</label>
+                    <div class="col-sm-4">
+                        <div id="filelist_left_eye">
+                            <div>{$data.img_origin??''}<b></b></div>
+                        </div>
+                        <br/>
+                        <div id="upload_left_eye">
+                            <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                            <a id="uploadfiles_left_eye" href="javascript:;">上传</a>
+                        </div>
+                        <input type="hidden" name="eye_photo_left" value="{$data.img_left_eye??''}"/>
+                        <input type="hidden" name="eye_photo_left_origin" value="{$data.img_origin_left_eye??''}"/>
+                        <span class="help-block">{$errors.img ?? ''}</span>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.img ?= 'has-error'}">
+                    <label class="col-sm-2 control-label">右眼照片：</label>
+                    <div class="col-sm-4">
+                        <div id="filelist_right_eye">
+                            <div>{$data.img_origin??''}<b></b></div>
+                        </div>
+                        <br/>
+                        <div id="upload_right_eye">
+                            <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                            <a id="uploadfiles_right_eye" href="javascript:;">上传</a>
+                        </div>
+                        <input type="hidden" name="eye_photo_right" value="{$data.eye_photo_right??''}"/>
+                        <input type="hidden" name="eye_photo_right_origin" value="{$data.eye_photo_right_origin??''}"/>
+                        <span class="help-block">{$errors.eye_photo_right ?? ''}</span>
+                    </div>
+                </div>
+
+                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                    <label for="patient_illness_state" class="col-sm-2 control-label">简要病情：</label>
+                    <div class="col-sm-4">
+                        <textarea  class="form-control" type="text" v-model="patient.patient_illness_state" id="patient_illness_state" placeholder="请输入患者简要病情"></textarea>
+                        <p class="help-block">{{errors.title}}</p>
+                    </div>
+                </div>
+
+                <div class="form-group {$errors.img ?= 'has-error'}">
+                    <label class="col-sm-2 control-label">上传病情文件：</label>
                     <div class="col-sm-4">
                         <div id="filelist">
                             <div>{$data.img_origin??''}<b></b></div>
@@ -201,9 +235,9 @@
                             <a id="pickfiles" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
                             <a id="uploadfiles" href="javascript:;">上传</a>
                         </div>
-                        <input type="hidden" name="img" value="{$data.img??''}"/>
-                        <input type="hidden" name="img_origin" value="{$data.img_origin??''}"/>
-                        <span class="help-block">{$errors.img ?? ''}</span>
+                        <input type="hidden" name="files_path" value="{$data.files_path??''}"/>
+                        <input type="hidden" name="files_path_origin" value="{$data.files_path_origin??''}"/>
+                        <span class="help-block">{$errors.files_path ?? ''}</span>
                     </div>
                 </div>
 
@@ -275,21 +309,20 @@
         data: {
             params: {},
             patient:{
-                ID_number: '',
-                name: '',
-                age:'',
-                phone:'',
-                illness_state:'',
+                patient_ID_number: '',
+                patient_name: '',
+                patient_age:'',
+                patient_phone:'',
+                patient_illness_state:'',
                 diagnose_state:'',
                 consultation_goal:'',
                 other_apply:'',
-                gender:'',
-                eyes_ill_type:'',
-                vision_left:'',
-                vision_right:'',
-                pressure_left:'',
-                pressure_right:'',
-
+                patient_gender:'',
+                patient_eyes_type:'',
+                patient_vision_left:'',
+                patient_vision_right:'',
+                patient_pressure_left:'',
+                patient_pressure_right:'',
             },
             seen:{
                 ill_type: false
@@ -313,9 +346,41 @@
                 uploadfiles: 'uploadfiles',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='img_origin']").val(file.name);
+                    $("input[name='files_path_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $("input[name='img']").val(res.result.file);
+                    $("input[name='files_path']").val(res.result.file);
+                },
+                isMulti: false
+            });
+            myupload({
+                container: 'upload_left_eye',
+                browse: 'pickfiles_left_eye',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist_left_eye',
+                uploadfiles: 'uploadfiles_left_eye',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='eye_photo_left_origin']").val(file.name);
+                    var res = JSON.parse(result.response);
+                    $("input[name='eye_photo_left']").val(res.result.file);
+                },
+                isMulti: false
+            });
+            myupload({
+                container: 'upload_right_eye',
+                browse: 'pickfiles_right_eye',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist_right_eye',
+                uploadfiles: 'uploadfiles_right_eye',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='eye_photo_right_origin']").val(file.name);
+                    var res = JSON.parse(result.response);
+                    $("input[name='eye_photo_right']").val(res.result.file);
                 },
                 isMulti: false
             });
@@ -326,7 +391,7 @@
                 $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
                     if (res.error_code == 0) {
                         popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Apply/index';
+                        /*window.location.href = '__PRO_PATH__/Apply/index';*/
                     } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
