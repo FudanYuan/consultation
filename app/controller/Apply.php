@@ -64,13 +64,19 @@ class Apply extends Common
                 $cond_and['is_charge'] = $is_charge;
             }
             if($apply_date){
-                $cond_and['apply_date'] = $apply_date;
+                $cond_and['apply_date'] = strtotime($apply_date);
             }
             if($hospital!=-1){
                 $cond_and['e.id'] = $hospital;
             }
             if($keywords){
-                $cond_or['apply_type|e.name|c.name|c.phone|'] = ['like','%'.$keywords.'%'];
+                /**
+                 * 去空格
+                 */
+                $keywords = mb_ereg_replace('^(　| )+', '', $keywords);
+                $keywords = mb_ereg_replace('(　| )+$', '', $keywords);
+                $keywords = mb_ereg_replace('　　', "\n　　", $keywords);
+                $cond_or['other_apply_project|e.name|c.name|c.phone'] = ['like','%'.$keywords.'%'];
             }
 
             $list = D('Apply')->getList($cond_or,$cond_and,[]);

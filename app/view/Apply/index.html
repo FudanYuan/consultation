@@ -146,7 +146,7 @@
                 </div>
                 <div class="form-group">
                     <label for="apply_date">预约时间：</label>
-                    <input placeholder="" id="apply_date" name="apply_date_str" data-enable-time="false" data-time_24hr="false" class="form-control flatpickr flatpickr-input"  style="width: 100px">
+                    <input placeholder="" id="apply_date" name="apply_date_str" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input"  style="width: 120px">
                 </div>
                 <div class="form-group">
                     <label for="hospital">医院名称：</label>
@@ -245,7 +245,7 @@
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
     $('#consultation-nav-apply').addClass('active');
-    $(".flatpickr").flatpickr({time_24hr:false});
+    $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
     var vm = new Vue({
         el: '#apply',
         data: {
@@ -370,7 +370,7 @@
         filters:{
             moment: function (value, formatString) {
                 formatString = formatString || 'YYYY-MM-DD HH:mm';
-                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日');
+                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
                 return time;
             },
             getApplyStatus: function (value) {
