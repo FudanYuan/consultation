@@ -86,6 +86,7 @@ CREATE TABLE `consultation_hospital` (
   `url` VARCHAR(200) DEFAULT NULL COMMENT '网址',
   `email` VARCHAR(100) DEFAULT NULL COMMENT '邮箱',
   `address` VARCHAR(200) DEFAULT NULL COMMENT '地址',
+  `postcode` VARCHAR(20) DEFAULT NULL COMMENT '邮编',
   `type` VARCHAR(100) DEFAULT NULL COMMENT '医院类型',
   `level` VARCHAR(100) DEFAULT NULL COMMENT '医院等级',
   `info` TEXT DEFAULT NULL COMMENT '详细信息',
@@ -98,9 +99,9 @@ CREATE TABLE `consultation_hospital` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
-INSERT INTO `consultation_hospital` (`name`, `master`, `phone`, `url`, `email`, `address`,  `type`, `level`, `info`, `honor`, `role`, `status`, `create_time`, `update_time`) VALUES
-('眼科医联体远程诊疗平台', '张三', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市天心区', '综合医院', '三甲', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL),
-('县级医院', '李四', '0731-12345628', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市芙蓉区', '眼科医院', '一级', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL);
+INSERT INTO `consultation_hospital` (`name`, `master`, `phone`, `url`, `email`, `address`,  `postcode`, `type`, `level`, `info`, `honor`, `role`, `status`, `create_time`, `update_time`) VALUES
+('眼科医联体远程诊疗平台', '张三', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市天心区', '471500', '综合医院', '三甲', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL),
+('县级医院', '李四', '0731-12345628', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市芙蓉区', '471500', '眼科医院', '一级', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL);
 
 
 # Dump of table consultation_office

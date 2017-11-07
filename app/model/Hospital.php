@@ -13,7 +13,7 @@ class Hospital extends Model{
     protected $pk = 'id';
     protected $fields = array(
         'id', 'name', 'master', 'logo', 'phone', 'url', 'email', 'address',
-        'type', 'level', 'info', 'honor', 'role', 'status',
+        'postcode', 'type', 'level', 'info', 'honor', 'role', 'status',
         'create_time', 'update_time'
     );
     protected $type = [
@@ -32,7 +32,7 @@ class Hospital extends Model{
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id, name, master, logo, phone, url, email, address,
+        $res = $this->field('id, name, master, logo, phone, url, email, address, postcode,
         type, level, info, honor, role, status, create_time')
             ->order('create_time desc')
             ->where($cond)

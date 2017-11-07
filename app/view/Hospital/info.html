@@ -11,7 +11,6 @@
         color: black;
         font-weight: 500;
     }
-
 </style>
 <div class="main-container">
     <div class="padding-md">
@@ -23,90 +22,54 @@
 
         <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="hospital-info">
             <a id="form-cancel" class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Hospital/index">返回</a>
-            <table class="table" style="width: auto; margin: 0 30px">
+            <table class="table" style="width: 95%; margin: 0 2.5%">
                 <tr>
-                    <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
+                    <td colspan="10" rowspan="2" style="font-weight: 900; font-size: large; color: #8B6420;">{{info.name}}</td>
                 </tr>
                 <tr>
-                    <td>编号</td>
-                    <td colspan="4"></td>
-                    <td>预约日期</td>
-                    <td colspan="3"></td>
                 </tr>
                 <tr>
-                    <td>会诊医院</td>
-                    <td colspan="4"></td>
-                    <td>会诊科室</td>
-                    <td></td>
-                    <td>会诊医生</td>
-                    <td></td>
+                    <td colspan="10" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">基本信息</td>
                 </tr>
                 <tr>
-                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
-                </tr>
-                <tr></tr>
-                <tr>
-                    <td>申请单位</td>
-                    <td colspan="5"></td>
-                    <td>申请类型</td>
-                    <td colspan="2"></td>
                 </tr>
                 <tr>
-                    <td>申请人</td>
-                    <td colspan="2" ></td>
+                    <td>医院名称</td>
+                    <td colspan="5">{{info.name}}</td>
+                    <td>类型</td>
+                    <td>{{info.type}}</td>
+                    <td colspan="2" rowspan="3"><img :alt='info.name' :src="info.logo != '' ? 'info.logo' : '__PUBLIC__/images/profile/profile1.jpg'"></td>
+                </tr>
+                <tr>
+                    <td>院长姓名</td>
+                    <td colspan="2">{{info.master}}</td>
+                    <td>所在地区</td>
+                    <td colspan="2">{{info.address}}</td>
+                    <td>等级</td>
+                    <td>{{info.level}}</td>
+                </tr>
+                <tr>
                     <td>联系电话</td>
-                    <td colspan="2" ></td>
-                    <td>填表日期</td>
-                    <td colspan="2"></td>
+                    <td colspan="2">{{info.phone}}</td>
+                    <td>医院网址</td>
+                    <td colspan="2">{{info.url}}</td>
+                    <td>邮编</td>
+                    <td>{{info.postcode}}</td>
                 </tr>
                 <tr>
-                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
-                </tr>
-                <tr></tr>
-                <tr>
-                    <td>姓名</td>
-                    <td></td>
-                    <td>性别</td>
-                    <td></td>
-                    <td>年龄</td>
-                    <td></td>
-                    <td>视力(左/右)</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>身份证号</td>
-                    <td colspan="2" ></td>
-                    <td>联系方式</td>
-                    <td colspan="2" ></td>
-                    <td>眼压(左/右)</td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
+                    <td colspan="10" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">医院详情</td>
                 </tr>
                 <tr></tr>
-
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;"></td>
+                    <td colspan="10" style="text-align: left; height: auto; padding: 20px;">{{info.info}}</td>
                 </tr>
 
                 <tr>
-                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊单位意见</td>
+                    <td colspan="10" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">医院荣誉</td>
                 </tr>
                 <tr></tr>
-
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;"></td>
-                </tr>
-                <tr>
-                    <td>会诊医生签字</td>
-                    <td colspan="2"></td>
-                    <td>会诊日期</td>
-                    <td colspan="2"></td>
-                    <td>会诊费用</td>
-                    <td colspan="2">元</td>
+                    <td colspan="10" style="text-align: left; height: auto; padding: 20px;">{{info.honor}}</td>
                 </tr>
             </table>
         </div>
