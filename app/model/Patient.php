@@ -36,7 +36,6 @@ class Patient extends Model{
         return $res;
     }
 
-
     ///////未修改///////
     /**
      * 获取患者列表

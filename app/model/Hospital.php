@@ -32,8 +32,7 @@ class Hospital extends Model{
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id, name, master, logo, phone, url, email, address, postcode,
-        type, level, info, honor, role, status, create_time')
+        $res = $this->field('*')
             ->order('create_time desc')
             ->where($cond)
             ->select();

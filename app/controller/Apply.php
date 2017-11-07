@@ -34,18 +34,6 @@ class Apply extends Common
         if(empty($params)){
             $cond['status'] = ['=', 0];
             $list = D('Apply')->applyList([],[],[]);
-            $i=0;
-            foreach ($list as $v){
-                $doctor_data = D('Doctor')->getDoctorById($v['delivery_user_id']);
-                $list[$i]['doctor_name'] = $doctor_data['name'];
-                $list[$i]['doctor_id'] = $doctor_data['id'];
-                $list[$i]['phone'] = $doctor_data['phone'];
-                $HospitalOffice_data = D('HospitalOffice')->getHospitalOfficeById($doctor_data['office_id']);
-                $Hospital_data = D('Hospital')->getHospitalById($HospitalOffice_data['hospital_id']);
-                $list[$i]['hospital_id'] = $Hospital_data['id'];
-                $list[$i]['hospital_name'] = $Hospital_data['name'];
-                $i++;
-            }
             for($i=0;$i<count($list);$i++){
                 $list[$i]['time'] = formatTime($list[$i]['create_time']);
                 $list[$i]['consultation_goal'] = formatText($list[$i]['consultation_goal'], 10);
@@ -57,42 +45,35 @@ class Apply extends Common
             $apply_type = input('post.apply_type','-1');
             $apply_project = input('post.apply_project','-1');
             $status = input('post.status','-1');
-            $is_charge = input('post.is_charge','');
+            $is_charge = input('post.is_charge','-1');
             $apply_date = input('post.apply_date_str','');
-            $hospital = input('post.hospital','');
+            $hospital = input('post.hospital','-1');
             $keywords = input('post.keywords','');
+            $cond_and = [];
+            $cond_or = [];
+            if($apply_type!=-1){
+                $cond_and['apply_type'] = $apply_type;
+            }
+            if($apply_project!=-1){
+                $cond_and['apply_type'] = $apply_project;
+            }
+            if($status != -1){
+                $cond_and['a.status'] = $status;
+            }
+            if($is_charge != -1){
+                $cond_and['is_charge'] = $is_charge;
+            }
+            if($apply_date){
+                $cond_and['apply_date'] = $apply_date;
+            }
+            if($hospital!=-1){
+                $cond_and['e.id'] = $hospital;
+            }
+            if($keywords){
+                $cond_or['apply_type|e.name|c.name|c.phone|'] = ['like','%'.$keywords.'%'];
+            }
 
-            /*
-            $list = D('Apply')->applyList([],[],[]);
-            $i=0;
-            foreach ($list as $v){
-                $doctor_data = D('Doctor')->getDoctorById($v['delivery_user_id']);
-                $list[$i]['doctor_name'] = $doctor_data['name'];
-                $list[$i]['doctor_id'] = $doctor_data['id'];
-                $list[$i]['phone'] = $doctor_data['phone'];
-                $ret['doctor'][$i] = $doctor_data;
-                $HospitalOffice_data = D('HospitalOffice')->getHospitalOfficeById($doctor_data['office_id']);
-                $Hospital_data = D('Hospital')->getHospitalById($HospitalOffice_data['hospital_id']);
-                $list[$i]['hospital_id'] = $Hospital_data['id'];
-                $list[$i]['hospital_name'] = $Hospital_data['name'];
-                $i++;
-            }*/
-
-            $list = [];
-            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '',
-                'hospital_name' => '医院甲','doctor_id' => 1, 'doctor_name' => '张三',
-                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
-                'consultation_goal' => '12324353456', 'apply_date' => 1509871680,
-                'status' => 1, 'price' => 1000, 'is_charge' => 0,
-                'create_time' =>  1509871680
-            ];
-            $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_logo' => '',
-                'hospital_name' => '医院乙','doctor_id' => 1, 'doctor_name' => '张三',
-                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
-                'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680,
-                'status' => 1, 'price' => 1000, 'is_charge' => 0,
-                'create_time' =>  1509871680
-            ];
+            $list = D('Apply')->applyList($cond_or,$cond_and,[]);
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total
@@ -103,6 +84,35 @@ class Apply extends Common
         }
         $ret['params'] = $params;
         $this->jsonReturn($ret);
+
+//            $i=0;
+//            foreach ($list as $v){
+//                $doctor_data = D('Doctor')->getDoctorById($v['delivery_user_id']);
+//                $list[$i]['doctor_name'] = $doctor_data['name'];
+//                $list[$i]['doctor_id'] = $doctor_data['id'];
+//                $list[$i]['phone'] = $doctor_data['phone'];
+//                $ret['doctor'][$i] = $doctor_data;
+//                $HospitalOffice_data = D('HospitalOffice')->getHospitalOfficeById($doctor_data['office_id']);
+//                $Hospital_data = D('Hospital')->getHospitalById($HospitalOffice_data['hospital_id']);
+//                $list[$i]['hospital_id'] = $Hospital_data['id'];
+//                $list[$i]['hospital_name'] = $Hospital_data['name'];
+//                $i++;
+//            }
+        //            $list = [];
+//            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '',
+//                'hospital_name' => '医院甲','doctor_id' => 1, 'doctor_name' => '张三',
+//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
+//                'consultation_goal' => '12324353456', 'apply_date' => 1509871680,
+//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
+//                'create_time' =>  1509871680
+//            ];
+//            $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_logo' => '',
+//                'hospital_name' => '医院乙','doctor_id' => 1, 'doctor_name' => '张三',
+//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
+//                'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680,
+//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
+//                'create_time' =>  1509871680
+//            ];
     }
 
     /**

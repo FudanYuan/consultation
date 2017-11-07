@@ -19,7 +19,7 @@ return [
     // 用户名
     'username'        => 'root',
     // 密码
-//    'password'        => '0905140109yzsOk.',
+//    'password'        => '',
     'password'        => '',
     // 端口
     'hostport'        => '',
@@ -30,7 +30,7 @@ return [
     // 数据库编码默认采用utf8
     'charset'         => 'utf8',
     // 数据库表前缀
-    'prefix'          => 'consulation_',
+    'prefix'          => 'consultation_',
     // 数据库调试模式
     'debug'           => true,
     // 数据库部署方式:0 集中式(单一服务器),1 分布式(主从服务器)

@@ -12,16 +12,18 @@ class Apply extends Model{
     protected $table = 'consultation_apply';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'patient_id','delivery_user_id', 'apply_type',
-        'consultation_goal','apply_project','other_apply',
-        'is_definite_purpose','apply_doctor_ids','consultation_doctor',
-        'consultation_office','apply_date','is_consultation','consultation_result',
-        'price','is_charge','other_apply_result','status','create_time','update_time'
+        'id', 'patient_id','source_user_id', 'apply_type',
+        'is_definite_purpose','target_hospital_id',
+        'target_office_ids','target_doctor_ids',
+        'consultation_goal', 'apply_project','other_apply_project',
+        'apply_date','consultation_result','price','is_charge',
+        'status','create_time','update_time'
     );
     protected $type = [
         'id' => 'integer',
         'patient_id' => 'integer',
-        'delivery_user_id' => 'integer',
+        'source_user_id' => 'integer',
+        'target_hospital_id' => 'integer',
         'apply_date' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'
@@ -36,17 +38,27 @@ class Apply extends Model{
      * @return mixed
      */
     public function applyList($cond_and,$cond_or,$order){
-        if(!isset($cond_and['status'])){
-            $cond_and['status'] = ['<>', 2];
+        if(!isset($cond_and['a.status'])){
+            $cond_and['a.status'] = ['<>', 0];
         }
-        $res = $this->field('id,delivery_user_id,apply_type,
-                apply_project,consultation_goal,apply_date,
-                status,price,is_charge,create_time')
+        $res = $this->alias('a')->field('a.id as id,e.id as hospital_id,e.logo as hospital_logo,
+                e.name as hospital_name,c.id as doctor_id,c.name as doctor_name,
+                c.phone as phone,apply_type,apply_project,other_apply_project,
+                consultation_goal,apply_date,a.status,price,is_charge,a.create_time')
+                ->join('user_admin b','b.id = a.source_user_id')
+                ->join('consultation_doctor c','c.id = b.doctor_id')
+                ->join('consultation_hospital_office d','d.id = c.hospital_office_id')
+                ->join('consultation_hospital e','e.id = d.hospital_id')
                 ->where($cond_and)
                 ->where($cond_or)
                 ->order($order)
                 ->select();
         return $res;
+//        $res = $this->view('apply','id,source_user_id,
+//                apply_type,consultation_goal,apply_date,status,price,
+//                is_charge,create_time')
+//                ->where($cond_and)
+//                ->select();
     }
 
     /**
