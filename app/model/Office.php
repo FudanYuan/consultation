@@ -19,61 +19,35 @@ class Office extends Model{
     ];
 
     /**
-     * 获取医院信息根据ID
-     * @param $id
-     * @return mixed
-     */
-    public function getOfficeById($id){
-        $res = $this->field('*')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    /**
-     * 获取医院信息
-     * @return mixed
-     */
-    public function getOffice(){
-        $res = $this->field('*')
-            ->where(['status' => 1])
-            ->select();
-        return $res;
-    }
-
-
-    /////未修改///
-    /**
-     * 获取通知列表
+     * 获取科室信息列表
      * @param array $cond
      */
     public function getList($cond = []){
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
+        $res = $this->field('id, name,describe,status,create_time')
+            ->order('create_time desc')
             ->where($cond)
             ->select();
         return $res;
     }
 
     /**
-     * 根据ID获取通知公告
+     * 获取医院信息根据ID
      * @param $id
      * @return mixed
      */
     public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
+        $res = $this->field('*')
             ->where(['id' => $id])
             ->find();
         return $res;
     }
 
+    /////未修改///
     /**
-     * 更新通知公告
+     * 更新科室信息
      * @param $id
      * @param $data
      * @return array
@@ -90,7 +64,7 @@ class Office extends Model{
     }
 
     /**
-     * 添加通知公告
+     * 添加科室信息
      * @param $data
      * @return array
      */
@@ -105,7 +79,7 @@ class Office extends Model{
     }
 
     /**
-     * 批量增加通知公告
+     * 批量增加科室信息
      * @param $dataSet
      * @return array
      */
@@ -123,7 +97,7 @@ class Office extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除科室信息
      * @param array $cond
      * @return false|int
      * @throws MyException

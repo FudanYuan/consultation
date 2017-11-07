@@ -23,11 +23,26 @@ class HospitalOffice extends Model{
     ];
 
     /**
+     * 获取医院-科室列表
+     * @param array $cond
+     */
+    public function getList($cond = []){
+        if(!isset($cond['status'])){
+            $cond['status'] = ['<>', 2];
+        }
+        $res = $this->field('*')
+            ->order('create_time desc')
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
+    /**
      * 获取医院和科室表
      * @param $id
      * @return mixed
      */
-    public function getHospitalOfficeById($id){
+    public function getById($id){
         $res = $this->field('*')
             ->where(['id' => $id])
             ->find();
@@ -37,36 +52,7 @@ class HospitalOffice extends Model{
 
     //////未修改/////
     /**
-     * 获取通知列表
-     * @param array $cond
-     */
-    public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
-        }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
-            ->where($cond)
-            ->select();
-        return $res;
-    }
-
-    /**
-     * 根据ID获取通知公告
-     * @param $id
-     * @return mixed
-     */
-    public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    /**
-     * 更新通知公告
+     * 更新医院-科室
      * @param $id
      * @param $data
      * @return array
@@ -83,7 +69,7 @@ class HospitalOffice extends Model{
     }
 
     /**
-     * 添加通知公告
+     * 添加医院-科室
      * @param $data
      * @return array
      */
@@ -98,7 +84,7 @@ class HospitalOffice extends Model{
     }
 
     /**
-     * 批量增加通知公告
+     * 批量增加医院-科室
      * @param $dataSet
      * @return array
      */
@@ -116,7 +102,7 @@ class HospitalOffice extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除医院-科室
      * @param array $cond
      * @return false|int
      * @throws MyException

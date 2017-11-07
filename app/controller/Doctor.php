@@ -149,7 +149,15 @@ class Doctor extends Common
         $id = input('post.id');
         $ret = ['error_code' => 0, 'msg' => ''];
         $list = D('Doctor')->getById($id);
+        $hospital_office_id = $list['hospital_office_id'];
+        $hosiptal_office = D('HospitalOffice')->getById($hospital_office_id);
+        $hospital_id = $hosiptal_office['hospital_id'];
+        $office_id = $hosiptal_office['office_id'];
+        $hospital_info = D('Hospital')->getById($hospital_id);
+        $office_info = D('Office')->getById($office_id);
         $ret['info'] = $list;
+        $ret['hospital'] = ['name' => $hospital_info['name']];
+        $ret['office'] = ['name' => $office_info['name']];
         $this->jsonReturn($ret);
     }
 

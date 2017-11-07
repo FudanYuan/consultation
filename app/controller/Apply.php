@@ -163,7 +163,7 @@ class Apply extends Common
         }
         $hospital = D('Hospital')->getList();
 
-        $office = D('Office')->getOffice();
+        $office = D('Office')->getList();
 
         return view('', ['hospital' => $hospital,'office' => $office]);
     }
