@@ -45,6 +45,17 @@ class Office extends Model{
         return $res;
     }
 
+    public function getOffice($select,$cond){
+        if(!isset($cond['status'])){
+            $cond['status'] = ['<>', 2];
+        }
+        $res = $this->field($select)
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
+
     /////未修改///
     /**
      * 更新科室信息

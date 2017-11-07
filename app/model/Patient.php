@@ -29,6 +29,61 @@ class Patient extends Model{
         'update_time' => 'integer'
     ];
 
+    public function getPatientByIdNum($Id_Num){
+        $res = $this->field('*')
+            ->where(['ID_number' => $Id_Num])
+            ->find();
+        return $res;
+    }
+
+    /**
+     * 添加患者信息
+     * @param $data
+     * @return array
+     */
+    public function addData($data){
+        $ret = [];
+        $errors = $this->filterField($data);
+        $ret['errors'] = $errors;
+        if(empty($errors)){
+            $data['status'] = 1;
+            $data['create_time'] = time();
+            $this->save($data);
+        }
+        return $ret;
+    }
+    /**
+     * 过滤必要字段
+     * @param $data
+     * @return array
+     */
+    private function filterField($data){
+        $ret = [];
+        $errors = [];
+        if(isset($data['name']) && !$data['name']){
+            $errors['name'] = '名字不能为空';
+        }
+        if(isset($data['ID_number']) && !$data['ID_number']){
+            $errors['ID_number'] = '身份证号不能为空';
+        }
+        if(isset($data['age']) && !$data['age']){
+            $errors['age'] = '年龄不能为空';
+        }
+        if(isset($data['phone']) && !$data['phone']){
+            $errors['phone'] = '电话不能为空';
+        }
+        if(isset($data['diagnose_state']) && !$data['diagnose_state']){
+            $errors['diagnose_state'] = '病情简介不能为空';
+        }
+        if(isset($data['priority']) && !$data['priority']){
+            $errors['priority'] = '优先级不能为空';
+        }
+        return $errors;
+    }
+
+
+
+    ///////未修改///////
     /**
      * 获取患者列表
      * @param array $cond
@@ -85,20 +140,6 @@ class Patient extends Model{
         return $ret;
     }
 
-    /**
-     * 添加患者信息
-     * @param $data
-     * @return array
-     */
-    public function addData($data){
-        $ret = [];
-        $errors = $this->filterField($data);
-        $ret['errors'] = $errors;
-        if(empty($errors)){
-            $this->save($data);
-        }
-        return $ret;
-    }
 
     /**
      * 批量增加患者信息
@@ -130,33 +171,6 @@ class Patient extends Model{
         return $res;
     }
 
-    /**
-     * 过滤必要字段
-     * @param $data
-     * @return array
-     */
-    private function filterField($data){
-        $ret = [];
-        $errors = [];
-        if(isset($data['source_user_id']) && !$data['source_user_id']){
-            $errors['source_user_id'] = '发送用户不能为空';
-        }
-        if(isset($data['target_user_id']) && !$data['target_user_id']){
-            $errors['target_user_id'] = '接收用户不能为空';
-        }
-        if(isset($data['title']) && !$data['title']){
-            $errors['title'] = '标题不能为空';
-        }
-        if(isset($data['content']) && !$data['content']){
-            $errors['content'] = '内容不能为空';
-        }
-        if(isset($data['operation']) && !$data['operation']){
-            $errors['operation'] = '操作不能为空';
-        }
-        if(isset($data['priority']) && !$data['priority']){
-            $errors['priority'] = '优先级不能为空';
-        }
-        return $errors;
-    }
+
 }
 ?>

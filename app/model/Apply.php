@@ -71,6 +71,8 @@ class Apply extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
+            $data['status'] = 1;
+            $data['create_time'] = time();
             $this->save($data);
         }
         return $ret;
@@ -82,13 +84,12 @@ class Apply extends Model{
      * @return array
      */
     private function filterField($data){
-        $ret = [];
         $errors = [];
         if(isset($data['patient_id']) && !$data['patient_id']){
             $errors['patient_id'] = '病患不能为空';
         }
-        if(isset($data['delivery_user_id']) && !$data['delivery_user_id']){
-            $errors['delivery_user_id'] = '发送用户不能为空';
+        if(isset($data['source_user_id']) && !$data['source_user_id']){
+            $errors['source_user_id'] = '发送用户不能为空';
         }
         if(isset($data['apply_type']) && !$data['apply_type']){
             $errors['apply_type'] = '申请类型不能为空';
@@ -96,10 +97,15 @@ class Apply extends Model{
         if(isset($data['consultation_goal']) && !$data['consultation_goal']){
             $errors['consultation_goal'] = '诊疗目的不能为空';
         }
-        if(isset($data['diagnose_state']) && !$data['diagnose_state']){
-            $errors['diagnose_state'] = '诊疗情况不能为空';
+        if(isset($data['apply_date']) && !$data['apply_date']){
+            $errors['apply_date'] = '申请时间不能为空';
         }
-
+        if(isset($data['target_hospital_id']) && !$data['target_hospital_id']){
+            $errors['target_hospital_id'] = '申请医院不能为空';
+        }
+        if(isset($data['target_office_id']) && !$data['target_office_id']){
+            $errors['target_office_id'] = '申请科室不能为空';
+        }
         return $errors;
     }
 

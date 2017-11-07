@@ -122,20 +122,18 @@ class Apply extends Common
         $params = input('post.');
         if(!empty($params)) {
             $data = [];
-            $ret = ['error_code' => 0, 'msg' => '新建成功'];
-            $params['apply_doctor_name'] = input('apply_doctor_name', '');
-            if ($params['apply_doctor_name'] == '') {
-                $data['is_definite_purpose'] = 0;
-            } else {
-                $data['is_definite_purpose'] = 1;
-            }
-            $data['patient_id'] = input('post.patient_id', '-1');
-            $data['delivery_user_id'] = $this->getUserId();
+            $ret = ['error_code' => 2, 'msg' => '新建成功'];
+            //申请目标
             $data['apply_type'] = input('post.apply_type', '2');
-            $data['diagnose_state'] = input('post.diagnose_state', '');
+            $data['target_hospital_id'] = input('post.consultation_hostipal');
+
+            $office_ids = input('post.consultation_office','');
+            $doctor_names = input('post.apply_doctor_name','');
+
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply'] = input('post.other_apply', '');
             $data['apply_date'] = input('post.apply_date');
+
             $ret['params'] = $params;
             //如果病患不存在，手动输入
             if ($data['patient_id'] == -1) {
@@ -145,13 +143,20 @@ class Apply extends Common
                 //$patient['gender'] = input('post.');
                 $patient['age'] = input('post.patient_age');
                 $patient['phone'] = input('post.patient_phone');
+                $patient['diagnose_state'] = input('post.diagnose_state', '');
             }
             $res = D('Apply')->addData($data);
+            if(!empty($res['errors'])){
+                $ret['error_code'] = 2;
+                $ret['errors'] = $res['errors'];
+            }
             $this->jsonReturn($ret);
         }
-        $hospital = D('Hospital')->getList();
-        $office = D('Office')->getList();
-        // 还要返回医生信息
+
+        $select = ['id,name'];
+        $cond['role'] = ['=',1];
+        $hospital = D('Hospital')->getHospital($select,$cond);
+        $office = D('Office')->getOffice($select,[]);
         return view('', ['hospital' => $hospital,'office' => $office]);
     }
 
@@ -183,8 +188,9 @@ class Apply extends Common
     }
 
     /////未修改/////
+
     /**
-     * 删除会诊申请
+     * 删除公告
      */
     public function remove(){
         $ret = ['code' => 1, 'msg' => '删除成功'];

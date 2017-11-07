@@ -51,6 +51,21 @@ class Hospital extends Model{
         return $res;
     }
 
+    /**
+     * @param $select
+     * @param $cond
+     * @return mixed
+     */
+    public function getHospital($select,$cond){
+        if(!isset($cond['status'])){
+            $cond['status'] = ['<>', 2];
+        }
+        $res = $this->field($select)
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
     ////未修改/////
     /**
      * 更新医院信息

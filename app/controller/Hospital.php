@@ -83,6 +83,7 @@ class Hospital extends Common
         $cond = [];
         $cond['id'] = ['<>', $this->getUserId()];
         $target_users = D('UserAdmin')->getList($cond);
+
         if(!empty($params)) {
             $data = [];
             $ret = ['code' => 1, 'msg' => '新建成功'];
@@ -136,9 +137,10 @@ class Hospital extends Common
             }
 
         }
+
         $office = [];
-        $office[0] = ['id' => 1, 'name' => '骨科'];
-        $office[1] = ['id' => 2, 'name' => '眼科'];
+//        $office[0] = ['id' => 1, 'name' => '骨科'];
+//        $office[1] = ['id' => 2, 'name' => '眼科'];
         return view('', ['office' => $office]);
     }
 
