@@ -132,6 +132,8 @@ class Apply extends Common
             //申请目标
             $data['apply_type'] = input('post.apply_type', '2');
             $data['target_hospital_id'] = input('post.consultation_hospital');
+
+            $data['target_hospital_id'] = input('post.consultation_hospital');
             $data['patient_id'] = input('post.patient_id',-1);
             $office_ids = input('post.consultation_office','');
             $doctor_names = input('post.apply_doctor_name','');
@@ -141,17 +143,37 @@ class Apply extends Common
             $data['apply_date'] = input('post.apply_date');
 
             $ret['params'] = $params;
+
             //如果病患不存在，手动输入
             if ($data['patient_id'] == -1) {
                 $patient = [];
                 $patient['name'] = input('post.patient_name');
                 $patient['ID_number'] = input('post.patient_ID_number');
-                //$patient['gender'] = input('post.');
+                $patient['gender'] = input('post.gender');
                 $patient['age'] = input('post.patient_age');
                 $patient['phone'] = input('post.patient_phone');
-                $patient['diagnose_state'] = input('post.diagnose_state', '');
+                $patient['ill_state'] = input('post.patient_illness_state');
+                $patient['ill_type'] = input('post.patient_eyes_type');
+                $patient['vision_left'] = input('post.patient_vision_left');
+                $patient['vision_right'] = input('post.patient_vision_right');
+                $patient['pressure_left'] = input('post.patient_pressure_left');
+                $patient['pressure_right'] = input('post.patient_pressure_right');
+                $patient['eye_photo_left'] = input('post.eye_photo_left');
+                $patient['eye_photo_right'] = input('post.eye_photo_right');
+                $eye_photo_left_origin= input('post.eye_photo_left_origin');
+                $eye_photo_right_origin= input('post.eye_photo_right_origin');
+                $files_path = input('post.files_path');
+                $files_path_origin = input('post.files_path_origin');
+               // $res = D('Patient')->addData($patient);
+                if(!empty($res['errors'])){
+                    $ret = ['error_code' => 2,
+                            'msg' => '病人信息不全',
+                            'errors' =>$res['errors']
+                            ];
+                   // $this->jsonReturn($ret);
+                }
             }
-            $res = D('Apply')->addData($data);
+           // $res = D('Apply')->addData($data);
             if(!empty($res['errors'])){
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];

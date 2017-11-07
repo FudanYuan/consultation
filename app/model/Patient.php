@@ -30,7 +30,11 @@ class Patient extends Model{
     ];
 
     public function getPatientByIdNum($Id_Num){
-        $res = $this->field('*')
+        $res = $this->field('id as patient_id,name as patient_name,age as patient_name,
+                    phone as patient_phone,ill_state as patient_illness_state,
+                    diagnose_state,gender as patient_gender,ill_type as patient_eyes_type,
+                    vision_left as  patient_vision_left,vision_right as patient_vision_right,
+                    pressure_left as patient_pressure_left,pressure_right as patient_pressure_right')
             ->where(['ID_number' => $Id_Num])
             ->find();
         return $res;
@@ -58,7 +62,6 @@ class Patient extends Model{
      * @return array
      */
     private function filterField($data){
-        $ret = [];
         $errors = [];
         if(isset($data['name']) && !$data['name']){
             $errors['name'] = '名字不能为空';
@@ -72,11 +75,14 @@ class Patient extends Model{
         if(isset($data['phone']) && !$data['phone']){
             $errors['phone'] = '电话不能为空';
         }
-        if(isset($data['diagnose_state']) && !$data['diagnose_state']){
-            $errors['diagnose_state'] = '病情简介不能为空';
+        if(isset($data['ill_state']) && !$data['ill_state']){
+            $errors['ill_state'] = '病情简介不能为空';
         }
-        if(isset($data['priority']) && !$data['priority']){
-            $errors['priority'] = '优先级不能为空';
+        if(isset($data['ill_type']) && !$data['ill_type']){
+            $errors['ill_type'] = '病情类型不能为空';
+        }
+        if(isset($data['gender']) && !$data['gender']){
+            $errors['gender'] = '性别不能为空';
         }
         return $errors;
     }
@@ -107,18 +113,6 @@ class Patient extends Model{
     public function getById($id){
         $res = $this->field('*')
             ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    /**
-     * 通过身份证号获取
-     * @param $Id_Num
-     * @return mixed
-     */
-    public function getByIdNum($Id_Num){
-        $res = $this->field('*')
-            ->where(['ID_number' => $Id_Num])
             ->find();
         return $res;
     }

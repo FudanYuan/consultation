@@ -82,26 +82,12 @@ class Hospital extends Common
         $params = input('post.');
         $cond = [];
         $cond['id'] = ['<>', $this->getUserId()];
-        $target_users = D('UserAdmin')->getList($cond);
 
         if(!empty($params)) {
-            $data = [];
+
             $ret = ['code' => 1, 'msg' => '新建成功'];
-            $title = input('post.title', '');
-            $priority = input('post.priority', '');
-            if (!isset($params['target_user_ids'])) {
-                $params['target_user_ids'] = [];
-            }
-            if (!isset($params['content'])){
-                $params['content'] = '';
-            }
 
             $data['source_user_id'] = $this->getUserId();
-            $data['title'] = $title;
-            $data['content'] = $params['content'];
-            $data['operation'] = '查看';
-            $data['priority'] = (int)$priority;
-            $data['status'] = 0;
 
             $dataSet = [];
             if(!empty($params['target_user_ids'])){
