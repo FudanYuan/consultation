@@ -131,8 +131,8 @@ class Apply extends Common
             $ret = ['error_code' => 2, 'msg' => '新建成功'];
             //申请目标
             $data['apply_type'] = input('post.apply_type', '2');
-            $data['target_hospital_id'] = input('post.consultation_hostipal');
-
+            $data['target_hospital_id'] = input('post.consultation_hospital');
+            $data['patient_id'] = input('post.patient_id',-1);
             $office_ids = input('post.consultation_office','');
             $doctor_names = input('post.apply_doctor_name','');
 
@@ -163,7 +163,13 @@ class Apply extends Common
         $cond['role'] = ['=',1];
         $hospital = D('Hospital')->getHospital($select,$cond);
         $office = D('Office')->getOffice($select,[]);
-        return view('', ['hospital' => $hospital,'office' => $office]);
+        $apply_project=[];
+        $apply_project[0]=['id' => '1','name'=>'咨询'];
+        $apply_project[1]=['id' => '2','name'=>'住院'];
+        $apply_project[2]=['id' => '3','name'=>'手术'];
+        $apply_project[3]=['id' => '4','name'=>'其他'];
+
+        return view('', ['hospital' => $hospital,'office' => $office,'apply_project'=>$apply_project]);
     }
 
     /**
