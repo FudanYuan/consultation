@@ -29,6 +29,7 @@ class Apply extends Model{
         'update_time' => 'integer'
     ];
 
+    private $strField = ['apply_date', 'create_time', 'update_time'];
 
     /**
      * 获取申请信息列表
@@ -54,11 +55,6 @@ class Apply extends Model{
                 ->order($order)
                 ->select();
         return $res;
-//        $res = $this->view('apply','id,source_user_id,
-//                apply_type,consultation_goal,apply_date,status,price,
-//                is_charge,create_time')
-//                ->where($cond_and)
-//                ->select();
     }
 
 
@@ -69,6 +65,18 @@ class Apply extends Model{
      */
     public function getById($id){
         $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+    /**
+     * 获取状态
+     * @param $id
+     * @return mixed
+     */
+    public function getStatusById($id){
+        $res = $this->field('status')
             ->where(['id' => $id])
             ->find();
         return $res;
@@ -89,6 +97,74 @@ class Apply extends Model{
             $this->save($data);
         }
         return $ret;
+    }
+
+    /**
+     * 更新状态
+     * @param array $cond
+     * @param $status
+     * @return false|int
+     * @throws MyException
+     */
+    public function UpdateStatus($cond = [], $status){
+        $res = $this->save(['status' => $status], $cond);
+        if($res === false) throw new MyException('1', '标记失败');
+        return $res;
+    }
+
+    /**
+     *  更新会诊申请
+     * @param $id
+     * @param $data
+     * @return array
+     */
+    public function saveData($id, $data){
+        $ret = [];
+        $this->timeTostamp($data);
+        $this->unsetOhterField($data);
+        $errors = $this->filterField($data);
+        $ret['errors'] = $errors;
+        if(empty($errors)){
+            if(!isset($data['update_time'])){
+                $data['update_time'] = time();
+            }
+            $this->save($data, ['id' => $id]);
+        }
+        return $ret;
+    }
+
+    /**
+     * 删除会诊申请
+     * @param array $cond
+     * @return false|int
+     * @throws MyException
+     */
+    public function remove($cond = []){
+        $res = $this->save(['status' => 0], $cond);
+        if($res === false) throw new MyException('1', '删除失败');
+        return $res;
+    }
+
+    /**
+     * 过滤数据库不需要的字符串字段
+     * @param $data
+     */
+    private function unsetOhterField(&$data)
+    {
+        foreach ($this->strField as $v) {
+            $str = $v . '_str';
+            if (isset($data[$str])) unset($data[$str]);
+        }
+    }
+
+    /**
+     * 转时间戳
+     * @param $data
+     */
+    private function timeTostamp(&$data)
+    {
+        isset($data['update_time_str']) && $data['update_time'] = $data['update_time_str'] ?
+            strtotime($data['update_time_str']) : 0;
     }
 
     /**
@@ -119,6 +195,15 @@ class Apply extends Model{
         if(isset($data['target_office_id']) && !$data['target_office_id']){
             $errors['target_office_id'] = '申请科室不能为空';
         }
+        if(isset($data['consultation_result']) && !$data['consultation_result']){
+            $errors['consultation_result'] = '会诊单位意见不能为空';
+        }
+        if(isset($data['price']) && !$data['price']){
+            $errors['price'] = '诊疗费用不能为空';
+        }
+        if(isset($data['update_time']) && !$data['update_time']){
+            $errors['update_time'] = '会诊时间不能为空';
+        }
         return $errors;
     }
 
@@ -138,24 +223,6 @@ class Apply extends Model{
     }
 
     /**
-     *  更新会诊申请
-     * @param $id
-     * @param $data
-     * @return array
-     */
-    public function saveData($id, $data){
-        $ret = [];
-        $errors = $this->filterField($data);
-        $ret['errors'] = $errors;
-        if(empty($errors)){
-            $data['update_time'] = time();
-            $this->save($data, ['id' => $id]);
-        }
-        return $ret;
-    }
-
-
-    /**
      * 批量增加会诊申请
      * @param $dataSet
      * @return array
@@ -172,31 +239,5 @@ class Apply extends Model{
         $ret['result'] = $this->saveAll($dataSet);
         return $ret;
     }
-
-    /**
-     * 删除会诊申请公告
-     * @param array $cond
-     * @return false|int
-     * @throws MyException
-     */
-    public function remove($cond = []){
-        $res = $this->save(['status' => 2], $cond);
-        if($res === false) throw new MyException('2', '删除失败');
-        return $res;
-    }
-
-    /**
-     * 标记为已读
-     * @param array $cond
-     * @return false|int
-     * @throws MyException
-     */
-    public function markRead($cond = []){
-        $res = $this->save(['status' => 1], $cond);
-        if($res === false) throw new MyException('2', '标记失败');
-        return $res;
-    }
-
-
 }
 ?>

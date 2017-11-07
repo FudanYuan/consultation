@@ -107,7 +107,7 @@
 
                 <tr>
                     <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
-                        <template v-if="apply_info.status == 3">
+                        <template v-if="apply_info.status == 3 || apply_info.status == 4">
                             &nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_result}}
                         </template>
                     </td>
@@ -115,18 +115,18 @@
                 <tr>
                     <td>会诊医生签字</td>
                     <td colspan="2">
-                        <template v-for="model in target_doctor_info" v-if="apply_info.status == 3">
+                        <template v-for="model in target_doctor_info" v-if="apply_info.status == 3 || apply_info.status == 4">
                             {{model.name}}
                         </template>
                     </td>
                     <td>会诊日期</td>
                     <td colspan="2">
-                        <template v-if="apply_info.status == 3">
+                        <template v-if="apply_info.status == 3 || apply_info.status == 4">
                             {{apply_info.update_time | moment}}
                         </template>
                     </td>
                     <td>会诊费用</td>
-                    <td colspan="2">{{apply_info.price元}}</td>
+                    <td colspan="2">{{apply_info.price}}元</td>
                 </tr>
             </table>
         </div>

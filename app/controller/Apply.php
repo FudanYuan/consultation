@@ -209,6 +209,15 @@ class Apply extends Common
     public function getApplyInfo(){
         $id = input('post.id');
         $ret = ['error_code' => 0, 'msg' => ''];
+        $res = D('Apply')->getStatusById($id);
+        if($res['status'] == 1){
+            try{
+                D('Apply')->UpdateStatus(['id' => ['=', $id]], 2);
+            }catch(MyException $e){
+                $ret['error_code'] = 1;
+                $ret['msg'] = '标记失败';
+            }
+        }
         $apply_info = D('Apply')->getById($id);
         $patient_id = $apply_info['patient_id'];
         $source_user_id = $apply_info['source_user_id'];
@@ -252,10 +261,36 @@ class Apply extends Common
         $this->jsonReturn($ret);
     }
 
-    /////未修改/////
+    /**
+     * 回复申请
+     */
+    public function Reply(){
+        $data = input('post.');
+        if(!empty($data)){
+            $ret = ['error_code' => 0, 'msg' => '回复成功'];
+            $id = $data['id'];
+            if($data['status'] == 4){
+                $data = [];
+                $data['id'] = $id;
+                $data['consultation_result'] = '很抱歉，您的会诊申请被拒绝！';
+                $data['status'] = 4;
+            }
+            $res = D('Apply')->saveData($id, $data);
+            if(!empty($res['errors'])){
+                $ret['debug'] = !empty($ret['errors']);
+                $ret['error_code'] = 1;
+                $ret['errors'] = $res['errors'];
+                $ret['msg'] = '回复失败';
+            }
+            $this->jsonReturn($ret);
+        }
+        $id = input('get.id');
+        $status = D('Apply')->getStatusById($id);
+        return view('', ['id' => $id, 'status' => $status]);
+    }
 
     /**
-     * 删除公告
+     * 删除会诊申请
      */
     public function remove(){
         $ret = ['code' => 1, 'msg' => '删除成功'];
@@ -268,37 +303,4 @@ class Apply extends Common
         }
         $this->jsonReturn($ret);
     }
-
-    /**
-     * 标为已读
-     */
-    public function markRead(){
-        $ret = ['error_code' => 1, 'msg' => '标记成功'];
-        $ids = input('post.ids');
-        try{
-            $res = D('Apply')->markRead(['id' => ['in', $ids]]);
-        }catch(MyException $e){
-            $ret['error_code'] = 2;
-            $ret['msg'] = '标记失败';
-        }
-        $this->jsonReturn($ret);
-    }
-
-    //            $list = D('Apply')->getList($cond);
-//            $list = [];
-//            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '',
-//                'hospital_name' => '医院甲','doctor_id' => 1, 'doctor_name' => '张三',
-//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
-//                'consultation_goal' => '12324353456', 'apply_date' => 1509871680,
-//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
-//                'create_time' =>  1509871680
-//            ];
-//            $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_logo' => '',
-//                'hospital_name' => '医院乙','doctor_id' => 1, 'doctor_name' => '张三',
-//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
-//                'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680,
-//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
-//                'create_time' =>  1509871680
-//            ];
-
 }

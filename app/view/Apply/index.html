@@ -218,8 +218,11 @@
                         <td>{{model.status | getApplyStatus}}</td>
                         <td>{{model.is_charge | getChargeStatus}}</td>
                         <td>
-                            <a :href="'__PRO_PATH__/Apply/info?id='+model.id" title="详情">
+                            <a :href="'__PRO_PATH__/Apply/info?id='+model.id" title="详情" v-if="model.status == 3 || model.status == 4">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                            </a>
+                            <a :href="'__PRO_PATH__/Apply/reply?id='+model.id" title="回复" v-if="model.status == 1 || model.status == 2">
+                                <i class="fa fa-commenting fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
                                 <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
@@ -242,7 +245,6 @@
 {include file="Common/bottom" /}
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
-<script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
     $('#consultation-nav-apply').addClass('active');
     $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
