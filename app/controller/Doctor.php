@@ -134,4 +134,23 @@ class Doctor extends Common
     }
 
 
+    /**
+     * 获取医生信息
+     */
+    function info(){
+        $id = input('get.id');
+        return view('', ['id' => $id]);
+    }
+
+    /**
+     * 获取医生详情
+     */
+    public function getDoctorInfo(){
+        $id = input('post.id');
+        $ret = ['error_code' => 0, 'msg' => ''];
+        $list = D('Doctor')->getById($id);
+        $ret['info'] = $list;
+        $this->jsonReturn($ret);
+    }
+
 }

@@ -12,19 +12,39 @@ class Doctor extends Model{
     protected $table = 'consultation_doctor';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'office_id','name','post','phone','address',
-        'status','create_time','update_time'
+        'id', 'hospital_office_id', 'name', 'photo', 'gender', 'age',
+        'position', 'phone', 'email', 'address', 'postcode', 'info',
+        'honor', 'remark', 'status', 'create_time', 'update_time'
     );
     protected $type = [
         'id' => 'integer',
+        'hospital_office_id' => 'integer',
         'office_id' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'
     ];
 
+    /**
+     * 获取医生列表
+     * @param array $cond
+     */
+    public function getList($cond = []){
+        if(!isset($cond['status'])){
+            $cond['status'] = ['<>', 2];
+        }
+        $res = $this->field('*')
+            ->order('create_time desc')
+            ->where($cond)
+            ->select();
+        return $res;
+    }
 
-
-    public function getDoctorById($id){
+    /**
+     * 通过id获取医生信息
+     * @param $id
+     * @return mixed
+     */
+    public function getById($id){
         $res = $this->field('*')
             ->where(['id' => $id])
             ->find();
@@ -35,36 +55,7 @@ class Doctor extends Model{
 
     //////未修改/////
     /**
-     * 获取通知列表
-     * @param array $cond
-     */
-    public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
-        }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
-            ->where($cond)
-            ->select();
-        return $res;
-    }
-
-    /**
-     * 根据ID获取通知公告
-     * @param $id
-     * @return mixed
-     */
-    public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    /**
-     * 更新通知公告
+     * 更新医生信息
      * {@inheritDoc}
      * @see \think\Model::save()
      */
@@ -80,7 +71,7 @@ class Doctor extends Model{
     }
 
     /**
-     * 添加通知公告
+     * 添加医生信息
      * @param $data
      * @return array
      */
@@ -95,7 +86,7 @@ class Doctor extends Model{
     }
 
     /**
-     * 批量增加通知公告
+     * 批量增加医生信息
      * @param $dataSet
      * @return array
      */
@@ -113,7 +104,7 @@ class Doctor extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除医生信息
      * @param array $cond
      * @return false|int
      * @throws MyException

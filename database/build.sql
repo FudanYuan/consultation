@@ -170,10 +170,16 @@ CREATE TABLE `consultation_doctor` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `hospital_office_id` INT DEFAULT NULL COMMENT '科室id,外键',
   `name` VARCHAR(100) DEFAULT NULL COMMENT '姓名',
+  `photo` VARCHAR(200) DEFAULT '' COMMENT '照片',
+  `gender` TINYINT NOT NULL COMMENT '性别：1->男；2->女',
+  `age` TINYINT UNSIGNED DEFAULT NULL COMMENT '年龄',
   `position` VARCHAR(100) DEFAULT NULL COMMENT '职称',
   `phone` VARCHAR(20) DEFAULT NULL COMMENT '手机号',
   `email` VARCHAR(20) DEFAULT NULL COMMENT '邮箱',
   `address` VARCHAR(200) DEFAULT NULL COMMENT '地址',
+  `postcode` VARCHAR(20) DEFAULT NULL COMMENT '邮编',
+  `info` TEXT DEFAULT NULL COMMENT '详细信息',
+  `honor` TEXT DEFAULT NULL COMMENT '荣誉奖项',
   `remark` VARCHAR(1000) DEFAULT NULL COMMENT '备注',
   `status` TINYINT DEFAULT NULL COMMENT '状态：1->启用；2->关闭',
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
@@ -182,8 +188,8 @@ CREATE TABLE `consultation_doctor` (
   FOREIGN KEY (`hospital_office_id`) REFERENCES consultation_hospital_office(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `consultation_doctor` (`hospital_office_id`, `name`, `position`, `phone`, `remark`, `address`, `status`, `create_time`, `update_time`) VALUES
-(1, 'Smith', '博导', '13623614251', '暂无', '湖南省长沙市', 1, 1503037656, NULL);
+INSERT INTO `consultation_doctor` (`hospital_office_id`, `name`, `photo`, `gender`, `age`, `position`, `phone`, `remark`, `address`, `postcode`, `info`, `honor`, `status`, `create_time`, `update_time`) VALUES
+(1, 'Smith', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市', '417500', '暂无详细信息', '暂无详细信息', 1, 1503037656, NULL);
 
 
 # Dump of table consultation_apply

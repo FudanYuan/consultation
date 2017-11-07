@@ -47,10 +47,10 @@
                         <td>{{model.hospital_name}}</td>
                         <td>{{model.office_name}}</td>
                         <td>
-                            <a href="javascript:;" @click="info(index)" title="详情">
+                            <a :href="'__PRO_PATH__/Doctor/info?id='+model.id" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
-                            <a href="__PRO_PATH__/Doctor/edit?id=model.id" title="编辑">
+                            <a :href="'__PRO_PATH__/Doctor/edit?id='+model.id" title="编辑">
                                 <i class="fa fa-pencil-square  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
@@ -170,10 +170,6 @@
                     this.select = [];
                 }
                 this.check_all = !this.check_all;
-            },
-
-            info: function (index) {
-                popupPreview(this.list[index]);
             },
 
             create: function () {
