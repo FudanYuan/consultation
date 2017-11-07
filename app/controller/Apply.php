@@ -147,7 +147,6 @@ class Apply extends Common
                 //$patient['gender'] = input('post.');
                 $patient['age'] = input('post.patient_age');
                 $patient['phone'] = input('post.patient_phone');
-
             }
             $res = D('Apply')->addData($data);
             $this->jsonReturn($ret);

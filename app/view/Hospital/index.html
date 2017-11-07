@@ -52,10 +52,13 @@
                 <tr>
                     <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
                     <th>医院名称</th>
+                    <th>院长姓名</th>
                     <th>医院标志</th>
                     <th>联系方式</th>
                     <th>电子邮箱</th>
                     <th>医院地址</th>
+                    <th>医院类型</th>
+                    <th>医院等级</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -64,15 +67,18 @@
                     <tr v-for="(model, index) in list">
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
                         <td>{{model.name}}</td>
+                        <td>{{model.master}}</td>
                         <td><img :src="model.logo != '' ? 'model.logo' : '__PUBLIC__/images/profile/profile2.jpg' " alt="model.name"></td>
                         <td>{{model.phone}}</td>
                         <td>{{model.email}}</td>
                         <td>{{model.address}}</td>
+                        <td>{{model.type}}</td>
+                        <td>{{model.level}}</td>
                         <td>
-                            <a href="javascript:;" @click="info(index)" title="详情">
+                            <a :href="'__PRO_PATH__/Hospital/info?id='+model.id" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
-                            <a href="__PRO_PATH__/Hospital/edit?id=model.id" title="编辑">
+                            <a :href="'__PRO_PATH__/Hospital/edit?id='+model.id" title="编辑">
                                 <i class="fa fa-pencil-square  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
@@ -193,9 +199,6 @@
                     this.select = [];
                 }
                 this.check_all = !this.check_all;
-            },
-            info: function (index) {
-
             },
             create: function () {
                 window.location.href = '__PRO_PATH__/Hospital/create';

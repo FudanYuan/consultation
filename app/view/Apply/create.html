@@ -9,7 +9,7 @@
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
             <!--<li>新建申请</li>-->
         </ul>
-        <div class="form-wrapper">
+        <div class="form-wrapper" style="background-color: #fff">
             <form class="form-horizontal" method="post" id="new-apply-form">
                 <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
                     <label for="apply_type" class="col-sm-2 control-label">会诊类型：</label>
@@ -172,7 +172,7 @@
                 </div>
 
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label for="vision" class="col-sm-2 control-label">眼睛视力：</label>
+                    <label class="col-sm-2 control-label">眼睛视力：</label>
                     <div class="col-sm-9">
                         <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.vision_left"    value="" placeholder="左眼视力" id="vision_left">
                         <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.vision_right"   value="" placeholder="右眼视力" id="vision_right">
@@ -190,28 +190,20 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">封面</label>
+                <div class="form-group {$errors.img ?= 'has-error'}">
+                    <label class="col-sm-2 control-label">封面：</label>
                     <div class="col-sm-4">
                         <div id="filelist">
                             <div>{$data.img_origin??''}<b></b></div>
                         </div>
                         <br/>
                         <div id="upload-wrapper">
-                            <a id="pickfiles" href="javascript:;">选择文件</a>
+                            <a id="pickfiles" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
                             <a id="uploadfiles" href="javascript:;">上传</a>
                         </div>
                         <input type="hidden" name="img" value="{$data.img??''}"/>
                         <input type="hidden" name="img_origin" value="{$data.img_origin??''}"/>
-                        <span class="help-block">{{$errors.img ?? ''}}</span>
-                    </div>
-                </div>
-
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label  class="col-sm-2 control-label"></label>
-                    <div class="col-sm-4">
-                        <input  type="file" name="illness_state_file" value="上传病例文件"/>
-                        <!--<input type="submit" value="上传病例文件" />-->
+                        <span class="help-block">{$errors.img ?? ''}</span>
                     </div>
                 </div>
 
@@ -242,26 +234,10 @@
                 <div :class="['form-group']" >
                     <label for="apply_date" class="col-sm-2 control-label">预约时间：</label>
                     <div class="col-sm-4">
-                        <input placeholder="请输入要预约的时间" id="apply_date" name="apply_date" data-enable-time="true" data-time_24hr="false" class="form-control flatpickr flatpickr-input">
+                        <input placeholder="请输入要预约的时间" id="apply_date" name="apply_date" data-enable-time="false" data-time_24hr="false" class="form-control flatpickr flatpickr-input">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
-
-                <!--<div :class="['form-group']" >-->
-                    <!--<label  class="col-sm-2 control-label">申请科室：</label>-->
-                    <!--<div class="col-sm-4">-->
-                        <!--<input class="form-control" type="text" name="keshi_name" value="眼科" disabled>-->
-                    <!--</div>-->
-                <!--</div>-->
-
-
-                <!--<div :class="['form-group', errors.title != '' ? 'has-error' : '']" >-->
-                    <!--<label for="apply_doctor_name" class="col-sm-2 control-label">申请人：</label>-->
-                    <!--<div class="col-sm-4">-->
-                        <!--<input class="form-control" type="text" name="apply_doctor_name" value="" placeholder="请输入您的姓名" id="apply_doctor_name">-->
-                        <!--<p class="help-block">{{errors.title}}</p>-->
-                    <!--</div>-->
-                <!--</div>-->
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
@@ -284,7 +260,6 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
     $('#consensus-nav-apply').addClass('active');
-    $(".flatpickr").flatpickr({time_24hr:true});
 
     function clickRadio(value)
     {
@@ -294,23 +269,6 @@
             vm.seen['ill_type'] = false;
         }
     }
-
-    myupload({
-        container: 'upload-wrapper',
-        browse: 'pickfiles',
-        url: '__PRO_PATH__/Media/upload?dir=research',
-        img_types: 'jpg,gif,png',
-        zip_types: 'zip',
-        filelist: 'filelist',
-        uploadfiles: 'uploadfiles',
-        file_size: '10mb',
-        onUploaded: function (up, file, result){
-            $("input[name='img_origin']").val(file.name);
-            var res = JSON.parse(result.response);
-            $("input[name='img']").val(res.result.file);
-        },
-        isMulti: false
-    });
 
     var vm = new Vue({
         el: '#new-apply-form',
@@ -342,6 +300,25 @@
                 priority: '',
                 target_user_id: ''
             }
+        },
+        mounted:function () {
+            $(".flatpickr").flatpickr({time_24hr:false});
+            myupload({
+                container: 'upload-wrapper',
+                browse: 'pickfiles',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist',
+                uploadfiles: 'uploadfiles',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='img_origin']").val(file.name);
+                    var res = JSON.parse(result.response);
+                    $("input[name='img']").val(res.result.file);
+                },
+                isMulti: false
+            });
         },
         methods: {
             createNewApply: function () {
@@ -409,3 +386,4 @@
         console.log(JSON.stringify(vm.params));
     }
 </script>
+

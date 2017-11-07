@@ -61,13 +61,13 @@ class Hospital extends Common
     }
 
     /**
-     * 删除公告
+     * 删除医院信息
      */
     public function remove(){
         $ret = ['code' => 1, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
-            $res = D('Apply')->remove(['id' => ['in', $ids]]);
+            $res = D('Hospital')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
             $ret['code'] = 2;
             $ret['msg'] = '删除失败';
@@ -143,4 +143,22 @@ class Hospital extends Common
     }
 
 
+    /**
+     * 获取医院信息
+     */
+    function info(){
+        $id = input('get.id');
+        return view('', ['id' => $id]);
+    }
+
+    /**
+     * 获取医院详情
+     */
+    public function getHospitalInfo(){
+        $id = input('post.id');
+        $ret = ['error_code' => 0, 'msg' => ''];
+        $list = D('Hospital')->getById($id);
+        $ret['info'] = $list;
+        $this->jsonReturn($ret);
+    }
 }

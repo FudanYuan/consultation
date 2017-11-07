@@ -12,8 +12,9 @@ class Hospital extends Model{
     protected $table = 'consultation_hospital';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'name','phone','url','email','address','role',
-        'status','create_time','update_time'
+        'id', 'name', 'master', 'logo', 'phone', 'url', 'email', 'address',
+        'type', 'level', 'info', 'honor', 'role', 'status',
+        'create_time', 'update_time'
     );
     protected $type = [
         'id' => 'integer',
@@ -24,30 +25,6 @@ class Hospital extends Model{
     ];
 
     /**
-     * 获取医院信息根据ID
-     * @param $id
-     * @return mixed
-     */
-    public function getHospitalById($id){
-        $res = $this->field('*')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    /**
-     * 获取医院信息
-     * @return mixed
-     */
-    public function getHospital(){
-        $res = $this->field('*')
-            ->where(['status' => 1])
-            ->select();
-        return $res;
-    }
-
-    ////未修改/////
-    /**
      * 获取医院列表
      * @param array $cond
      */
@@ -55,8 +32,8 @@ class Hospital extends Model{
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id, name, logo, phone, url, email, address,
-        role, status, create_time')
+        $res = $this->field('id, name, master, logo, phone, url, email, address,
+        type, level, info, honor, role, status, create_time')
             ->order('create_time desc')
             ->where($cond)
             ->select();
@@ -64,18 +41,18 @@ class Hospital extends Model{
     }
 
     /**
-     * 根据ID获取医院信息
+     * 获取医院信息根据ID
      * @param $id
      * @return mixed
      */
     public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
+        $res = $this->field('*')
             ->where(['id' => $id])
             ->find();
         return $res;
     }
 
+    ////未修改/////
     /**
      * 更新医院信息
      * @param $id
@@ -127,7 +104,7 @@ class Hospital extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除医院信息
      * @param array $cond
      * @return false|int
      * @throws MyException
