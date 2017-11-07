@@ -48,12 +48,17 @@ CREATE TABLE `consultation_patient` (
   `vision_right` VARCHAR(20) DEFAULT NULL COMMENT '右眼视力',
   `pressure_left` VARCHAR(20) DEFAULT NULL COMMENT '左眼眼压',
   `pressure_right` VARCHAR(20) DEFAULT NULL COMMENT '右眼眼压',
-  `eye_photo_left` VARCHAR(200) DEFAULT NULL COMMENT '左眼照图片地址',
-  `eye_photo_right` VARCHAR(200) DEFAULT NULL COMMENT '右眼照图片地址',
+  `exam_img` VARCHAR(200) DEFAULT '' COMMENT '辅助检查图地址',
+  `exam_img_origin` VARCHAR(200) DEFAULT '' COMMENT '辅助检查图名称',
+  `eye_photo_left` VARCHAR(200) DEFAULT '' COMMENT '左眼照图片地址',
+  `eye_photo_left_origin` VARCHAR(200) DEFAULT '' COMMENT '左眼照图片名称',
+  `eye_photo_right` VARCHAR(200) DEFAULT '' COMMENT '右眼照图片地址',
+  `eye_photo_right_origin` VARCHAR(200) DEFAULT '' COMMENT '左眼照图片名称',
   `ill_type` TINYINT DEFAULT NULL COMMENT '眼病类别：1眼表 2眼前节 3眼底 4视光 5其他',
   `ill_state` TEXT DEFAULT NULL COMMENT '病情描述',
   `diagnose_state` TEXT DEFAULT NULL COMMENT '诊疗情况',
   `files_path` VARCHAR(200) DEFAULT NULL COMMENT '附属文件地址',
+  `files_path_origin` VARCHAR(200) DEFAULT NULL COMMENT '附属文件名称',
   `in_hospital_time` int(11) DEFAULT NULL COMMENT '入院时间',
   `narrator` VARCHAR(100) DEFAULT NULL COMMENT '叙述者',
   `main_narrate` TEXT DEFAULT NULL COMMENT '主诉',
@@ -68,8 +73,8 @@ CREATE TABLE `consultation_patient` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `consultation_patient` (`name`, `ID_number`, `gender`, `age`, `occupation`, `height`, `weight`, `phone`, `birthplace`, `address`, `work_unit`, `postcode`, `ill_type`, `ill_state`, `vision_left`, `vision_right`, `pressure_left`, `pressure_right`, `eye_photo_left`, `eye_photo_right`, `diagnose_state`, `files_path`, `in_hospital_time`, `narrator`, `main_narrate`, `present_ill_history`, `past_history`, `system_retrospect`, `personal_history`, `physical_exam_record`, `status`, `create_time`, `update_time`) VALUES
-('患者1', '1122', 1, 21, '学生', 178, 62.3, '15116136472', '山东泰安', '湖南长沙', '中南大学', '471500', '放假啊就发了叫拉风姜老师分来发链接啦放假啦垃圾分类叫啦放假啦安拉发了金姐分辣椒粉阿娇弗朗加利飞机爱啦放假啊就发酒疯啦减肥据了解 啊就立即发酵法律界；啊；飞机阿娇发啦； 键；发啊放假啊；发；键啊放假啊；键发福；阿娇发；安静发；阿娇发；安静；阿娇发；键；安抚啊啦键啊发了；', 1, '5.0', '5.0', '130', '120', NULL, NULL, '发福吗金姐分啊；发酵法；库放假啊； 发酵法啊放假我发就发放假阿娇放假啊；飞机；安静发酵法；安静阿肌肤了；阿肌肤； 安静； ', NULL, 1212191291, '放假啊', '发发', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
+INSERT INTO `consultation_patient` (`name`, `ID_number`, `gender`, `age`, `occupation`, `height`, `weight`, `phone`, `birthplace`, `address`, `work_unit`, `postcode`, `ill_type`, `ill_state`, `vision_left`, `vision_right`, `pressure_left`, `pressure_right`, `eye_photo_left`, `eye_photo_left_origin`, `eye_photo_right`, `eye_photo_right_origin`, `diagnose_state`, `files_path`, `files_path_origin`, `in_hospital_time`, `narrator`, `main_narrate`, `present_ill_history`, `past_history`, `system_retrospect`, `personal_history`, `physical_exam_record`, `status`, `create_time`, `update_time`) VALUES
+('患者1', '1122', 1, 21, '学生', 178, 62.3, '15116136472', '山东泰安', '湖南长沙', '中南大学', '471500', '放假啊就发了叫拉风姜老师分来发链接啦放假啦垃圾分类叫啦放假啦安拉发了金姐分辣椒粉阿娇弗朗加利飞机爱啦放假啊就发酒疯啦减肥据了解 啊就立即发酵法律界；啊；飞机阿娇发啦； 键；发啊放假啊；发；键啊放假啊；键发福；阿娇发；安静发；阿娇发；安静；阿娇发；键；安抚啊啦键啊发了；', 1, '5.0', '5.0', '130', '120', '', '', '', '', '发福吗金姐分啊；发酵法；库放假啊； 发酵法啊放假我发就发放假阿娇放假啊；飞机；安静发酵法；安静阿肌肤了；阿肌肤； 安静； ', '', '', 1212191291, '放假啊', '发发', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
 
 
 # Dump of table consultation_hospital
@@ -232,8 +237,9 @@ CREATE TABLE `consultation_communication` (
   `apply_id` INT DEFAULT NULL COMMENT '申请id,外键',
   `source_user_id` INT DEFAULT NULL COMMENT '发送方医生id,外键',
   `target_user_id` INT DEFAULT NULL COMMENT '接收方医生id,外键',
-  `words_info` TEXT DEFAULT NULL COMMENT '文字信息',
-  `files_info` TEXT DEFAULT NULL COMMENT '文件信息',
+  `words_info` TEXT DEFAULT '' COMMENT '文字信息',
+  `files_info` VARCHAR(200) DEFAULT '' COMMENT '文件信息',
+  `files_info_origin` VARCHAR(200) DEFAULT '' COMMENT '文件名称',
   `time` INT DEFAULT NULL COMMENT '时间',
   `status` TINYINT DEFAULT NULL COMMENT '状态：0->未读；1->已读；2->关闭',
   `create_time` INT DEFAULT NULL COMMENT '创建时间',

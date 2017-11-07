@@ -120,18 +120,6 @@ class Apply extends Common
      */
     public function create(){
         $params = input('post.');
-        /**
-         * {"hospital_name: '',
-         * office_name: '',
-         * "apply_type":"2",
-         * "doctor_name":"faf",
-         * "patient_id":"faf",
-         * "consultation_goal":"faf",
-         * "other_apply":"afaf",
-         * "apply_date":"",
-         * "apply_doctor_name":"fafa"}
-         */
-        $cond = [];
         if(!empty($params)) {
             $data = [];
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
@@ -162,9 +150,8 @@ class Apply extends Common
             $this->jsonReturn($ret);
         }
         $hospital = D('Hospital')->getList();
-
         $office = D('Office')->getList();
-
+        // 还要返回医生信息
         return view('', ['hospital' => $hospital,'office' => $office]);
     }
 
@@ -196,9 +183,8 @@ class Apply extends Common
     }
 
     /////未修改/////
-
     /**
-     * 删除公告
+     * 删除会诊申请
      */
     public function remove(){
         $ret = ['code' => 1, 'msg' => '删除成功'];

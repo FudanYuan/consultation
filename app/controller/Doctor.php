@@ -27,9 +27,10 @@ class Doctor extends Common
         $params = input('post.');
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
-        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond['target_user_id'] = ['=', $user_id];
-        //$list = D('Doctor')->getList($cond);
+
+        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
+//        $list = D('Doctor')->getList($cond);
         $list = [];
         $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
             'office_id' => 1, 'office_name' => '眼科', 'name' => '张三',
@@ -150,9 +151,9 @@ class Doctor extends Common
         $ret = ['error_code' => 0, 'msg' => ''];
         $list = D('Doctor')->getById($id);
         $hospital_office_id = $list['hospital_office_id'];
-        $hosiptal_office = D('HospitalOffice')->getById($hospital_office_id);
-        $hospital_id = $hosiptal_office['hospital_id'];
-        $office_id = $hosiptal_office['office_id'];
+        $hospital_office = D('HospitalOffice')->getById($hospital_office_id);
+        $hospital_id = $hospital_office['hospital_id'];
+        $office_id = $hospital_office['office_id'];
         $hospital_info = D('Hospital')->getById($hospital_id);
         $office_info = D('Office')->getById($office_id);
         $ret['info'] = $list;

@@ -32,7 +32,7 @@ class UserAdmin extends Model{
  		if(!isset($cond['status'])){
  			$cond['status'] = ['<>', 2];
  		}
- 		return $this->field('id,username,status,create_time,login_time,remark')
+ 		return $this->field('id,doctor_id,username,status,create_time,login_time,remark')
             ->where($cond)
             ->paginate(10);
  	}
@@ -43,7 +43,7 @@ class UserAdmin extends Model{
      * @return mixed
      */
  	public function getById($id){
- 		return $this->field('id,username,pass,role_id,remark,status')
+ 		return $this->field('id,doctor_id,username,pass,role_id,remark,status')
             ->where('id', $id)
             ->find();
  	}

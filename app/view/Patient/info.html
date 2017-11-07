@@ -1,0 +1,158 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<style>
+    .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+        padding: 8px;
+        text-align: center;
+        line-height: 1.42857143;
+        vertical-align: middle;
+        border:1.0pt solid black;
+        width: 10%;
+        color: black;
+        font-weight: 500;
+    }
+</style>
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li><a href="__PRO_PATH__/Patient/index">患者信息</a></li>
+            <li>患者详情</li>
+        </ul>
+
+        <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="patient-info">
+            <a id="form-cancel" class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Patient/index">返回</a>
+            <table class="table" style="width: 95%; margin: 0 2.5%">
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">基本信息</td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td>姓名</td>
+                    <td>{{info.name}}</td>
+                    <td>性别</td>
+                    <td>{{info.gender}}</td>
+                    <td>年龄</td>
+                    <td>{{info.age}}</td>
+                    <td>身份证号</td>
+                    <td colspan="2">{{info.ID_number}}</td>
+                </tr>
+                <tr>
+                    <td>联系方式</td>
+                    <td>{{info.phone}}</td>
+                    <td>住址</td>
+                    <td colspan="3">{{info.address}}</td>
+                    <td>邮编</td>
+                    <td colspan="2">{{info.postcode}}</td>
+                </tr>
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">眼检信息</td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td>眼病类型</td>
+                    <td colspan="2">{{info.ill_type | getIllType}}</td>
+                    <td>视力(左／右)</td>
+                    <td>{{info.vision_left}}</td>
+                    <td>{{info.vision_right}}</td>
+                    <td>视压(左／右)</td>
+                    <td>{{info.pressure_left}}</td>
+                    <td>{{info.pressure_right}}</td>
+                </tr>
+                <tr>
+                    <td rowspan="4">辅助检查(图)</td>
+                    <td colspan="2" rowspan="4"><img :src="info.exam_img != '' ? 'info.exam_img' : '__PUBLIC__/images/img_none.png'" :alt="info.exam_img_origin"></td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4"><img :src="info.eye_photo_left != '' ? 'info.eye_photo_left' : '__PUBLIC__/images/img_none.png'" :alt="info.exam_img_origin"></td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4"><img :src="info.eye_photo_right != '' ? 'info.eye_photo_right' : '__PUBLIC__/images/img_none.png'" :alt="info.exam_img_origin"></td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">诊疗信息</td>
+                </tr>
+                <tr></tr>
+
+                <tr>
+                    <td colspan="9" rowspan="4" style="text-align: left; height: auto; padding: 20px;">{{info.diagnose_state}}</td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
+                    <td>诊疗医院</td>
+                    <td colspan="2">{{hospital.name}}</td>
+                    <td>诊疗科室</td>
+                    <td colspan="2">{{office.name}}</td>
+                    <td>诊疗时间</td>
+                    <td colspan="2">{{info.create_time | moment}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+{include file="Common/popup_list" /}
+{include file="Common/calendar" /}
+<script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
+<script>
+    $('#consultation-nav-patient').addClass('active');
+
+    var vm = new Vue({
+        el: '#patient-info',
+        data: {
+            id: {$id},
+            info: {},
+            hospital:{},
+            office: {}
+        },
+        methods:{
+        },
+        filters:{
+            moment: function (value, formatString) {
+                formatString = formatString || 'YYYY-MM-DD HH:mm';
+                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日');
+                return time;
+            },
+            formatText: function (text, len) {
+                return cutString(text, len);
+            },
+            getIllType: function (value) {
+                var ret = '';
+                if(value==1){
+                    ret = '眼表';
+                }
+                if(value==2){
+                    ret = "眼前节";
+                }
+                if(value==3){
+                    ret = "眼底";
+                }
+                if(value==4){
+                    ret = "视光";
+                }
+                if(value==5){
+                    ret = "其他";
+                }
+                return ret;
+            }
+        }
+    });
+
+    submit();
+
+    // 异步提交数据
+    function submit() {
+        $.post('__PRO_PATH__/Patient/getPatientInfo', {id: vm.id}, function (res) {
+            if (res.error_code == 0) {
+                vm.info = res.info;
+                vm.hospital = res.hospital;
+                vm.office = res.office;
+            }
+        });
+    }
+</script>

@@ -27,7 +27,7 @@ class Patient extends Common
         $params = input('post.');
         $ID_number = input('post.ID_number');
         $ret = ['error_code' => 0, 'msg' =>''];
-        $patient_data = D('Patient')->getPatientByIdNum($ID_number);
+        $patient_data = D('Patient')->getByIdNum($ID_number);
         if(empty($patient_data)){
             $ret['error_code'] = 2;
             $ret['msg'] = '未找到这名患者';
@@ -58,6 +58,37 @@ class Patient extends Common
         $this->jsonReturn($ret);
     }
 
+    /**
+     * 获取患者信息
+     */
+    function info(){
+        $id = input('get.id');
+        return view('', ['id' => $id]);
+    }
+
+    /**
+     * 获取患者详情
+     */
+    public function getPatientInfo(){
+        $id = input('post.id');
+        $ret = ['error_code' => 0, 'msg' => ''];
+        $list = D('Patient')->getById($id);
+        $user_id = $this->getUserId();
+        $user_info = D('UserAdmin')->getById($user_id);
+        $doctor_id = $user_info['doctor_id'];
+        $hospital_office = D('Doctor')->getById($doctor_id);
+        $hospital_office_id = $hospital_office['id'];
+        $ret['debug'] = $user_info;
+        $hospital_office = D('HospitalOffice')->getById($hospital_office_id);
+        $hospital_id = $hospital_office['hospital_id'];
+        $office_id = $hospital_office['office_id'];
+        $hospital_info = D('Hospital')->getById($hospital_id);
+        $office_info = D('Office')->getById($office_id);
+        $ret['info'] = $list;
+        $ret['hospital'] = ['name' => $hospital_info['name']];
+        $ret['office'] = ['name' => $office_info['name']];
+        $this->jsonReturn($ret);
+    }
 
     ///////////未修改////
     /**
