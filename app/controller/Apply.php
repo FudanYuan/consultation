@@ -155,7 +155,7 @@ class Apply extends Common
             } else{
                 $data['is_definite_purpose'] = 1;
             }
-            $data['patient_id'] = input('post.patient_id','1');
+            $data['patient_id'] = input('post.patient_id','-1');
             $data['delivery_user_id'] = $this->getUserId();
             $data['apply_type'] = input('post.apply_type', '2');
             $data['diagnose_state'] = input('post.diagnose_state','');
@@ -163,10 +163,22 @@ class Apply extends Common
             $data['other_apply'] = input('post.other_apply', '');
             $data['apply_date'] = input('post.apply_date');
             $ret['params'] = $params;
+            //如果病患不存在，手动输入
+            if($data['patient_id'] == -1){
+                $patient = [];
+                $patient['name'] = input('post.patient_name');
+                $patient['ID_number'] = input('post.patient_ID_number');
+                //$patient['gender'] = input('post.');
+                $patient['age'] = input('post.patient_age');
+                $patient['phone'] = input('post.patient_phone');
+
+            }
+
+
             $res = D('Apply')->addData($data);
             $this->jsonReturn($ret);
-        }
 
+        }
         $hospital = D('Hospital')->getHospital();
 
         $office = D('Office')->getOffice();

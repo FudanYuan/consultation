@@ -24,6 +24,7 @@ class Patient extends Common
      * 获取病人信息根据身份证号
      */
     public function getPatientByIDNum(){
+        $params = input('post.');
         $ID_number = input('post.ID_number');
         $ret = ['error_code' => 0, 'msg' =>''];
         $patient_data = D('Patient')->getPatientByIdNum($ID_number);
@@ -33,6 +34,7 @@ class Patient extends Common
         }else{
             $ret['patient'] = $patient_data;
         }
+        $ret['id_number'] = $params;
         $this->jsonReturn($ret);
     }
 
@@ -56,6 +58,8 @@ class Patient extends Common
         $this->jsonReturn($ret);
     }
 
+
+    ///////////未修改////
     /**
      * 删除患者信息
      */

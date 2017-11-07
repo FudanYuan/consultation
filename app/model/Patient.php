@@ -12,23 +12,22 @@ class Patient extends Model{
     protected $table = 'consultation_patient';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'name', 'ID_number', 'gender', 'age', 'occupation', 'phone',
-        'email', 'birthplace', 'addrss', 'work_unit', 'postcode', 'height',
-        'weight', 'vision_left', 'vision_right', 'pressure_left', 'pressure_right',
-        'eye_photo_left', 'eye_photo_right', 'ill_type', 'ill_state', 
-        'diagnose_state', 'files_path', 'in_hospital_time', 'narrator', 
+        'id', 'name', 'ID_number', 'gender', 'age', 'occupation','height',
+        'weight','phone','birthplace','address','work_unit','postcode',
+        'illness_state','eyes_ill_type','vision_left','vision_right',
+        'pressure_left', 'pressure_right','eye_photo_left','eye_photo_right',
+        'diagnose_state','in_hospital_time','record_time','narrator',
         'main_narrate', 'present_ill_history', 'past_history', 'system_retrospect',
-        'personal_history', 'physical_exam_record', 'status', 'create_time', 'update_time'
+        'personal_history', 'physical_exam_record', 'status', 'create_time',
+        'update_time'
     );
     protected $type = [
         'id' => 'integer',
-        'patient_id' => 'integer',
-        'delivery_user_id' => 'integer',
-        'apply_date' => 'integer',
+        'in_hospital_time' =>'integer',
+        'record_time' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'
     ];
-
 
     public function getPatientByIdNum($Id_Num){
         $res = $this->field('*')
@@ -47,13 +46,7 @@ class Patient extends Model{
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id, name, ID_number, gender, age, occupation, phone,
-        email, birthplace, addrss, work_unit, postcode, height,
-        weight, vision_left, vision_right, pressure_left, pressure_right,
-        eye_photo_left, eye_photo_right, ill_type, ill_state, 
-        diagnose_state, files_path, in_hospital_time, narrator, 
-        main_narrate, present_ill_history, past_history, system_retrospect,
-        personal_history, physical_exam_record, create_time')
+        $res = $this->field('*')
             ->order('create_time desc')
             ->where($cond)
             ->select();
