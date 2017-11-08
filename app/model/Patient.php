@@ -30,7 +30,7 @@ class Patient extends Model{
     ];
 
     public function getPatientByIdNum($Id_Num){
-        $res = $this->field('id as patient_id,name as patient_name,age as patient_name,
+        $res = $this->field('id as patient_id,name as patient_name,age as patient_age,
                     phone as patient_phone,ill_state as patient_illness_state,
                     diagnose_state,gender as patient_gender,ill_type as patient_eyes_type,
                     vision_left as  patient_vision_left,vision_right as patient_vision_right,
@@ -52,7 +52,7 @@ class Patient extends Model{
         if(empty($errors)){
             $data['status'] = 1;
             $data['create_time'] = time();
-            $this->save($data);
+            $ret['res'] = $this->save($data);
         }
         return $ret;
     }
@@ -68,6 +68,11 @@ class Patient extends Model{
         }
         if(isset($data['ID_number']) && !$data['ID_number']){
             $errors['ID_number'] = '身份证号不能为空';
+        }else{
+            $ret = $this->getPatientByIdNum($data['ID_number']);
+            if(!empty($ret)){
+                $errors['ID_number'] = '此人已存在';
+            }
         }
         if(isset($data['age']) && !$data['age']){
             $errors['age'] = '年龄不能为空';

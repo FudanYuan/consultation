@@ -130,18 +130,24 @@ class Apply extends Common
             $data = [];
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
             //申请目标
+            $data['apply_date'] = input('post.apply_date');
+            $data['apply_project'] = input('post.apply_project');
             $data['apply_type'] = input('post.apply_type', '2');
             $data['target_hospital_id'] = input('post.consultation_hospital');
-
-            $data['target_hospital_id'] = input('post.consultation_hospital');
             $data['patient_id'] = input('post.patient_id',-1);
-            $office_ids = input('post.consultation_office','');
-            $doctor_names = input('post.apply_doctor_name','');
-
+            $data['diagnose_state'] = input('post.diagnose_state');
+            $office_ids = input('post.consultation_office',[]);
+            $doctor_ids = input('post.doctor_ids',[]);
+            $data['target_doctor_ids'] = '-';
+            foreach ($doctor_ids as $id){
+                $data['target_doctor_ids'] = $data['$target_doctor_ids'].$id.'-';
+            }
+            $data['target_office_ids'] = '-';
+            foreach ($office_ids as $id){
+                $data['target_office_ids'] = $data['$target_office_ids'].$id.'-';
+            }
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
-            $data['apply_date'] = input('post.apply_date');
-
             $ret['params'] = $params;
 
             //如果病患不存在，手动输入
@@ -149,7 +155,7 @@ class Apply extends Common
                 $patient = [];
                 $patient['name'] = input('post.patient_name');
                 $patient['ID_number'] = input('post.patient_ID_number');
-                $patient['gender'] = input('post.gender');
+                $patient['gender'] = input('post.patient_gender');
                 $patient['age'] = input('post.patient_age');
                 $patient['phone'] = input('post.patient_phone');
                 $patient['ill_state'] = input('post.patient_illness_state');
@@ -160,21 +166,22 @@ class Apply extends Common
                 $patient['pressure_right'] = input('post.patient_pressure_right');
                 $patient['eye_photo_left'] = input('post.eye_photo_left');
                 $patient['eye_photo_right'] = input('post.eye_photo_right');
+
                 $eye_photo_left_origin= input('post.eye_photo_left_origin');
                 $eye_photo_right_origin= input('post.eye_photo_right_origin');
                 $files_path = input('post.files_path');
                 $files_path_origin = input('post.files_path_origin');
-                //$res = D('Patient')->addData($patient);
+
+                $res = D('Patient')->addData($patient);
                 if(!empty($res['errors'])){
                     $ret = ['error_code' => 2,
                             'msg' => '病人信息不全',
-                            'errors' =>$res['errors']
-                            ];
-                   // $this->jsonReturn($ret);
+                            'errors' =>$res['errors'] ];
+                    $this->jsonReturn($ret);
                 }
+                $ret['$res'] = $res;
             }
-            $res = D('Apply')->addData($data);
-            $ret['data'] = $data;
+           // $res = D('Apply')->addData($data);
             if(!empty($res['errors'])){
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
