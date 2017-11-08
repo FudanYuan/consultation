@@ -52,9 +52,13 @@ class Patient extends Model{
         if(empty($errors)){
             $data['status'] = 1;
             $data['create_time'] = time();
-            $ret['res'] = $this->save($data);
+            $ret['id'] = $this->save_1($data);
         }
         return $ret;
+    }
+    public function save_1($data){
+        $res = Db('consultation_patient')->insertGetId($data);
+        return $res;
     }
     /**
      * 过滤必要字段

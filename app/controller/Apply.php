@@ -130,34 +130,26 @@ class Apply extends Common
             $data = [];
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
             //申请目标
-            $data['apply_date_str'] = input('post.apply_date');
+            $data['source_user_id'] = $this->getUserId();
+            $data['apply_date'] = input('post.apply_date');
             $data['apply_project'] = input('post.apply_project');
             $data['apply_type'] = input('post.apply_type', '2');
             $data['target_hospital_id'] = input('post.consultation_hospital');
             $data['patient_id'] = input('post.patient_id',-1);
-            $data['diagnose_state'] = input('post.diagnose_state');
-            
-            if (!isset($params['office_ids'])) {
-                $office_ids = [];
-            } else{
-                $office_ids = $params['office_ids'];
-            }
+            $doctor_ids = $params['doctor_ids'];
 
-            if (!isset($params['doctor_ids'])) {
-                $doctor_ids = [];
-            }else{
-                $doctor_ids = $params['doctor_ids'];
-            }
             $data['target_doctor_ids'] = '-';
             foreach ($doctor_ids as $id){
                 $data['target_doctor_ids'] = $data['target_doctor_ids'].$id.'-';
             }
-            $data['target_office_ids'] = '-';
-            foreach ($office_ids as $id){
-                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
-            }
+            $data['target_office_ids'] = $params['office_ids'];
+//            foreach ($office_ids as $id){
+//                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
+//            }
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
+
+            $ret['params'] = $params;
 
             //如果病患不存在，手动输入
             if ($data['patient_id'] == -1) {
@@ -169,18 +161,19 @@ class Apply extends Common
                 $patient['phone'] = input('post.patient_phone');
                 $patient['ill_state'] = input('post.patient_illness_state');
                 $patient['ill_type'] = input('post.patient_eyes_type');
+                $patient['diagnose_state'] = input('post.diagnose_state');
                 $patient['vision_left'] = input('post.patient_vision_left');
                 $patient['vision_right'] = input('post.patient_vision_right');
                 $patient['pressure_left'] = input('post.patient_pressure_left');
                 $patient['pressure_right'] = input('post.patient_pressure_right');
                 $patient['eye_photo_left'] = input('post.eye_photo_left');
                 $patient['eye_photo_right'] = input('post.eye_photo_right');
-
-                $eye_photo_left_origin= input('post.eye_photo_left_origin');
-                $eye_photo_right_origin= input('post.eye_photo_right_origin');
-                $files_path = input('post.files_path');
-                $files_path_origin = input('post.files_path_origin');
-
+                $patient['other_ill_type'] = input('post.other_ill_type','');
+                $patient['eye_photo_left_origin']= input('post.eye_photo_left_origin');
+                $patient['eye_photo_right_origin']= input('post.eye_photo_right_origin');
+                $patient['files_path'] = input('post.files_path');
+                $patient['files_path_origin'] = input('post.files_path_origin');
+                $res['errors'] = [];
                 $res = D('Patient')->addData($patient);
                 if(!empty($res['errors'])){
                     $ret = ['error_code' => 2,
@@ -188,13 +181,13 @@ class Apply extends Common
                             'errors' =>$res['errors'] ];
                     $this->jsonReturn($ret);
                 }
+                $data['patient_id'] = $res['id'];
                 $ret['$res'] = $res;
             }
             $res = D('Apply')->addData($data);
-            $ret['data'] = $res['data'];
-            $ret['res'] = $res['res'];
+            $res['errors'] = '';
             if(!empty($res['errors'])){
-                $ret['error_code'] = 1;
+                $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
             }
             $this->jsonReturn($ret);

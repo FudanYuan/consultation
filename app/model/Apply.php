@@ -197,14 +197,8 @@ class Apply extends Model{
         if(isset($data['target_office_id']) && !$data['target_office_id']){
             $errors['target_office_id'] = '申请科室不能为空';
         }
-        if(isset($data['consultation_result']) && !$data['consultation_result']){
-            $errors['consultation_result'] = '会诊单位意见不能为空';
-        }
-        if(isset($data['price']) && !$data['price']){
-            $errors['price'] = '诊疗费用不能为空';
-        }
-        if(isset($data['update_time']) && !$data['update_time']){
-            $errors['update_time'] = '会诊时间不能为空';
+        if(isset($data['apply_project']) && !$data['apply_project']){
+            $errors['apply_project'] = '申请科室不能为空';
         }
         return $errors;
     }
