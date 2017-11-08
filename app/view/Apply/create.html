@@ -46,7 +46,7 @@
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">会诊科室：</label>
                     <div class="col-sm-4">
-                        <select name="consultation_office" class="form-control"  id="consultation_office">
+                        <select multiple="multiple" class="multiple" name="office_ids" class="form-control"  id="office_ids">
                             {foreach name="office" item="model" key = "k"}
                             <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
                             {/foreach}
@@ -485,11 +485,11 @@
     }
 
     function getParams(){
-        vm.params['target_user_ids'] = [];
+        vm.params['office_ids'] = [];
         vm.params['doctor_ids'] = [];
         var data = $('#new-apply-form').serializeArray();
         $.each(data, function() {
-            if(this.name == 'target_user_ids' || this.name == 'doctor_ids'){
+            if(this.name == 'office_ids' || this.name == 'doctor_ids'){
                 vm.params[this.name].push(this.value);
             } else {
                 vm.params[this.name] = this.value;

@@ -89,6 +89,8 @@ class Apply extends Model{
      */
     public function addData($data){
         $ret = [];
+        $this->timeTostamp($data);
+        $this->unsetOhterField($data);
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
