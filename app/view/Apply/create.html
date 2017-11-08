@@ -67,7 +67,7 @@
                 </div>
 
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label  class="col-sm-2 control-label">申请诊断类型：</label>
+                    <label  class="col-sm-2 control-label">申请会诊类型：</label>
                     <div class="col-sm-4" id="apply_project" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
@@ -101,10 +101,10 @@
                     <p class="help-block">{{errors.priority}}</p>
                 </div>
 
-                <div :class="['form-group']" id="other_apply_project_class" v-if="seen.apply_project">
+                <div :class="['form-group']" v-if="seen.apply_project">
                     <label for="other_apply_project" class="col-sm-2 control-label">其他申请类型：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="other_apply_project" value="" placeholder="请输入其他眼病类型" id="other_apply_project">
+                        <input class="form-control" type="text" name="other_apply_project" value="" placeholder="请输入其他申请类型" id="other_apply_project">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -209,7 +209,7 @@
                     <p class="help-block">{{errors.priority}}</p>
                 </div>
 
-                <div :class="['form-group']" id="other_eyes_ill_type_div" v-if="seen.ill_type">
+                <div :class="['form-group']" v-if="seen.ill_type">
                     <label for="other_ill_type" class="col-sm-2 control-label">其他眼病类型：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="other_ill_type" value="" placeholder="请输入其他眼病类型" id="other_ill_type">
@@ -303,14 +303,6 @@
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label for="other_apply_project" class="col-sm-2 control-label">其他申请意愿：</label>
-                    <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" v-model="patient.other_apply_project" id="other_apply_project" placeholder="请输入患者简要病情"></textarea>
-                        <p class="help-block">{{errors.title}}</p>
-                    </div>
-                </div>
-
                 <div :class="['form-group']" >
                     <label for="apply_date" class="col-sm-2 control-label">预约时间：</label>
                     <div class="col-sm-4">
@@ -369,9 +361,6 @@
                 patient_age:'',
                 patient_phone:'',
                 patient_illness_state:'',
-                diagnose_state:'',
-                consultation_goal:'',
-                other_apply_project:'',
                 patient_gender:'',
                 patient_eyes_type:'',
                 patient_vision_left:'',
@@ -453,8 +442,7 @@
                 getParams();
                 $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
                     if (res.error_code == 0) {
-                        popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Apply/index';
+                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
                     } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;

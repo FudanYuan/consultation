@@ -106,8 +106,8 @@ CREATE TABLE `consultation_hospital` (
 
 
 INSERT INTO `consultation_hospital` (`name`, `master`, `phone`, `url`, `email`, `address`,  `postcode`, `type`, `level`, `info`, `honor`, `role`, `status`, `create_time`, `update_time`) VALUES
-('眼科医联体远程诊疗平台', '张三', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市天心区', '471500', '综合医院', '三甲', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL),
-('县级医院', '李四', '0731-12345628', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市芙蓉区', '471500', '眼科医院', '一级', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL);
+('中南大学湘雅医院', '张三', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市天心区', '471500', '综合医院', '三甲', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL),
+('县级医院', '李四', '0731-12345628', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市芙蓉区', '471500', '眼科医院', '一级', '暂无详细信息', '暂无详细信息', 2, 1, 1503037656, NULL);
 
 
 # Dump of table consultation_office
@@ -164,8 +164,8 @@ CREATE TABLE `consultation_hospital_office` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `consultation_hospital_office` (`hospital_id`, `office_id`, `status`, `create_time`, `update_time`) VALUES
-(1, 1, 1, 1503037656, NULL);
-
+(1, 1, 1, 1503037656, NULL),
+(2, 1, 1, 1503037656, NULL);
 
 # Dump of table consultation_doctor
 # ------------------------------------------------------------
@@ -195,7 +195,8 @@ CREATE TABLE `consultation_doctor` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `consultation_doctor` (`hospital_office_id`, `name`, `photo`, `gender`, `age`, `position`, `phone`, `remark`, `address`, `postcode`, `info`, `honor`, `status`, `create_time`, `update_time`) VALUES
-(1, 'Smith', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市', '417500', '暂无详细信息', '暂无详细信息', 1, 1503037656, NULL);
+(1, 'Reply', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市天心区', '417500', '暂无详细信息', '暂无详细信息', 1, 1503037656, NULL),
+(2, 'Apply', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 1, 1503037656, NULL);
 
 
 # Dump of table consultation_apply
@@ -293,7 +294,9 @@ CREATE TABLE `consultation_user_admin` (
 
 
 INSERT INTO `consultation_user_admin` (`doctor_id`, `username`, `pass`, `role_id`, `remark`, `status`, `login_time`, `create_time`, `update_time`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, '超级管理员', 1, 1508462059, 1503213456, 1508462059);
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
+(2, 'role', '29a7e96467b69a9f5a93332e29e9b0de', 1, '县级医院管理员', 1, NULL, 1510115628, 1510115628);
+
 
 
 # Dump of table consultation_action_admin

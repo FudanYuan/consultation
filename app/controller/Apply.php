@@ -128,7 +128,7 @@ class Apply extends Common
         $params = input('post.');
         if(!empty($params)) {
             $data = [];
-            $ret = ['error_code' => 2, 'msg' => '新建成功'];
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
             //申请目标
             $data['apply_type'] = input('post.apply_type', '2');
             $data['target_hospital_id'] = input('post.consultation_hospital');
