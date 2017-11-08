@@ -139,7 +139,7 @@ class Apply extends Common
             $doctor_names = input('post.apply_doctor_name','');
 
             $data['consultation_goal'] = input('post.consultation_goal', '');
-            $data['other_apply'] = input('post.other_apply', '');
+            $data['other_apply_project'] = input('post.other_apply_project', '');
             $data['apply_date'] = input('post.apply_date');
 
             $ret['params'] = $params;
@@ -164,7 +164,7 @@ class Apply extends Common
                 $eye_photo_right_origin= input('post.eye_photo_right_origin');
                 $files_path = input('post.files_path');
                 $files_path_origin = input('post.files_path_origin');
-               // $res = D('Patient')->addData($patient);
+                //$res = D('Patient')->addData($patient);
                 if(!empty($res['errors'])){
                     $ret = ['error_code' => 2,
                             'msg' => '病人信息不全',
@@ -173,7 +173,8 @@ class Apply extends Common
                    // $this->jsonReturn($ret);
                 }
             }
-           // $res = D('Apply')->addData($data);
+            $res = D('Apply')->addData($data);
+            $ret['data'] = $data;
             if(!empty($res['errors'])){
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
@@ -184,14 +185,16 @@ class Apply extends Common
         $select = ['id,name'];
         $cond['role'] = ['=',1];
         $hospital = D('Hospital')->getHospital($select,$cond);
-        $office = D('Office')->getOffice($select,[]);
-        /*$apply_project=[];
-        $apply_project[0]=['id' => '1','name'=>'咨询'];
-        $apply_project[1]=['id' => '2','name'=>'住院'];
-        $apply_project[2]=['id' => '3','name'=>'手术'];
-        $apply_project[3]=['id' => '4','name'=>'其他'];*/
-
-        return view('', ['hospital' => $hospital,'office' => $office]);
+        $hospital_id = $hospital[0]['id'];
+        $hospital_office = D('HospitalOffice')->getList(['hospital_id' => $hospital_id]);
+        $office = [];
+        for($i=0;$i<count($hospital_office);$i++){
+            $office_id = $hospital_office[$i]['office_id'];
+            array_push($office, D('Office')->getOffice($select,['id'=>$office_id]));
+        }
+        $hospital_office_id = $hospital_office[0]['id'];
+        $doctor = D('Doctor')->getList(['hospital_office_id' => $hospital_office_id]);
+        return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor]);
     }
 
     /**

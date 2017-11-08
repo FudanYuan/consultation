@@ -55,6 +55,7 @@ CREATE TABLE `consultation_patient` (
   `eye_photo_right` VARCHAR(200) DEFAULT '' COMMENT '右眼照图片地址',
   `eye_photo_right_origin` VARCHAR(200) DEFAULT '' COMMENT '左眼照图片名称',
   `ill_type` TINYINT DEFAULT NULL COMMENT '眼病类别：1眼表 2眼前节 3眼底 4视光 5其他',
+  `other_ill_type`  VARCHAR(500) DEFAULT NULL COMMENT '其他眼病类型',
   `ill_state` TEXT DEFAULT NULL COMMENT '病情描述',
   `diagnose_state` TEXT DEFAULT NULL COMMENT '诊疗情况',
   `files_path` VARCHAR(200) DEFAULT NULL COMMENT '附属文件地址',

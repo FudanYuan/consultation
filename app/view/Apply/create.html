@@ -35,8 +35,7 @@
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">会诊医院：</label>
                     <div class="col-sm-4">
-                        <select v-model="patient.consultation_hospital" class="form-control" onchange="change_hospital()" id="consultation_hospital">
-
+                        <select name="consultation_hospital" class="form-control" onchange="change_hospital()" id="consultation_hospital">
                             {foreach name="hospital" item="item1"}
                             <option value="{$item1.id}">{$item1.name}</option>
                             {/foreach}
@@ -48,17 +47,22 @@
                     <label  class="col-sm-2 control-label">会诊科室：</label>
                     <div class="col-sm-4">
                         <select name="consultation_office" class="form-control"  id="consultation_office">
-                            {foreach name="office" item="item1"}
-                            <option value="{$item1.id}">{$item1.name}</option>
+                            {foreach name="office" item="model" key = "k"}
+                            <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
                             {/foreach}
                         </select>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
-                    <label for="doctor_name" class="col-sm-2 control-label">会诊医师：</label>
+                <div  :class="['form-group', errors.doctor_ids != '' ? 'has-error' : '']" >
+                    <label for="doctor_ids" class="col-sm-2 control-label">会诊医师：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_name" value="" placeholder="请输入会诊医师姓名" id="doctor_name">
+                        <select multiple="multiple" class="multiple" id="doctor_ids" name="doctor_ids">
+                            {foreach name="doctor" item="model"}
+                            <option value="{$model.id}">{$model.name}</option>
+                            {/foreach}
+                        </select>
+                        <p class="help-block">{$errors.doctor??''}</p>
                     </div>
                 </div>
 
@@ -206,9 +210,9 @@
                 </div>
 
                 <div :class="['form-group']" id="other_eyes_ill_type_div" v-if="seen.ill_type">
-                    <label for="other_patient_eyes_type" class="col-sm-2 control-label">其他眼病类型：</label>
+                    <label for="other_ill_type" class="col-sm-2 control-label">其他眼病类型：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="other_patient_eyes_type" value="" placeholder="请输入其他眼病类型" id="other_patient_eyes_type">
+                        <input class="form-control" type="text" name="other_ill_type" value="" placeholder="请输入其他眼病类型" id="other_ill_type">
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -300,9 +304,9 @@
                 </div>
 
                 <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
-                    <label for="other_apply" class="col-sm-2 control-label">其他申请意愿：</label>
+                    <label for="other_apply_project" class="col-sm-2 control-label">其他申请意愿：</label>
                     <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" v-model="patient.other_apply" id="other_apply" placeholder="请输入患者简要病情"></textarea>
+                        <textarea  class="form-control" type="text" v-model="patient.other_apply_project" id="other_apply_project" placeholder="请输入患者简要病情"></textarea>
                         <p class="help-block">{{errors.title}}</p>
                     </div>
                 </div>
@@ -360,7 +364,6 @@
         data: {
             params: {},
             patient:{
-                consultation_hospital:'',
                 patient_ID_number: '',
                 patient_name: '',
                 patient_age:'',
@@ -368,7 +371,7 @@
                 patient_illness_state:'',
                 diagnose_state:'',
                 consultation_goal:'',
-                other_apply:'',
+                other_apply_project:'',
                 patient_gender:'',
                 patient_eyes_type:'',
                 patient_vision_left:'',
@@ -385,10 +388,16 @@
                 title: '',
                 content: '',
                 priority: '',
-                target_user_id: ''
+                target_user_id: '',
+                doctor_ids: ''
             }
         },
         mounted:function () {
+            $(".multiple").multipleSelect({
+                filter: true,
+                multiple: true,
+                selectAll: true
+            });
             $(".flatpickr").flatpickr({time_24hr:true});
             myupload({
                 container: 'upload-wrapper',
@@ -445,7 +454,7 @@
                 $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
                     if (res.error_code == 0) {
                         popWarn('新建成功');
-                        /*window.location.href = '__PRO_PATH__/Apply/index';*/
+                        window.location.href = '__PRO_PATH__/Apply/index';
                     } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
@@ -475,15 +484,6 @@
         }
     });
 
-    $(".multiple").multipleSelect({
-        filter: true,
-        multiple: true,
-        selectAll: true
-    });
-
-    $(function () {
-        $("#new-apply-form-target").multipleSelect("checkAll");
-    });
 
     $('#form-cancel').on('click', function(){
         window.location.href = '__PRO_PATH__/Apply/index';
@@ -491,14 +491,17 @@
 
     function change_hospital(){
         console.log("执行了");
-        $.post('__PRO_PATH__/Patient/getPatientByIDNum', {'consultation_hospital': vm.patient['consultation_hospital']}, function (res) {});
+        var hospital_id = $('#consultation_hospital').val();
+        console.log(hospital_id);
+        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});
     }
 
     function getParams(){
         vm.params['target_user_ids'] = [];
+        vm.params['doctor_ids'] = [];
         var data = $('#new-apply-form').serializeArray();
         $.each(data, function() {
-            if(this.name == 'target_user_ids'){
+            if(this.name == 'target_user_ids' || this.name == 'doctor_ids'){
                 vm.params[this.name].push(this.value);
             } else {
                 vm.params[this.name] = this.value;
