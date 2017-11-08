@@ -216,7 +216,7 @@
                     <li class="menu-header">
                         DashBoard
                     </li>
-                    <li class="bg-palette1" id="consultation-nav-dashborad">
+                    <li class="bg-palette1" id="consultation-nav-dashborad" hidden>
                         <a href="__PRO_PATH__/">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="block fa fa-home fa-lg"></i></span>
@@ -251,7 +251,7 @@
                     {/if}
 
                     {if condition="authority('Doctor')"}
-                    <li class="bg-palette3" id="consultation-nav-doctor">
+                    <li class="bg-palette4" id="consultation-nav-doctor">
                         <a href="__PRO_PATH__/Doctor/index">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-user-md fa-lg"></i></span>
@@ -263,7 +263,7 @@
                     {/if}
 
                     {if condition="authority('Patient')"}
-                    <li class="bg-palette3" id="consultation-nav-patient">
+                    <li class="bg-palette1" id="consultation-nav-patient">
                         <a href="__PRO_PATH__/Patient/index">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-male fa-lg"></i></span>
