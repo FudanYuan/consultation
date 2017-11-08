@@ -442,7 +442,7 @@
                 getParams();
                 $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
                     if (res.error_code == 0) {
-                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
+                        popWarn('新建成功', '__PRO_PATH__/Apply/index');
                     } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;

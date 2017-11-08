@@ -96,6 +96,7 @@ class Apply extends Model{
         if(empty($errors)){
             $data['status'] = 1;
             $data['create_time'] = time();
+            $ret['data'] = $data;
             $this->save($data);
         }
         return $ret;
@@ -165,6 +166,8 @@ class Apply extends Model{
      */
     private function timeTostamp(&$data)
     {
+        isset($data['apply_date_str']) && $data['apply_date'] = $data['apply_date_str'] ?
+            strtotime($data['apply_date_str']) : 0;
         isset($data['update_time_str']) && $data['update_time'] = $data['update_time_str'] ?
             strtotime($data['update_time_str']) : 0;
     }

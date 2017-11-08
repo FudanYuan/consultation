@@ -130,26 +130,39 @@ class Apply extends Common
             $data = [];
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
             //申请目标
+            $data['apply_date_str'] = input('post.apply_date');
             $data['source_user_id'] = $this->getUserId();
-            $data['apply_date'] = input('post.apply_date');
-            $data['apply_project'] = input('post.apply_project');
-            $data['apply_type'] = input('post.apply_type', '2');
-            $data['target_hospital_id'] = input('post.consultation_hospital');
-            $data['patient_id'] = input('post.patient_id',-1);
-            $doctor_ids = $params['doctor_ids'];
+            $data['apply_project'] = (int)input('post.apply_project');
+            $data['apply_type'] = (int)input('post.apply_type', '2');
+            $data['target_hospital_id'] = (int)input('post.consultation_hospital');
+            $data['patient_id'] = (int)input('post.patient_id',-1);
 
+            if (!isset($params['office_ids'])) {
+                $office_ids = [];
+            } else{
+                $office_ids = $params['office_ids'];
+            }
+
+            if (!isset($params['doctor_ids'])) {
+                $doctor_ids = [];
+            }else{
+                $doctor_ids = $params['doctor_ids'];
+            }
+            $data['is_definite_purpose'] = 0;
+            if(!empty($office_ids)){
+                $data['is_definite_purpose'] = 1;
+            }
             $data['target_doctor_ids'] = '-';
             foreach ($doctor_ids as $id){
                 $data['target_doctor_ids'] = $data['target_doctor_ids'].$id.'-';
             }
-            $data['target_office_ids'] = $params['office_ids'];
-//            foreach ($office_ids as $id){
-//                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
-//            }
+            $data['target_office_ids'] = '-';
+            foreach ($office_ids as $id){
+                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
+            }
+
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
-
-            $ret['params'] = $params;
 
             //如果病患不存在，手动输入
             if ($data['patient_id'] == -1) {
@@ -173,7 +186,6 @@ class Apply extends Common
                 $patient['eye_photo_right_origin']= input('post.eye_photo_right_origin');
                 $patient['files_path'] = input('post.files_path');
                 $patient['files_path_origin'] = input('post.files_path_origin');
-                $res['errors'] = [];
                 $res = D('Patient')->addData($patient);
                 if(!empty($res['errors'])){
                     $ret = ['error_code' => 2,
@@ -182,12 +194,11 @@ class Apply extends Common
                     $this->jsonReturn($ret);
                 }
                 $data['patient_id'] = $res['id'];
-                $ret['$res'] = $res;
             }
             $res = D('Apply')->addData($data);
-            $res['errors'] = '';
+            $ret['data'] = $res['data'];
             if(!empty($res['errors'])){
-                $ret['error_code'] = 2;
+                $ret['error_code'] = 1;
                 $ret['errors'] = $res['errors'];
             }
             $this->jsonReturn($ret);
@@ -243,17 +254,23 @@ class Apply extends Common
         $ret['target_hospital_info'] = $target_hospital_info;
         $ret['target_doctor_info'] = [];
         $ret['target_office_info'] = [];
-
+        $ret['debug'] = [];
         $target_doctor_ids = $apply_info['target_doctor_ids'];
         $target_office_ids = $apply_info['target_office_ids'];
         $array_target_doctor_id = explode('-',$target_doctor_ids);
         for($index=0;$index<count($array_target_doctor_id);$index++) {
-            array_push($ret['target_doctor_info'], D('Doctor')->getById((int)$array_target_doctor_id[$index]));
+            array_push($ret['debug'], $array_target_doctor_id[$index]);
+            if($array_target_doctor_id[$index] != ''){
+                array_push($ret['target_doctor_info'], D('Doctor')->getById((int)$array_target_doctor_id[$index]));
+            }
         }
         $array_target_office_id = explode('-',$target_office_ids);
         for($index=0;$index<count($array_target_office_id);$index++) {
-            array_push($ret['target_office_info'], D('Office')->getById((int)$array_target_office_id[$index]));
+            if($array_target_office_id[$index] != ''){
+                array_push($ret['target_office_info'], D('Office')->getById((int)$array_target_office_id[$index]));
+            }
         }
+
         $source_user_info = D('UserAdmin')->getById($source_user_id);
         $source_doctor_id = $source_user_info['doctor_id'];
         $source_doctor_info = D('Doctor')->getById($source_doctor_id);
@@ -261,7 +278,7 @@ class Apply extends Common
         $source_hospital_office = D('HospitalOffice')->getById($source_hospital_office_id);
         $source_hospital_id = $source_hospital_office['hospital_id'];
         $source_office_id = $source_hospital_office['office_id'];
-        $ret['debug'] = $source_user_info;
+
         $source_hospital_info = D('Hospital')->getById($source_hospital_id);
         $source_office_info = D('Office')->getById($source_office_id);
 
