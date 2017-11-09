@@ -258,7 +258,7 @@
                         </div>
                         <input type="hidden" name="eye_photo_right" value="{$data.eye_photo_right??''}"/>
                         <input type="hidden" name="eye_photo_right_origin" value="{$data.eye_photo_right_origin??''}"/>
-                        <span class="help-block">{$errors.eye_photo_right ?? ''}</span>
+                        <span class="help-block">{$errors.eye_photo_right?? ''}</span>
                     </div>
                 </div>
 
@@ -437,6 +437,7 @@
                 isMulti: false
             });
         },
+
         methods: {
             createNewApply: function () {
                 getParams();
