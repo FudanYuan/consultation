@@ -328,7 +328,7 @@ class Apply extends Common
         try{
             $res = D('Apply')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
-            $ret['error_code'] = 2;
+            $ret['code'] = 2;
             $ret['msg'] = '删除失败';
         }
         $this->jsonReturn($ret);

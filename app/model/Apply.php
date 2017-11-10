@@ -96,9 +96,27 @@ class Apply extends Model{
         if(empty($errors)){
             $data['status'] = 1;
             $data['create_time'] = time();
-            $ret['data'] = $data;
             $this->save($data);
         }
+        return $ret;
+    }
+
+
+    /**
+     * 批量增加会诊申请
+     * @param $dataSet
+     * @return array
+     */
+    public function addAllData($dataSet){
+        $ret = [];
+        foreach ($dataSet as $data) {
+            $errors = $this->filterField($data);
+            $ret['errors'] = $errors;
+            if(!empty($errors)){
+                return $ret;
+            }
+        }
+        $ret['result'] = $this->saveAll($dataSet);
         return $ret;
     }
 
@@ -206,7 +224,6 @@ class Apply extends Model{
         return $errors;
     }
 
-    ///////未修改///////////
 
     /**
      * 去除非表字段
@@ -219,24 +236,6 @@ class Apply extends Model{
             $list[$v] = $data[$v];
         }
         return $list;
-    }
-
-    /**
-     * 批量增加会诊申请
-     * @param $dataSet
-     * @return array
-     */
-    public function addAllData($dataSet){
-        $ret = [];
-        foreach ($dataSet as $data) {
-            $errors = $this->filterField($data);
-            $ret['errors'] = $errors;
-            if(!empty($errors)){
-                return $ret;
-            }
-        }
-        $ret['result'] = $this->saveAll($dataSet);
-        return $ret;
     }
 }
 ?>

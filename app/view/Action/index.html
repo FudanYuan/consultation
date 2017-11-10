@@ -1,0 +1,133 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+<script src="__PUBLIC__/js/dtree/dtree.js"></script>
+<link href="__PUBLIC__/js/dtree/dtree.css" rel="stylesheet"/>
+<style>
+    .col-md-1, .col-md4 {
+        padding: 0;
+    }
+
+    .col-md-1 {
+        line-height: 34px;
+        margin-left: 10px;
+    }
+
+    .row {
+        padding-bottom: 20px;
+    }
+
+    #dd0 > .dTreeNode {
+        display: none;
+    }
+
+    #authority {
+        padding: 20px 150px;
+    }
+
+    #authority ul {
+        background: lightgray;
+        margin-right: 100px;
+    }
+
+    #authority ul li {
+        list-style: none;
+        cursor: pointer;
+        border-bottom: 1px solid #fff;
+        width: 100px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        font-size: 12px;
+        background: #8dacc4;
+        color: #fff;
+    }
+
+    #authority ul li:hover, #authority ul li.cur {
+        background: none;
+        color: #000;
+    }
+
+</style>
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li>权限信息</li>
+        </ul>
+
+        <div>
+            <div class="list-btns">
+                {if condition="authority('AuthorityCreate')"}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success" id="importItem">导入</button>
+                </div>
+                {/if}
+                {if condition="authority('AuthorityRemove')"}
+                <div class="btn-group">
+                    <a href="javascript:;" class="btn btn-default" id="remove">清空</a>
+                </div>
+                {/if}
+            </div>
+            {if condition="authority('AuthorityResult')"}
+            <div class="clearFix" id="authority">
+                <div class="tree fl"></div>
+                <ul class="fr"></ul>
+            </div>
+            {/if}
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+{include file="Common/popup_list" /}
+{include file="Common/upload"}
+{include file="Common/popup_import"}
+<script>
+    $('#consultation-nav-setting').addClass('active open');
+    $('#consultation-nav-setting-sub1').addClass('active');
+    popupImport({
+        import: '__PRO_PATH__/Action/create',
+        callback: '__PRO_PATH__/Action/index'
+    });
+    var rootNodes = [];
+    var d = new dTree('d');
+    $.post('__PRO_PATH__/Action/authority', {}, function (res) {
+        console.log(JSON.stringify(res));
+        d.add(0, -1, '权限管理');
+        if(res.length==0){
+            return;
+        }
+        for (var i = 0; i < res.length; i++) {
+            /*dTree实例属性以此为：  节点ID，父类ID，chechbox的名称，chechbox的值，chechbox的显示名称，
+             chechbox是否被选中--默认是不选，chechbox是否可用：默认是可用，节点链接：默认是虚链接*/
+            d.add(res[i]['id'], res[i]['pid'], 'authority', res[i]['id'], res[i]['name']);
+            res[i]['pid'] == 0 && rootNodes.push([res[i]['id'], res[i]['name']]);
+        }
+        var lis = '';
+        for (var i = 0; i < rootNodes.length; i++) {
+            lis += '<li onclick="showRoot(' + rootNodes[i][0] + ')">' + rootNodes[i][1] + '</li>';
+        }
+        $('#authority .tree').html(d.toString());
+        $('#authority ul').html(lis);
+        d.oAll(1);
+        $('#dd0>.dTreeNode').hide();
+        $('#dd0>.clip').hide();
+        $('#authority_' + rootNodes[0][0]).parent().parent().show();
+        $('#dd' + rootNodes[0][0]).show();
+    });
+    function showRoot(id) {
+        $('#dd0>.dTreeNode').hide();
+        $('#dd0>.clip').hide();
+        $('#authority_' + rootNodes[id - 1][0]).parent().parent().show();
+        $('#dd' + rootNodes[id - 1][0]).show();
+    }
+
+    $('#remove').click(function () {
+        $('#confirm-popup').popup('show');
+    });
+    // 删除
+    popupList({
+        list: '__PRO_PATH__/Action/index',
+        remove: '__PRO_PATH__/Action/remove',
+        ids: 'all'
+    });
+</script>

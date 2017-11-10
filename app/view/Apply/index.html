@@ -10,7 +10,6 @@
 
         <div class="list-search">
             <form action="" class="form-inline" method="post" id="main-form">
-
                 <div class="form-group">
                     <label for="apply_type">申请类型：</label>
                     <ul class="radio-group" id="apply_type">
@@ -161,7 +160,9 @@
                     <label for="keywords">关键词：</label>
                     <input name="keywords" class="form-control" id="keywords" style="width:150px" value=""/>
                 </div>
+                {if condition="authority('ApplySelect')"}
                 <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
+                {/if}
             </form>
         </div>
 
@@ -178,6 +179,7 @@
                 </div>
                 {/if}
             </div>
+            {if condition="authority('ApplyResult')"}
             <table class="table table-hover" style="background:#fff;">
                 <thead>
                 <tr>
@@ -218,15 +220,21 @@
                         <td>{{model.status | getApplyStatus}}</td>
                         <td>{{model.is_charge | getChargeStatus}}</td>
                         <td>
+                            {if condition="authority('ApplyInfo')"}
                             <a :href="'__PRO_PATH__/Apply/info?id='+model.id" title="详情" v-if="model.status == 3 || model.status == 4">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
+                            {/if}
+                            {if condition="authority('ApplyReply')"}
                             <a :href="'__PRO_PATH__/Apply/reply?id='+model.id" title="回复" v-if="model.status == 1 || model.status == 2">
                                 <i class="fa fa-commenting fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
+                            {/if}
+                            {if condition="authority('ApplyRemove')"}
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
                                 <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
                             </a>
+                            {/if}
                         </td>
                     </tr>
                 </template>
@@ -239,6 +247,7 @@
             </table>
             {include file="Common/page" /}
             <p v-if="0">{{select}}</p>
+            {/if}
         </div>
     </div>
 </div><!-- /main-container -->

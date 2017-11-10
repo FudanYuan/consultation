@@ -33,5 +33,96 @@ class Action extends Model{
             ->select();
  		return $actions;
  	}
+
+
+    /**
+     * 新建权限
+     * @param $data
+     * @return array
+     */
+ 	public function addData($data){
+        $ret = [];
+        $errors = $this->filterField($data);
+        $ret['errors'] = $errors;
+        if(empty($errors)){
+            $data['status'] = 1;
+            $data['create_time'] = time();
+            $this->save($data);
+        }
+        return $ret;
+ 	}
+
+    /**
+     * 批量增加权限
+     * @param $dataSet
+     * @return array
+     */
+    public function addAllData($dataSet){
+        $ret = [];
+        $ret['error'] = [];
+        $i = 0;
+        foreach ($dataSet as &$data) {
+            $i += 1;
+            $errors = $this->filterField($data);
+            if(!empty($errors)){
+                $ret['errors'] = $errors;
+                return $ret;
+            }
+            unset($data['id']);
+            $data['status'] = 1;
+            $data['create_time'] = time();
+        }
+        $ret['i'] = $i;
+        $ret['exception'] = [];
+        try{
+            $ret['result'] = $this->saveAll($dataSet);
+        } catch(MyException $e){
+            $ret['exception'] = $e;
+        }
+        return $ret;
+    }
+
+
+    /**
+     * 删除操作权限
+     * @param array $cond
+     * @return false|int
+     * @throws MyException
+     */
+    public function remove($cond = []){
+//        $res = Db::table('consultation_action_admin')
+//            ->where(['status' => 1])->delete();
+        $res = Db::execute('truncate table consultation_action_admin');
+        if($res === false) throw new MyException('1', '删除失败');
+        return $res;
+    }
+
+    /**
+     * 过滤必要字段
+     * @param $data
+     * @return array
+     */
+    private function filterField($data){
+        $errors = [];
+        if(isset($data['id']) && !$data['id']){
+            $errors['id'] = 'id不能为空';
+        }
+        if(isset($data['name']) && !$data['name']){
+            $errors['name'] = '名称不能为空';
+        }
+        if(isset($data['tag']) && !$data['tag']){
+            $errors['tag'] = '备注不能为空';
+        }
+        if(isset($data['level']) && !$data['level']){
+            $errors['level'] = '层次不能为空';
+        }
+        if(isset($data['pid']) && $data['pid'] == ''){
+            $errors['pid'] = '父节点id不能为空';
+        }
+        if(isset($data['pids']) && $data['pids'] == ''){
+            $errors['pids'] = '父节点ids不能为空';
+        }
+        return $errors;
+    }
  }
 ?>
