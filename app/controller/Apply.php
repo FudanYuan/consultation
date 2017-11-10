@@ -198,7 +198,7 @@ class Apply extends Common
             $res = D('Apply')->addData($data);
             $ret['data'] = $res['data'];
             if(!empty($res['errors'])){
-                $ret['error_code'] = 1;
+                $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
             }
             $this->jsonReturn($ret);
@@ -246,7 +246,6 @@ class Apply extends Common
         $apply_info = D('Apply')->getById($id);
         $patient_id = $apply_info['patient_id'];
         $source_user_id = $apply_info['source_user_id'];
-
         // 获取目标医院信息
         $target_hospital_id = $apply_info['target_hospital_id'];
         $target_hospital_info = D('Hospital')->getById($target_hospital_id);

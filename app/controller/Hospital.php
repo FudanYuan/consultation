@@ -80,73 +80,60 @@ class Hospital extends Common
      */
     public function create(){
         $params = input('post.');
-        $cond = [];
-        $cond['id'] = ['<>', $this->getUserId()];
-
         if(!empty($params)) {
-
-            $ret = ['code' => 1, 'msg' => '新建成功'];
-
-            $data['source_user_id'] = $this->getUserId();
-
-            $dataSet = [];
-            if(!empty($params['target_user_ids'])){
-                for($i=0;$i<count($params['target_user_ids']);$i++){
-                    $data['target_user_id'] = (int)$params['target_user_ids'][$i];
-                    array_push($dataSet, $data);
-                }
-                // 添加Apply
-                $res_apply = D('Apply')->addAllData($dataSet);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                    $this->jsonReturn($ret);
-                }
-                $log['user_id'] = $this->getUserId();
-                $log['IP'] = $this->getUserIp();
-                $log['section'] = '医院信息';
-                $log['action_descr'] = '添加医院信息';
-                D('OperationLog')->addData($log);
-                $this->jsonReturn($ret);
+            $ret = ['error_code' => 2, 'msg' => '新建成功'];
+            $data['name'] = input('post.hospital_name');
+            $data['master'] = input('post.hospital_master');
+            $data['logo'] = input('post.hospital_logo');
+            $data['phone'] = input('post.hospital_phone');
+            $data['url'] = input('post.hospital_url');
+            $data['email'] = input('post.hospital_email');
+            $data['address'] = input('post.hospital_address');
+            $data['postcode'] = input('post.hospital_postcode');
+            $data['type'] = input('hospital_type');
+            $data['level'] = input('post.hospital_level');
+            $data['info'] = input('post.hospital_info');
+            $data['honor'] = input('post.hospital_honor');
+            $Role = input('post.hospital_role');
+            if($Role == '不可会诊医院'){
+                $data['role'] = 2;
+            }elseif ($Role == '可会诊医院'){
+                $data['role'] = 1;
             }
-            else{
-                $data['target_user_id'] = '';
-                // 添加Apply
-                $res_apply = D('Apply')->addData($data);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                }
-                $this->jsonReturn($ret);
-            }
+            $res = D('Hospital')->addData($data);
 
+            if(!empty($res['errors'])) {
+                $ret['error_code'] = 2;
+                $ret['msg'] = '新建失败';
+                $ret['errors'] = $res['errors'];
+            }
+            $ret['params'] = $params;
+            $this->jsonReturn($ret);
         }
-
-        $office = [];
-//        $office[0] = ['id' => 1, 'name' => '骨科'];
-//        $office[1] = ['id' => 2, 'name' => '眼科'];
-        return view('', ['office' => $office]);
+        return view('', []);
     }
 
+    /**
+     *获取医院信息
+     */
+    public function getHospitalInfo(){
+        $id = input('post.id');
+        $select = ['*'];
+        $cond['id'] = ['=',$id];
+        $res = D('Hospital')->getHospital($select,$cond);
+        $ret['error_code'] = 0;
+        $ret['msg'] = '';
+        $ret['info'] = $res[0];
+        $this->jsonReturn($ret);
+    }
 
     /**
      * 获取医院信息
      */
     function info(){
         $id = input('get.id');
-        return view('', ['id' => $id]);
+         return view('', ['id' => $id]);
     }
 
-    /**
-     * 获取医院详情
-     */
-    public function getHospitalInfo(){
-        $id = input('post.id');
-        $ret = ['error_code' => 0, 'msg' => ''];
-        $list = D('Hospital')->getById($id);
-        $ret['info'] = $list;
-        $this->jsonReturn($ret);
-    }
+
 }

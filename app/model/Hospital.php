@@ -66,6 +66,49 @@ class Hospital extends Model{
         return $res;
     }
 
+    /**
+     * 添加医院信息
+     * @param $data
+     * @return array
+     */
+    public function addData($data){
+        $ret = [];
+        $errors = $this->filterField($data);
+        $ret['errors'] = $errors;
+        if(empty($errors)){
+            $data['status'] = 1;
+            $data['create_time'] = time();
+            $this->save($data);
+        }
+        return $ret;
+    }
+
+    /**
+     * 过滤必要字段
+     * @param $data
+     * @return array
+     */
+    private function filterField($data){
+        $errors = [];
+        if(isset($data['name']) && !$data['name']){
+            $errors['name'] = '医院名字不能为空';
+        }
+        if(isset($data['master']) && !$data['master']){
+            $errors['master'] = '医院院长不能为空';
+        }
+        if(isset($data['phone']) && !$data['phone']){
+            $errors['phone'] = '联系方式不能为空';
+        }
+        if(isset($data['type']) && !$data['type']){
+            $errors['type'] = '医院类型不能为空';
+        }
+        if(isset($data['level']) && !$data['level']){
+            $errors['level'] = '医院等级不能为空';
+        }
+        return $errors;
+    }
+
+
     ////未修改/////
     /**
      * 更新医院信息
@@ -84,20 +127,7 @@ class Hospital extends Model{
         return $ret;
     }
 
-    /**
-     * 添加医院信息
-     * @param $data
-     * @return array
-     */
-    public function addData($data){
-        $ret = [];
-        $errors = $this->filterField($data);
-        $ret['errors'] = $errors;
-        if(empty($errors)){
-            $this->save($data);
-        }
-        return $ret;
-    }
+
 
     /**
      * 批量增加医院信息
@@ -139,35 +169,6 @@ class Hospital extends Model{
         $res = $this->save(['status' => 1], $cond);
         if($res === false) throw new MyException('2', '标记失败');
         return $res;
-    }
-
-    /**
-     * 过滤必要字段
-     * @param $data
-     * @return array
-     */
-    private function filterField($data){
-        $ret = [];
-        $errors = [];
-        if(isset($data['source_user_id']) && !$data['source_user_id']){
-            $errors['source_user_id'] = '发送用户不能为空';
-        }
-        if(isset($data['target_user_id']) && !$data['target_user_id']){
-            $errors['target_user_id'] = '接收用户不能为空';
-        }
-        if(isset($data['title']) && !$data['title']){
-            $errors['title'] = '标题不能为空';
-        }
-        if(isset($data['content']) && !$data['content']){
-            $errors['content'] = '内容不能为空';
-        }
-        if(isset($data['operation']) && !$data['operation']){
-            $errors['operation'] = '操作不能为空';
-        }
-        if(isset($data['priority']) && !$data['priority']){
-            $errors['priority'] = '优先级不能为空';
-        }
-        return $errors;
     }
 }
 ?>

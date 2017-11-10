@@ -57,7 +57,7 @@ class Patient extends Model{
         return $ret;
     }
     public function save_1($data){
-        $res = Db('consultation_patient')->insertGetId($data);
+        $res = Db('patient')->insertGetId($data);
         return $res;
     }
     /**
