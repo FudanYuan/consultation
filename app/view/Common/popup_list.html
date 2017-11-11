@@ -45,26 +45,40 @@
             $('#confirm-popup').popup('hide');
             var ids = config.ids || [];
             console.log('ids:', ids);
-            if(ids.length==0){
-                $("input[name='select']:checked").each(function () {
-                    ids.push(this.value);
-                });
-            }
-            if (ids.length <= 0) {
-                $('#warn-popup h5').html('请选择至少一条');
-                $('#warn-popup').popup('show');
-                return;
-            }
-            $.post(config.remove, {ids: ids.join(',')}, function (res) {
-                if (res['code'] == 1) {
-                    callback();
-                } else {
-                    popWarn('删除失败');
+            if(ids != 'all'){
+                if(ids.length==0){
                     $("input[name='select']:checked").each(function () {
-                        $("input[name='select'][value="+this.value+"]").attr("checked", false);
+                        ids.push(this.value);
                     });
                 }
-            });
+                if (ids.length <= 0) {
+                    $('#warn-popup h5').html('请选择至少一条');
+                    $('#warn-popup').popup('show');
+                    return;
+                }
+                $.post(config.remove, {ids: ids.join(',')}, function (res) {
+                    if (res['code'] == 1) {
+                        callback();
+                    } else {
+                        popWarn('删除失败');
+                        $("input[name='select']:checked").each(function () {
+                            $("input[name='select'][value="+this.value+"]").attr("checked", false);
+                        });
+                    }
+                });
+            } else{
+                console.log('ids:', ids);
+                $.post(config.remove, {ids: ids}, function (res) {
+                    if (res['code'] == 1) {
+                        popWarn(res.msg, config.list);
+                    } else {
+                        popWarn('删除失败');
+                        $("input[name='select']:checked").each(function () {
+                            $("input[name='select'][value="+this.value+"]").attr("checked", false);
+                        });
+                    }
+                });
+            }
         });
         $('.confirm-stop').unbind('click').on('click', function () {
             $('#stop-confirm-popup').popup('hide');

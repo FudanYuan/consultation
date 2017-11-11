@@ -305,7 +305,7 @@ INSERT INTO `consultation_user_admin` (`doctor_id`, `username`, `pass`, `role_id
 DROP TABLE IF EXISTS `consultation_action_admin`;
 
 CREATE TABLE `consultation_action_admin` (
-  `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `id` INT unsigned AUTO_INCREMENT NOT NULL COMMENT '主键',
   `name` VARCHAR(50) DEFAULT NULL COMMENT '操作名称',
   `tag` VARCHAR(50) DEFAULT NULL COMMENT '备注',
   `pid` VARCHAR(4) DEFAULT NULL COMMENT '父节点',

@@ -108,7 +108,8 @@
         filters:{
             moment: function (value, formatString) {
                 formatString = formatString || 'YYYY-MM-DD HH:mm';
-                return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+                return time;
             }
         }
     });
@@ -119,12 +120,12 @@
     function submit() {
         getParams();
         $.post('__PRO_PATH__/OperationLog/getLogList', vm.params, function (res) {
-            if (res.errorcode == 0) {
+            if (res.error_code == 0) {
                 vm.total = res.total;
                 vm.pages = Math.ceil(res.total / vm.per_page);
                 vm.current_page = res.current_page;
                 vm.list = res.data;
-                console.log(vm.list);
+                console.log(res.data);
             }
         });
     }

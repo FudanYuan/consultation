@@ -160,9 +160,26 @@ class UserAdmin extends Common{
 	 * 角色列表
 	 */
 	public function roles(){
-		$list = D('Role')->getList();
+        $list = D('Role')->getList();
 		return view('', ['list' => $list]);
 	}
+
+	public function getRolesList(){
+        $params = input('post.');
+        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
+//        $user_id = $this->getUserId();
+        $cond = [];
+//        $cond['hospital_id'] = ['=', $user_id];
+        $list = D('Role')->getList();
+        $page = input('post.current_page',0);
+        $per_page = input('post.per_page',0);
+        //分页时需要获取记录总数，键值为 total
+        $ret["total"] = count($list);
+        //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
+        $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
+        $ret['current_page'] = $page;
+        $this->jsonReturn($ret);
+    }
 	/**
 	 * 新建角色
 	 */
@@ -185,16 +202,17 @@ class UserAdmin extends Common{
 	public function roleEdit(){
 		$data = input('post.');
 		if(!empty($data)){
-			$ret = ['error_code' => 0, 'msg' => ''];
-			$res = D('Role')->saveData($data['id'], $data);
+			$ret = ['error_code' => 0, 'msg' => '编辑角色成功'];
+            $res = D('Role')->saveData($data['id'], $data);
+            $ret['res'] = $res;
 			if(!$res){
 				$ret['error_code'] = 1;
 				$ret['msg'] = '编辑角色失败';
 			}
 			$this->jsonReturn($ret);
 		}
-		$roleid = input('get.id');
-		$role = D('Role')->getById($roleid);
+		$role_id = input('get.id');
+		$role = D('Role')->getById($role_id);
 		return view('', ['role' => $role]);
 	}
 	/**
@@ -202,7 +220,7 @@ class UserAdmin extends Common{
 	 */
 	public function roleRemove(){
 		$ret = ['code' => 1, 'msg' => '成功'];
-		$ids = input('get.ids');
+		$ids = input('post.ids');
 		try{
 			$res = D('Role')->remove(['id' => ['in', $ids]]);
 		}catch(MyException $e){

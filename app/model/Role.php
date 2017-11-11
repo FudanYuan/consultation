@@ -17,7 +17,9 @@ class Role extends Model{
  	);
  	protected $type = [
  			'id' => 'integer',
- 			'status' => 'integer'
+ 			'status' => 'integer',
+            'create_time' => 'integer',
+            'update_time' => 'integer'
  		];
  	
  	/**
@@ -25,14 +27,20 @@ class Role extends Model{
  	 * @param array $cond
  	 */
  	public function getList($cond = []){
- 		$cond['status'] = 1;
- 		return $this->field('id,name,remark,create_time')->where($cond)->paginate(10);
+ 		if(!isset($cond['status'])){
+            $cond['status'] = 1;
+        }
+ 		return $this->field('id,name,remark,create_time')
+            ->where($cond)
+            ->select();
  	}
  	/**
  	 * 获取角色列表
  	 */
  	public function getRoleList(){
- 		return $this->field('id,name')->where('status', 1)->select();
+ 		return $this->field('id,name')
+            ->where('status', 1)
+            ->select();
  	}
 
     /**
@@ -42,9 +50,13 @@ class Role extends Model{
      */
  	public function getById($role_id){
  		if(!$role_id) return false;
- 		$res = $this->field('id,name,remark')->where(['id' => $role_id, 'status' => 1])->find();
+ 		$res = $this->field('id,name,remark')
+            ->where(['id' => $role_id, 'status' => 1])
+            ->find();
  		if(!empty($res)){
- 			$actions = Db::table('consultation_role_action_admin')->where(['role_id' => $role_id, 'status' => 1])->column('action_id');
+ 			$actions = Db::table('consultation_role_action_admin')
+                ->where(['role_id' => $role_id, 'status' => 1])
+                ->column('action_id');
  			$res['actions'] = $actions;
  		}
  		return $res;
@@ -97,7 +109,7 @@ class Role extends Model{
  			$authority = json_decode($data['authority'], true);
  			unset($data['authority']);
  		}
- 		$data['updatetime'] = $_SERVER['REQUEST_TIME'];
+ 		$data['update_time'] = $_SERVER['REQUEST_TIME'];
  		Db::startTrans();
  		$flag = true;
  		$res = $this->save($data, ['id' => $role_id]);

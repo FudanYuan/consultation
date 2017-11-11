@@ -90,35 +90,6 @@ class Apply extends Common
         }
         $ret['params'] = $params;
         $this->jsonReturn($ret);
-
-//            $i=0;
-//            foreach ($list as $v){
-//                $doctor_data = D('Doctor')->getDoctorById($v['delivery_user_id']);
-//                $list[$i]['doctor_name'] = $doctor_data['name'];
-//                $list[$i]['doctor_id'] = $doctor_data['id'];
-//                $list[$i]['phone'] = $doctor_data['phone'];
-//                $ret['doctor'][$i] = $doctor_data;
-//                $HospitalOffice_data = D('HospitalOffice')->getHospitalOfficeById($doctor_data['office_id']);
-//                $Hospital_data = D('Hospital')->getHospitalById($HospitalOffice_data['hospital_id']);
-//                $list[$i]['hospital_id'] = $Hospital_data['id'];
-//                $list[$i]['hospital_name'] = $Hospital_data['name'];
-//                $i++;
-//            }
-        //            $list = [];
-//            $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_logo' => '',
-//                'hospital_name' => '医院甲','doctor_id' => 1, 'doctor_name' => '张三',
-//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
-//                'consultation_goal' => '12324353456', 'apply_date' => 1509871680,
-//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
-//                'create_time' =>  1509871680
-//            ];
-//            $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_logo' => '',
-//                'hospital_name' => '医院乙','doctor_id' => 1, 'doctor_name' => '张三',
-//                'phone' => '135210263021','apply_type' => 1,'apply_project' => 1,
-//                'consultation_goal' => '放假啦减肥放假啦', 'apply_date' => 1509871680,
-//                'status' => 1, 'price' => 1000, 'is_charge' => 0,
-//                'create_time' =>  1509871680
-//            ];
     }
 
     /**
@@ -328,7 +299,7 @@ class Apply extends Common
         try{
             $res = D('Apply')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
-            $ret['error_code'] = 2;
+            $ret['code'] = 2;
             $ret['msg'] = '删除失败';
         }
         $this->jsonReturn($ret);
