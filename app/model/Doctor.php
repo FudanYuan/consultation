@@ -24,6 +24,16 @@ class Doctor extends Model{
         'update_time' => 'integer'
     ];
 
+
+    public function getList($cond){
+        if(!isset($cond['status'])){
+            $cond['status'] = ['<>', 2];
+        }
+        $res = $this->field('*')
+            ->where($cond)
+            ->find();
+        return $res;
+    }
     /**
      * 获取医生列表
      * @param $cond_and
@@ -31,7 +41,7 @@ class Doctor extends Model{
      * @param $order
      * @return mixed
      */
-    public function getList($cond_and,$cond_or,$order){
+    public function getDoctorList($cond_and,$cond_or,$order){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 2];
         }
