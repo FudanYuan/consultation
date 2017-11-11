@@ -59,12 +59,38 @@
             <div class="list-btns">
                 {if condition="authority('AuthorityCreate')"}
                 <div class="btn-group">
-                    <button type="button" class="btn btn-success" id="importItem">导入</button>
+                    <a type="button" class="btn btn-success" href="__PRO_PATH__/Action/create">添加</a>
                 </div>
                 {/if}
-                {if condition="authority('AuthorityRemove')"}
+
+                {if condition="authority('AuthorityClear')"}
                 <div class="btn-group">
                     <a href="javascript:;" class="btn btn-default" id="remove">清空</a>
+                </div>
+                {/if}
+
+                {if condition="authority('AuthorityExport')"}
+                <div class="btn-group fr">
+                    <a href="javascript:;" target="_blank" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        导出<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        {if condition="authority('AuthorityExportJson')"}
+                        <li><a href="__PRO_PATH__/Action/export?type=json" id="json">json格式</a></li>
+                        {/if}
+                        {if condition="authority('AuthorityExportExcel')"}
+                        <li><a href="__PRO_PATH__/Action/export?type=excel" id="excel">excel格式</a></li>
+                        {/if}
+                        {if condition="authority('AuthorityExportSql')"}
+                        <li><a href="__PRO_PATH__/Action/export?type=sql" id="sql">sql格式</a></li>
+                        {/if}
+                    </ul>
+                </div>
+                {/if}
+
+                {if condition="authority('AuthorityImport')"}
+                <div class="btn-group fr">
+                    <button type="button" class="btn btn-success" id="importItem">导入</button>
                 </div>
                 {/if}
             </div>
@@ -91,7 +117,6 @@
     var rootNodes = [];
     var d = new dTree('d');
     $.post('__PRO_PATH__/Action/authority', {}, function (res) {
-        console.log(JSON.stringify(res));
         d.add(0, -1, '权限管理');
         if(res.length==0){
             return;
