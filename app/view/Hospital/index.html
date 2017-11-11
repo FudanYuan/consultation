@@ -69,7 +69,7 @@
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
                         <td>{{model.name | formatText(22, model.name)}}</td>
                         <td>{{model.master}}</td>
-                        <td><img :src="model.logo != '' ? 'model.logo' : '__PUBLIC__/images/img_none.png'" alt="model.name"></td>
+                        <td><img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/img_none.png'" alt="model.name"></td>
                         <td>{{model.phone}}</td>
                         <td>{{model.email}}</td>
                         <td>{{model.address}}</td>

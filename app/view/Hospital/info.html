@@ -38,7 +38,7 @@
                     <td colspan="5">{{info.name}}</td>
                     <td>类型</td>
                     <td>{{info.type}}</td>
-                    <td colspan="2" rowspan="3"><img :alt='info.name' :src="info.logo != '' ? 'info.logo' : '__PUBLIC__/images/profile/profile1.jpg'"></td>
+                    <td colspan="2" rowspan="3"><img :alt='info.name' :src="info.logo != '' ? info.logo : '__PUBLIC__/images/profile/profile1.jpg'"></td>
                 </tr>
                 <tr>
                     <td>院长姓名</td>

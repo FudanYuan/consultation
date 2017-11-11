@@ -37,7 +37,7 @@
                     <td>{{info.age}}</td>
                     <td>职称</td>
                     <td>{{info.position}}</td>
-                    <td colspan="2" rowspan="3"><img :alt='info.name' :src="info.photo != '' ? 'info.photo' : '__PUBLIC__/images/profile/profile1.jpg'"></td>
+                    <td colspan="2" rowspan="3"><img :alt='info.name' :src="info.photo != '' ? info.photo : '__PUBLIC__/images/profile/profile1.jpg'"></td>
                 </tr>
                 <tr>
                     <td>联系方式</td>
