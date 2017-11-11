@@ -21,7 +21,7 @@ class OperationLog extends Common
     }
 
     /**
-     *
+     * 获取日志列表
      */
     public function getLogList(){
         $params = input('post.');

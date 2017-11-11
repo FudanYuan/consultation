@@ -185,10 +185,10 @@
                                             <div class="detail">
                                                 <strong>{{model.hospital_name}}</strong>
                                                 <p class="no-margin">
-                                                    {{model.consultation_goal}}
+                                                    {{model.consultation_goal | formatText(30, model.consultation_goal)}}
                                                 </p>
                                                 <small class="text-muted"><i class="fa fa-check text-success"></i>
-                                                    {{model.time}}
+                                                    {{model.create_time | formatTime}}
                                                 </small>
                                             </div>
                                         </a>
@@ -311,6 +311,7 @@
                     </li>
                     {/if}
 
+                    {if condition="authority('Setting')"}
                     <li class="openable bg-palette4" id="consultation-nav-setting">
                         <a href="javascript:;">
                             <span class="menu-content block">
@@ -344,6 +345,7 @@
                             {/if}
                         </ul>
                     </li>
+                    {/if}
                 </ul>
             </div>
         </div><!-- sidebar-inner -->

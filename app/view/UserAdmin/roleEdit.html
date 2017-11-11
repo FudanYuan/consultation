@@ -85,7 +85,7 @@
                     var rootNodes = [];
                     var d = new dTree('d');
                     var actions = {:json_encode($role.actions)};
-                    $.get('__PRO_PATH__/UserAdmin/authority', {}, function (res) {
+                    $.get('__PRO_PATH__/Action/authority', {}, function (res) {
                         d.add(0, -1, '权限管理');
                         for (var i = 0; i < res.length; i++) {
                             /*dTree实例属性以此为：  节点ID，父类ID，chechbox的名称，chechbox的值，chechbox的显示名称，
@@ -140,7 +140,8 @@
         data.authority = JSON.stringify(authority);
         $.post('__PRO_PATH__/UserAdmin/roleEdit', data, function (res) {
             if (res.error_code == 0) {
-                window.location.href = '__PRO_PATH__/UserAdmin/roles';
+                console.log(JSON.stringify(res.data));
+                popWarn(res.msg, '__PRO_PATH__/UserAdmin/roles');
             } else {
                 popWarn(res.msg);
             }

@@ -2,50 +2,77 @@
 {include file="Common/search" /}
 <div class="main-container">
 	<div class="padding-md">
+		{if condition="authority('Role')"}
 		<ul class="breadcrumb">
 			<li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
 			<li>角色设置</li>	 	 
 		</ul>
-		<div class="list-search">
-			<form action="" class="form-inline" method="get" >
-			</form>
-		</div>
-		<div class="list-btns">
-			{if condition="authority('Role_add')"}
-			<button type="button" class="btn btn-success" id="addItem">新建</button>
-			{/if}
-			{if condition="authority('Role_del')"}
-			<button type="button" class="btn btn-default" id="removeItem">删除</button>
-			{/if}
-		</div>
-		<table class="table table-hover" style="background:#fff;">
-		  <thead>
-		  	<tr>
-		  		<th><input type="checkbox" id="checkbox-all"/></th>
-		  		<th>序号</th>
-		  		<th>角色名称</th>
-		  		<th>备注</th>
-		  		<th>创建时间</th>
-		  		<th>操作</th>
-		  	</tr>
-		  </thead>
-		  <tbody>
-			{foreach name="list" item="model"}
+		<div id="roles">
+			<div class="list-search">
+				<form action="" class="form-inline" method="post" id="main-form">
+					<div class="form-group">
+						<label for="name">角色名称：</label>
+						<input name="name" class="form-control" id="name" style="width:150px" value=""/>
+					</div>
+					<a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
+				</form>
+			</div>
+			<div class="list-btns">
+				{if condition="authority('RoleCreate')"}
+				<div class="btn-group">
+					<button type="button" class="btn btn-success" @click="create">新建</button>
+				</div>
+				{/if}
+				{if condition="authority('RoleRemove')"}
+				<div class="btn-group">
+					<a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
+				</div>
+				{/if}
+			</div>
+			<table class="table table-hover" style="background:#fff;">
+				<thead>
 				<tr>
-					<td><input type="checkbox" name="select" value="{$model.id}" /></td>
-					<td>{$model.id}</td>
-					<td>{$model.name}</td>
-					<td>{$model.remark}</td>
-					<td>{if condition="$model.create_time"}{:date('Y-m-d H:i:s',$model.create_time)}{/if}</td>
-					<td>
-						{if condition="authority('Role_edit')"}
-						<a href="__PRO_PATH__/UserAdmin/roleEdit?id={$model.id}">编辑</a>
-						{/if}
-					</td>
+					<th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
+					<th>角色名称</th>
+					<th>备注</th>
+					<th>创建时间</th>
+					<th>操作</th>
 				</tr>
-			{/foreach}
-		  </tbody>
-		</table>
+			  	</thead>
+				<tbody>
+				<template  v-if="list.length != 0">
+					<tr v-for="(model, index) in list">
+						<td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
+						<td>{{model.name}}</td>
+						<td>{{model.remark}}</td>
+						<td>{{model.create_time | moment}}</td>
+						<td>
+							{if condition="authority('RoleEdit')"}
+							<a :href="'__PRO_PATH__/UserAdmin/roleEdit?id='+model.id" title="编辑">
+								<i class="fa fa-pencil-square  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+							</a>
+							{/if}
+							{if condition="authority('RoleRemove')"}
+							<a href="javascript:;" @click="remove([model.id])" title="删除">
+								<i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
+							</a>
+							{/if}
+						</td>
+					</tr>
+				</template>
+				<template v-else>
+					<tr>
+						<td colspan="11" class="nodata">暂无医生信息！</td>
+					</tr>
+				</template>
+				</tbody>
+			</table>
+		</div>
+		{else /}
+		<span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+		{/if}
 	</div>
 </div><!-- /main-container -->
 {include file="Common/popup_warn" /}
@@ -54,8 +81,163 @@
 <script>
 	$('#consultation-nav-setting').addClass('active open');
 	$('#consultation-nav-setting-sub3').addClass('active');
-	popupList({
-		create:'__PRO_PATH__/UserAdmin/roleCreate',
-		remove:'__PRO_PATH__/UserAdmin/roleRemove'
+	var vm = new Vue({
+		el: '#roles',
+		data: {
+			list: [],
+			params: {},
+			check_all: false,
+			select: [],
+			total: 0,
+			per_page: 10,
+			current_page: 1,
+			pages: 1,
+			fore_omit: false,
+			back_omit: false,
+			fore_pages: [],
+			mid_pages: [],
+			back_pages: [],
+			side: 3,
+			window: 6
+		},
+		updated: function () {
+			this.fore_pages = [];
+			this.mid_pages = [];
+			this.back_pages = [];
+			if(this.pages < this.window + 6){
+				this.fore_omit = false;
+				this.back_omit = false;
+				for(var i=1; i<=this.pages; i++){
+					this.fore_pages.push(i);
+				}
+			}
+			else if(this.current_page <= this.window){
+				this.fore_omit = false;
+				this.back_omit = true;
+				for(var i=1; i<= this.window + 2; i++){
+					this.fore_pages.push(i);
+				}
+				this.back_pages = [this.pages - 1, this.pages];
+			}
+			else if(this.current_page > this.pages - this.window){
+				this.fore_omit = true;
+				this.back_omit = false;
+				for(var i=this.pages-(this.window+2); i<= this.pages; i++){
+					this.back_pages.push(i);
+				}
+				this.fore_pages = [1, 2];
+			}
+			else{
+				this.fore_omit = true;
+				this.back_omit = true;
+				this.fore_pages = [1, 2];
+				for(var i=parseInt(this.current_page) - parseInt(this.side);
+					i <= parseInt(this.current_page) + parseInt(this.side); i++){
+					this.mid_pages.push(i);
+				}
+				this.back_pages = [this.pages - 1, this.pages];
+			}
+		},
+		methods:{
+			resetParams: function () {
+				this.select = [];
+				this.check_all = false;
+			},
+			// 转到某页
+			gotoPage: function (page) {
+				if(page == this.current_page) return;
+				this.current_page = page;
+				submit();
+			},
+			selectClick: function (id) {
+				if(this.select.indexOf(id) == -1){
+					this.select.push(id);
+				}
+				else{
+					this.select.remove(id);
+				}
+				if(this.list.length == this.select.length){
+					this.check_all = true;
+				} else {
+					this.check_all = false;
+				}
+			},
+			checkAll: function () {
+				if(!this.check_all){
+					for(var i=0;i<this.list.length;i++){
+						var id = this.list[i]['id'];
+						if(this.select.indexOf(id) == -1){
+							this.select.push(id);
+						}
+					}
+				} else {
+					this.select = [];
+				}
+				this.check_all = !this.check_all;
+			},
+
+			create: function () {
+				window.location.href = '__PRO_PATH__/UserAdmin/roleCreate';
+			},
+
+			remove: function (id) {
+				var ids = [];
+				if(id.length==0){
+					ids = this.select;
+				}
+				else{
+					if(this.select.indexOf(id[0]) == -1){
+						this.select.push(id[0]);
+					}
+					ids = id;
+				}
+				this.select = ids;
+				// 删除
+				popupList({
+					remove: '__PRO_PATH__/UserAdmin/roleRemove',
+					ids: vm.select
+				}, function () {
+					submit();
+				});
+				$('#confirm-popup').popup('show');
+			}
+		},
+		filters:{
+			moment: function (value, formatString) {
+				formatString = formatString || 'YYYY-MM-DD HH:mm';
+				var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+				return time;
+			},
+			formatText: function (text, len) {
+				return cutString(text, len);
+			}
+		}
 	});
+
+	submit();
+
+	// 异步提交数据
+	function submit() {
+		getParams();
+		vm.resetParams();
+		$.post('__PRO_PATH__/UserAdmin/getRolesList', vm.params, function (res) {
+			if (res.error_code == 0) {
+				vm.total = res.total;
+				vm.pages = Math.ceil(res.total / vm.per_page);
+				vm.current_page = res.current_page;
+				vm.list = res.data;
+				console.log(JSON.stringify(vm.list));
+			}
+		});
+	}
+
+	// 获取参数设置
+	function getParams() {
+		var data = $('#main-form').serializeArray();
+		$.each(data, function () {
+			vm.params[this.name] = this.value;
+		});
+		vm.params['per_page'] = vm.per_page;
+		vm.params['current_page'] = vm.current_page;
+	}
 </script>
