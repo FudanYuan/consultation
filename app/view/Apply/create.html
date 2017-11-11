@@ -1,13 +1,12 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
-
+{if condition="authority('ApplyCreate')"}
 <script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
-            <!--<li>新建申请</li>-->
+            <li>新建申请</li>
         </ul>
         <div class="form-wrapper" style="background-color: #fff">
             <form class="form-horizontal" method="post" id="new-apply-form">
@@ -321,11 +320,11 @@
         </div>
     </div>
 </div><!-- /main-container -->
+{include file="Common/bottom" /}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
-{include file="Common/bottom" /}
 {include file="Common/upload"}
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
@@ -503,4 +502,13 @@
         console.log(JSON.stringify(vm.params));
     }
 </script>
-
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

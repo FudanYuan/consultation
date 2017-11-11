@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('Account')"}
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
@@ -66,3 +66,13 @@
         return d;
     }
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

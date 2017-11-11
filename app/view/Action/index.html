@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('Authority')"}
 <script src="__PUBLIC__/js/dtree/dtree.js"></script>
 <link href="__PUBLIC__/js/dtree/dtree.css" rel="stylesheet"/>
 <style>
@@ -75,15 +75,9 @@
                         导出<span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu pull-right" role="menu">
-                        {if condition="authority('AuthorityExportJson')"}
                         <li><a href="__PRO_PATH__/Action/export?type=json" id="json">json格式</a></li>
-                        {/if}
-                        {if condition="authority('AuthorityExportExcel')"}
                         <li><a href="__PRO_PATH__/Action/export?type=excel" id="excel">excel格式</a></li>
-                        {/if}
-                        {if condition="authority('AuthorityExportSql')"}
                         <li><a href="__PRO_PATH__/Action/export?type=sql" id="sql">sql格式</a></li>
-                        {/if}
                     </ul>
                 </div>
                 {/if}
@@ -111,7 +105,7 @@
     $('#consultation-nav-setting').addClass('active open');
     $('#consultation-nav-setting-sub1').addClass('active');
     popupImport({
-        import: '__PRO_PATH__/Action/create',
+        import: '__PRO_PATH__/Action/import',
         callback: '__PRO_PATH__/Action/index'
     });
     var rootNodes = [];
@@ -156,3 +150,13 @@
         ids: 'all'
     });
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

@@ -1,14 +1,14 @@
 {include file="Common/top" title="首页" metas='' /}
 {include file="Common/search" /}
-
+{if condition="authority('Apply')"}
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li>会诊申请</li>
         </ul>
-
-        <div class="list-search">
+        <div id="apply">
+            <div class="list-search">
             <form action="" class="form-inline" method="post" id="main-form">
                 <div class="form-group">
                     <label for="apply_type">申请类型：</label>
@@ -165,8 +165,6 @@
                 {/if}
             </form>
         </div>
-
-        <div id="apply">
             <div class="list-btns">
                 {if condition="authority('ApplyCreate')"}
                 <div class="btn-group">
@@ -249,7 +247,6 @@
                 </tbody>
             </table>
             {include file="Common/page" /}
-            <p v-if="0">{{select}}</p>
             {/if}
         </div>
     </div>

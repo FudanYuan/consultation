@@ -1,8 +1,7 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('User')"}
 <div class="main-container">
 	<div class="padding-md">
-		{if condition="authority('User')"}
 		<ul class="breadcrumb">
 			<li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
 			<li>权限设置</li>	 	 
@@ -10,6 +9,7 @@
 
 		<div id="user">
 			<div class="list-search">
+				{if condition="authority('UserSelect')"}
 				<form action="" class="form-inline" method="post" id="main-form">
 					<div class="form-group">
 						<label for="select-status">使用状态：</label>
@@ -24,6 +24,7 @@
 					</div>
 					<a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
 				</form>
+				{/if}
 			</div>
 			<div class="list-btns">
 				{if condition="authority('UserCreate')"}
@@ -34,6 +35,21 @@
 				{if condition="authority('UserRemove')"}
 				<div class="btn-group">
 					<a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
+				</div>
+				{/if}
+
+				{if condition="authority('UserExport')"}
+				<div class="btn-group fr">
+					<a href="javascript:;" target="_blank" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						导出<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu pull-right" role="menu">
+						{if condition="authority('UserExport')"}
+						<li><a href="__PRO_PATH__/UserAdmin/export?type=json" id="json">json格式</a></li>
+						<li><a href="__PRO_PATH__/UserAdmin/export?type=excel" id="excel">excel格式</a></li>
+						<li><a href="__PRO_PATH__/UserAdmin/export?type=sql" id="sql">sql格式</a></li>
+						{/if}
+					</ul>
 				</div>
 				{/if}
 			</div>
@@ -96,11 +112,6 @@
 			{include file="Common/page" /}
 			{/if}
 		</div>
-		{else /}
-		<span class="col-lg-12" style="font-size: larger; text-align: center">
-			<strong>抱歉，您访问的页面不存在！</strong>
-		</span>
-		{/if}
 	</div>
 </div><!-- /main-container -->
 {include file="Common/popup_warn" /}
@@ -283,3 +294,13 @@
 		vm.params['current_page'] = vm.current_page;
 	}
 </script>
+{else /}
+<div class="main-container">
+	<div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+	</div>
+</div>
+{include file="Common/bottom" /}
+{/if}

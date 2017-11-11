@@ -60,9 +60,7 @@ class Action extends Model{
     public function addAllData($dataSet){
         $ret = [];
         $ret['error'] = [];
-        $i = 0;
         foreach ($dataSet as &$data) {
-            $i += 1;
             $errors = $this->filterField($data);
             if(!empty($errors)){
                 $ret['errors'] = $errors;
@@ -72,8 +70,6 @@ class Action extends Model{
             $data['status'] = 1;
             $data['create_time'] = time();
         }
-        $ret['i'] = $i;
-        $ret['exception'] = [];
         try{
             $ret['result'] = $this->saveAll($dataSet);
         } catch(MyException $e){
@@ -90,8 +86,6 @@ class Action extends Model{
      * @throws MyException
      */
     public function remove($cond = []){
-//        $res = Db::table('consultation_action_admin')
-//            ->where(['status' => 1])->delete();
         $res = Db::execute('truncate table consultation_action_admin');
         if($res === false) throw new MyException('1', '删除失败');
         return $res;
@@ -115,9 +109,6 @@ class Action extends Model{
         }
         if(isset($data['level']) && !$data['level']){
             $errors['level'] = '层次不能为空';
-        }
-        if(isset($data['pid']) && $data['pid'] == ''){
-            $errors['pid'] = '父节点id不能为空';
         }
         if(isset($data['pids']) && $data['pids'] == ''){
             $errors['pids'] = '父节点ids不能为空';

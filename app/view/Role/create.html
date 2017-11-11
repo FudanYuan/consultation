@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('RoleCreate')"}
 <script src="__PUBLIC__/js/dtree/dtree.js"></script>
 <link href="__PUBLIC__/js/dtree/dtree.css" rel="stylesheet"/>
 <style>
@@ -52,7 +52,7 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/UserAdmin/roles">角色设置</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Role/index">角色设置</a></li>
             <li>新建</li>
         </ul>
         <div class="form-wrapper">
@@ -77,13 +77,13 @@
                 </div>
                 <div class="row" style="text-align:center;">
                     <a id="form-save" class="btn btn-success">保存</a>
-                    <a href="__PRO_PATH__/UserAdmin/roles" class="btn btn-info" style="margin-left:50px;">取消</a>
+                    <a href="__PRO_PATH__/Role/index" class="btn btn-info" style="margin-left:50px;">取消</a>
                     <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
                 </div>
                 <script type="text/javascript">
                     var rootNodes = [];
                     var d = new dTree('d');
-                    $.get('__PRO_PATH__/UserAdmin/authority', {}, function (res) {
+                    $.get('__PRO_PATH__/Action/authority', {}, function (res) {
                         d.add(0, -1, '权限管理');
                         for (var i = 0; i < res.length; i++) {
                             /*dTree实例属性以此为：  节点ID，父类ID，chechbox的名称，chechbox的值，chechbox的显示名称，
@@ -134,9 +134,9 @@
             return;
         }
         data.authority = JSON.stringify(authority);
-        $.post('__PRO_PATH__/UserAdmin/roleCreate', data, function (res) {
+        $.post('__PRO_PATH__/Role/create', data, function (res) {
             if (res.error_code == 0) {
-                window.location.href = '__PRO_PATH__/UserAdmin/roles';
+                window.location.href = '__PRO_PATH__/Role/index';
             } else {
                 popWarn(res.msg);
                 return;
@@ -152,3 +152,13 @@
         return d;
     }
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

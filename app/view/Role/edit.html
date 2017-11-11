@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('RoleEdit')"}
 <script src="__PUBLIC__/js/dtree/dtree.js"></script>
 <link href="__PUBLIC__/js/dtree/dtree.css" rel="stylesheet"/>
 <style>
@@ -52,7 +52,7 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/UserAdmin/roles">角色设置</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Role/index">角色设置</a></li>
             <li>编辑</li>
         </ul>
         <div class="form-wrapper">
@@ -78,7 +78,7 @@
                 </div>
                 <div class="row" style="text-align:center;">
                     <a id="form-save" class="btn btn-success">保存</a>
-                    <a href="__PRO_PATH__/UserAdmin/roles" id="form-cancel" class="btn btn-info" style="margin-left:20px;">取消</a>
+                    <a href="__PRO_PATH__/Role/index" id="form-cancel" class="btn btn-info" style="margin-left:20px;">取消</a>
                     <a id="form-delete" class="btn btn-default" style="margin-left:20px;">删除</a>
                 </div>
                 <script type="text/javascript">
@@ -138,10 +138,10 @@
             return;
         }
         data.authority = JSON.stringify(authority);
-        $.post('__PRO_PATH__/UserAdmin/roleEdit', data, function (res) {
+        $.post('__PRO_PATH__/Role/edit', data, function (res) {
             if (res.error_code == 0) {
                 console.log(JSON.stringify(res.data));
-                popWarn(res.msg, '__PRO_PATH__/UserAdmin/roles');
+                popWarn(res.msg, '__PRO_PATH__/Role/index');
             } else {
                 popWarn(res.msg);
             }
@@ -149,8 +149,8 @@
     });
     popupEdit({
         id: '{$role.id}',
-        list: '__PRO_PATH__/UserAdmin/roles',
-        remove: '__PRO_PATH__/UserAdmin/roleRemove'
+        list: '__PRO_PATH__/Role/index',
+        remove: '__PRO_PATH__/Role/remove'
     });
     function getFromData(ele) {
         var d = {};
@@ -161,3 +161,13 @@
         return d;
     }
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

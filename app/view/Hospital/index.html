@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('Hospital')"}
 <style>
     .table img{
         width: 40px;
@@ -19,7 +19,7 @@
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li>医院信息</li>
         </ul>
-        {if condition="authority('Hospital')"}
+
         <div id="hospital">
             <div class="list-search">
                 <form action="" class="form-inline" method="post" id="main-form">
@@ -96,9 +96,7 @@
                 </tbody>
             </table>
             {include file="Common/page" /}
-            <p v-if="0">{{select}}</p>
         </div>
-        {/if}
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -303,3 +301,13 @@
     }
 
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

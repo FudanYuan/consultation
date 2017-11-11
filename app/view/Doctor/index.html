@@ -1,6 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
-
+{if condition="authority('Doctor')"}
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
@@ -8,7 +7,6 @@
             <li>医生信息</li>
         </ul>
 
-        {if condition="authority('Doctor')"}
         <div id="doctor">
             <div class="list-search">
             <form action="" class="form-inline" method="post" id="main-form">
@@ -91,7 +89,6 @@
             {include file="Common/page" /}
             {/if}
         </div>
-        {/if}
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -296,3 +293,13 @@
     }
 
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

@@ -15,6 +15,7 @@
 </style>
 <div class="main-container">
     <div class="padding-md">
+        {if condition="authority('ApplyInfo')"}
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
@@ -130,9 +131,16 @@
                 </tr>
             </table>
         </div>
+
+        {else /}
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+        {/if}
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
+{if condition="authority('ApplyInfo')"}
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
@@ -252,3 +260,4 @@
         });
     }
 </script>
+{/if}

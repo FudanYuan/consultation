@@ -1,58 +1,562 @@
 [
   {
     "id": 1,
-    "name": "会诊申请",
-    "tag": "Apply",
-    "pid": "0",
+    "name": "系统设置",
+    "tag": "Setting",
+    "pid": 0,
     "pids": "0",
     "level": 1
   },
   {
     "id": 2,
-    "name": "查询",
-    "tag": "ApplySelect",
-    "pid": "1",
-    "pids": "1",
-    "level": 2
+    "name": "账户设置",
+    "tag": "Account",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
   },
   {
     "id": 3,
-    "name": "查看",
-    "tag": "ApplyResult",
-    "pid": "1",
-    "pids": "1",
-    "level": 2
+    "name": "操作日志",
+    "tag": "OperationLog",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
   },
   {
     "id": 4,
-    "name": "详情",
-    "tag": "ApplyInfo",
-    "pid": "3",
-    "pids": "1-3",
-    "level": 3
+    "name": "会诊申请",
+    "tag": "Apply",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
   },
   {
     "id": 5,
-    "name": "回复",
-    "tag": "ApplyReply",
-    "pid": "3",
-    "pids": "1-3",
-    "level": 3
+    "name": "绿色通道",
+    "tag": "Channel",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
   },
   {
     "id": 6,
-    "name": "新建",
-    "tag": "ApplyCreate",
-    "pid": "1",
+    "name": "医院信息",
+    "tag": "Hospital",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
+  },
+  {
+    "id": 7,
+    "name": "医生信息",
+    "tag": "Doctor",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
+  },
+  {
+    "id": 8,
+    "name": "患者信息",
+    "tag": "Patient",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
+  },
+  {
+    "id": 9,
+    "name": "话题讨论",
+    "tag": "Talk",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
+  },
+  {
+    "id": 10,
+    "name": "操作权限",
+    "tag": "Authority",
+    "pid": 1,
     "pids": "1",
     "level": 2
   },
   {
-    "id": 7,
+    "id": 11,
+    "name": "查看",
+    "tag": "AuthorityResult",
+    "pid": 10,
+    "pids": "1-10",
+    "level": 3
+  },
+  {
+    "id": 12,
+    "name": "新建",
+    "tag": "AuthorityCreate",
+    "pid": 10,
+    "pids": "1-10",
+    "level": 3
+  },
+  {
+    "id": 13,
+    "name": "删除",
+    "tag": "AuthorityRemove",
+    "pid": 10,
+    "pids": "1-10",
+    "level": 3
+  },
+  {
+    "id": 14,
+    "name": "清空",
+    "tag": "AuthorityClear",
+    "pid": 10,
+    "pids": "1-10",
+    "level": 3
+  },
+  {
+    "id": 15,
+    "name": "导入",
+    "tag": "AuthorityImport",
+    "pid": 10,
+    "pids": "1-10",
+    "level": 3
+  },
+  {
+    "id": 16,
+    "name": "导出",
+    "tag": "AuthorityExport",
+    "pid": 10,
+    "pids": "1-10",
+    "level": 3
+  },
+
+
+  {
+    "id": 17,
+    "name": "用户角色",
+    "tag": "Role",
+    "pid": 1,
+    "pids": "1",
+    "level": 2
+  },
+  {
+    "id": 18,
+    "name": "查询",
+    "tag": "RoleSelect",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+  {
+    "id": 19,
+    "name": "查看",
+    "tag": "RoleResult",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+  {
+    "id": 20,
+    "name": "新建",
+    "tag": "RoleCreate",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+  {
+    "id": 21,
+    "name": "编辑",
+    "tag": "RoleEdit",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+  {
+    "id": 22,
+    "name": "删除",
+    "tag": "RoleRemove",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+  {
+    "id": 23,
+    "name": "导入",
+    "tag": "RoleImport",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+  {
+    "id": 24,
+    "name": "导出",
+    "tag": "RoleExport",
+    "pid": 17,
+    "pids": "1-17",
+    "level": 3
+  },
+
+  {
+    "id": 25,
+    "name": "用户设置",
+    "tag": "User",
+    "pid": 1,
+    "pids": "1",
+    "level": 2
+  },
+  {
+    "id": 26,
+    "name": "查询",
+    "tag": "UserSelect",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+  {
+    "id": 27,
+    "name": "查看",
+    "tag": "UserResult",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+  {
+    "id": 28,
+    "name": "新建",
+    "tag": "UserCreate",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+  {
+    "id": 29,
+    "name": "编辑",
+    "tag": "UserEdit",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+  {
+    "id": 30,
+    "name": "删除",
+    "tag": "UserRemove",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+  {
+    "id": 31,
+    "name": "导入",
+    "tag": "UserImport",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+  {
+    "id": 32,
+    "name": "导出",
+    "tag": "UserExport",
+    "pid": 25,
+    "pids": "1-25",
+    "level": 3
+  },
+
+  {
+    "id": 33,
+    "name": "账户编辑",
+    "tag": "AccountEdit",
+    "pid": 2,
+    "pids": "2",
+    "level": 2
+  },
+  {
+    "id": 34,
+    "name": "更改密码",
+    "tag": "AccountPwd",
+    "pid": 2,
+    "pids": "2",
+    "level": 2
+  },
+  {
+    "id": 35,
+    "name": "查询",
+    "tag": "OperationLogSelect",
+    "pid": 3,
+    "pids": "3",
+    "level": 2
+  },
+  {
+    "id": 36,
+    "name": "查看",
+    "tag": "OperationLogResult",
+    "pid": 3,
+    "pids": "3",
+    "level": 2
+  },
+  {
+    "id": 37,
+    "name": "导出",
+    "tag": "OperationLogExport",
+    "pid": 3,
+    "pids": "3",
+    "level": 2
+  },
+  {
+    "id": 38,
+    "name": "查询",
+    "tag": "ApplySelect",
+    "pid": 4,
+    "pids": "4",
+    "level": 2
+  },
+  {
+    "id": 39,
+    "name": "查看",
+    "tag": "ApplyResult",
+    "pid": 4,
+    "pids": "4",
+    "level": 2
+  },
+  {
+    "id": 40,
+    "name": "详情",
+    "tag": "ApplyInfo",
+    "pid": 39,
+    "pids": "4-39",
+    "level": 3
+  },
+  {
+    "id": 41,
+    "name": "回复",
+    "tag": "ApplyReply",
+    "pid": 39,
+    "pids": "4-39",
+    "level": 3
+  },
+  {
+    "id": 42,
+    "name": "讨论",
+    "tag": "ApplyCommunication",
+    "pid": 39,
+    "pids": "4-39",
+    "level": 3
+  },
+  {
+    "id": 43,
+    "name": "新建",
+    "tag": "ApplyCreate",
+    "pid": 4,
+    "pids": "4",
+    "level": 2
+  },
+  {
+    "id": 44,
+    "name": "新建",
+    "tag": "ApplyCreate",
+    "pid": 4,
+    "pids": "4",
+    "level": 2
+  },
+  {
+    "id": 45,
     "name": "删除",
     "tag": "ApplyRemove",
-    "pid": "1",
-    "pids": "1",
+    "pid": 4,
+    "pids": "4",
+    "level": 2
+  },
+
+  {
+    "id": 46,
+    "name": "查询",
+    "tag": "ChannelSelect",
+    "pid": 5,
+    "pids": "5",
+    "level": 2
+  },
+  {
+    "id": 47,
+    "name": "查看",
+    "tag": "ChannelResult",
+    "pid": 5,
+    "pids": "5",
+    "level": 2
+  },
+  {
+    "id": 48,
+    "name": "详情",
+    "tag": "ChannelInfo",
+    "pid": 47,
+    "pids": "5-47",
+    "level": 3
+  },
+  {
+    "id": 49,
+    "name": "新建",
+    "tag": "ChannelEdit",
+    "pid": 5,
+    "pids": "5",
+    "level": 2
+  },
+  {
+    "id": 50,
+    "name": "编辑",
+    "tag": "ChannelEdit",
+    "pid": 5,
+    "pids": "5",
+    "level": 2
+  },
+  {
+    "id": 51,
+    "name": "删除",
+    "tag": "ChannelRemove",
+    "pid": 5,
+    "pids": "5",
+    "level": 2
+  },
+
+  {
+    "id": 52,
+    "name": "查询",
+    "tag": "HospitalSelect",
+    "pid": 6,
+    "pids": "6",
+    "level": 2
+  },
+  {
+    "id": 53,
+    "name": "查看",
+    "tag": "HospitalResult",
+    "pid": 6,
+    "pids": "6",
+    "level": 2
+  },
+  {
+    "id": 54,
+    "name": "详情",
+    "tag": "HospitalInfo",
+    "pid": 53,
+    "pids": "6-53",
+    "level": 3
+  },
+  {
+    "id": 55,
+    "name": "新建",
+    "tag": "HospitalCreate",
+    "pid": 6,
+    "pids": "6",
+    "level": 2
+  },
+  {
+    "id": 56,
+    "name": "编辑",
+    "tag": "HospitalEdit",
+    "pid": 6,
+    "pids": "6",
+    "level": 2
+  },
+  {
+    "id": 57,
+    "name": "删除",
+    "tag": "HospitalRemove",
+    "pid": 6,
+    "pids": "6",
+    "level": 2
+  },
+
+  {
+    "id": 58,
+    "name": "查询",
+    "tag": "DoctorSelect",
+    "pid": 7,
+    "pids": "7",
+    "level": 2
+  },
+  {
+    "id": 59,
+    "name": "查看",
+    "tag": "DoctorResult",
+    "pid": 7,
+    "pids": "7",
+    "level": 2
+  },
+  {
+    "id": 60,
+    "name": "详情",
+    "tag": "DoctorInfo",
+    "pid": 59,
+    "pids": "7-59",
+    "level": 3
+  },
+  {
+    "id": 61,
+    "name": "新建",
+    "tag": "DoctorCreate",
+    "pid": 7,
+    "pids": "7",
+    "level": 2
+  },
+  {
+    "id": 62,
+    "name": "编辑",
+    "tag": "DoctorEdit",
+    "pid": 7,
+    "pids": "7",
+    "level": 2
+  },
+  {
+    "id": 63,
+    "name": "删除",
+    "tag": "DoctorRemove",
+    "pid": 7,
+    "pids": "7",
+    "level": 2
+  },
+
+  {
+    "id": 64,
+    "name": "查询",
+    "tag": "PatientSelect",
+    "pid": 8,
+    "pids": "8",
+    "level": 2
+  },
+  {
+    "id": 65,
+    "name": "查看",
+    "tag": "PatientResult",
+    "pid": 8,
+    "pids": "8",
+    "level": 2
+  },
+  {
+    "id": 66,
+    "name": "详情",
+    "tag": "PatientInfo",
+    "pid": 65,
+    "pids": "8-65",
+    "level": 3
+  },
+  {
+    "id": 67,
+    "name": "新建",
+    "tag": "PatientCreate",
+    "pid": 8,
+    "pids": "8",
+    "level": 2
+  },
+  {
+    "id": 68,
+    "name": "编辑",
+    "tag": "PatientEdit",
+    "pid": 8,
+    "pids": "8",
+    "level": 2
+  },
+  {
+    "id": 69,
+    "name": "删除",
+    "tag": "PatientRemove",
+    "pid": 8,
+    "pids": "8",
     "level": 2
   }
 ]
