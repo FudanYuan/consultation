@@ -28,20 +28,8 @@ class Doctor extends Common
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
         $cond['target_user_id'] = ['=', $user_id];
-
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-//        $list = D('Doctor')->getList($cond);
-        $list = [];
-        $list[0] = ['id' => 1, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-            'office_id' => 1, 'office_name' => '眼科', 'name' => '张三',
-            'position' => '教授，博导', 'phone' => '135210263021', 'email' => '121212@11.com',
-            'address' => '湖南长沙'
-        ];
-        $list[1] = ['id' => 2, 'hospital_id' => 1, 'hospital_name' => '医院甲',
-            'office_id' => 1, 'office_name' => '眼科', 'name' => '李四',
-            'position' => '教授，博导', 'phone' => '135210263021', 'email' => '121212@11.com',
-            'address' => '湖南长沙'
-        ];
+        $list = D('Doctor')->getList([],[],[]);
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
@@ -74,64 +62,36 @@ class Doctor extends Common
         $params = input('post.');
         $cond = [];
         $cond['id'] = ['<>', $this->getUserId()];
-        $target_users = D('UserAdmin')->getList($cond);
+
         if(!empty($params)) {
-            $data = [];
-            $ret = ['code' => 1, 'msg' => '新建成功'];
-            $title = input('post.title', '');
-            $priority = input('post.priority', '');
-            if (!isset($params['target_user_ids'])) {
-                $params['target_user_ids'] = [];
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
+            $data['name'] = input('post.doctor_name');
+            $data['photo'] = input('post.doctor_photo');
+            $photo_origin = input('post.doctor_photo_origin');
+            $data['gender'] = input('post.hospital_gender');
+            $data['age'] = input('post.hospital_age');
+            $data['position'] = input('post.hospital_position');
+            $data['phone'] = input('post.doctor_phone');
+            $data['email'] = input('post.doctor_email');
+            $data['address'] = input('post.doctor_address');
+            $data['postcode'] = input('post.postcode');
+            $data['info'] = input('post.doctor_info');
+            $data['honor'] = input('post.doctor_honor');
+            $data['remark'] = input('post.doctor_remark');
+            $res = D('Doctor')->addData($data);
+            if(!empty($res['errors'])) {
+                $ret['error_code'] = 2;
+                $ret['msg'] = '新建失败';
+                $ret['errors'] = $res['errors'];
             }
-            if (!isset($params['content'])){
-                $params['content'] = '';
-            }
-
-            $data['source_user_id'] = $this->getUserId();
-            $data['title'] = $title;
-            $data['content'] = $params['content'];
-            $data['operation'] = '查看';
-            $data['priority'] = (int)$priority;
-            $data['status'] = 0;
-
-            $dataSet = [];
-            if(!empty($params['target_user_ids'])){
-                for($i=0;$i<count($params['target_user_ids']);$i++){
-                    $data['target_user_id'] = (int)$params['target_user_ids'][$i];
-                    array_push($dataSet, $data);
-                }
-                // 添加Doctor
-                $res_apply = D('Doctor')->addAllData($dataSet);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                    $this->jsonReturn($ret);
-                }
-                $log['user_id'] = $this->getUserId();
-                $log['IP'] = $this->getUserIp();
-                $log['section'] = '医生信息';
-                $log['action_descr'] = '添加医生信息';
-                D('OperationLog')->addData($log);
-                $this->jsonReturn($ret);
-            }
-            else{
-                $data['target_user_id'] = '';
-                // 添加Doctor
-                $res_apply = D('Doctor')->addData($data);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                }
-                $this->jsonReturn($ret);
-            }
-
+            $this->jsonReturn($ret);
         }
-        $office = [];
-        $office[0] = ['id' => 1, 'name' => '骨科'];
-        $office[1] = ['id' => 2, 'name' => '眼科'];
-        return view('', ['office' => $office]);
+        $select = ['id,name'];
+        $hospital = D('Hospital')->getHospital($select,[]);
+
+        $office = D('Office')->getOffice($select,[]);
+
+        return view('', ['office' => $office,'hospital' =>$hospital]);
     }
 
 

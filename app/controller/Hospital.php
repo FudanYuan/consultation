@@ -81,7 +81,7 @@ class Hospital extends Common
     public function create(){
         $params = input('post.');
         if(!empty($params)) {
-            $ret = ['error_code' => 2, 'msg' => '新建成功'];
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
             $data['name'] = input('post.hospital_name');
             $data['master'] = input('post.hospital_master');
             $data['logo'] = input('post.hospital_logo');

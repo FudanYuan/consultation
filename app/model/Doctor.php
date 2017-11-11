@@ -26,15 +26,24 @@ class Doctor extends Model{
 
     /**
      * 获取医生列表
-     * @param array $cond
+     * @param $cond_and
+     * @param $cond_or
+     * @param $order
+     * @return mixed
      */
-    public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
+    public function getList($cond_and,$cond_or,$order){
+        if(!isset($cond_and['a.status'])){
+            $cond_and['a.status'] = ['<>', 2];
         }
-        $res = $this->field('*')
-            ->order('create_time desc')
-            ->where($cond)
+        $res = $this->alias('a')->field('a.id,c.id as hospital_id,c.name as hospital_name,
+            d.id as office_id,d.name as office_name,a.name as name,a.position as position,
+            a.phone as phone,a.email as email,a.address as address')
+            ->join('consultation_hospital_office b','b.id = a.hospital_office_id')
+            ->join('consultation_hospital c','c.id = b.hospital_id')
+            ->join('consultation_office d','d.id = b.office_id')
+            ->where($cond_or)
+            ->where($cond_and)
+            ->order($order)
             ->select();
         return $res;
     }
@@ -50,8 +59,49 @@ class Doctor extends Model{
             ->find();
         return $res;
     }
-
-
+    /**
+     * 添加医生信息
+     * @param $data
+     * @return array
+     */
+    public function addData($data){
+        $ret = [];
+        $errors = $this->filterField($data);
+        $ret['errors'] = $errors;
+        if(empty($errors)){
+            $data['status'] = 1;
+            $data['create_time'] = time();
+            $this->save($data);
+        }
+        return $ret;
+    }
+    /**
+     * 过滤必要字段
+     * @param $data
+     * @return array
+     */
+    private function filterField($data){
+        $errors = [];
+        if(isset($data['name']) && !$data['name']){
+            $errors['name'] = '医生名字不能为空';
+        }
+        if(isset($data['gender']) && !$data['gender']){
+            $errors['gender'] = '医生性别不能为空';
+        }
+        if(isset($data['age']) && !$data['age']){
+            $errors['age'] = '医生年龄不能为空';
+        }
+        if(isset($data['position']) && !$data['position']){
+            $errors['position'] = '医生职称不能为空';
+        }
+        if(isset($data['phone']) && !$data['phone']){
+            $errors['phone'] = '医生电话不能为空';
+        }
+        if(isset($data['email']) && !$data['email']){
+            $errors['email'] = '医生邮箱不能为空';
+        }
+        return $errors;
+    }
 
     //////未修改/////
     /**
@@ -70,20 +120,7 @@ class Doctor extends Model{
         return $ret;
     }
 
-    /**
-     * 添加医生信息
-     * @param $data
-     * @return array
-     */
-    public function addData($data){
-        $ret = [];
-        $errors = $this->filterField($data);
-        $ret['errors'] = $errors;
-        if(empty($errors)){
-            $this->save($data);
-        }
-        return $ret;
-    }
+
 
     /**
      * 批量增加医生信息
@@ -127,33 +164,6 @@ class Doctor extends Model{
         return $res;
     }
 
-    /**
-     * 过滤必要字段
-     * @param $data
-     * @return array
-     */
-    private function filterField($data){
-        $ret = [];
-        $errors = [];
-        if(isset($data['source_user_id']) && !$data['source_user_id']){
-            $errors['source_user_id'] = '发送用户不能为空';
-        }
-        if(isset($data['target_user_id']) && !$data['target_user_id']){
-            $errors['target_user_id'] = '接收用户不能为空';
-        }
-        if(isset($data['title']) && !$data['title']){
-            $errors['title'] = '标题不能为空';
-        }
-        if(isset($data['content']) && !$data['content']){
-            $errors['content'] = '内容不能为空';
-        }
-        if(isset($data['operation']) && !$data['operation']){
-            $errors['operation'] = '操作不能为空';
-        }
-        if(isset($data['priority']) && !$data['priority']){
-            $errors['priority'] = '优先级不能为空';
-        }
-        return $errors;
-    }
+
 }
 ?>

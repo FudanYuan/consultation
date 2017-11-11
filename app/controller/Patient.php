@@ -88,6 +88,57 @@ class Patient extends Common
         $ret['office'] = ['name' => $office_info['name']];
         $this->jsonReturn($ret);
     }
+    /**
+     * 新建患者信息
+     */
+    public function create(){
+        $params = input('post.');
+        if(!empty($params)) {
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
+           $data['name'] = input('patient_name');
+           $data['ID_number'] = input('post.patient_ID_number');
+           $data['gender'] = input('post.patient_gender');
+           $data['age'] = input('post.patient_age');
+           $data['occupation'] = input('posy.patient_occupation');
+           $data['phone'] = input('post.patient_phone');
+           $data['email'] = input('post.patient_email');
+           $data['birthplace'] = input('post.patient_birthplace');
+           $data['address'] = input('post.patient_address');
+           $data['work_unit'] = input('post.patient_work_unit');
+           $data['postcode'] = input('post.patient_postcode');
+           $data['height'] = input('post.patient_height');
+           $data['weight'] = input('post.patient_weight');
+            $data['vision_left'] = input('post.patient_vision_left');
+            $data['vision_right'] = input('post.patient_vision_right');
+            $data['pressure_left'] = input('post.patient_pressure_left');
+            $data['pressure_right'] = input('post.patient_pressure_right');
+//            $data['exam_img'] = input('post.eye_photo_left');
+//            $data['exam_img_origin'] = input('post.eye_photo_left_origin');
+            $data['eye_photo_left'] = input('post.eye_photo_left');
+            $data['eye_photo_right'] = input('post.eye_photo_right');
+            $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
+            $data['eye_photo_right_origin'] = input('post.eye_photo_right_origin');
+            $data['ill_type'] = input('post.patient_eyes_type');
+            $data['other_ill_type'] = input('post.other_ill_type','');
+            $data['ill_state'] = input('post.patient_illness_state');
+            $data['diagnose_state'] = input('post.diagnose_state');
+            $data['files_path'] = input('post.files_path');
+            $data['files_path_origin'] = input('post.files_path_origin');
+            $data['in_hospital_time'] = input('post.in_hospital_time');
+            $data['narrator'] = input('post.narrator');
+            $data['main_narrate'] = input('post.main_narrate');
+            $res = D('Patient')->addData($data);
+            if(!empty($res['errors'])) {
+                $ret['error_code'] = 2;
+                $ret['msg'] = '新建失败';
+                $ret['errors'] = $res['errors'];
+            }
+            $ret['params'] = $params;
+            $this->jsonReturn($ret);
+        }
+        return view('',[]);
+    }
+
 
     ///////////未修改////
     /**
@@ -105,70 +156,5 @@ class Patient extends Common
         $this->jsonReturn($ret);
     }
 
-    /**
-     * 新建患者信息
-     */
-    public function create(){
-        $params = input('post.');
-        $cond = [];
-        $cond['id'] = ['<>', $this->getUserId()];
-        $target_users = D('UserAdmin')->getList($cond);
-        if(!empty($params)) {
-            $data = [];
-            $ret = ['code' => 1, 'msg' => '新建成功'];
-            $title = input('post.title', '');
-            $priority = input('post.priority', '');
-            if (!isset($params['target_user_ids'])) {
-                $params['target_user_ids'] = [];
-            }
-            if (!isset($params['content'])){
-                $params['content'] = '';
-            }
 
-            $data['source_user_id'] = $this->getUserId();
-            $data['title'] = $title;
-            $data['content'] = $params['content'];
-            $data['operation'] = '查看';
-            $data['priority'] = (int)$priority;
-            $data['status'] = 0;
-
-            $dataSet = [];
-            if(!empty($params['target_user_ids'])){
-                for($i=0;$i<count($params['target_user_ids']);$i++){
-                    $data['target_user_id'] = (int)$params['target_user_ids'][$i];
-                    array_push($dataSet, $data);
-                }
-                // 添加Patient
-                $res_apply = D('Patient')->addAllData($dataSet);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                    $this->jsonReturn($ret);
-                }
-                $log['user_id'] = $this->getUserId();
-                $log['IP'] = $this->getUserIp();
-                $log['section'] = '患者信息';
-                $log['action_descr'] = '添加患者信息';
-                D('OperationLog')->addData($log);
-                $this->jsonReturn($ret);
-            }
-            else{
-                $data['target_user_id'] = '';
-                // 添加Patient
-                $res_apply = D('Patient')->addData($data);
-                if (!empty($res_apply['errors'])) {
-                    $ret['code'] = 2;
-                    $ret['msg'] = '新建失败';
-                    $ret['errors'] = $res_apply['errors'];
-                }
-                $this->jsonReturn($ret);
-            }
-
-        }
-        $office = [];
-        $office[0] = ['id' => 1, 'name' => '骨科'];
-        $office[1] = ['id' => 2, 'name' => '眼科'];
-        return view('', ['office' => $office]);
-    }
 }
