@@ -70,13 +70,7 @@ class Apply extends Common
                 $cond_and['e.id'] = $hospital;
             }
             if($keywords){
-                /**
-                 * 去空格
-                 */
-                $keywords = mb_ereg_replace('^(　| )+', '', $keywords);
-                $keywords = mb_ereg_replace('(　| )+$', '', $keywords);
-                $keywords = mb_ereg_replace('　　', "\n　　", $keywords);
-                $cond_or['other_apply_project|e.name|c.name|c.phone'] = ['like','%'.$keywords.'%'];
+                $cond_or['other_apply_project|e.name|c.name|c.phone'] = ['like','%'. myTrim($keywords) .'%'];
             }
 
             $list = D('Apply')->getList($cond_or,$cond_and,[]);
@@ -88,6 +82,7 @@ class Apply extends Common
             $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
             $ret['current_page'] = $page;
         }
+        $ret['params'] = $params;
         $this->jsonReturn($ret);
     }
 

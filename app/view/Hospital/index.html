@@ -19,22 +19,21 @@
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li>医院信息</li>
         </ul>
-
-        <div class="list-search">
-            <form action="" class="form-inline" method="post" id="main-form">
-                <div class="form-group">
-                    <label for="name">医院名称：</label>
-                    <input name="name" class="form-control" id="name" style="width:150px" value=""/>
-                </div>
-                <div class="form-group">
-                    <label for="district">所在地址：</label>
-                    {include file="Common/district" /}
-                </div>
-                <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
-            </form>
-        </div>
-
+        {if condition="authority('Hospital')"}
         <div id="hospital">
+            <div class="list-search">
+                <form action="" class="form-inline" method="post" id="main-form">
+                    <div class="form-group">
+                        <label for="name">医院名称：</label>
+                        <input name="name" class="form-control" id="name" style="width:150px" value=""/>
+                    </div>
+                    <div class="form-group">
+                        <label for="district">所在地址：</label>
+                        {include file="Common/district" /}
+                    </div>
+                    <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
+                </form>
+            </div>
             <div class="list-btns">
                 {if condition="authority('HospitalCreate')"}
                 <div class="btn-group">
@@ -99,6 +98,7 @@
             {include file="Common/page" /}
             <p v-if="0">{{select}}</p>
         </div>
+        {/if}
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}

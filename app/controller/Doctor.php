@@ -29,7 +29,7 @@ class Doctor extends Common
         $user_id = $this->getUserId();
         $cond['target_user_id'] = ['=', $user_id];
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-        $list = D('Doctor')->getList([],[],[]);
+        $list = D('Doctor')->getDoctorList([],[],[]);
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
@@ -121,5 +121,4 @@ class Doctor extends Common
         $ret['office'] = ['name' => $office_info['name']];
         $this->jsonReturn($ret);
     }
-
 }

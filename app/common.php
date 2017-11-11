@@ -329,3 +329,15 @@ function authority($tag)
         $actions = D('Role')->getActionsByRoleId($user['role_id']);
     return in_array($tag, $actions);
 }
+
+/**
+ * 去空格
+ * @param $value
+ * @return string
+ */
+function MyTrim($value){
+    $value = mb_ereg_replace('^(　| )+', '', $value);
+    $value = mb_ereg_replace('(　| )+$', '', $value);
+    $value = mb_ereg_replace('　　', "\n　　", $value);
+    return $value;
+}

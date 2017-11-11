@@ -8,7 +8,25 @@
             <li>医生信息</li>
         </ul>
 
+        {if condition="authority('Doctor')"}
         <div id="doctor">
+            <div class="list-search">
+            <form action="" class="form-inline" method="post" id="main-form">
+                <div class="form-group">
+                    <label for="name">医生姓名：</label>
+                    <input name="name" class="form-control" id="name" style="width:150px" value=""/>
+                </div>
+                <div class="form-group">
+                    <label for="name">所在医院：</label>
+                    <input name="hospital" class="form-control" id="hospital" style="width:150px" value=""/>
+                </div>
+                <div class="form-group">
+                    <label for="name">所在科室：</label>
+                    <input name="office" class="form-control" id="office" style="width:150px" value=""/>
+                </div>
+                <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
+            </form>
+        </div>
             <div class="list-btns">
                 {if condition="authority('DoctorCreate')"}
                 <div class="btn-group">
@@ -20,6 +38,10 @@
                     <a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
                 </div>
                 {/if}
+            </div>
+            {if condition="authority('DoctorResult')"}
+            <div class="result-count">
+                经过筛选，共<span> {{total}} </span>条数据符合条件
             </div>
             <table class="table table-hover" style="background:#fff;">
                 <thead>
@@ -67,8 +89,9 @@
                 </tbody>
             </table>
             {include file="Common/page" /}
-            <p v-if="0">{{select}}</p>
+            {/if}
         </div>
+        {/if}
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -264,6 +287,10 @@
 
     // 获取参数设置
     function getParams() {
+        var data = $('#main-form').serializeArray();
+        $.each(data, function () {
+            vm.params[this.name] = this.value;
+        });
         vm.params['per_page'] = vm.per_page;
         vm.params['current_page'] = vm.current_page;
     }

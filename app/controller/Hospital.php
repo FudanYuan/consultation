@@ -28,7 +28,7 @@ class Hospital extends Common
         $name = input('name', '');
         $cond = [];
         if($name != ''){
-            $cond['name'] = ['like', '%' . $name . '%'];
+            $cond['name'] = ['like', '%' . myTrim($name) . '%'];
         }
 
         // 地域筛选
