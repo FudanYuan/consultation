@@ -7,6 +7,7 @@
 namespace app\model;
 
 use think\Model;
+use think\Db;
 use think\Debug;
 
 class UserAdmin extends Model{
@@ -34,7 +35,7 @@ class UserAdmin extends Model{
  		}
  		return $this->field('id,doctor_id,username,status,create_time,login_time,remark')
             ->where($cond)
-            ->paginate(10);
+            ->select();
  	}
 
     /**
@@ -54,7 +55,7 @@ class UserAdmin extends Model{
      * @return mixed
      */
     public function getUserByDoctorId($doctor_id){
-        return $this->field('id,username,pass,status,role_id')
+        return $this->field('id,doctor_id,username,pass,status,role_id')
             ->where(['doctor_id' => $doctor_id, 'status' => ['<>', 2]])
             ->find();
     }
@@ -75,11 +76,22 @@ class UserAdmin extends Model{
      * @return mixed
      */
     public function getUserByUsername($username){
-        return $this->field('id,username,pass,status,role_id')
+        return $this->field('id,doctor_id,username,pass,status,role_id')
             ->where(['username' => $username, 'status' => ['<>', 2]])
             ->find();
     }
 
+    /**
+     * 根据id获取医生ID
+     * @param $id
+     * @return mixed
+     */
+    public function getDoctorIdById($id){
+        $res = $this->field('doctor_id')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
     /**
      * 创建管理员用户
      * @param $data
@@ -89,8 +101,27 @@ class UserAdmin extends Model{
         if(!isset($data['status']))
             $data['status'] = 1;
  		$data['create_time'] = $data['update_time'] = $_SERVER['REQUEST_TIME'];
- 		if(isset($data['pass']) && $data['pass']) $data['pass'] = md5($data['pass']);
- 		return $this->save($data);
+ 		if(isset($data['pass']) && $data['pass']){
+ 		    $data['pass'] = md5($data['pass']);
+ 		}
+        Db::startTrans();
+        $flag = true;
+        $res = $this->save($data);
+        if($res){
+            $res = Db::table('consultation_doctor')->where(['id' => $data['doctor_id']])->update(['status' => 3]);
+            if(!$res){
+                $flag = false;
+            }
+        }else{
+            $flag = false;
+        }
+        if($flag){
+            Db::commit();
+            return true;
+        }else{
+            Db::rollback();
+            return false;
+        }
  	}
 
     /**
@@ -112,9 +143,33 @@ class UserAdmin extends Model{
      * @throws MyException
      */
  	public function remove($cond = []){
- 		$res = $this->save(['status' => 2], $cond);
- 		if($res === false) throw new MyException('2', '删除失败');
- 		return $res;
+        Db::startTrans();
+        $flag = true;
+        $res = $this->save(['status' => 2], $cond);
+
+        if($res){
+            $cond_doctor = [];
+            foreach ($cond['id'] as $item){
+                if($item != 'in'){
+                    $doctor = $this->getDoctorIdById((int)$item);
+                    $doctor_id = $doctor['doctor_id'];
+                    array_push($cond_doctor, $doctor_id);
+                }
+            }
+            $res = Db::table('consultation_doctor')->where(['id' => ['in', $cond_doctor]])->update(['status' => 1]);
+            if(!$res){
+                $flag = false;
+            }
+        }else{
+            $flag = false;
+        }
+        if($flag){
+            Db::commit();
+            return true;
+        }else{
+            Db::rollback();
+            throw new MyException('2', '删除失败');
+        }
  	}
 
     /**

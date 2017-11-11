@@ -120,8 +120,6 @@ class Doctor extends Model{
         return $ret;
     }
 
-
-
     /**
      * 批量增加医生信息
      * @param $dataSet
@@ -151,19 +149,5 @@ class Doctor extends Model{
         if($res === false) throw new MyException('2', '删除失败');
         return $res;
     }
-
-    /**
-     * 标记为已读
-     * @param array $cond
-     * @return false|int
-     * @throws MyException
-     */
-    public function markRead($cond = []){
-        $res = $this->save(['status' => 1], $cond);
-        if($res === false) throw new MyException('2', '标记失败');
-        return $res;
-    }
-
-
 }
 ?>

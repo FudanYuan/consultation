@@ -34,14 +34,6 @@ class Role extends Model{
             ->where($cond)
             ->select();
  	}
- 	/**
- 	 * 获取角色列表
- 	 */
- 	public function getRoleList(){
- 		return $this->field('id,name')
-            ->where('status', 1)
-            ->select();
- 	}
 
     /**
      * 根据ID获取角色信息

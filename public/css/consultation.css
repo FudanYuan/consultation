@@ -11,7 +11,10 @@
     background-color: #fff;
     font-size: 13px;
 }
-
+.result-count span{
+    color: red;
+    font-size: large;
+}
 .nodata{
     text-align: center;
 }

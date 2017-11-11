@@ -206,10 +206,10 @@
         },
         methods:{
             getApply: function () {
-                vm.params['per_page'] = vm.per_page;
-                vm.params['current_page'] = vm.current_page;
-                vm.params['status'] = 1;
-                $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
+                vm2.params['per_page'] = vm2.per_page;
+                vm2.params['current_page'] = vm2.current_page;
+                vm2.params['status'] = 1;
+                $.post('__PRO_PATH__/Apply/getApplyList', vm2.params, function (res) {
                     if(res.error_code == 0){
                         vm2.total = res.total;
                         vm2.list = res.data;

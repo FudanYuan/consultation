@@ -88,7 +88,6 @@ class Apply extends Common
             $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
             $ret['current_page'] = $page;
         }
-        $ret['params'] = $params;
         $this->jsonReturn($ret);
     }
 
