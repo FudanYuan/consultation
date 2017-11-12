@@ -11,17 +11,19 @@
         <div class="form-wrapper">
             <form class="form-horizontal" method="post" id="new-apply-form">
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                     <label for="hospital_name" class="col-sm-2 control-label">医院名称：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="hospital_name" value="" placeholder="请输入医院全称" id="hospital_name">
+                        <p class="help-block">{{errors.name}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.master != '' ? 'has-error' : '']" >
                     <label for="hospital_master" class="col-sm-2 control-label">院长姓名：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="hospital_master" value="" placeholder="请输入院长姓名" id="hospital_master">
+                        <p class="help-block">{{errors.master}}</p>
                     </div>
                 </div>
 
@@ -49,10 +51,11 @@
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.phone != '' ? 'has-error' : '']">
                     <label for="hospital_phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="hospital_phone" value="" placeholder="请输入医院联系方式" id="hospital_phone">
+                        <p class="help-block">{{errors.phone}}</p>
                     </div>
                 </div>
 
@@ -84,17 +87,19 @@
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.type != '' ? 'has-error' : '']" >
                     <label for="hospital_type" class="col-sm-2 control-label">医院类型：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="hospital_type" value="" placeholder="请输入医院类型" id="hospital_type">
+                        <p class="help-block">{{errors.type}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.level != '' ? 'has-error' : '']">
                     <label for="hospital_level" class="col-sm-2 control-label">医院等级：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="hospital_level" value="" placeholder="请输入医院等级" id="hospital_level">
+                        <p class="help-block">{{errors.level}}</p>
                     </div>
                 </div>
 
@@ -164,9 +169,11 @@
                 ill_type: false
             },
             errors:{
-                title: '',
-                content: '',
-                priority: '',
+                name:'',
+                master:'',
+                level:'',
+                phone:'',
+                type:''
             }
         },
 
@@ -199,9 +206,15 @@
                 getParams();
                 $.post('__PRO_PATH__/Hospital/create', vm.params, function (res) {
                     if (res.error_code == 0) {
+                        $.each(vm.errors, function (k) {
+                            vm.errors[k] = '';
+                        });
                         popWarn('新建成功');
-                        //window.location.href = '__PRO_PATH__/Hospital/index';
-                    } else if (res.error_code == 1) {
+                        window.location.href = '__PRO_PATH__/Hospital/index';
+                    } else if (res.error_code == 2) {
+                        $.each(vm.errors, function (k) {
+                            vm.errors[k] = '';
+                        });
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });

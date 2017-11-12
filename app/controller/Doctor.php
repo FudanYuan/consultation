@@ -89,7 +89,7 @@ class Doctor extends Common
             $data['name'] = input('post.doctor_name');
             $data['photo'] = input('post.doctor_photo');
             $photo_origin = input('post.doctor_photo_origin');
-            $data['gender'] = input('post.hospital_gender');
+            $data['gender'] = input('post.hospital_gender','');
             $data['age'] = input('post.hospital_age');
             $data['position'] = input('post.hospital_position');
             $data['phone'] = input('post.doctor_phone');
@@ -105,6 +105,7 @@ class Doctor extends Common
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res['errors'];
             }
+            $ret['params'] = $params;
             $this->jsonReturn($ret);
         }
         $select = ['id,name'];
