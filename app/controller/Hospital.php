@@ -135,5 +135,15 @@ class Hospital extends Common
          return view('', ['id' => $id]);
     }
 
+    /**
+     * 获取医院对应科室
+     */
+    public function getOfficeByHospitalId(){
+        $id = input('post.id');
+        $select = ['a.id,a.name'];
+        $cond = ['b.hospital_id' => $id];
+        $ret = D('Office')->getOfficeByHospital($select,$cond);
+        $this->jsonReturn($ret);
+    }
 
 }

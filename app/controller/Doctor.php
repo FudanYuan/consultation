@@ -25,14 +25,36 @@ class Doctor extends Common
      */
     public function getDoctorList(){
         $params = input('post.');
+        $hospital = input('post.hospital','');
+        $name = input('post.name','');
+        $office = input('post.office','');
+        $cond_and = [];
+        $cond_or =[];
+        if($hospital){
+            $cond_or['c.name'] = ['like','%'.myTrim($hospital).'%'];
+        }
+        if($office){
+            $cond_or['d.name'] = ['like','%'.myTrim($office).'%'];
+        }
+        if($name){
+            $cond_or['a.name'] = ['like','%'.myTrim($name).'%'];
+        }
+
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $user_id = $this->getUserId();
-        $cond['target_user_id'] = ['=', $user_id];
+        $select = ['d.id as hospital_id'];
+        $cond['a.id'] = ['=',$user_id];
+        $user_hospital_id = D('UserAdmin')->getUserAdmin($select,$cond);
+        $cond_and['c.id'] = ['=',$user_hospital_id['hospital_id']];
+
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-        $list = D('Doctor')->getDoctorList([],[],[]);
+
+        $list = D('Doctor')->getDoctorList($cond_or,$cond_and,[]);
+
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
+        $ret['user_hospital_id'] = $user_hospital_id;
         $ret["total"] = count($list);
         //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
         $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
@@ -62,7 +84,6 @@ class Doctor extends Common
         $params = input('post.');
         $cond = [];
         $cond['id'] = ['<>', $this->getUserId()];
-
         if(!empty($params)) {
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
             $data['name'] = input('post.doctor_name');
@@ -121,4 +142,24 @@ class Doctor extends Common
         $ret['office'] = ['name' => $office_info['name']];
         $this->jsonReturn($ret);
     }
+
+    /**
+     * 获取医生根据医院和科室id
+     */
+    public function getDoctorByHospitalOfficeId(){
+        $params = input('post.params');
+        $hospital_id = input('post.hospital_id');
+        $office_ids = $params['office_ids'];
+        $doctors =[];
+        for($i = 0;$i<count($office_ids);$i++){
+            $cond['hospital_id'] = ['=',$hospital_id];
+            $cond['office_id'] = ['=',$office_ids[$i]];
+            $select = ['id'];
+            $hospital_office_id = D('Hospital_Office')->getIdByHospitalOffice($select,$cond);
+            $doctor = D('Doctor')->getDoctor(['id,name'],['hospital_office_id']);
+            array_push($doctors,$doctor);
+        }
+        $this->jsonReturn($doctors);
+    }
+
 }

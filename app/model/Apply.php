@@ -57,7 +57,6 @@ class Apply extends Model{
         return $res;
     }
 
-
     /**
      * 通过ID获取
      * @param $id

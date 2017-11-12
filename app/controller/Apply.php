@@ -17,7 +17,8 @@ class Apply extends Common
      */
     public function index()
     {
-        $hospital = D('Hospital')->getList();
+        $select=['id,name'];
+        $hospital = D('Hospital')->getHospital($select,[]);
         return view('', ['hospital' => $hospital]);
     }
 
@@ -31,17 +32,7 @@ class Apply extends Common
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond['target_user_id'] = ['=', $user_id];
 
-        if(empty($params)){
-            $cond['status'] = ['=', 0];
-            $list = D('Apply')->applyList([],[],[]);
-            for($i=0;$i<count($list);$i++){
-                $list[$i]['time'] = formatTime($list[$i]['create_time']);
-                $list[$i]['consultation_goal'] = formatText($list[$i]['consultation_goal'], 10);
-            }
-            $ret["total"] = count($list);
-            $ret["data"] = $list;
-            $this->jsonReturn($ret);
-        } else {
+        if(!empty($params)){
             $apply_type = input('post.apply_type','-1');
             $apply_project = input('post.apply_project','-1');
             $status = input('post.status','-1');
@@ -159,16 +150,15 @@ class Apply extends Common
                     $this->jsonReturn($ret);
                 }
                 $data['patient_id'] = $res['id'];
+
             }
             $res = D('Apply')->addData($data);
-            $ret['data'] = $res['data'];
             if(!empty($res['errors'])){
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
             }
             $this->jsonReturn($ret);
         }
-
         $select = ['id,name'];
         $cond['role'] = ['=',1];
         $hospital = D('Hospital')->getHospital($select,$cond);

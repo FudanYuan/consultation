@@ -51,6 +51,7 @@ class Patient extends Common
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
+        $ret['params'] = $params;
         $ret["total"] = count($list);
         //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
         $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);

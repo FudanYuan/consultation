@@ -41,7 +41,7 @@ class Doctor extends Model{
      * @param $order
      * @return mixed
      */
-    public function getDoctorList($cond_and,$cond_or,$order){
+    public function getDoctorList($cond_or,$cond_and,$order){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 2];
         }
@@ -113,6 +113,12 @@ class Doctor extends Model{
         return $errors;
     }
 
+    public function getDoctor($select,$cond){
+        $res = $this->field($select)
+            ->where($cond)
+            ->select();
+        return $res;
+    }
     //////未修改/////
     /**
      * 更新医生信息

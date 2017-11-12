@@ -55,6 +55,20 @@ class Office extends Model{
         return $res;
     }
 
+    /**
+     * 获取医院对应科室
+     * @param $select
+     * @param $cond
+     * @return mixed
+     */
+    public function getOfficeByHospital($select,$cond){
+        $res = $this->alias('a')->field($select)
+            ->join('consultation_hospital_office b','b.office_id = a.id')
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
 
     /////未修改///
     /**

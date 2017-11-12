@@ -49,6 +49,12 @@ class HospitalOffice extends Model{
         return $res;
     }
 
+    public function getIdByHospitalOffice($select,$cond){
+        $res = $this->field($select)
+            ->where($cond)
+            ->find();
+        return $res;
+    }
 
     //////未修改/////
     /**

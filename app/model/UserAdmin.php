@@ -45,7 +45,7 @@ class UserAdmin extends Model{
      */
  	public function getById($id){
  		return $this->field('id,doctor_id,username,pass,role_id,remark,status')
-            ->where('id', $id)
+            ->where(['id'=> $id])
             ->find();
  	}
 
@@ -92,6 +92,19 @@ class UserAdmin extends Model{
             ->find();
         return $res;
     }
+
+    public function getUserAdmin($select,$cond){
+        $res = $this->alias('a')->field($select)
+            ->join('consultation_doctor b','b.id = a.doctor_id')
+            ->join('consultation_hospital_office c','c.id = b.hospital_office_id')
+            ->join('consultation_hospital d','d.id = c.hospital_id')
+            ->join('consultation_office e','e.id = c.office_id')
+            ->where($cond)
+            ->find();
+        return $res;
+    }
+
+
     /**
      * 创建管理员用户
      * @param $data
