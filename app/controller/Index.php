@@ -7,7 +7,7 @@
 namespace app\controller;
 
 use app\model\Data;
-use think\Db;
+
 
 class Index extends Common{
 	/**
