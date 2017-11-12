@@ -209,7 +209,7 @@ function testLog($title, $con)
 }
 
 /**
- * 将错误信息添加到错误队列  other main  --xjp 2016/01/11
+ * 将错误信息添加到错误队列  other main
  * @param unknown $errors
  * @param unknown $error
  */
@@ -324,7 +324,7 @@ function authority($tag)
 {
     static $actions;
     $user = config('user');
-    if ($user['role_id'] == 1) return true;
+    //if ($user['role_id'] == 1) return true;
     if (empty($actions))
         $actions = D('Role')->getActionsByRoleId($user['role_id']);
     return in_array($tag, $actions);

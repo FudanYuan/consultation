@@ -10,6 +10,8 @@
     <link href="__PUBLIC__/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <script src="__PUBLIC__/js/jquery.min.js"></script>
     <script src='__PUBLIC__/js/jquery.popupoverlay.min.js'></script>
+    <!-- Vue -->
+    <script src="__PUBLIC__/js/vue.min.js"></script>
     <link href="__PUBLIC__/css/simplify.min.css" rel="stylesheet">
     <style>
         .syh_bg {
@@ -29,7 +31,7 @@
     </style>
 </head>
 <body>
-<div class="syh_main">
+<div class="syh_main" id="login">
     <form action="" method="post" id="main-form">
         <div class="form-group">
             <h3 style="text-align: center">眼科医联体远程诊疗平台</h3>
@@ -37,13 +39,13 @@
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                <input class="form-control input-lg" type="text" placeholder="账号" name="username"/>
+                <input class="form-control input-lg" type="text" placeholder="账号" name="username" @keyup.13="show($event)"/>
             </div>
         </div>
         <div class="form-group">
             <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                <input class="form-control input-lg" type="password" placeholder="密码" name="pass"/>
+                <input class="form-control input-lg" type="password" placeholder="密码" name="pass" @keyup.13="show($event)"/>
             </div>
         </div>
         <div class="form-group">
@@ -54,17 +56,38 @@
             <a href="javascript:;" title="请联系管理员" class="contact">忘记密码</a>
         </div>
     </form>
-    {include file="Common/popup_warn" /}
-    <script>
+</div>
+
+{include file="Common/popup_warn" /}
+<script>
+        var vm = new Vue({
+            el: '#login',
+            data:{
+
+            },
+            methods:{
+                show:function(ev){
+                    if(ev.keyCode == 13){
+                        submit();
+                    }
+                }
+            },
+        });
+
+
         $('#login-btn').on('click', function () {
+            submit();
+        });
+
+        function submit() {
             var username = $('input[name="username"]').val();
             var pass = $('input[name="pass"]').val();
             if (!username) {
-                popWarn('用户名不能为空');
+                popWarn('用户名不能为空', '');
                 return;
             }
             if (!pass) {
-                popWarn('密码不能为空');
+                popWarn('密码不能为空', '');
                 return;
             }
             $.post('', {username: username, pass: pass}, function (res) {
@@ -74,12 +97,12 @@
                     popWarn(res.msg);
                 }
             });
-        });
+        }
 
         $('.contact').on('click', function () {
             popWarn('请联系管理员：Admin <br/><br/> 联系方式：1234567890');
-        })
+        });
     </script>
-</div>
+
 </body>
 </html>
