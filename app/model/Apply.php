@@ -218,7 +218,7 @@ class Apply extends Model{
             $errors['target_office_id'] = '申请科室不能为空';
         }
         if(isset($data['apply_project']) && !$data['apply_project']){
-            $errors['apply_project'] = '申请科室不能为空';
+            $errors['apply_project'] = '申请会诊类型不能为空';
         }
         return $errors;
     }

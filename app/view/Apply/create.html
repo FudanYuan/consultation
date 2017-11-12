@@ -10,7 +10,7 @@
         </ul>
         <div class="form-wrapper" style="background-color: #fff">
             <form class="form-horizontal" method="post" id="new-apply-form">
-                <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
+                <div :class="['form-group']" >
                     <label for="apply_type" class="col-sm-2 control-label">会诊类型：</label>
                     <div class="col-sm-4" id="apply_type">
                         <div class="radio inline-block">
@@ -28,10 +28,9 @@
                             <div class="inline-block vertical-top">非紧急</div>
                         </div>
                     </div>
-                    <p class="help-block">{{errors.priority}}</p>
                 </div>
 
-                <div class="form-group">
+                <div :class="['form-group']">
                     <label  class="col-sm-2 control-label">会诊医院：</label>
                     <div class="col-sm-4">
                         <select name="consultation_hospital" class="form-control" onchange="change_hospital()" id="consultation_hospital">
@@ -42,7 +41,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div :class="['form-group', errors.target_office_id != '' ? 'has-error' : '']">
                     <label  class="col-sm-2 control-label">会诊科室：</label>
                     <div class="col-sm-4">
                         <select multiple="multiple" class="multiple" name="office_ids" class="form-control"  id="office_ids">
@@ -50,10 +49,12 @@
                             <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
                             {/foreach}
                         </select>
+                        <p class="help-block">{{errors.target_office_id}}</p>
                     </div>
                 </div>
 
-                <div  :class="['form-group', errors.doctor_ids != '' ? 'has-error' : '']" >
+
+                <div  :class="['form-group']" >
                     <label for="doctor_ids" class="col-sm-2 control-label">会诊医师：</label>
                     <div class="col-sm-4">
                         <select multiple="multiple" class="multiple" id="doctor_ids" name="doctor_ids">
@@ -65,7 +66,7 @@
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.apply_project != '' ? 'has-error' : '']" >
                     <label  class="col-sm-2 control-label">申请会诊类型：</label>
                     <div class="col-sm-4" id="apply_project" >
                         <div class="radio inline-block">
@@ -97,7 +98,7 @@
                             <div class="inline-block vertical-top">其他</div>
                         </div>
                     </div>
-                    <p class="help-block">{{errors.priority}}</p>
+                    <p class="help-block">{{errors.apply_project}}</p>
                 </div>
 
                 <div :class="['form-group']" v-if="seen.apply_project">
@@ -108,10 +109,11 @@
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.ID_number != '' ? 'has-error' : '']" >
                     <label for="patient_ID_number" class="col-sm-2 control-label">患者身份证号：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" v-model="patient.patient_ID_number" value="" placeholder="请输入患者身份证号" id="patient_ID_number">
+                        <p class="help-block">{{errors.ID_number}}</p>
                     </div>
                 </div>
 
@@ -122,14 +124,15 @@
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                     <label for="patient_name" class="col-sm-2 control-label">患者姓名：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" v-model="patient.patient_name" value="" placeholder="请输入患者姓名" id="patient_name">
+                        <p class="help-block">{{errors.name}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
                     <label for="patient_gender" class="col-sm-2 control-label">患者性别：</label>
                     <div class="col-sm-4" id="patient_gender" >
                         <div class="radio inline-block">
@@ -147,26 +150,26 @@
                             <div class="inline-block vertical-top">女</div>
                         </div>
                     </div>
-                    <p class="help-block">{{errors.priority}}</p>
+                    <p class="help-block">{{errors.gender}}</p>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
                     <label for="patient_age" class="col-sm-2 control-label">患者年龄：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" v-model="patient.patient_age" value="" placeholder="请输入患者年龄" id="patient_age">
-                        <p class="help-block">{{errors.title}}</p>
+                        <p class="help-block">{{errors.age}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.phone != '' ? 'has-error' : '']" >
                     <label for="patient_phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" v-model="patient.patient_phone" value="" placeholder="请输入患者联系方式" id="patient_phone">
-                        <p class="help-block">{{errors.title}}</p>
+                        <p class="help-block">{{errors.phone}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.ill_type != '' ? 'has-error' : '']" >
                     <label for="eyes_ill_type" class="col-sm-2 control-label">眼病类型：</label>
                     <div class="col-sm-4" id="eyes_ill_type" >
                         <div class="radio inline-block">
@@ -205,25 +208,25 @@
                             <div class="inline-block vertical-top">其他</div>
                         </div>
                     </div>
-                    <p class="help-block">{{errors.priority}}</p>
+                    <p class="help-block">{{errors.ill_type}}</p>
                 </div>
 
                 <div :class="['form-group']" v-if="seen.ill_type">
                     <label for="other_ill_type" class="col-sm-2 control-label">其他眼病类型：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="other_ill_type" value="" placeholder="请输入其他眼病类型" id="other_ill_type">
-                        <p class="help-block">{{errors.title}}</p>
+                        <!--<p class="help-block">{{errors.title}}</p>-->
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group']" >
                     <label class="col-sm-2 control-label">眼睛视力：</label>
                     <div class="col-sm-9">
                         <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_vision_left"    value="" placeholder="左眼视力" id="vision_left">
                         <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_vision_right"   value="" placeholder="右眼视力" id="vision_right">
                         <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
                         <input class="form-control"  style="display: inline;width:78px" type="text" v-model="patient.patient_pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
-                        <p class="help-block">{{errors.title}}</p>
+
                     </div>
                 </div>
 
@@ -261,11 +264,11 @@
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.ill_state != '' ? 'has-error' : '']" >
                     <label for="patient_illness_state" class="col-sm-2 control-label">简要病情：</label>
                     <div class="col-sm-4">
                         <textarea  class="form-control" type="text" v-model="patient.patient_illness_state" id="patient_illness_state" placeholder="请输入患者简要病情"></textarea>
-                        <p class="help-block">{{errors.title}}</p>
+                        <p class="help-block">{{errors.ill_state}}</p>
                     </div>
                 </div>
 
@@ -286,27 +289,27 @@
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group']" >
                     <label for="diagnose_state" class="col-sm-2 control-label">诊疗情况：</label>
                     <div class="col-sm-4">
                         <textarea  class="form-control" type="text" v-model="patient.diagnose_state" id="diagnose_state" placeholder="请输入患者简要病情"></textarea>
-                        <p class="help-block">{{errors.title}}</p>
+
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.title != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.consultation_goal != '' ? 'has-error' : '']" >
                     <label for="consultation_goal" class="col-sm-2 control-label">会诊目的：</label>
                     <div class="col-sm-4">
                         <textarea  class="form-control" type="text" v-model="patient.consultation_goal" id="consultation_goal" placeholder="请输入患者简要病情"></textarea>
-                        <p class="help-block">{{errors.title}}</p>
+                        <p class="help-block">{{errors.consultation_goal}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.apply_date != '' ? 'has-error' : '']" >
                     <label for="apply_date" class="col-sm-2 control-label">预约时间：</label>
                     <div class="col-sm-4">
                         <input placeholder="请输入要预约的时间" id="apply_date" name="apply_date" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
-                        <p class="help-block">{{errors.title}}</p>
+                        <p class="help-block">{{errors.apply_date}}</p>
                     </div>
                 </div>
 
@@ -373,11 +376,18 @@
             },
 
             errors:{
-                title: '',
-                content: '',
-                priority: '',
-                target_user_id: '',
-                doctor_ids: ''
+                ID_number:'',
+                name:'',
+                age:'',
+                gender:'',
+                ill_state:'',
+                ill_type:'',
+                phone:'',
+                apply_date:'',
+                apply_project:'',
+                target_office_id:'',
+                consultation_goal:''
+
             }
         },
         mounted:function () {
@@ -442,8 +452,8 @@
                 getParams();
                 $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
                     if (res.error_code == 0) {
-                        popWarn('新建成功', '__PRO_PATH__/Apply/index');
-                    } else if (res.error_code == 1) {
+                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
+                    } else if (res.error_code == 2) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });
