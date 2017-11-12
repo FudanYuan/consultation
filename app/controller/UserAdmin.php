@@ -35,25 +35,19 @@ class UserAdmin extends Common{
 		return view('', []);
 	}
 
-
-    /**
-     * 修改密码
-     * @return \think\response\View
-     */
-    public function changePwd()
-    {
-        return view('', []);
-    }
-
     /**
      * 用户信息
      * @return \think\response\View
      */
     public function account()
     {
-        return view('', []);
+        $user_id = $this->getUserId();
+        $doctor = D('UserAdmin')->getById($user_id);
+        $doctor_id = $doctor['doctor_id'];
+        $data = D('Doctor')->getById($doctor_id);
+        $data['logo'] = $doctor['logo'];
+        return view('', ['data' => $data]);
     }
-
 
     /**
 	 * 登出
@@ -169,6 +163,7 @@ class UserAdmin extends Common{
 			if(!$res){
 				$ret['error_code'] = 1;
 				$ret['msg'] = '创建用户失败';
+                $this->jsonReturn($ret);
 			}
 
             $log['user_id'] = $this->getUserId();
@@ -187,13 +182,14 @@ class UserAdmin extends Common{
 	 * 编辑账号
 	 */
 	public function edit(){
-		$data = array_filter(input('post.'));
+		$data = input('post.');
 		if(!empty($data)){
-			$ret = ['error_code' => 0, 'msg' => ''];
+			$ret = ['error_code' => 0, 'msg' => '编辑用户成功'];
 			$res = D('UserAdmin')->saveData($data['id'], $data);
 			if(!$res){
 				$ret['error_code'] = 1;
 				$ret['msg'] = '编辑用户失败';
+                $this->jsonReturn($ret);
 			}
 
             $log['user_id'] = $this->getUserId();
@@ -208,7 +204,8 @@ class UserAdmin extends Common{
 		$id = input('get.id');
 		$data = D('UserAdmin')->getById($id);
 		$roles = D('Role')->getList();
-		return view('', ['data' => $data, 'roles' => $roles]);
+        $doctors = D('Doctor')->getList(['status' => 3]);
+		return view('', ['data' => $data, 'roles' => $roles, 'doctors' => $doctors]);
 	}
 	/**
 	 * 批量删除
@@ -237,7 +234,71 @@ class UserAdmin extends Common{
 	public function getUserName(){
         $user_id = $this->getUserId();
         $ret = ['error_code' => 0, 'msg' => ''];
-        $ret['username'] = D('UserAdmin')->getById($user_id)['username'];
+        $user_info = D('UserAdmin')->getById($user_id);
+        $ret['username'] = $user_info['username'];
+        $ret['logo'] = $user_info['logo'];
+        $this->jsonReturn($ret);
+    }
+
+    /**
+     * 修改账户信息
+     */
+    public function editAccount(){
+        $data = input('post.');
+        if(!empty($data)){
+            $logo = input('post.', '');
+            if(!$logo){
+                $user_id = $this->getUserId();
+                $res = D('UserAdmin')->saveData($user_id, ['logo' => $logo]);
+                if(!$res){
+                    $ret['error_code'] = 1;
+                    $ret['msg'] = '修改失败';
+                    $this->jsonReturn($ret);
+                }
+            }
+            $ret = ['error_code' => 0, 'msg' => '编辑账户成功'];
+            $res = D('Doctor')->saveData($data['id'], $data);
+            $ret['res'] = $data;
+            if(!empty($res['errors'])){
+                $ret['error_code'] = 1;
+                $ret['errors'] = $res['errors'];
+                $ret['msg'] = '编辑账户失败';
+                $this->jsonReturn($ret);
+            }
+
+            $log['user_id'] = $this->getUserId();
+            $log['IP'] = $this->getUserIp();
+            $log['section'] = '账户设置';
+            $log['action_descr'] = '编辑账户';
+            D('OperationLog')->addData($log);
+
+            $this->jsonReturn($ret);
+        }
+    }
+
+    /**
+     * 修改密码
+     */
+    public function editPass(){
+        $data = input('post.');
+        $ret = ['error_code' => 0, 'msg' => '修改成功'];
+        $oldPwd = input('post.pass');
+        $newPwd = input('post.new_password');
+        $confirmPwd = input('post.confirm_password');
+        $user_id = $this->getUserId();
+        $res = D('UserAdmin')->checkPass($user_id, $oldPwd);
+        if(!empty($res['errors']) || $newPwd != $confirmPwd){
+            $ret['error_code'] = 1;
+            $ret['msg'] = '修改失败';
+            $ret['errors'] = $res['errors'];
+            $this->jsonReturn($ret);
+        }
+        $res = D('UserAdmin')->saveData($user_id, ['pass' => $confirmPwd]);
+        if(!$res){
+            $ret['error_code'] = 1;
+            $ret['msg'] = '修改失败';
+            $this->jsonReturn($ret);
+        }
         $this->jsonReturn($ret);
     }
 }

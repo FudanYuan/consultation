@@ -14,7 +14,7 @@ class UserAdmin extends Model{
  	protected $table = 'consultation_user_admin';
  	protected $pk = 'id';
  	protected $fields = array(
- 		'id', 'doctor_id', 'username','pass','role_id','remark','status','login_time','create_time','update_time'
+ 		'id', 'doctor_id', 'logo', 'username','pass','role_id','remark','status','login_time','create_time','update_time'
  	);
  	protected $type = [
  			'id' => 'integer',
@@ -33,7 +33,7 @@ class UserAdmin extends Model{
  		if(!isset($cond['status'])){
  			$cond['status'] = ['<>', 2];
  		}
- 		return $this->field('id,doctor_id,username,status,create_time,login_time,remark')
+ 		return $this->field('id,doctor_id,logo,username,status,create_time,login_time,remark')
             ->where($cond)
             ->select();
  	}
@@ -44,8 +44,8 @@ class UserAdmin extends Model{
      * @return mixed
      */
  	public function getById($id){
- 		return $this->field('id,doctor_id,username,pass,role_id,remark,status')
-            ->where(['id'=> $id])
+ 		return $this->field('id,doctor_id,logo,username,pass,role_id,remark,status')
+            ->where('id', $id)
             ->find();
  	}
 
@@ -55,7 +55,7 @@ class UserAdmin extends Model{
      * @return mixed
      */
     public function getUserByDoctorId($doctor_id){
-        return $this->field('id,doctor_id,username,pass,status,role_id')
+        return $this->field('id,doctor_id,logo,username,pass,status,role_id')
             ->where(['doctor_id' => $doctor_id, 'status' => ['<>', 2]])
             ->find();
     }
@@ -76,34 +76,10 @@ class UserAdmin extends Model{
      * @return mixed
      */
     public function getUserByUsername($username){
-        return $this->field('id,doctor_id,username,pass,status,role_id')
+        return $this->field('id,doctor_id,logo,username,pass,status,role_id')
             ->where(['username' => $username, 'status' => ['<>', 2]])
             ->find();
     }
-
-    /**
-     * 根据id获取医生ID
-     * @param $id
-     * @return mixed
-     */
-    public function getDoctorIdById($id){
-        $res = $this->field('doctor_id')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
-    }
-
-    public function getUserAdmin($select,$cond){
-        $res = $this->alias('a')->field($select)
-            ->join('consultation_doctor b','b.id = a.doctor_id')
-            ->join('consultation_hospital_office c','c.id = b.hospital_office_id')
-            ->join('consultation_hospital d','d.id = c.hospital_id')
-            ->join('consultation_office e','e.id = c.office_id')
-            ->where($cond)
-            ->find();
-        return $res;
-    }
-
 
     /**
      * 创建管理员用户
@@ -164,7 +140,7 @@ class UserAdmin extends Model{
             $cond_doctor = [];
             foreach ($cond['id'] as $item){
                 if($item != 'in'){
-                    $doctor = $this->getDoctorIdById((int)$item);
+                    $doctor = $this->getById((int)$item);
                     $doctor_id = $doctor['doctor_id'];
                     array_push($cond_doctor, $doctor_id);
                 }
@@ -184,6 +160,21 @@ class UserAdmin extends Model{
             throw new MyException('2', '删除失败');
         }
  	}
+
+    /**
+     * 检查密码是否正确
+     * @param $user_id
+     * @param $pass
+     * @return bool
+     */
+ 	public function checkPass($user_id, $pass){
+        $user = $this->getById($user_id);
+        $ret['errors'] = [];
+        if(md5($pass) != $user['pass']){
+            $ret['errors'] = ['pass' => '密码不正确'];
+        }
+        return $ret;
+    }
 
     /**
      * 用户登录

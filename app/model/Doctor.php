@@ -25,7 +25,7 @@ class Doctor extends Model{
     ];
 
 
-    public function getList($cond){
+    public function getList($cond = []){
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
@@ -46,7 +46,7 @@ class Doctor extends Model{
             $cond_and['a.status'] = ['<>', 2];
         }
         $res = $this->alias('a')->field('a.id,c.id as hospital_id,c.name as hospital_name,
-            d.id as office_id,d.name as office_name,a.name as name,a.position as position,
+            d.id as office_id,d.name as office_name,a.name as name,a.photo as photo, a.position as position,
             a.phone as phone,a.email as email,a.address as address')
             ->join('consultation_hospital_office b','b.id = a.hospital_office_id')
             ->join('consultation_hospital c','c.id = b.hospital_id')
@@ -85,41 +85,7 @@ class Doctor extends Model{
         }
         return $ret;
     }
-    /**
-     * 过滤必要字段
-     * @param $data
-     * @return array
-     */
-    private function filterField($data){
-        $errors = [];
-        if(isset($data['name']) && !$data['name']){
-            $errors['name'] = '医生名字不能为空';
-        }
-        if(isset($data['gender']) && !$data['gender']){
-            $errors['gender'] = '医生性别不能为空';
-        }
-        if(isset($data['age']) && !$data['age']){
-            $errors['age'] = '医生年龄不能为空';
-        }
-        if(isset($data['position']) && !$data['position']){
-            $errors['position'] = '医生职称不能为空';
-        }
-        if(isset($data['phone']) && !$data['phone']){
-            $errors['phone'] = '医生电话不能为空';
-        }
-        if(isset($data['email']) && !$data['email']){
-            $errors['email'] = '医生邮箱不能为空';
-        }
-        return $errors;
-    }
 
-    public function getDoctor($select,$cond){
-        $res = $this->field($select)
-            ->where($cond)
-            ->select();
-        return $res;
-    }
-    //////未修改/////
     /**
      * 更新医生信息
      * {@inheritDoc}
@@ -135,6 +101,41 @@ class Doctor extends Model{
         }
         return $ret;
     }
+    /**
+     * 过滤必要字段
+     * @param $data
+     * @return array
+     */
+    private function filterField($data){
+        $errors = [];
+        if(isset($data['name']) && !$data['name']){
+            $errors['name'] = '名字不能为空';
+        }
+        if(isset($data['gender']) && !$data['gender']){
+            $errors['gender'] = '性别不能为空';
+        }
+        if(isset($data['age']) && !$data['age']){
+            $errors['age'] = '年龄不能为空';
+        }
+        if(isset($data['position']) && !$data['position']){
+            $errors['position'] = '职称不能为空';
+        }
+        if(isset($data['phone']) && !$data['phone']){
+            $errors['phone'] = '电话不能为空';
+        }
+        if(isset($data['email']) && !$data['email']){
+            $errors['email'] = '邮箱不能为空';
+        }
+        return $errors;
+    }
+
+    public function getDoctor($select,$cond){
+        $res = $this->field($select)
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+    //////未修改/////
 
     /**
      * 批量增加医生信息

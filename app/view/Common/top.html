@@ -97,26 +97,42 @@
                 <ul class="nav-notification pull-right">
                     <li>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user fa-lg"></i></a>
-                        <span class="badge badge-danger bounceIn">1</span>
                         <ul class="dropdown-menu dropdown-sm pull-right user-dropdown">
-                            <li class="user-avatar">
-                                <!--<img src="__PUBLIC__/images/profile/profile1.jpg" alt="" class="img-circle">-->
+                            <li class="user-avatar" id="user_small">
+                                <img :src="logo != '' ? logo : '__PUBLIC__/images/logo_default.png'" alt="" class="img-circle">
                                 <div class="user-content">
-                                    <h5 class="no-m-bottom" id="user_small">{{user}}</h5>
+                                    <h5 class="no-m-bottom">{{user}}</h5>
                                     <div class="m-top-xs">
                                         <a href="javascript:;" class="logout">安全退出</a>
                                     </div>
                                 </div>
                             </li>
+                            {if condition="authority('Account')"}
                             <li>
-                                <a href="#">账户设置</a>
+                                <a href="__PRO_PATH__/UserAdmin/account">
+                                    <i class="fa fa-user-circle-o fa-lg"></i>
+                                    <span class="m-left-xs">账户设置</span>
+                                </a>
                             </li>
+                            {/if}
+
+                            {if condition="authority('Apply')"}
                             <li>
-                                <a href="__PRO_PATH__/Apply/index">会诊申请</a>
+                                <a href="__PRO_PATH__/Apply/index">
+                                    <i class="fa fa-inbox fa-lg"></i>
+                                    <span class="m-left-xs">会诊申请</span>
+                                </a>
                             </li>
+                            {/if}
+
+                            {if condition="authority('OperationLog')"}
                             <li>
-                                <a href="__PRO_PATH__/OperationLog/index">操作日志</a>
+                                <a href="__PRO_PATH__/OperationLog/index">
+                                    <i class="fa fa-bookmark-o fa-lg"></i>
+                                    <span class="m-left-xs">操作日志</span>
+                                </a>
                             </li>
+                            {/if}
                         </ul>
                     </li>
                 </ul>
@@ -136,8 +152,9 @@
 
                 <div class="pull-right m-right-sm">
                     <div class="user-block hidden-xs">
-                        <a href="#" id="userToggle" data-toggle="dropdown">
-                            <div class="user-detail inline-block" id="user_big">
+                        <a href="#" data-toggle="dropdown" id="user_big">
+                            <img :src="logo != '' ? logo : '__PUBLIC__/images/logo_default.png'" alt="" class="img-circle inline-block user-profile-pic">
+                            <div class="user-detail inline-block">
                                 {{user}}
                                 <i class="fa fa-angle-down"></i>
                             </div>
@@ -145,26 +162,36 @@
                         <div class="panel border dropdown-menu user-panel">
                             <div class="panel-body paddingTB-sm">
                                 <ul>
+                                    {if condition="authority('Account')"}
                                     <li>
-                                        <a href="#">
-                                            <i class="fa fa-edit fa-lg"></i><span class="m-left-xs">账户设置</span>
+                                        <a href="__PRO_PATH__/UserAdmin/account">
+                                            <i class="fa fa-user-circle-o fa-lg"></i>
+                                            <span class="m-left-xs">账户设置</span>
                                         </a>
                                     </li>
+                                    {/if}
+
+                                    {if condition="authority('Apply')"}
                                     <li>
                                         <a href="__PRO_PATH__/Apply/index">
                                             <i class="fa fa-inbox fa-lg"></i>
                                             <span class="m-left-xs">会诊申请</span>
                                         </a>
                                     </li>
+                                    {/if}
+                                    {if condition="authority('OperationLog')"}
                                     <li>
                                         <a href="__PRO_PATH__/OperationLog/index">
                                             <i class="fa fa-bookmark-o fa-lg"></i>
                                             <span class="m-left-xs">操作日志</span>
                                         </a>
                                     </li>
+                                    {/if}
+                                    {if condition="authority('ClearCache')"}
                                     <li>
                                         <a href="javascript:;" id="clearCache">清除缓存</a>
                                     </li>
+                                    {/if}
                                 </ul>
                             </div>
                         </div>
@@ -300,10 +327,10 @@
                     {/if}
 
                     {if condition="authority('Account')"}
-                    <li class="bg-palette4" id="consultation-nav-account" hidden>
+                    <li class="bg-palette4" id="consultation-nav-account">
                         <a href="__PRO_PATH__/UserAdmin/account">
                             <span class="menu-content block">
-                                <span class="menu-icon"><i class="fa fa-user fa-lg"></i></span>
+                                <span class="menu-icon"><i class="fa fa-user-circle-o fa-lg"></i></span>
 								<span class="text m-left-sm">账户信息</span>
                             </span>
                             <span class="menu-content-hover block">Account</span>

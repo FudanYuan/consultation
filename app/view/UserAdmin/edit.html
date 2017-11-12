@@ -14,7 +14,7 @@
                     <label for="form-username" class="col-sm-2 control-label">账号名称：</label>
                     <div class="col-sm-4">
                         <input name="username" type="text" class="form-control" id="form-username"
-                               value="{$data.username??''}">
+                               value="{$data.username??''}" disabled>
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -23,6 +23,18 @@
                     <div class="col-sm-4">
                         <input name="pass" type="password" class="form-control" id="form-pass"
                                value="{$data.username??''}"/>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="form-doctor" class="col-sm-2 control-label">注册医师：</label>
+                    <div class="col-sm-4">
+                        <select name="doctor_id" class="form-control" id="form-doctor" style="width:100px;" disabled>
+                            <option value="-1">--选择医师--</option>
+                            {foreach name="doctors" item="model"}
+                            <option value="{$model.id}">{$model.name}</option>
+                            {/foreach}
+                        </select>
                         <span class="help-block"></span>
                     </div>
                 </div>
@@ -48,10 +60,6 @@
                         <span class="help-block"></span>
                     </div>
                 </div>
-                <script>
-                    $('select[name="role_id"]').val('{$data.role_id??""}');
-                    $('select[name="status"]').val('{$data.status??""}');
-                </script>
                 <div class="form-group {$errors.remark ?= 'has-error'}">
                     <label class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-4">
@@ -61,7 +69,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <button id="form-save" class="btn btn-success">保存</button>
+                        <a id="form-save" class="btn btn-success" onclick="submit()">保存</a>
                         <a href="__PRO_PATH__/UserAdmin/index" class="btn btn-info">取消</a>
                         <a id="form-delete" class="btn btn-default">删除</a>
                     </div>
@@ -76,29 +84,38 @@
 <script>
     $('#consultation-nav-setting').addClass('active open');
     $('#consultation-nav-setting-sub2').addClass('active');
-    $('#form-save').on('click', function () {
-        var data = getFromData('#main-form');
-        if (!data.username) {
-            popWarn('账号名称不能为空');
-            return;
-        }
-        if (!data.role_id) {
-            popWarn('请选择角色');
-            return;
-        }
-        $.post('', data, function (res) {
-            if (res.error_code == 0) {
-                window.location.href = '__PRO_PATH__/UserAdmin/index';
-            } else {
-                popWarn(res.msg);
-            }
-        });
-    });
+    $('select[name="role_id"]').val('{$data.role_id??""}');
+    $('select[name="status"]').val('{$data.status??""}');
+    $('select[name="doctor_id"]').val('{$data.doctor_id??""}');
     popupEdit({
         id: '{$data.id}',
         list: '__PRO_PATH__/UserAdmin/index',
         remove: '__PRO_PATH__/UserAdmin/remove'
     });
+    function submit() {
+        var data = getFromData('#main-form');
+        console.log(JSON.stringify(data));
+        if (!data.pass) {
+            popWarn('账号密码不能为空');
+            return;
+        }
+        if (data.doctor_id == -1) {
+            popWarn('请选择医师');
+            return;
+        }
+        if (data.role_id == -1) {
+            popWarn('请选择角色');
+            return;
+        }
+
+        $.post('__PRO_PATH__/UserAdmin/edit', data, function (res) {
+            if (res.error_code == 0) {
+                popWarn(res.msg, '__PRO_PATH__/UserAdmin/index');
+            } else {
+                popWarn(res.msg);
+            }
+        });
+    }
     function getFromData(ele) {
         var d = {};
         var data = $(ele).serializeArray();

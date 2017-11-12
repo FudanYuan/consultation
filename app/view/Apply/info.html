@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+{if condition="authority('ApplyInfo')"}
 <style>
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
         padding: 8px;
@@ -15,7 +15,6 @@
 </style>
 <div class="main-container">
     <div class="padding-md">
-        {if condition="authority('ApplyInfo')"}
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
@@ -76,7 +75,7 @@
                     <td>姓名</td>
                     <td>{{patient_info.name}}</td>
                     <td>性别</td>
-                    <td>{{patient_info.gender}}</td>
+                    <td>{{patient_info.gender | getGender}}</td>
                     <td>年龄</td>
                     <td>{{patient_info.age}}</td>
                     <td>视力(左/右)</td>
@@ -92,6 +91,17 @@
                     <td>{{patient_info.pressure_left}}</td>
                     <td>{{patient_info.pressure_right}}</td>
                 </tr>
+                <tr>
+                    <td rowspan="4">辅助检查(图)</td>
+                    <td colspan="2" rowspan="4"><img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
                 </tr>
@@ -132,15 +142,9 @@
             </table>
         </div>
 
-        {else /}
-        <span class="col-lg-12" style="font-size: larger; text-align: center">
-			<strong>抱歉，您访问的页面不存在！</strong>
-		</span>
-        {/if}
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
-{if condition="authority('ApplyInfo')"}
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
@@ -237,6 +241,16 @@
                 }
                 return ret;
             },
+            getGender: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '男';
+                }
+                if(value == 2){
+                    ret = '女';
+                }
+                return ret;
+            },
             formatText: function (text, len) {
                 return cutString(text, len);
             }
@@ -260,4 +274,13 @@
         });
     }
 </script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
 {/if}

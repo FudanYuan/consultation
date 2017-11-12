@@ -94,6 +94,17 @@
                     <td>{{patient_info.pressure_right}}</td>
                 </tr>
                 <tr>
+                    <td rowspan="4">辅助检查(图)</td>
+                    <td colspan="2" rowspan="4"><img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                </tr>
+                <tr></tr>
+                <tr></tr>
+                <tr></tr>
+                <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
                 </tr>
                 <tr></tr>

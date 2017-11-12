@@ -32,7 +32,7 @@
                     <td>姓名</td>
                     <td>{{info.name}}</td>
                     <td>性别</td>
-                    <td>{{info.gender}}</td>
+                    <td>{{info.gender | getGender}}</td>
                     <td>年龄</td>
                     <td>{{info.age}}</td>
                     <td>身份证号</td>
@@ -139,7 +139,17 @@
                     ret = "其他";
                 }
                 return ret;
-            }
+            },
+            getGender: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '男';
+                }
+                if(value == 2){
+                    ret = '女';
+                }
+                return ret;
+            },
         }
     });
 

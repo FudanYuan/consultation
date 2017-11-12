@@ -71,7 +71,7 @@
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
                         <td>{{model.ID_number}}</td>
                         <td>{{model.name}}</td>
-                        <td>{{model.gender}}</td>
+                        <td>{{model.gender | getGender}}</td>
                         <td>{{model.occupation}}</td>
                         <td>{{model.phone}}</td>
                         <td>{{model.birthplace}}</td>
@@ -257,7 +257,17 @@
                     ret = "其他";
                 }
                 return ret;
-            }
+            },
+            getGender: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '男';
+                }
+                if(value == 2){
+                    ret = '女';
+                }
+                return ret;
+            },
         }
     });
 

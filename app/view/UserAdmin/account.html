@@ -1,70 +1,414 @@
 {include file="Common/top" title="首页" metas='' /}
 {if condition="authority('Account')"}
+<style>
+    #logo{
+        width: 100px;
+        height: 100px;
+        border-radius: 50em;
+        -moz-border-radius: 50em;
+        -webkit-border-radius: 50em;
+    }
+
+    .form-group label{
+        vertical-align: middle;
+    }
+
+    .user-setting-upload-img img {
+        float: left;
+        height: 100px;
+        width: 100px;
+        border-radius: 100%;
+        margin-right: 30px;
+    }
+
+    .user-setting-upload-img a{
+        font-size: 100%;
+        vertical-align: baseline;
+        background: 0 0;
+        text-decoration: none;
+    }
+
+    .ucuse-upbtn input {
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        /*opacity: 0;*/
+        filter: alpha(opacity=0);
+    }
+
+    .user-setting-upload-img {
+        margin-bottom: 30px;
+        padding-left: 40px;
+    }
+
+    .clickable, button, input[type=button], input[type=file], input[type=submit], label {
+        cursor: pointer;
+    }
+</style>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/"> 首页</a></li>
             <li>账户信息</li>
         </ul>
-        <div class="form-wrapper">
-            <form class="form-horizontal" method="post" id="main-form">
-                <div class="form-group {$errors.name ?= 'has-error'}">
-                    <label for="form-name" class="col-sm-2 control-label">账号名称：</label>
-                    <div class="col-sm-4">
-                        <input name="username" type="text" class="form-control" id="form-name" value="{$data.username??''}">
-                        <span class="help-block">{$errors.name}</span>
+        <div class="col-md-12 col-sm-12 col-xs-12" style="padding:0 5px 30px 5px; background-color: #fff">
+            <div class="x_panel thin_box">
+                <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#tab_content1" role="tab" id="info-tab" data-toggle="tab" aria-expanded="false">基本信息</a>
+                        </li>
+
+                        <li role="presentation" class=""><a href="#tab_content2" role="tab" id="pass-tab" data-toggle="tab" aria-expanded="true">修改密码</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent" style="display:block; padding-top: 20px;">
+                        <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="info-tab">
+                            <form class="form-horizontal form-label-left" novalidate=""  id="account-info">
+                                <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
+                                    <label class="control-label col-sm-offset-3 col-md-3 col-sm-3 col-xs-12" for="logo">
+                                        <!--<img id="logo" src="{$data.logo ?? ''}" onerror="this.src='__PUBLIC__/images/profile/profile1.jpg'">-->
+                                        <!--<div id="filelist_logo">-->
+                                            <!--<div>{$data.img_origin??''}<b></b></div>-->
+                                        <!--</div>-->
+                                        <!--<br/>-->
+                                        <!--<div id="upload_logo">-->
+                                            <!--<a id="pickfiles_logo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>-->
+                                            <!--<a id="uploadfiles_logo" href="javascript:;">上传</a>-->
+                                        <!--</div>-->
+                                        <!--<input type="hidden" name="logo" value="{$data.logo??''}"/>-->
+                                        <!--<span class="help-block">{$errors.logo?? ''}</span>-->
+
+                                        <div class="user-setting-upload-img">
+                                            <img sid="img-userhead" src="https://fs.kf5.com/upload/16107/201711/5a0875fef1fea_646.jpg" onerror="this.src='/images/icons/end_user.jpg'">
+                                            <a sid="btn-upheadimg" class="ucuse-upbtn" href="javascript:void(0);" style="z-index: 1;">
+                                            <span style="margin-top: 45%">修改头像</span>
+                                            <input type="file" name="headimg">
+                                        </a>
+                                        </div>
+
+                                    </label>
+                                </div>
+
+                                <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="name">姓名：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input name="name" id="name" value="{$data.name ?? ''}" class="form-control col-md-7 col-xs-12" type="text" placeholder="请输入您的姓名">
+                                    </div>
+                                    <p class="help-block">{{errors.name}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">性别：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <div class="radio inline-block">
+                                            <div class="custom-radio m-right-xs">
+                                                <input type="radio" id="male" name="gender" value="1">
+                                                <label for="male"></label>
+                                            </div>
+                                            <div class="inline-block vertical-top">男</div>
+                                        </div>
+                                        <div class="radio inline-block">
+                                            <div class="custom-radio m-right-xs">
+                                                <input type="radio" id="female" name="gender" value="2">
+                                                <label for="female"></label>
+                                            </div>
+                                            <div class="inline-block vertical-top">女</div>
+                                        </div>
+                                    </div>
+                                    <p class="help-block">{{errors.gender}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
+                                    <label for="age" class="control-label col-md-3 col-sm-3 col-xs-12">年龄：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control" type="text" name="age" value="{$data.age ?? ''}" placeholder="请输入您的年龄" id="age">
+                                    </div>
+                                    <p class="help-block">{{errors.age}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.position != '' ? 'has-error' : '']" >
+                                    <label for="position" class="control-label col-md-3 col-sm-3 col-xs-12">职称：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control" type="text" name="position" value="{$data.position ?? ''}" placeholder="请输入您的职称" id="position">
+                                    </div>
+                                    <p class="help-block">{{errors.position}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.phone != '' ? 'has-error' : '']">
+                                    <label for="phone" class="control-label col-md-3 col-sm-3 col-xs-12">电话：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input name="phone" id="phone" value="{$data.phone ?? ''}" readonly="" class="form-control col-md-7 col-xs-12" type="text">
+                                    </div>
+                                    <p class="help-block">{{errors.phone}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.email != '' ? 'has-error' : '']">
+                                    <label for="email" class="control-label col-md-3 col-sm-3 col-xs-12">邮箱：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input name="email" id="email" value="{$data.email ?? ''}" class="form-control col-md-7 col-xs-12" type="text"  placeholder="请输入您的邮箱" >
+                                    </div>
+                                    <p class="help-block">{{errors.email}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.address != '' ? 'has-error' : '']" >
+                                    <label for="address" class="control-label col-md-3 col-sm-3 col-xs-12">地址：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control" type="text" name="address" value="{$data.address ?? ''}" placeholder="请输入您的地址" id="address">
+                                    </div>
+                                    <p class="help-block">{{errors.address}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.postcode != '' ? 'has-error' : '']" >
+                                    <label for="postcode" class="control-label col-md-3 col-sm-3 col-xs-12">邮编：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control" type="text" name="postcode" value="{$data.postcode ?? ''}" placeholder="请输入您的邮编" id="postcode">
+                                    </div>
+                                    <p class="help-block">{{errors.postcode}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.info != '' ? 'has-error' : '']" >
+                                    <label for="info" class="control-label col-md-3 col-sm-3 col-xs-12">详细信息：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <textarea class="form-control" name="info" id="info" placeholder="请输入您的详细信息">{$data.info ?? ''}</textarea>
+                                    </div>
+                                    <p class="help-block">{{errors.info}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.honor != '' ? 'has-error' : '']" >
+                                    <label for="honor" class="control-label col-md-3 col-sm-3 col-xs-12">所获荣誉：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <textarea class="form-control" name="honor" id="honor" placeholder="请输入您所获荣誉">{$data.honor ?? ''}</textarea>
+                                    </div>
+                                    <p class="help-block">{{errors.honor}}</p>
+                                </div>
+
+                                <div :class="['form-group', errors.remark != '' ? 'has-error' : '']" >
+                                    <label for="remark" class="control-label col-md-3 col-sm-3 col-xs-12">备注：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input class="form-control" type="text" name="remark" value="{$data.remark ?? ''}" placeholder="请输入备注信息" id="remark">
+                                    </div>
+                                    <p class="help-block">{{errors.remark}}</p>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <a type="button" class="btn btn-success" @click="submit">提交</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="pass-tab">
+                            <form class="form-horizontal form-label-left" novalidate="" id="account-pass">
+                                <div :class="['form-group', errors.pass != '' ? 'has-error' : '']">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="pass">旧密码：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input name="pass" type="password" id="pass" value="" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                    <p class="help-block">{{errors.pass}}</p>
+                                </div>
+                                <div :class="['form-group', errors.new_password != '' ? 'has-error' : '']">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="new_password">新密码：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input name="new_password" type="password" id="new_password" value="" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                    <p class="help-block">{{errors.new_password}}</p>
+                                </div>
+                                <div :class="['form-group', errors.confirm_password != '' ? 'has-error' : '']">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="confirm_password">确认密码：</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input name="confirm_password" type="password" id="confirm_password" value="" required="required" class="form-control col-md-7 col-xs-12">
+                                    </div>
+                                    <p class="help-block">{{errors.confirm_password}}</p>
+                                </div>
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                        <a type="button" class="btn btn-success" @click="submit">提交</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group {$errors.pass ?= 'has-error'}">
-                    <label for="form-pass" class="col-sm-2 control-label">密码：</label>
-                    <div class="col-sm-4">
-                        <input name="pass" type="password" class="form-control" id="form-pass" value="{$data.pass??''}">
-                        <span class="help-block">{$errors.pass}</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a id="form-save" class="btn btn-success">保存</a>
-                        <a href="__PRO_PATH__/UserAdmin/index" class="btn btn-info">取消</a>
-                        <!-- <a id="form-delete" class="btn btn-default">删除</a> -->
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div><!-- /main-container -->
 {include file="Common/popup_warn" /}
 {include file="Common/bottom" /}
+{include file="Common/upload"}
+<script src="__PUBLIC__/js/ajaxupload.3.5.js"></script>
 <script>
-    $('#consultation-nav-account').addClass('active open');
-    $('#consultation-nav-account-sub2').addClass('active');
-    $('#form-save').on('click', function(){
-        var data = getFormData('#main-form');
-        if(!data.username){
-            popWarn('账号名称不能为空');
-            return;
-        }
-        if(!data.pass){
-            popWarn('账号密码不能为空');
-            return;
-        }
-        $.post('', data, function(res){
-            if(res.error_code == 0){
-                //window.location.href = '__PRO_PATH__/UserAdmin/index';
-            }else{
-                popWarn(res.msg);
-                return;
+    $('#consultation-nav-account').addClass('active');
+    $("input[name='gender'][value='{$data.gender?? ''}']").attr("checked",true);
+    $('select[name="hospital"]').val('{$data.hospital_id??""}');
+    $('select[name="office"]').val('{$data.office_id??""}');
+
+    var vm_info = new Vue({
+        el: '#account-info',
+        data:{
+            doctor_id: '{$data.id}',
+            params:{
+                id: '{$data.id}'
+            },
+            errors:{
+                name: '',
+                gender: '',
+                age: '',
+                position: '',
+                phone: '',
+                email: '',
+                address: '',
+                postcode: '',
+                hospital: '',
+                office: '',
+                info: '',
+                honor: '',
+                remark: ''
             }
-        });
+        },
+        mounted: function () {
+            //修改用户头像
+            var btnUpheadimg=$("[sid=\"btn-upheadimg\"]");
+            if(btnUpheadimg.length>=1){
+                new AjaxUpload(btnUpheadimg,{
+                    name:"headimg",
+                    data:{id:39241544},
+                    action:"/hc/userinfo/modifyheadimg/",
+                    responseType:"json",
+                    onSubmit:function(file,ext){
+                        if(!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+                            showNotice("仅支持JPG, PNG 或 GIF 格式文件上传",false);
+                            return false;
+                        }
+                        btnUpheadimg.css({"z-index":-1});
+                        btnUpheadimg.find("span").html("上传中...");
+                    },
+                    onComplete:function(file,data){
+                        if(data.err===0){
+                            showNotice("头像修改成功！",true);
+                            btnUpheadimg.css({"z-index":1});
+                            btnUpheadimg.find("span").html("修改头像");
+                            $("[sid=\"img-userhead\"]").attr("src",data.src);
+                        }else{
+                            showNotice(data.msg, false);
+                        }
+                    }
+                });
+            }
+        },
+        methods:{
+            resetErrors: function () {
+                $.each(vm_info.errors, function (k, v) {
+                    vm_info.errors[k] = '';
+                });
+            },
+            getParams: function () {
+                var data = $('#account-info').serializeArray();
+                $.each(data, function() {
+                    vm_info.params[this.name] = this.value;
+                });
+                console.log(JSON.stringify(vm_info.params));
+            },
+            submit: function () {
+                vm_info.getParams();
+                vm_info.resetErrors();
+                $.post('__PRO_PATH__/UserAdmin/editAccount', vm_info.params, function (res) {
+                    if(res.error_code == 0){
+                        popWarn(res.msg, '__PRO_PATH__/UserAdmin/account');
+                    } else{
+                        $.each(res.errors, function (k, v) {
+                            vm_info.errors[k] = v;
+                        });
+                        console.log(JSON.stringify(vm_info.errors));
+                    }
+                });
+            }
+        },
+        filters: {
+        }
     });
-    function getFormData(ele){
-        var d = {};
-        var data = $(ele).serializeArray();
-        $.each(data, function() {
-            d[this.name] = this.value;
-        });
-        return d;
-    }
+
+
+    var vm_pass = new Vue({
+        el: '#account-pass',
+        data:{
+            params:{
+
+            },
+            errors:{
+                pass: '',
+                new_password: '',
+                confirm_password: ''
+            }
+        },
+        mounted: function () {
+            myupload({
+                container: 'upload_logo',
+                browse: 'pickfiles_logo',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist_logo',
+                uploadfiles: 'uploadfiles_logo',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='logo_origin']").val(file.name);
+                },
+                isMulti: false
+            });
+        },
+        methods:{
+            resetErrors: function () {
+                $.each(vm_pass.errors, function (k, v) {
+                    vm_pass.errors[k] = '';
+                });
+            },
+            getParams: function () {
+                var data = $('#account-pass').serializeArray();
+                $.each(data, function() {
+                    vm_pass.params[this.name] = this.value;
+                });
+                console.log(JSON.stringify(vm_pass.params));
+            },
+            check: function () {
+                vm_pass.getParams();
+                if(!vm_pass.params['pass']){
+                    popWarn('请输入旧密码');
+                    return false;
+                }
+                if(!vm_pass.params['new_password']){
+                    popWarn('请输入新密码');
+                    return false;
+                }
+                if(vm_pass.params['confirm_password'] != vm_pass.params['new_password']){
+                    popWarn('输入密码不一致');
+                    return false;
+                }
+                return true;
+            },
+            submit: function () {
+                if(!vm_pass.check()) return;
+                vm_pass.resetErrors();
+                $.post('__PRO_PATH__/UserAdmin/editPass', vm_pass.params, function (res) {
+                    if(res.error_code == 0){
+                        popWarn(res.msg, '__PRO_PATH__/UserAdmin/account');
+                    } else{
+                        $.each(res.errors, function (k, v) {
+                            vm_pass.errors[k] = v;
+                        });
+                        console.log(JSON.stringify(vm_pass.errors));
+                    }
+                });
+            }
+        },
+        filters: {
+        }
+    });
+
 </script>
 {else /}
 <div class="main-container">

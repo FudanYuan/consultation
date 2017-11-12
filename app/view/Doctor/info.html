@@ -31,7 +31,7 @@
                     <td>姓名</td>
                     <td>{{info.name}}</td>
                     <td>性别</td>
-                    <td>{{info.gender}}</td>
+                    <td>{{info.gender | getGender}}</td>
                     <td>年龄</td>
                     <td>{{info.age}}</td>
                     <td>职称</td>
@@ -89,6 +89,16 @@
         methods:{
         },
         filters:{
+            getGender: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '男';
+                }
+                if(value == 2){
+                    ret = '女';
+                }
+                return ret;
+            },
             moment: function (value, formatString) {
                 formatString = formatString || 'YYYY-MM-DD HH:mm';
                 var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日');

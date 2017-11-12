@@ -308,13 +308,15 @@
     var vm3 = new Vue({
         el: '#user_big',
         data: {
-            user: ''
+            user: '',
+            logo: ''
         },
         methods:{
             getUser: function () {
                 $.post('__PRO_PATH__/UserAdmin/getUserName', {}, function (res) {
                     if(res.error_code == 0){
                         vm3.user = res.username;
+                        vm3.logo = res.logo;
                     }
                 });
             }
@@ -325,13 +327,15 @@
     var vm4 = new Vue({
         el: '#user_small',
         data: {
-            user: ''
+            user: '',
+            logo: ''
         },
         methods:{
             getUser: function () {
                 $.post('__PRO_PATH__/UserAdmin/getUserName', {}, function (res) {
                     if(res.error_code == 0){
                         vm4.user = res.username;
+                        vm4.logo = res.logo;
                     }
                 });
             }

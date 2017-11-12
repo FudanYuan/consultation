@@ -1,5 +1,18 @@
 {include file="Common/top" title="首页" metas='' /}
 {if condition="authority('User')"}
+<style>
+	.table img{
+		width: 40px;
+		height: 40px;
+		border-radius: 50em;
+		-moz-border-radius: 50em;
+		-webkit-border-radius: 50em;
+	}
+
+	.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+		vertical-align: middle;
+	}
+</style>
 <div class="main-container">
 	<div class="padding-md">
 		<ul class="breadcrumb">
@@ -61,13 +74,14 @@
 				<thead>
 				<tr>
 					<th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
-					<th>账号名称</th>
+					<th>账号</th>
+					<th>头像</th>
 					<th>注册医生</th>
 					<th>所在医院</th>
 					<th v-if="seen.office_name">所在科室</th>
 					<th>联系方式</th>
 					<th>常用邮箱</th>
-					<th>使用状态</th>
+					<th>状态</th>
 					<th>创建时间</th>
 					<th>最后登录时间</th>
 					<th>备注</th>
@@ -79,6 +93,7 @@
 					<tr v-for="(model, index) in list">
 						<td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
 						<td>{{model.username}}</td>
+						<td><img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :alt="model.username"></td>
 						<td><a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id" target="_blank">{{model.doctor_name}}</a></td>
 						<td><a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id" target="_blank">{{model.hospital_name}}</a></td>
 						<td v-if="seen.office_name">{{model.office_name}}</td>

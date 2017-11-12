@@ -75,7 +75,7 @@ CREATE TABLE `consultation_patient` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `consultation_patient` (`name`, `ID_number`, `gender`, `age`, `occupation`, `height`, `weight`, `phone`, `birthplace`, `address`, `work_unit`, `postcode`, `ill_type`, `ill_state`, `vision_left`, `vision_right`, `pressure_left`, `pressure_right`, `eye_photo_left`, `eye_photo_left_origin`, `eye_photo_right`, `eye_photo_right_origin`, `diagnose_state`, `files_path`, `files_path_origin`, `in_hospital_time`, `narrator`, `main_narrate`, `present_ill_history`, `past_history`, `system_retrospect`, `personal_history`, `physical_exam_record`, `status`, `create_time`, `update_time`) VALUES
-('患者1', '1122', 1, 21, '学生', 178, 62.3, '15116136472', '山东泰安', '湖南长沙', '中南大学', '471500', '放假啊就发了叫拉风姜老师分来发链接啦放假啦垃圾分类叫啦放假啦安拉发了金姐分辣椒粉阿娇弗朗加利飞机爱啦放假啊就发酒疯啦减肥据了解 啊就立即发酵法律界；啊；飞机阿娇发啦； 键；发啊放假啊；发；键啊放假啊；键发福；阿娇发；安静发；阿娇发；安静；阿娇发；键；安抚啊啦键啊发了；', 1, '5.0', '5.0', '130', '120', '', '', '', '', '发福吗金姐分啊；发酵法；库放假啊； 发酵法啊放假我发就发放假阿娇放假啊；飞机；安静发酵法；安静阿肌肤了；阿肌肤； 安静； ', '', '', 1212191291, '放假啊', '发发', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
+('患者1', '1122', 1, 21, '学生', 178, 62.3, '15116136472', '山东泰安', '湖南长沙', '中南大学', '471500', 1, '放假啊就发了叫拉风姜老师分来发链接啦放假啦垃圾分类叫啦放假啦安拉发了金姐分辣椒粉阿娇弗朗加利飞机爱啦放假啊就发酒疯啦减肥据了解 啊就立即发酵法律界；啊；飞机阿娇发啦； 键；发啊放假啊；发；键啊放假啊；键发福；阿娇发；安静发；阿娇发；安静；阿娇发；键；安抚啊啦键啊发了；', '5.0', '5.0', '130', '120', '', '', '', '', '发福吗金姐分啊；发酵法；库放假啊； 发酵法啊放假我发就发放假阿娇放假啊；飞机；安静发酵法；安静阿肌肤了；阿肌肤； 安静； ', '', '', 1212191291, '放假啊', '发发', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL);
 
 
 # Dump of table consultation_hospital
@@ -284,6 +284,7 @@ DROP TABLE IF EXISTS `consultation_user_admin`;
 CREATE TABLE `consultation_user_admin` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `doctor_id` INT unsigned NOT NULL COMMENT  '医生id，外键',
+  `logo` VARCHAR(100) DEFAULT '' COMMENT '账户头像',
   `username` VARCHAR(50) DEFAULT NULL COMMENT '账号->手机号码',
   `pass` VARCHAR(50) DEFAULT NULL COMMENT '密码',
   `role_id` TINYINT DEFAULT NULL COMMENT '角色',
@@ -299,7 +300,7 @@ CREATE TABLE `consultation_user_admin` (
 
 
 INSERT INTO `consultation_user_admin` (`doctor_id`, `username`, `pass`, `role_id`, `remark`, `status`, `login_time`, `create_time`, `update_time`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 3, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
 (2, 'role', '29a7e96467b69a9f5a93332e29e9b0de', 1, '县级医院管理员', 1, NULL, 1510115628, 1510115628);
 
 
