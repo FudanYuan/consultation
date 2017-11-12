@@ -214,7 +214,7 @@ class Apply extends Model{
         if(isset($data['target_hospital_id']) && !$data['target_hospital_id']){
             $errors['target_hospital_id'] = '申请医院不能为空';
         }
-        if(isset($data['target_office_id']) && $data['target_office_id'] == '-'){
+        if(isset($data['target_office_ids']) && $data['target_office_ids'] == '-'){
             $errors['target_office_id'] = '申请科室不能为空';
         }
         if(isset($data['apply_project']) && !$data['apply_project']){

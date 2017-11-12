@@ -119,7 +119,7 @@ class Apply extends Common
 
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
-
+            $ret['data']=$data;
             //如果病患不存在，手动输入
             if ($data['patient_id'] == -1) {
                 $patient = [];
@@ -152,11 +152,13 @@ class Apply extends Common
                 $data['patient_id'] = $res['id'];
 
             }
+
             $res = D('Apply')->addData($data);
             if(!empty($res['errors'])){
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
             }
+
             $this->jsonReturn($ret);
         }
         $select = ['id,name'];
