@@ -387,7 +387,6 @@
                 apply_project:'',
                 target_office_id:'',
                 consultation_goal:''
-
             }
         },
         mounted:function () {
@@ -452,8 +451,14 @@
                 getParams();
                 $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
                     if (res.error_code == 0) {
+                        $.each(vm.errors, function (k) {
+                            vm.errors[k] = '';
+                        });
                         //popWarn('新建成功', '__PRO_PATH__/Apply/index');
                     } else if (res.error_code == 2) {
+                        $.each(vm.errors, function (k) {
+                            vm.errors[k] = '';
+                        });
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });
