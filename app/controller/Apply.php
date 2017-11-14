@@ -150,7 +150,6 @@ class Apply extends Common
                     $this->jsonReturn($ret);
                 }
                 $data['patient_id'] = $res['id'];
-
             }
 
             $res = D('Apply')->addData($data);

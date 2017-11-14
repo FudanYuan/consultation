@@ -112,6 +112,20 @@ class Hospital extends Common
         }
         return view('', []);
     }
+    public function edit(){
+        $id = input('get.id');
+        $data = input('post.');
+        $select = ['*'];
+        $cond = ['id' => $id];
+        $hospital = D('Hospital')->getHospital($select,$cond);
+
+        if(!empty($data)){
+
+        }else{
+            return view('',['hospital' =>$hospital]);
+        }
+
+    }
 
     /**
      *获取医院信息
