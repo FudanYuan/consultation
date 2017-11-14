@@ -90,7 +90,7 @@
                 <div :class="['form-group', errors.type != '' ? 'has-error' : '']" >
                     <label for="hospital_type" class="col-sm-2 control-label">医院类型：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_type" value="" placeholder="请输入医院类型" id="hospital_type">
+                        <input class="form-control" type="text" name="hospital_type" value="" placeholder="比如：‘综合类’" id="hospital_type">
                         <p class="help-block">{{errors.type}}</p>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
                 <div :class="['form-group', errors.level != '' ? 'has-error' : '']">
                     <label for="hospital_level" class="col-sm-2 control-label">医院等级：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_level" value="" placeholder="请输入医院等级" id="hospital_level">
+                        <input class="form-control" type="text" name="hospital_level" value="" placeholder="比如：‘三级甲等’" id="hospital_level">
                         <p class="help-block">{{errors.level}}</p>
                     </div>
                 </div>
@@ -106,14 +106,14 @@
                 <div :class="['form-group']" >
                     <label for="hospital_info" class="col-sm-2 control-label">医院信息：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_info" value="" placeholder="请输入医院详细信息" id="hospital_info">
+                        <textarea class="form-control" type="text" name="hospital_info" value="" placeholder="请输入医院详细信息" id="hospital_info"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
                     <label for="hospital_honor" class="col-sm-2 control-label">所获荣誉：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_honor" value="" placeholder="请输入所获荣誉奖项" id="hospital_honor">
+                        <textarea class="form-control" type="text" name="hospital_honor" value="" placeholder="请输入所获荣誉奖项" id="hospital_honor"></textarea>
                     </div>
                 </div>
 
@@ -129,7 +129,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">申请</a>
+                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>

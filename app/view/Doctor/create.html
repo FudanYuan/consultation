@@ -11,17 +11,16 @@
         <div class="form-wrapper">
             <form class="form-horizontal" method="post" id="new-apply-form">
 
-
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                     <label for="doctor_name" class="col-sm-2 control-label">医生姓名：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_name" value="" placeholder="请输入医生姓名" id="doctor_name">
+                        <input class="form-control" type="text" name="doctor_name" value="" placeholder="请输入姓名" id="doctor_name">
                         <p class="help-block">{{errors.name}}</p>
                     </div>
                 </div>
 
                 <div class="form-group {$errors.img ?= 'has-error'}">
-                    <label class="col-sm-2 control-label">上传医生照片：</label>
+                    <label class="col-sm-2 control-label">医生照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_doctor_photo">
                             <div>{$data.doctor_photo_origin??''}<b></b></div>
@@ -87,7 +86,7 @@
                 <div :class="['form-group', errors.email != '' ? 'has-error' : '']" >
                     <label for="doctor_email" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_email" value="" placeholder="请输入医生邮箱" id="doctor_email">
+                        <input class="form-control" type="text" name="doctor_email" value="" placeholder="请输入邮箱" id="doctor_email">
                         <p class="help-block">{{errors.email}}</p>
                     </div>
                 </div>
@@ -95,14 +94,14 @@
                 <div :class="['form-group']" >
                     <label for="doctor_address" class="col-sm-2 control-label">地址：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_address" value="" placeholder="请输入医生地址" id="doctor_address">
+                        <input class="form-control" type="text" name="doctor_address" value="" placeholder="请输入地址" id="doctor_address">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
                     <label for="doctor_info" class="col-sm-2 control-label">邮编：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_info" value="" placeholder="请输入医生邮编" id="doctor_info">
+                        <input class="form-control" type="text" name="doctor_info" value="" placeholder="请输入邮编" id="doctor_info">
 
                     </div>
                 </div>
@@ -110,27 +109,27 @@
                 <div :class="['form-group']" >
                     <label for="doctor_postcode" class="col-sm-2 control-label">详细信息：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_postcode" value="" placeholder="请输入医生详细信息" id="doctor_postcode">
+                        <textarea class="form-control" type="text" name="doctor_postcode" value="" placeholder="请输入详细信息" id="doctor_postcode"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
                     <label for="doctor_honor" class="col-sm-2 control-label">所获荣誉：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_honor" value="" placeholder="请输入所获荣誉奖项" id="doctor_honor">
+                        <textarea class="form-control" type="text" name="doctor_honor" value="" placeholder="请输入所获荣誉奖项" id="doctor_honor"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
                     <label for="doctor_remark" class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_remark" value="" placeholder="请输入备注" id="doctor_remark">
+                        <textarea class="form-control" type="text" name="doctor_remark" value="" placeholder="例如自己的诊疗特长" id="doctor_remark"></textarea>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">申请</a>
+                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>
