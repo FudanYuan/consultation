@@ -98,7 +98,7 @@ class Patient extends Common
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
             $data['name'] = input('patient_name');
             $data['ID_number'] = input('post.patient_ID_number');
-            $data['gender'] = input('post.patient_gender');
+            $data['gender'] = input('post.patient_gender','');
             $data['age'] = input('post.patient_age');
             $data['occupation'] = input('posy.patient_occupation');
             $data['phone'] = input('post.patient_phone');
