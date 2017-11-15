@@ -208,19 +208,31 @@
                     </td>
                 </tr>
                 <tr>
-                    <td rowspan="4">辅助检查(图)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
-                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td rowspan="4">辅助检查(文件)</td>
                     <td colspan="2" rowspan="4">
                         <div class="form-group {$errors.img ?= 'has-error'}">
-
-                                <div id="filelist_left_eye">
+                                <div id="filelist">
                                     <div>{$data.img_origin??''}<b></b></div>
                                 </div>
                                 <br/>
+                                <div id="upload-wrapper">
+                                    <a id="pickfiles" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                                    <a id="uploadfiles" href="javascript:;">上传</a>
+                                </div>
+                                <input type="hidden" name="files_path" value="{$data.files_path??''}"/>
+                                <input type="hidden" name="files_path_origin" value="{$data.files_path_origin??''}"/>
+                                <span class="help-block">{$errors.files_path ?? ''}</span>
+                        </div>
+                    </td>
+                    <td rowspan="4">局部病变图(左眼)</td>
+                    <td colspan="2" rowspan="4">
+                        <div class="form-group {$errors.img ?= 'has-error'}">
+                            <img id="img_left_eye" src="{$data.img_left_eye ?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                            <br/>
                                 <div id="upload_left_eye">
-                                    <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                                    <a id="uploadfiles_left_eye" href="javascript:;">上传</a>
+                                    <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
+                                        <i class="fa fa-camera fa-lg"></i>
+                                    </a>
                                 </div>
                                 <input type="hidden" name="eye_photo_left" value="{$data.img_left_eye??''}"/>
                                 <input type="hidden" name="eye_photo_left_origin" value="{$data.img_origin_left_eye??''}"/>
@@ -230,13 +242,12 @@
                     <td rowspan="4">局部病变图(右眼)</td>
                     <td colspan="2" rowspan="4">
                         <div class="form-group {$errors.img ?= 'has-error'}">
-                                <div id="filelist_right_eye">
-                                    <div>{$data.img_origin??''}<b></b></div>
-                                </div>
-                                <br/>
+                            <img id="eye_photo_right" src="{$data.eye_photo_right ?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                            <br/>
                                 <div id="upload_right_eye">
-                                    <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                                    <a id="uploadfiles_right_eye" href="javascript:;">上传</a>
+                                    <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
+                                        <i class="fa fa-camera fa-lg"></i>
+                                    </a>
                                 </div>
                                 <input type="hidden" name="eye_photo_right" value="{$data.eye_photo_right??''}"/>
                                 <input type="hidden" name="eye_photo_right_origin" value="{$data.eye_photo_right_origin??''}"/>
@@ -253,7 +264,12 @@
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
+                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
+                        <div :class="['form-group', errors.consultation_goal != '' ? 'has-error' : '']" >
+                                <textarea  class="form-control" type="text" v-model="patient.consultation_goal" style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的"></textarea>
+                                <p class="help-block">{{errors.consultation_goal}}</p>
+                        </div>
+                    </td>
                 </tr>
 
                 <tr>
@@ -304,6 +320,7 @@
         </div>
     </div>
 </div><!-- /main-container -->
+{include file="Common/progress"}
 {include file="Common/bottom" /}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
@@ -386,7 +403,7 @@
                 },
                 isMulti: false
             });
-            myupload({
+            changeLogo({
                 container: 'upload_left_eye',
                 browse: 'pickfiles_left_eye',
                 url: '__PRO_PATH__/Media/upload?dir=import',
@@ -398,11 +415,14 @@
                 onUploaded: function (up, file, result) {
                     $("input[name='eye_photo_left_origin']").val(file.name);
                     var res = JSON.parse(result.response);
+                    $('#img_left_eye').attr('src',res.result.file);
                     $("input[name='eye_photo_left']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
-            myupload({
+            changeLogo({
                 container: 'upload_right_eye',
                 browse: 'pickfiles_right_eye',
                 url: '__PRO_PATH__/Media/upload?dir=import',
@@ -414,9 +434,12 @@
                 onUploaded: function (up, file, result) {
                     $("input[name='eye_photo_right_origin']").val(file.name);
                     var res = JSON.parse(result.response);
+                    $('#eye_photo_right').attr('src',res.result.file);
                     $("input[name='eye_photo_right']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
         },
         methods:{
