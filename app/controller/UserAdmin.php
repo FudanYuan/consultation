@@ -246,8 +246,10 @@ class UserAdmin extends Common{
     public function editAccount(){
         $data = input('post.');
         if(!empty($data)){
-            $logo = input('post.', '');
-            if(!$logo){
+            $ret = ['error_code' => 0, 'msg' => '编辑账户成功'];
+            $logo = input('post.logo', '');
+            if($logo != ''){
+                $ret['res'] = $logo;
                 $user_id = $this->getUserId();
                 $res = D('UserAdmin')->saveData($user_id, ['logo' => $logo]);
                 if(!$res){
@@ -256,9 +258,10 @@ class UserAdmin extends Common{
                     $this->jsonReturn($ret);
                 }
             }
-            $ret = ['error_code' => 0, 'msg' => '编辑账户成功'];
+
+            unset($data['logo']);
             $res = D('Doctor')->saveData($data['id'], $data);
-            $ret['res'] = $data;
+
             if(!empty($res['errors'])){
                 $ret['error_code'] = 1;
                 $ret['errors'] = $res['errors'];

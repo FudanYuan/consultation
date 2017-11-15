@@ -69,26 +69,12 @@
                             <form class="form-horizontal form-label-left" novalidate=""  id="account-info">
                                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                                     <label class="control-label col-sm-offset-3 col-md-3 col-sm-3 col-xs-12" for="logo">
-                                        <!--<img id="logo" src="{$data.logo ?? ''}" onerror="this.src='__PUBLIC__/images/profile/profile1.jpg'">-->
-                                        <!--<div id="filelist_logo">-->
-                                            <!--<div>{$data.img_origin??''}<b></b></div>-->
-                                        <!--</div>-->
-                                        <!--<br/>-->
-                                        <!--<div id="upload_logo">-->
-                                            <!--<a id="pickfiles_logo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>-->
-                                            <!--<a id="uploadfiles_logo" href="javascript:;">上传</a>-->
-                                        <!--</div>-->
-                                        <!--<input type="hidden" name="logo" value="{$data.logo??''}"/>-->
-                                        <!--<span class="help-block">{$errors.logo?? ''}</span>-->
-
-                                        <div class="user-setting-upload-img">
-                                            <img sid="img-userhead" src="https://fs.kf5.com/upload/16107/201711/5a0875fef1fea_646.jpg" onerror="this.src='/images/icons/end_user.jpg'">
-                                            <a sid="btn-upheadimg" class="ucuse-upbtn" href="javascript:void(0);" style="z-index: 1;">
-                                            <span style="margin-top: 45%">修改头像</span>
-                                            <input type="file" name="headimg">
-                                        </a>
+                                        <img id="logo" src="{$data.logo ?? ''}" onerror="this.src='__PUBLIC__/images/profile/profile1.jpg'">
+                                        <div id="upload_logo">
+                                            <a id="pickfiles_logo" href="javascript:;" style="position: relative;z-index: 1; margin-right: 25px;">选择头像</a>
                                         </div>
-
+                                        <input type="hidden" name="logo" value="{$data.logo??''}"/>
+                                        <span class="help-block">{$errors.logo?? ''}</span>
                                     </label>
                                 </div>
 
@@ -237,6 +223,7 @@
         </div>
     </div>
 </div><!-- /main-container -->
+{include file="Common/progress"}
 {include file="Common/popup_warn" /}
 {include file="Common/bottom" /}
 {include file="Common/upload"}
@@ -271,34 +258,6 @@
             }
         },
         mounted: function () {
-            //修改用户头像
-            var btnUpheadimg=$("[sid=\"btn-upheadimg\"]");
-            if(btnUpheadimg.length>=1){
-                new AjaxUpload(btnUpheadimg,{
-                    name:"headimg",
-                    data:{id:39241544},
-                    action:"/hc/userinfo/modifyheadimg/",
-                    responseType:"json",
-                    onSubmit:function(file,ext){
-                        if(!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
-                            showNotice("仅支持JPG, PNG 或 GIF 格式文件上传",false);
-                            return false;
-                        }
-                        btnUpheadimg.css({"z-index":-1});
-                        btnUpheadimg.find("span").html("上传中...");
-                    },
-                    onComplete:function(file,data){
-                        if(data.err===0){
-                            showNotice("头像修改成功！",true);
-                            btnUpheadimg.css({"z-index":1});
-                            btnUpheadimg.find("span").html("修改头像");
-                            $("[sid=\"img-userhead\"]").attr("src",data.src);
-                        }else{
-                            showNotice(data.msg, false);
-                        }
-                    }
-                });
-            }
         },
         methods:{
             resetErrors: function () {
@@ -346,7 +305,7 @@
             }
         },
         mounted: function () {
-            myupload({
+            changeLogo({
                 container: 'upload_logo',
                 browse: 'pickfiles_logo',
                 url: '__PRO_PATH__/Media/upload?dir=import',
@@ -356,7 +315,11 @@
                 uploadfiles: 'uploadfiles_logo',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='logo_origin']").val(file.name);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
+                    var res = JSON.parse(result.response);
+                    $('#logo').attr('src',res.result.file);
+                    $("input[name='logo']").val(res.result.file);
                 },
                 isMulti: false
             });

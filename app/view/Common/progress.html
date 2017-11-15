@@ -1,0 +1,36 @@
+<div class="custom-popup" id="progress-popup" style="width:200px;display:none;">
+    <div class="popup-body text-center">
+        <h5></h5>
+        <div class="progress progress-striped active" style="height:8px; margin:5px 0 0 0;">
+            <div class="progress-bar" style="width: 0">
+                <span class="sr-only"><span id="progress"></span>% Complete</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function popProgress(con){
+        $('#progress-popup h5').html(con);
+        $('#progress-popup').popup('show');
+    }
+
+    function chageTitle(con) {
+        $('#progress-popup h5').html(con);
+    }
+    function progress(progress) {
+        $('#progress').val(progress);
+        $('.progress-bar').css("width",progress+"%");
+    }
+    
+    function cancel() {
+        $('#progress-popup').popup('hide');
+    }
+    $(function(){
+        //Delete Widget Confirmation
+        $('#progress-popup').popup({
+            vertical: 'top',
+            transition: 'all 0.3s'
+        });
+    });
+</script>
