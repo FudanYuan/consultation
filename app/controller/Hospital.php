@@ -125,11 +125,10 @@ class Hospital extends Common
             $ret['data'] = $data;
             $params = [];
 
-
-
         }else{
             return view('',['Hospital' => $hospital]);
         }
+
     }
 
     /**

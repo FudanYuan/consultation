@@ -204,7 +204,7 @@
         methods: {
             createNewApply: function () {
                 getParams();
-                $.post('__PRO_PATH__/Hospital/create', vm.params, function (res) {
+                $.post('__PRO_PATH__/Hospital/edit', vm.params, function (res) {
                     if (res.error_code == 0) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
