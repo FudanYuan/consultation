@@ -57,6 +57,7 @@
 
 <!-- Simplify -->
 <script src="__PUBLIC__/js/simplify/simplify.js"></script>
+<script src="__PUBLIC__/js/simplify/simplify_dashboard.js"></script>
 
 <!-- Moment -->
 <script src="__PUBLIC__/js/moment.js"></script>
@@ -332,6 +333,17 @@
             user: '',
             logo: '',
             doctor_id: ''
+        },
+        mounted: function () {
+            $('.logout').on('click', function () {
+                $.get('__PRO_PATH__/UserAdmin/dologout', {}, function (res) {
+                    if (res.error_code == 0) {
+                        window.location.href = '__PRO_PATH__/UserAdmin/login';
+                    } else {
+                        popWarn(res.msg);
+                    }
+                });
+            });
         },
         methods:{
             getUser: function () {

@@ -19,7 +19,7 @@ icons.play();
 
 //Scrollable Chat Widget
 $('#chatScroll').slimScroll({
-	height:'230px'
+	height:'300px'
 });
 
 //Chat notification

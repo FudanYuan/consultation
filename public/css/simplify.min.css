@@ -1851,8 +1851,8 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
 }
 
 .wrapper.display-right .main-container {
-    left: -260px;
-    right: 260px;
+    left: -250px;
+    right: 250px;
     transition: all .5s ease;
     -webkit-transition: all .5s ease;
     -moz-transition: all .5s ease;
