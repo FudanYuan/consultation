@@ -16,7 +16,7 @@ class Apply extends Model{
         'is_definite_purpose','target_hospital_id',
         'target_office_ids','target_doctor_ids',
         'consultation_goal', 'apply_project','other_apply_project',
-        'apply_date','consultation_result','price','is_charge',
+        'apply_date','consultation_result','is_green_channel','price','is_charge',
         'status','create_time','update_time'
     );
     protected $type = [
@@ -24,6 +24,7 @@ class Apply extends Model{
         'patient_id' => 'integer',
         'source_user_id' => 'integer',
         'target_hospital_id' => 'integer',
+        'is_green_channel' => 'integer',
         'apply_date' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'
@@ -44,7 +45,7 @@ class Apply extends Model{
         }
         $res = $this->alias('a')->field('a.id as id,e.id as hospital_id,e.logo as hospital_logo,
                 e.name as hospital_name,c.id as doctor_id,c.name as doctor_name,
-                c.phone as phone,apply_type,apply_project,other_apply_project,
+                c.phone as phone,apply_type,apply_project,other_apply_project,is_green_channel,
                 consultation_goal,apply_date,a.status,price,is_charge,a.create_time')
                 ->join('user_admin b','b.id = a.source_user_id')
                 ->join('consultation_doctor c','c.id = b.doctor_id')

@@ -309,7 +309,8 @@
         el: '#user_big',
         data: {
             user: '',
-            logo: ''
+            logo: '',
+            doctor_id: ''
         },
         methods:{
             getUser: function () {
@@ -317,6 +318,7 @@
                     if(res.error_code == 0){
                         vm3.user = res.username;
                         vm3.logo = res.logo;
+                        vm3.doctor_id = res.doctor_id;
                     }
                 });
             }
@@ -328,7 +330,8 @@
         el: '#user_small',
         data: {
             user: '',
-            logo: ''
+            logo: '',
+            doctor_id: ''
         },
         methods:{
             getUser: function () {
@@ -336,6 +339,7 @@
                     if(res.error_code == 0){
                         vm4.user = res.username;
                         vm4.logo = res.logo;
+                        vm3.doctor_id = res.doctor_id;
                     }
                 });
             }

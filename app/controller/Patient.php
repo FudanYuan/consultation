@@ -134,7 +134,6 @@ class Patient extends Common
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res['errors'];
             }
-            $ret['params'] = $params;
             $this->jsonReturn($ret);
         }
         return view('',[]);
@@ -146,12 +145,51 @@ class Patient extends Common
      */
     public function edit(){
             $id = input('get.id');
-            $data = input('post.');
+            $params = input('post.');
             $patient = D('Patient')->getById($id);
-            if(!empty($data)){
-                $ret['data'] = $data;
+            if(!empty($params)){
+                $ret = ['error_code' => 0, 'msg' => '新建成功'];
+                $data['name'] = input('patient_name');
+                $data['ID_number'] = input('post.patient_ID_number');
+                $data['gender'] = input('post.patient_gender','');
+                $data['age'] = input('post.patient_age');
+                $data['occupation'] = input('posy.patient_occupation');
+                $data['phone'] = input('post.patient_phone');
+                $data['email'] = input('post.patient_email');
+                $data['birthplace'] = input('post.patient_birthplace');
+                $data['address'] = input('post.patient_address');
+                $data['work_unit'] = input('post.patient_work_unit');
+                $data['postcode'] = input('post.patient_postcode');
+                $data['height'] = input('post.patient_height');
+                $data['weight'] = input('post.patient_weight');
+                $data['vision_left'] = input('post.patient_vision_left');
+                $data['vision_right'] = input('post.patient_vision_right');
+                $data['pressure_left'] = input('post.patient_pressure_left');
+                $data['pressure_right'] = input('post.patient_pressure_right');
+//            $data['exam_img'] = input('post.eye_photo_left');
+//            $data['exam_img_origin'] = input('post.eye_photo_left_origin');
+                $data['eye_photo_left'] = input('post.eye_photo_left');
+                $data['eye_photo_right'] = input('post.eye_photo_right');
+                $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
+                $data['eye_photo_right_origin'] = input('post.eye_photo_right_origin');
+                $data['ill_type'] = input('post.patient_eyes_type');
+                $data['other_ill_type'] = input('post.other_ill_type','');
+                $data['ill_state'] = input('post.patient_illness_state');
+                $data['diagnose_state'] = input('post.diagnose_state');
+                $data['files_path'] = input('post.files_path');
+                $data['files_path_origin'] = input('post.files_path_origin');
+                $data['in_hospital_time'] = input('post.in_hospital_time');
+                $data['narrator'] = input('post.narrator');
+                $data['main_narrate'] = input('post.main_narrate');
+                $res = D('Patient')->saveData($params['patient'],$data);
+                if(!empty($res['errors'])) {
+                    $ret['error_code'] = 2;
+                    $ret['msg'] = '新建失败';
+                    $ret['errors'] = $res['errors'];
+                }
+                $ret['params'] = $params;
                 $this->jsonReturn($ret);
-
+                $this->jsonReturn($ret);
             }else{
                 return view('',['patient' => $patient]);
             }

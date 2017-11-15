@@ -1,0 +1,496 @@
+{include file="Common/top" title="首页" metas='' /}
+{include file="Common/search" /}
+{if condition="authority('Channel')"}
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li>绿色通道</li>
+        </ul>
+        <div id="apply">
+            <div class="list-search">
+                <form action="" class="form-inline" method="post" id="main-form">
+                    <div class="form-group">
+                        <label for="apply_type">申请类型：</label>
+                        <ul class="radio-group" id="apply_type">
+                            <li class="radio-list">
+                                <input type="radio" name="apply_type" class="labelauty" id="type-all" value="-1" style="display: none;" checked>
+                                <label for="type-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_type" class="labelauty" id="type-normal" value="1" style="display: none;">
+                                <label for="type-normal">
+                                    <span class="labelauty-unchecked">普通</span>
+                                    <span class="labelauty-checked">普通</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_type" class="labelauty" id="type-urgent" value="2" style="display: none;">
+                                <label for="type-urgent">
+                                    <span class="labelauty-unchecked">紧急</span>
+                                    <span class="labelauty-checked">紧急</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_type">申请项目：</label>
+                        <ul class="radio-group" id="apply_project">
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project-all" value="-1" style="display: none;" checked>
+                                <label for="project-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project1" value="1" style="display: none;">
+                                <label for="project1">
+                                    <span class="labelauty-unchecked">咨询</span>
+                                    <span class="labelauty-checked">咨询</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project2" value="2" style="display: none;">
+                                <label for="project2">
+                                    <span class="labelauty-unchecked">住院</span>
+                                    <span class="labelauty-checked">住院</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project3" value="3" style="display: none;">
+                                <label for="project3">
+                                    <span class="labelauty-unchecked">手术</span>
+                                    <span class="labelauty-checked">手术</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project4" value="4" style="display: none;">
+                                <label for="project4">
+                                    <span class="labelauty-unchecked">其他</span>
+                                    <span class="labelauty-checked">其他</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">处理状态：</label>
+                        <ul class="radio-group" id="status">
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-all" value="-1" style="display: none;" checked>
+                                <label for="status-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-wait" value="1" style="display: none;">
+                                <label for="status-wait">
+                                    <span class="labelauty-unchecked">待处理</span>
+                                    <span class="labelauty-checked">待处理</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-more" value="2" style="display: none;">
+                                <label for="status-more">
+                                    <span class="labelauty-unchecked">处理中</span>
+                                    <span class="labelauty-checked">处理中</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-success" value="3" style="display: none;">
+                                <label for="status-success">
+                                    <span class="labelauty-unchecked">成功</span>
+                                    <span class="labelauty-checked">成功</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-fail" value="4" style="display: none;">
+                                <label for="status-fail">
+                                    <span class="labelauty-unchecked">失败</span>
+                                    <span class="labelauty-checked">失败</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <br><br>
+                    <div class="form-group">
+                        <label for="is_charge">收费状态：</label>
+                        <ul class="radio-group" id="is_charge">
+                            <li class="radio-list">
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-all" value="-1" style="display: none;" checked>
+                                <label for="charge-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-false" value="0" style="display: none;">
+                                <label for="charge-false">
+                                    <span class="labelauty-unchecked">未收费</span>
+                                    <span class="labelauty-checked">未收费</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-true" value="1" style="display: none;">
+                                <label for="charge-true">
+                                    <span class="labelauty-unchecked">已收费</span>
+                                    <span class="labelauty-checked">已收费</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_date">预约时间：</label>
+                        <input placeholder="" id="apply_date" name="apply_date_str" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input"  style="width: 120px">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital">医院名称：</label>
+                        <select name="hospital" class="form-control" id="hospital" style="width:100px">
+                            <option value="-1">全部</option>
+                            {foreach name="hospital" item="model"}
+                            <option value="{$model.id}">{$model.name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="keywords">关键词：</label>
+                        <input name="keywords" class="form-control" id="keywords" style="width:150px" value=""/>
+                    </div>
+                    {if condition="authority('ChannelSelect')"}
+                    <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
+                    {/if}
+                </form>
+            </div>
+            <div class="list-btns">
+                {if condition="authority('ChannelCreate')"}
+                <div class="btn-group">
+                    <button type="button" class="btn btn-success" @click="create">新建</button>
+                </div>
+                {/if}
+                {if condition="authority('ChannelRemove')"}
+                <div class="btn-group">
+                    <a href="javascript:;" class="btn btn-default" @click="remove([])">删除</a>
+                </div>
+                {/if}
+            </div>
+            {if condition="authority('ChannelResult')"}
+            <div class="result-count">
+                经过筛选，共<span> {{total}} </span>条数据符合条件
+            </div>
+            <table class="table table-hover" style="background:#fff;">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
+                    <th>状态</th>
+                    <th>申请类型</th>
+                    <th>申请医院</th>
+                    <th>申请医师</th>
+                    <th>联系方式</th>
+                    <th>申请项目</th>
+                    <th>预约时间</th>
+                    <th>处理进度</th>
+                    <th>是否缴费</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <template  v-if="list.length != 0">
+                    <tr v-for="(model, index) in list">
+                        <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
+                        <td v-if="model.status==1">
+                            <span style="color: purple">
+                                <i class="fa fa-envelope fa-lg" aria-hidden="true"></i>
+                            </span>
+                        </td>
+                        <td v-else>
+                            <span style="color: darkgrey">
+                                <i class="fa fa-envelope-open fa-lg" aria-hidden="true"></i>
+                            </span>
+                        </td>
+                        <td>{{model.apply_type | getApplyType}}</td>
+                        <td>{{model.hospital_name}}</td>
+                        <td>{{model.doctor_name}}</td>
+                        <td>{{model.phone}}</td>
+                        <td v-if="model.apply_project != 4">{{model.apply_project | getApplyProject}}</td>
+                        <td v-else>{{model.other_apply_project}}</td>
+                        <td>{{model.apply_date | moment}}</td>
+                        <td>{{model.status | getApplyStatus}}</td>
+                        <td>{{model.is_charge | getChargeStatus}}</td>
+                        <td>
+                            {if condition="authority('ChannelInfo')"}
+                            <a :href="'__PRO_PATH__/Apply/channelInfo?id='+model.id" title="详情" v-if="model.status == 3 || model.status == 4">
+                                <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                            </a>
+                            {/if}
+
+                            {if condition="authority('ChannelEdit')"}
+                            <a :href="'__PRO_PATH__/Apply/channelEdit?id='+model.id" title="编辑" v-if="model.status == 1 && model.doctor_id == vm3.doctor_id">
+                                <i class="fa fa-pencil-square fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                            </a>
+                            {/if}
+
+                            {if condition="authority('ChannelReply')"}
+                            <a :href="'__PRO_PATH__/Apply/channelReply?id='+model.id" title="回复" v-if="model.status == 1 || model.status == 2">
+                                <i class="fa fa-commenting fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                            </a>
+                            {/if}
+
+                            {if condition="authority('ChannelCommunication')"}
+                            <a :href="'__PRO_PATH__/Apply/channelCommunication?id='+model.id" title="讨论" v-if="model.status >= 2">
+                                <i class="fa fa-comments fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
+                            </a>
+                            {/if}
+
+                            {if condition="authority('ChannelRemove')"}
+                            <a href="javascript:;" @click="remove([model.id])" title="删除">
+                                <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
+                            </a>
+                            {/if}
+                        </td>
+                    </tr>
+                </template>
+                <template v-else>
+                    <tr>
+                        <td colspan="11" class="nodata">暂无绿色通道申请！</td>
+                    </tr>
+                </template>
+                </tbody>
+            </table>
+            {include file="Common/page" /}
+            {/if}
+        </div>
+    </div>
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+{include file="Common/popup_list" /}
+{include file="Common/calendar" /}
+<script>
+    $('#consultation-nav-channel').addClass('active');
+    var vm = new Vue({
+        el: '#apply',
+        data: {
+            list: [],
+            params: {},
+            check_all: false,
+            select: [],
+            total: 0,
+            per_page: 10,
+            current_page: 1,
+            pages: 1,
+            fore_omit: false,
+            back_omit: false,
+            fore_pages: [],
+            mid_pages: [],
+            back_pages: [],
+            side: 3,
+            window: 6
+        },
+        mounted: function () {
+            $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
+        },
+        updated: function () {
+            this.fore_pages = [];
+            this.mid_pages = [];
+            this.back_pages = [];
+            if(this.pages < this.window + 6){
+                this.fore_omit = false;
+                this.back_omit = false;
+                for(var i=1; i<=this.pages; i++){
+                    this.fore_pages.push(i);
+                }
+            }
+            else if(this.current_page <= this.window){
+                this.fore_omit = false;
+                this.back_omit = true;
+                for(var i=1; i<= this.window + 2; i++){
+                    this.fore_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+            else if(this.current_page > this.pages - this.window){
+                this.fore_omit = true;
+                this.back_omit = false;
+                for(var i=this.pages-(this.window+2); i<= this.pages; i++){
+                    this.back_pages.push(i);
+                }
+                this.fore_pages = [1, 2];
+            }
+            else{
+                this.fore_omit = true;
+                this.back_omit = true;
+                this.fore_pages = [1, 2];
+                for(var i=parseInt(this.current_page) - parseInt(this.side);
+                    i <= parseInt(this.current_page) + parseInt(this.side); i++){
+                    this.mid_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+        },
+        methods:{
+            resetParams: function () {
+                this.select = [];
+                this.check_all = false;
+            },
+            // 转到某页
+            gotoPage: function (page) {
+                if(page == this.current_page) return;
+                this.current_page = page;
+                submit();
+            },
+            selectClick: function (id) {
+                if(this.select.indexOf(id) == -1){
+                    this.select.push(id);
+                }
+                else{
+                    this.select.remove(id);
+                }
+                if(this.list.length == this.select.length){
+                    this.check_all = true;
+                } else {
+                    this.check_all = false;
+                }
+            },
+            checkAll: function () {
+                if(!this.check_all){
+                    for(var i=0;i<this.list.length;i++){
+                        var id = this.list[i]['id'];
+                        if(this.select.indexOf(id) == -1){
+                            this.select.push(id);
+                        }
+                    }
+                } else {
+                    this.select = [];
+                }
+                this.check_all = !this.check_all;
+            },
+
+            create: function () {
+                window.location.href = '__PRO_PATH__/Apply/channelCreate';
+            },
+
+            remove: function (id) {
+                var ids = [];
+                if(id.length==0){
+                    ids = this.select;
+                }
+                else{
+                    if(this.select.indexOf(id[0]) == -1){
+                        this.select.push(id[0]);
+                    }
+                    ids = id;
+                }
+                this.select = ids;
+                // 删除
+                popupList({
+                    remove: '__PRO_PATH__/Apply/remove',
+                    ids: vm.select
+                }, function () {
+                    submit();
+                });
+                $('#confirm-popup').popup('show');
+            }
+        },
+        filters:{
+            moment: function (value, formatString) {
+                formatString = formatString || 'YYYY-MM-DD HH:mm';
+                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+                return time;
+            },
+            getApplyStatus: function (value) {
+                var ret = "";
+                if(value==1){
+                    ret = "待处理";
+                }
+                if(value==2){
+                    ret = "处理中";
+                }
+                if(value==3){
+                    ret = "会诊成功";
+                }
+                if(value==4){
+                    ret = "会诊失败";
+                }
+                return ret;
+            },
+            getApplyType: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '一般';
+                }
+                if(value == 2){
+                    ret = '紧急';
+                }
+                return ret;
+            },
+            getApplyProject: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '咨询';
+                }
+                else if(value == 2){
+                    ret = '住院';
+                }
+                else if(value == 3){
+                    ret = '手术';
+                }
+                return ret;
+            },
+            getChargeStatus: function (value) {
+                var ret = '';
+                if(value == 0){
+                    ret = '未缴费';
+                }
+                if(value == 1){
+                    ret = '已缴费';
+                }
+                return ret;
+            },
+            formatText: function (text, len) {
+                return cutString(text, len);
+            }
+        }
+    });
+
+    submit();
+
+    // 异步提交数据
+    function submit() {
+        getParams();
+        vm.resetParams();
+        $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
+            if (res.error_code == 0) {
+                vm.total = res.total;
+                vm.pages = Math.ceil(res.total / vm.per_page);
+                vm.current_page = res.current_page;
+                vm.list = res.data;
+                console.log(JSON.stringify(vm.list));
+            }
+        });
+    }
+
+    // 获取参数设置
+    function getParams() {
+        var data = $('#main-form').serializeArray();
+        $.each(data, function () {
+            vm.params[this.name] = this.value;
+        });
+        vm.params['is_green_channel'] = 1;
+        vm.params['per_page'] = vm.per_page;
+        vm.params['current_page'] = vm.current_page;
+    }
+
+</script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

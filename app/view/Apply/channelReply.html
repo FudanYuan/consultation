@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{if condition="authority('ApplyReply')"}
+{if condition="authority('ChannelReply')"}
 <style>
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
         padding: 8px;
@@ -12,19 +12,19 @@
         font-weight: 500;
     }
     .form-group {
-         margin-bottom: 0;
+        margin-bottom: 0;
     }
 </style>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
+            <li><a href="__PRO_PATH__/Apply/channel">绿色通道</a></li>
             <li>回复申请</li>
         </ul>
 
         <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-reply">
-            <a id="form-cancel" class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/index">返回</a>
+            <a id="form-cancel" class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/channel">返回</a>
             <table class="table" style="width: auto; margin: 0 30px">
                 <tr>
                     <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
@@ -156,7 +156,7 @@
             <div style="text-align: center;margin: 5px 30px">
                 <a id="form-reply" class="btn btn-success" style="margin: 5px 30px" @click="submitReply(3)">回复</a>
                 <a id="form-reject" class="btn btn-danger" style="margin: 5px 30px" @click="submitReply(4)">拒绝</a>
-                <a class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/index">返回</a>
+                <a class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/channel">返回</a>
             </div>
         </div>
     </div>
@@ -207,7 +207,7 @@
                 vm.reply['update_time_str'] = $('#update_time').val();
                 $.post('__PRO_PATH__/Apply/Reply', vm.reply, function (res) {
                     if(res.error_code == 0){
-                        popWarn(res.msg, '__PRO_PATH__/Apply/index');
+                        popWarn(res.msg, '__PRO_PATH__/Apply/channel');
                     } else{
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
