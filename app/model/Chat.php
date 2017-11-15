@@ -8,8 +8,8 @@ namespace app\model;
 
 use think\Model;
 
-class Communication extends Model{
-    protected $table = 'consultation_communication';
+class Chat extends Model{
+    protected $table = 'consultation_chat';
     protected $pk = 'id';
     protected $fields = array(
         'id', 'apply_id','source_user_id','target_user_id','words_info', 'files_info',
@@ -26,36 +26,36 @@ class Communication extends Model{
     ];
 
     /**
-     * 获取通知列表
+     * 获取消息列表
      * @param array $cond
      */
     public function getList($cond = []){
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
-            ->order('priority asc, create_time desc')
+        $res = $this->field('id,apply_id,source_user_id,target_user_id,words_info, 
+        files_info,time,status,create_time,update_time')
+            ->order('create_time desc')
             ->where($cond)
             ->select();
         return $res;
     }
 
     /**
-     * 根据ID获取通知公告
+     * 根据ID获取消息列表
      * @param $id
      * @return mixed
      */
     public function getById($id){
-        $res = $this->field('id,source_user_id,target_user_id,title,content,
-        operation,priority,status,create_time')
+        $res = $this->field('id,apply_id,source_user_id,target_user_id,words_info, 
+        files_info,time,status,create_time,update_time')
             ->where(['id' => $id])
             ->find();
         return $res;
     }
 
     /**
-     * 更新通知公告
+     * 更新消息列表
      * {@inheritDoc}
      * @see \think\Model::save()
      */
@@ -71,7 +71,7 @@ class Communication extends Model{
     }
 
     /**
-     * 添加通知公告
+     * 添加消息列表
      * @param $data
      * @return array
      */
@@ -88,7 +88,7 @@ class Communication extends Model{
 
 
     /**
-     * 批量增加通知公告
+     * 批量增加消息列表
      * @param $dataSet
      * @return array
      */
@@ -106,7 +106,7 @@ class Communication extends Model{
     }
 
     /**
-     * 删除通知公告
+     * 删除消息列表
      * @param array $cond
      * @return false|int
      * @throws MyException
@@ -142,18 +142,6 @@ class Communication extends Model{
         }
         if(isset($data['target_user_id']) && !$data['target_user_id']){
             $errors['target_user_id'] = '接收用户不能为空';
-        }
-        if(isset($data['title']) && !$data['title']){
-            $errors['title'] = '标题不能为空';
-        }
-        if(isset($data['content']) && !$data['content']){
-            $errors['content'] = '内容不能为空';
-        }
-        if(isset($data['operation']) && !$data['operation']){
-            $errors['operation'] = '操作不能为空';
-        }
-        if(isset($data['priority']) && !$data['priority']){
-            $errors['priority'] = '优先级不能为空';
         }
         return $errors;
     }

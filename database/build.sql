@@ -235,11 +235,11 @@ INSERT INTO `consultation_apply` (`patient_id`, `source_user_id`, `apply_type`, 
 (1, 2, 2, 1, 1, '-1-', '-1-2-', '浮动工资法国政府多个', 3, '', 1510372800, NULL, 0, 0, 1, 1510379139, NULL);
 
 
-# Dump of table consultation_communication
+# Dump of table consultation_chat
 # ------------------------------------------------------------
-DROP TABLE IF EXISTS `consultation_communication`;
+DROP TABLE IF EXISTS `consultation_chat`;
 
-CREATE TABLE `consultation_communication` (
+CREATE TABLE `consultation_chat` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `apply_id` INT DEFAULT NULL COMMENT '申请id,外键',
   `source_user_id` INT DEFAULT NULL COMMENT '发送方医生id,外键',

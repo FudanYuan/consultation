@@ -43,7 +43,7 @@ class Apply extends Model{
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 0];
         }
-        $res = $this->alias('a')->field('a.id as id,e.id as hospital_id,e.logo as hospital_logo,
+        $res = $this->alias('a')->field('a.id as id,b.id as user_id, e.id as hospital_id,e.logo as hospital_logo,
                 e.name as hospital_name,c.id as doctor_id,c.name as doctor_name,
                 c.phone as phone,apply_type,apply_project,other_apply_project,is_green_channel,
                 consultation_goal,apply_date,a.status,price,is_charge,a.create_time')

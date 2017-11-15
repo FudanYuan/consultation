@@ -1,0 +1,334 @@
+{include file="Common/top" title="首页" metas='' /}
+{if condition="authority('Talk')"}
+<link href="__PUBLIC__/css/chat.css" rel="stylesheet">
+<script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
+<div class="main-container">
+    <div class="padding-md">
+        <ul class="breadcrumb">
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
+            <li>在线互动</li>
+        </ul>
+        <div class="row" style=" height: 300px">
+            <div class="col-lg-12">
+                <div class="smart-widget widget-purple">
+                    <div class="smart-widget-header">
+                        <i class="fa fa-comment"></i> Chat
+                        <span class="smart-widget-option">
+												<span class="refresh-icon-animated">
+													<i class="fa fa-circle-o-notch fa-spin"></i>
+												</span>
+					                            <a href="#" class="widget-toggle-hidden-option">
+					                                <i class="fa fa-cog"></i>
+					                            </a>
+					                            <a href="#" class="widget-collapse-option" data-toggle="collapse">
+					                                <i class="fa fa-chevron-up"></i>
+					                            </a>
+					                            <a href="#" class="widget-refresh-option">
+					                                <i class="fa fa-refresh"></i>
+					                            </a>
+					                            <a href="#" class="widget-remove-option">
+					                                <i class="fa fa-times"></i>
+					                            </a>
+					                        </span>
+                    </div>
+                    <div class="smart-widget-inner">
+                        <div class="smart-widget-hidden-section">
+                            <ul class="widget-color-list clearfix">
+                                <li style="background-color:#20232b;" data-color="widget-dark"></li>
+                                <li style="background-color:#4c5f70;" data-color="widget-dark-blue"></li>
+                                <li style="background-color:#23b7e5;" data-color="widget-blue"></li>
+                                <li style="background-color:#2baab1;" data-color="widget-green"></li>
+                                <li style="background-color:#edbc6c;" data-color="widget-yellow"></li>
+                                <li style="background-color:#fbc852;" data-color="widget-orange"></li>
+                                <li style="background-color:#e36159;" data-color="widget-red"></li>
+                                <li style="background-color:#7266ba;" data-color="widget-purple"></li>
+                                <li style="background-color:#f5f5f5;" data-color="widget-light-grey"></li>
+                                <li style="background-color:#fff;" data-color="reset"></li>
+                            </ul>
+                        </div>
+                        <div class="smart-widget-body">
+                            <div id="chatScroll">
+                                <ul class="chat">
+                                    <li class="left clearfix">
+															<span class="chat-img pull-left">
+																<img src="__PUBLIC__/images/profile/profile2.jpg" alt="User Avatar">
+															</span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font">John Doe</strong>
+                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+                                            </div>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="right clearfix">
+															<span class="chat-img pull-right">
+																<img src="__PUBLIC__/images/profile/profile3.jpg" alt="User Avatar">
+															</span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font">Jane Doe</strong>
+                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
+                                            </div>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="left clearfix">
+															<span class="chat-img pull-left">
+																<img src="__PUBLIC__/images/profile/profile2.jpg" alt="User Avatar">
+															</span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font">John Doe</strong>
+                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 20 mins ago</small>
+                                            </div>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="right clearfix">
+															<span class="chat-img pull-right">
+																<img src="__PUBLIC__/images/profile/profile3.jpg" alt="User Avatar">
+															</span>
+                                        <div class="chat-body clearfix">
+                                            <div class="header">
+                                                <strong class="primary-font">Jane Doe</strong>
+                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 25 mins ago</small>
+                                            </div>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
+                                            </p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="smart-widget-footer">
+                            <div class="input-group">
+                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="type your message here...">
+                                <span class="input-group-btn">
+														<button class="btn btn-success btn-sm no-shadow" id="btn-chat">Send</button>
+													</span>
+                            </div><!-- /input-group -->
+                        </div><!-- ./smart-widget-footer -->
+                    </div><!-- ./smart-widget-inner -->
+                </div><!-- ./smart-widget -->
+            </div><!-- ./col -->
+        </div>
+    </div><!-- ./row -->
+</div><!-- /main-container -->
+{include file="Common/bottom" /}
+{include file="Common/calendar" /}
+{include file="Common/popup_warn" /}
+{include file="Common/popup_list" /}
+{include file="Common/calendar" /}
+{include file="Common/upload" /}
+<!-- Slimscroll -->
+<script src='__PUBLIC__/js/jquery.slimscroll.min.js'></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script>
+    $('#consultation-nav-chat').addClass('active');
+
+    function clickRadio(value)
+    {
+        if(value == 5){
+            vm.seen['ill_type'] = !vm.seen['ill_type'];
+        } else{
+            vm.seen['ill_type'] = false;
+        }
+    }
+
+    function clickRadio_apply_project(value)
+    {
+        if(value == 4){
+            vm.seen['apply_project'] = !vm.seen['apply_project'];
+        } else{
+            vm.seen['apply_project'] = false;
+        }
+    }
+
+    var vm = new Vue({
+        el: '#new-apply-form',
+        data: {
+            params: {},
+            patient:{
+                patient_ID_number: '',
+                patient_name: '',
+                patient_age:'',
+                patient_phone:'',
+                patient_illness_state:'',
+                patient_gender:'',
+                patient_eyes_type:'',
+                patient_vision_left:'',
+                patient_vision_right:'',
+                patient_pressure_left:'',
+                patient_pressure_right:'',
+            },
+            seen:{
+                ill_type: false,
+                apply_project:false,
+            },
+
+            errors:{
+                ID_number:'',
+                name:'',
+                age:'',
+                gender:'',
+                ill_state:'',
+                ill_type:'',
+                phone:'',
+                apply_date:'',
+                apply_project:'',
+                target_office_id:'',
+                consultation_goal:''
+            }
+        },
+        mounted:function () {
+            $('.sidebar-right').toggleClass('active');
+            $('.wrapper').toggleClass('display-right');
+            $('footer').toggleClass('display-right');
+
+            $(".multiple").multipleSelect({
+                filter: true,
+                multiple: true,
+                selectAll: true
+            });
+            $(".flatpickr").flatpickr({time_24hr:true});
+            myupload({
+                container: 'upload-wrapper',
+                browse: 'pickfiles',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist',
+                uploadfiles: 'uploadfiles',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='files_path_origin']").val(file.name);
+                    var res = JSON.parse(result.response);
+                    $("input[name='files_path']").val(res.result.file);
+                },
+                isMulti: false
+            });
+            myupload({
+                container: 'upload_left_eye',
+                browse: 'pickfiles_left_eye',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist_left_eye',
+                uploadfiles: 'uploadfiles_left_eye',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='eye_photo_left_origin']").val(file.name);
+                    var res = JSON.parse(result.response);
+                    $("input[name='eye_photo_left']").val(res.result.file);
+                },
+                isMulti: false
+            });
+            myupload({
+                container: 'upload_right_eye',
+                browse: 'pickfiles_right_eye',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                filelist: 'filelist_right_eye',
+                uploadfiles: 'uploadfiles_right_eye',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    $("input[name='eye_photo_right_origin']").val(file.name);
+                    var res = JSON.parse(result.response);
+                    $("input[name='eye_photo_right']").val(res.result.file);
+                },
+                isMulti: false
+            });
+        },
+
+        methods: {
+            createNewApply: function () {
+                getParams();
+                $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
+                    if (res.error_code == 0) {
+                        $.each(vm.errors, function (k) {
+                            vm.errors[k] = '';
+                        });
+                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
+                    } else if (res.error_code == 2) {
+                        $.each(vm.errors, function (k) {
+                            vm.errors[k] = '';
+                        });
+                        $.each(res.errors, function (k, v) {
+                            vm.errors[k] = v;
+                        });
+                        console.log(JSON.stringify(vm.errors));
+                    }
+                });
+            },
+
+            check_by_ID_number: function () {
+                console.log("check_by_ID_number");
+                $.post('__PRO_PATH__/Patient/getPatientByIDNum', {'patient_ID_number': vm.patient['patient_ID_number']}, function (res) {
+                    if (res.error_code == 2) {
+                        popWarn('未找到这名患者的信息 ,请手动输入');
+                    } else {
+                        $.each(res.patient, function (k, v) {
+                            if(k=='id'){
+                                vm.params['patient_id']=v;
+                            }
+                            vm.patient[k] = v;
+                        });
+                        console.log(JSON.stringify(vm.errors));
+                    }
+                });
+            }
+
+        }
+    });
+
+
+    $('#form-cancel').on('click', function(){
+        window.location.href = '__PRO_PATH__/Apply/index';
+    });
+
+    function change_hospital(){
+        console.log("执行了");
+        var hospital_id = $('#consultation_hospital').val();
+        console.log(hospital_id);
+        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});
+    }
+
+    function getParams(){
+        vm.params['office_ids'] = [];
+        vm.params['doctor_ids'] = [];
+        var data = $('#new-apply-form').serializeArray();
+        $.each(data, function() {
+            if(this.name == 'office_ids' || this.name == 'doctor_ids'){
+                vm.params[this.name].push(this.value);
+            } else {
+                vm.params[this.name] = this.value;
+            }
+        });
+        $.each(vm.patient, function (k, v) {
+            vm.params[k] = v;
+        });
+        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(vm.params));
+    }
+</script>
+{else /}
+<div class="main-container">
+    <div class="padding-md">
+        <span class="col-lg-12" style="font-size: larger; text-align: center">
+			<strong>抱歉，您访问的页面不存在！</strong>
+		</span>
+    </div>
+</div>
+{include file="Common/bottom" /}
+{/if}

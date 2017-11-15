@@ -84,6 +84,7 @@
 </head>
 <body class="overflow-hidden">
 <div class="wrapper preload">
+    {include file="Common/sidebar_right" /}
     <header class="top-nav">
         <div class="top-nav-inner">
             <!-- 小屏显示 -->
@@ -121,6 +122,15 @@
                                 <a href="__PRO_PATH__/Apply/index">
                                     <i class="fa fa-inbox fa-lg"></i>
                                     <span class="m-left-xs">会诊申请</span>
+                                </a>
+                            </li>
+                            {/if}
+
+                            {if condition="authority('Chat')"}
+                            <li>
+                                <a href="__PRO_PATH__/Chat/index">
+                                    <i class="fa fa-comments fa-lg"></i>
+                                    <span class="m-left-xs">在线互动</span>
                                 </a>
                             </li>
                             {/if}
@@ -187,6 +197,16 @@
                                         </a>
                                     </li>
                                     {/if}
+
+                                    {if condition="authority('Chat')"}
+                                    <li>
+                                        <a href="__PRO_PATH__/Chat/index">
+                                            <i class="fa fa-comments fa-lg"></i>
+                                            <span class="m-left-xs">在线互动</span>
+                                        </a>
+                                    </li>
+                                    {/if}
+
                                     {if condition="authority('ClearCache')"}
                                     <li>
                                         <a href="javascript:;" id="clearCache">清除缓存</a>
@@ -199,6 +219,11 @@
 
                     <!-- 信息推送 -->
                     <ul class="nav-notification">
+                        <li>
+                            <a href="javascript:;" class="logout" title="安全退出">
+                                <i class="fa fa-power-off fa-lg"></i>
+                            </a>
+                        </li>
                         <li id="nav-notification">
                             <a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
                             <span class="badge badge-purple bounceIn animation-delay5 active" v-if="total != 0">{{total}}</span>
@@ -225,10 +250,14 @@
                                 <li><a href="__PRO_PATH__/Apply/index">查看所有申请</a></li>
                             </ul>
                         </li>
-                        <li>
-                            <a href="javascript:;" class="logout" title="安全退出">
-                                <i class="fa fa-power-off fa-lg"></i>
-                            </a>
+
+                        <li class="chat-notification">
+                            <a href="#" class="sidebarRight-toggle"><i class="fa fa-comments fa-lg"></i></a>
+                            <span class="badge badge-danger bounceIn active">1</span>
+
+                            <div class="chat-alert">
+                                Hello, Are you there?
+                            </div>
                         </li>
                     </ul>
                 </div><!-- 大屏显示 -->
@@ -333,6 +362,18 @@
 								<span class="text m-left-sm">账户信息</span>
                             </span>
                             <span class="menu-content-hover block">Account</span>
+                        </a>
+                    </li>
+                    {/if}
+
+                    {if condition="authority('Chat')"}
+                    <li class="bg-palette4" id="consultation-nav-chat">
+                        <a href="__PRO_PATH__/Chat/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-comments fa-lg"></i></span>
+								<span class="text m-left-sm">在线互动</span>
+                            </span>
+                            <span class="menu-content-hover block">Chat</span>
                         </a>
                     </li>
                     {/if}
