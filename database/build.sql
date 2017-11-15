@@ -218,6 +218,7 @@ CREATE TABLE `consultation_apply` (
   `other_apply_project` VARCHAR(1000) DEFAULT NULL COMMENT '其他申请项目',
   `apply_date` INT(11) DEFAULT NULL COMMENT '申请会诊日期',
   `consultation_result` TEXT DEFAULT '' COMMENT '会诊结果',
+  `is_green_channel` TINYINT DEFAULT 0 COMMENT '会诊类型：0->否；1->是',
   `price` FLOAT DEFAULT 0 COMMENT '收费价格',
   `is_charge` TINYINT DEFAULT 0 COMMENT '是否缴费：0->无；1->已缴费',
   `status` TINYINT DEFAULT NULL COMMENT '状态：0 关闭 1 未会诊 2 已会但需病患详细信息 3 得出结果 4 未得出结果 ',

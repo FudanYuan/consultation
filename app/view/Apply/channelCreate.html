@@ -1,11 +1,11 @@
 {include file="Common/top" title="首页" metas='' /}
-{if condition="authority('ApplyCreate')"}
+{if condition="authority('ChannelCreate')"}
 <script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Apply/channel">绿色通道</a></li>
             <li>新建申请</li>
         </ul>
         <div class="form-wrapper" style="background-color: #fff">
@@ -333,7 +333,7 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    $('#consultation-nav-apply').addClass('active');
+    $('#consultation-nav-channel').addClass('active');
 
     function clickRadio(value)
     {
@@ -454,7 +454,7 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
+                        popWarn('新建成功', '__PRO_PATH__/Apply/channel');
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
@@ -489,7 +489,7 @@
 
 
     $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Apply/index';
+        window.location.href = '__PRO_PATH__/Apply/channel';
     });
 
     function change_hospital(){
@@ -513,6 +513,8 @@
         $.each(vm.patient, function (k, v) {
             vm.params[k] = v;
         });
+
+        vm.params['is_green_channel'] = 1;
         console.log(JSON.stringify(data));
         console.log(JSON.stringify(vm.params));
     }

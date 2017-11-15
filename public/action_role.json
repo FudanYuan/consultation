@@ -349,8 +349,8 @@
   },
   {
     "id": 44,
-    "name": "新建",
-    "tag": "ApplyCreate",
+    "name": "编辑",
+    "tag": "ApplyEdit",
     "pid": 4,
     "pids": "4",
     "level": 2
@@ -391,7 +391,7 @@
   {
     "id": 49,
     "name": "新建",
-    "tag": "ChannelEdit",
+    "tag": "ChannelCreate",
     "pid": 5,
     "pids": "5",
     "level": 2
@@ -488,6 +488,14 @@
   },
   {
     "id": 61,
+    "name": "所有医生",
+    "tag": "DoctorAll",
+    "pid": 59,
+    "pids": "7-59",
+    "level": 3
+  },
+  {
+    "id": 62,
     "name": "新建",
     "tag": "DoctorCreate",
     "pid": 7,
@@ -495,7 +503,7 @@
     "level": 2
   },
   {
-    "id": 62,
+    "id": 63,
     "name": "编辑",
     "tag": "DoctorEdit",
     "pid": 7,
@@ -503,7 +511,7 @@
     "level": 2
   },
   {
-    "id": 63,
+    "id": 64,
     "name": "删除",
     "tag": "DoctorRemove",
     "pid": 7,
@@ -512,7 +520,7 @@
   },
 
   {
-    "id": 64,
+    "id": 65,
     "name": "查询",
     "tag": "PatientSelect",
     "pid": 8,
@@ -520,7 +528,7 @@
     "level": 2
   },
   {
-    "id": 65,
+    "id": 66,
     "name": "查看",
     "tag": "PatientResult",
     "pid": 8,
@@ -528,15 +536,47 @@
     "level": 2
   },
   {
-    "id": 66,
+    "id": 67,
     "name": "详情",
     "tag": "PatientInfo",
-    "pid": 65,
-    "pids": "8-65",
+    "pid": 66,
+    "pids": "8-66",
     "level": 3
   },
   {
-    "id": 67,
+    "id": 68,
+    "name": "所有患者",
+    "tag": "PatientAll",
+    "pid": 66,
+    "pids": "8-66",
+    "level": 3
+  },
+  {
+    "id": 69,
+    "name": "同医院患者",
+    "tag": "PatientHospital",
+    "pid": 66,
+    "pids": "8-66",
+    "level": 3
+  },
+  {
+    "id": 70,
+    "name": "同科室患者",
+    "tag": "PatientOffice",
+    "pid": 66,
+    "pids": "8-66",
+    "level": 3
+  },
+  {
+    "id": 71,
+    "name": "同医生患者",
+    "tag": "PatientDoctor",
+    "pid": 66,
+    "pids": "8-66",
+    "level": 3
+  },
+  {
+    "id": 72,
     "name": "新建",
     "tag": "PatientCreate",
     "pid": 8,
@@ -544,7 +584,7 @@
     "level": 2
   },
   {
-    "id": 68,
+    "id": 73,
     "name": "编辑",
     "tag": "PatientEdit",
     "pid": 8,
@@ -552,11 +592,27 @@
     "level": 2
   },
   {
-    "id": 69,
+    "id": 74,
     "name": "删除",
     "tag": "PatientRemove",
     "pid": 8,
     "pids": "8",
     "level": 2
+  },
+  {
+    "id": 75,
+    "name": "回复",
+    "tag": "ChannelReply",
+    "pid": 47,
+    "pids": "5-47",
+    "level": 3
+  },
+  {
+    "id": 76,
+    "name": "讨论",
+    "tag": "ChannelCommunication",
+    "pid": 47,
+    "pids": "5-47",
+    "level": 3
   }
 ]

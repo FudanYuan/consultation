@@ -236,6 +236,7 @@ class UserAdmin extends Common{
         $user_info = D('UserAdmin')->getById($user_id);
         $ret['username'] = $user_info['username'];
         $ret['logo'] = $user_info['logo'];
+        $ret['doctor_id'] = $user_info['doctor_id'];
         $this->jsonReturn($ret);
     }
 
