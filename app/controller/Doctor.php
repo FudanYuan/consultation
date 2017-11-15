@@ -28,6 +28,7 @@ class Doctor extends Common
         $hospital = input('post.hospital','');
         $name = input('post.name','');
         $office = input('post.office','');
+        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond_and = [];
         $cond_or =[];
         if($hospital){
@@ -40,21 +41,30 @@ class Doctor extends Common
             $cond_or['a.name'] = ['like','%'.myTrim($name).'%'];
         }
 
-        // 获取当前登陆的用户id，根据此id查询表，返回结果
-        $user_id = $this->getUserId();
-        $select = ['d.id as hospital_id'];
-        $cond['a.id'] = ['=',$user_id];
-        $user_hospital_id = D('UserAdmin')->getUserAdmin($select,$cond);
-        $cond_and['c.id'] = ['=',$user_hospital_id['hospital_id']];
+        // 如果有 看到所有医生信息 的权限的话，直接返回，否则只能看到本医院的医生
+        if(!authority('DoctorAll')){
+            // 获取当前登陆的用户id，根据此id查询表，返回结果
+            $user_id = $this->getUserId();
+            $doctor_info = D('UserAdmin')->getById($user_id);
+            $doctor_id = $doctor_info['doctor_id'];
+            $doctor_info = D('Doctor')->getById($doctor_id);
+            $hospital_office_id = $doctor_info['hospital_office_id'];
+            $hospital_office = D('HospitalOffice')->getById($hospital_office_id);
+            $hospital_id = $hospital_office['hospital_id'];
+            $hospital_ids = [];
+            $hospital_infos = D('Hospital')->getHospital(['id'], ['role' => 1]);
+            foreach ($hospital_infos as $item){
+                array_push($hospital_ids, $item['id']);
+            }
+            $cond_or['c.id'] = ['in', $hospital_ids];
+        }
 
-        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-
+        $ret['res'] = authority('DoctorAll');
         $list = D('Doctor')->getDoctorList($cond_or,$cond_and,[]);
 
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
-        $ret['user_hospital_id'] = $user_hospital_id;
         $ret["total"] = count($list);
         //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
         $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);

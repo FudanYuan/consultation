@@ -81,6 +81,21 @@ class UserAdmin extends Model{
             ->find();
     }
 
+
+    public function getUserAdmin($select="*", $cond=[]){
+        if(!isset($cond['a.status'])){
+            $cond['a.status'] = ['<>', 2];
+        }
+        $res = $this->alias('a')->field($select)
+            ->join('consultation_doctor e','e.id = a.doctor_id')
+            ->join('consultation_hospital_office b','b.id = e.hospital_office_id')
+            ->join('consultation_hospital c','c.id = b.hospital_id')
+            ->join('consultation_office d','d.id = b.office_id')
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
     /**
      * 创建管理员用户
      * @param $data
