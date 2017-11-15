@@ -126,7 +126,6 @@ class Patient extends Model{
         return $res;
     }
 
-    ///////未修改///////
     /**
      * 更新患者信息
      * {@inheritDoc}
@@ -142,6 +141,8 @@ class Patient extends Model{
         }
         return $ret;
     }
+    ///////未修改///////
+
 
 
     /**

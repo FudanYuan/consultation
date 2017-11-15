@@ -162,7 +162,9 @@
     var vm = new Vue({
         el: '#new-apply-form',
         data: {
-            params: {},
+            params: {
+                hospital_id: '{$Hospital.id}'
+            },
             seen:{
                 ill_type: false
             },
