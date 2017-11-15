@@ -101,13 +101,11 @@ class Hospital extends Common
                 $data['role'] = 1;
             }
             $res = D('Hospital')->addData($data);
-
             if(!empty($res['errors'])) {
                 $ret['error_code'] = 2;
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res['errors'];
             }
-            $ret['params'] = $params;
             $this->jsonReturn($ret);
         }
         return view('', []);
@@ -119,16 +117,38 @@ class Hospital extends Common
      */
     public function edit(){
         $id = input('get.id');
-        $data = input('post.');
+        $params = input('post.');
         $hospital = D('Hospital')->getById($id);
-        if(!empty($data)){
-            $ret['data'] = $data;
-            $params = [];
-
+        if(!empty($params)){
+            $ret = ['error_code' => 2, 'msg' =>'编辑成功'];
+            $data['name'] = input('post.hospital_name');
+            $data['master'] = input('post.hospital_master');
+            $data['logo'] = input('post.hospital_logo');
+            $data['phone'] = input('post.hospital_phone');
+            $data['url'] = input('post.hospital_url');
+            $data['email'] = input('post.hospital_email');
+            $data['address'] = input('post.hospital_address');
+            $data['postcode'] = input('post.hospital_postcode');
+            $data['type'] = input('hospital_type');
+            $data['level'] = input('post.hospital_level');
+            $data['info'] = input('post.hospital_info');
+            $data['honor'] = input('post.hospital_honor');
+            $Role = input('post.hospital_role');
+            if($Role == '不可会诊医院'){
+                $data['role'] = 2;
+            }elseif ($Role == '可会诊医院'){
+                $data['role'] = 1;
+            }
+            $res = D('Hospital')->saveData($params['hospital_id'],$data);
+            if(!empty($res['errors'])) {
+                $ret['error_code'] = 2;
+                $ret['msg'] = '编辑失败';
+                $ret['errors'] = $res['errors'];
+            }
+            $this->jsonReturn($ret);
         }else{
             return view('',['Hospital' => $hospital]);
         }
-
     }
 
     /**

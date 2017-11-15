@@ -99,17 +99,24 @@ class Hospital extends Model{
         if(isset($data['phone']) && !$data['phone']){
             $errors['phone'] = '联系方式不能为空';
         }
+        if(isset($data['address']) && !$data['address']){
+            $errors['address'] = '医院地址不能为空';
+        }
+        if(isset($data['email']) && !$data['email']){
+            $errors['email'] = '医院邮箱不能为空';
+        }
         if(isset($data['type']) && !$data['type']){
             $errors['type'] = '医院类型不能为空';
         }
         if(isset($data['level']) && !$data['level']){
             $errors['level'] = '医院等级不能为空';
         }
+        if(isset($data['role']) && !$data['role']){
+            $errors['role'] = '医院角色不能为空';
+        }
         return $errors;
     }
 
-
-    ////未修改/////
     /**
      * 更新医院信息
      * @param $id
@@ -127,7 +134,7 @@ class Hospital extends Model{
         return $ret;
     }
 
-
+    ////未修改/////
 
     /**
      * 批量增加医院信息

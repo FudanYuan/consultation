@@ -54,7 +54,7 @@ class Apply extends Common
             if($apply_date){
                 $cond_and['apply_date'] = strtotime($apply_date);
             }
-            if($hospital!=-1){
+            if($hospital != -1){
                 $cond_and['e.id'] = $hospital;
             }
             if($keywords){
@@ -65,7 +65,7 @@ class Apply extends Common
             $select = ['b.id as doctor_id'];
             $cond['a.id'] = ['=',$user_id];
             $user_doctor_id = D('UserAdmin')->getUserAdmin($select,$cond);
-            $cond_and['c.id'] = ['=',$user_doctor_id['doctor_id']];
+            //$cond_and['c.id'] = ['=',$user_doctor_id['doctor_id']];
 
             $list = D('Apply')->getList($cond_or,$cond_and,[]);
             $page = input('post.current_page',0);
@@ -297,10 +297,10 @@ class Apply extends Common
      */
     public function edit(){
         $id = input('get.id');
-        $data = input('post.');
+        $params = input('post.');
         $Apply = D('Apply')->getById($id);
-        if(!empty($data)){
-            $ret['data'] = $data;
+        if(!empty($params)){
+            $ret['data'] = $params;
 
             $this->jsonReturn($ret);
         }else{
