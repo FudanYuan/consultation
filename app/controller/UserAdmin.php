@@ -114,7 +114,6 @@ class UserAdmin extends Common{
             $office_info = D('office')->getById($office_id);
             $item['hospital_id'] = $hospital_id;
             $item['hospital_name'] = $hospital_info['name'];
-
             $item['office_id'] = $hospital_id;
             $item['office_name'] = $office_info['name'];
         }

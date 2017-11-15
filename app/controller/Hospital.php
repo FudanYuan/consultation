@@ -112,19 +112,24 @@ class Hospital extends Common
         }
         return view('', []);
     }
+
+    /**
+     * 编辑医院信息
+     * @return \think\response\View
+     */
     public function edit(){
         $id = input('get.id');
         $data = input('post.');
-        $select = ['*'];
-        $cond = ['id' => $id];
-        $hospital = D('Hospital')->getHospital($select,$cond);
-
+        $hospital = D('Hospital')->getById($id);
         if(!empty($data)){
+            $ret['data'] = $data;
+            $params = [];
+
+
 
         }else{
-            return view('',['hospital' =>$hospital]);
+            return view('',['Hospital' => $hospital]);
         }
-
     }
 
     /**
@@ -135,9 +140,12 @@ class Hospital extends Common
         $select = ['*'];
         $cond['id'] = ['=',$id];
         $res = D('Hospital')->getHospital($select,$cond);
-        $ret['error_code'] = 0;
-        $ret['msg'] = '';
-        $ret['info'] = $res[0];
+        $ret = [
+            'error_code' => 0,
+            'msg' => '',
+            'info' => $res[0]
+        ];
+
         $this->jsonReturn($ret);
     }
 

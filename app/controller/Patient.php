@@ -140,6 +140,22 @@ class Patient extends Common
         return view('',[]);
     }
 
+    /**
+     * 编辑患者信息
+     * @return \think\response\View
+     */
+    public function edit(){
+            $id = input('get.id');
+            $data = input('post.');
+            $patient = D('Patient')->getById($id);
+            if(!empty($data)){
+                $ret['data'] = $data;
+                $this->jsonReturn($ret);
+
+            }else{
+                return view('',['patient' => $patient]);
+            }
+    }
 
     ///////////未修改////
     /**

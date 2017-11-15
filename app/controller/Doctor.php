@@ -58,7 +58,6 @@ class Doctor extends Common
             }
             $cond_or['c.id'] = ['in', $hospital_ids];
         }
-
         $ret['res'] = authority('DoctorAll');
         $list = D('Doctor')->getDoctorList($cond_or,$cond_and,[]);
 
@@ -172,5 +171,23 @@ class Doctor extends Common
         }
         $this->jsonReturn($doctors);
     }
+
+    /**
+     * 编辑医生信息
+     */
+    public function edit(){
+        $id = input('get.id');
+        $data = input('post.');
+        $doctor = D('Doctor')->getById($id);
+        if(!empty($data)){
+            $ret['data'] = $data;
+
+            $this->jsonReturn($ret);
+        }else{
+            return view('',['doctor' => $doctor]);
+        }
+    }
+
+
 
 }

@@ -28,10 +28,7 @@ class Apply extends Common
     public function getApplyList(){
         $params = input('post.');
         // 获取当前登陆的用户id，根据此id查询表，返回结果
-        $user_id = $this->getUserId();
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-        $cond['target_user_id'] = ['=', $user_id];
-
         if(!empty($params)){
             $apply_type = input('post.apply_type','-1');
             $apply_project = input('post.apply_project','-1');
@@ -64,6 +61,12 @@ class Apply extends Common
                 $cond_or['other_apply_project|e.name|c.name|c.phone'] = ['like','%'. myTrim($keywords) .'%'];
             }
 
+            $user_id = $this->getUserId();
+            $select = ['b.id as doctor_id'];
+            $cond['a.id'] = ['=',$user_id];
+            $user_doctor_id = D('UserAdmin')->getUserAdmin($select,$cond);
+            $cond_and['c.id'] = ['=',$user_doctor_id['doctor_id']];
+
             $list = D('Apply')->getList($cond_or,$cond_and,[]);
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
@@ -73,7 +76,6 @@ class Apply extends Common
             $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
             $ret['current_page'] = $page;
         }
-        $ret['params'] = $params;
         $this->jsonReturn($ret);
     }
 
@@ -282,11 +284,30 @@ class Apply extends Common
         $ret = ['code' => 1, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
-            $res = D('Apply')->remove(['id' => ['in', $ids]]);
+             D('Apply')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
             $ret['code'] = 2;
             $ret['msg'] = '删除失败';
         }
         $this->jsonReturn($ret);
     }
+
+    /**
+     * 编辑会诊申请
+     */
+    public function edit(){
+        $id = input('get.id');
+        $data = input('post.');
+        $Apply = D('Apply')->getById($id);
+        if(!empty($data)){
+            $ret['data'] = $data;
+
+            $this->jsonReturn($ret);
+        }else{
+            return view('',['Apply' => $Apply]);
+        }
+    }
+
+
+
 }
