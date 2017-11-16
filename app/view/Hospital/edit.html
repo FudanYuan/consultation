@@ -35,21 +35,31 @@
                     </div>
                 </div>-->
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+                <div class="form-group }">
                     <label class="col-sm-2 control-label">医院logo：</label>
-                    <div class="col-sm-4">
-                        <div id="filelist_hospital_logo">
-                            <div>{$data.hospital_logo_origin??''}<b></b></div>
-                        </div>
+                    <div class="col-sm-4" style="height: 100px;width: 120px">
+                        <img id="logo" src="{$Hospital.logo?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                         <br/>
-                        <div id="upload_right_eye">
-                            <a id="pickfiles_hospital_logo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                            <a id="uploadfiles_hospital_logo" href="javascript:;">上传</a>
+                        <div id="upload_logo">
+                            <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
+                                <i class="fa fa-camera fa-lg"></i>
+                            </a>
                         </div>
                         <input type="hidden" name="hospital_logo" value="{$Hospital.logo??''}"/>
-                        <input type="hidden" name="hospital_logo_origin" value="{$Hospital.logo??''}"/>
-                        <span class="help-block">{$errors.hospital_logo?? ''}</span>
                     </div>
+                    <!--<div class="col-sm-4">-->
+                        <!--<div id="filelist_hospital_logo">-->
+                            <!--<div>{$Hospital.logo??''}<b></b></div>-->
+                        <!--</div>-->
+                        <!--<br/>-->
+                        <!--<div id="upload_right_eye">-->
+                            <!--<a id="pickfiles_hospital_logo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>-->
+                            <!--<a id="uploadfiles_hospital_logo" href="javascript:;">上传</a>-->
+                        <!--</div>-->
+                        <!--<input type="hidden" name="hospital_logo" value="{$Hospital.logo??''}"/>-->
+                        <!--<input type="hidden" name="hospital_logo_origin" value="{$Hospital.logo??''}"/>-->
+                        <!--<span class="help-block">{$errors.hospital_logo?? ''}</span>-->
+                    <!--</div>-->
                 </div>
 
                 <div :class="['form-group', errors.phone != '' ? 'has-error' : '']">
@@ -122,8 +132,8 @@
                     <label for="hospital_role" class="col-sm-2 control-label">医院角色：</label>
                     <div class="col-sm-4">
                         <select name="hospital_role" class="form-control"  id="hospital_role">
-                            <option value="1">不可会诊医院</option>
-                            <option value="2">可会诊医院</option>
+                            <option value="2">不可会诊医院</option>
+                            <option value="1">可会诊医院</option>
                         </select>
                     </div>
                 </div>
@@ -138,6 +148,7 @@
         </div>
     </div>
 </div>
+{include file="Common/progress"}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
@@ -180,14 +191,9 @@
         mounted:function () {
             $(".flatpickr").flatpickr({time_24hr:true});
             $('select[name="hospital_role"]').val('{$Hospital.role??""}');
-            $(".multiple").multipleSelect({
-                filter: true,
-                multiple: true,
-                selectAll: true
-            });
-            myupload({
-                container: 'upload_right_eye',
-                browse: 'pickfiles_hospital_logo',
+            changeLogo({
+                container: 'upload_logo',
+                browse: 'upload_logo_logo',
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
@@ -197,9 +203,12 @@
                 onUploaded: function (up, file, result) {
                     $("input[name='hospital_logo_origin']").val(file.name);
                     var res = JSON.parse(result.response);
+                    $('#logo').attr('src',res.result.file);
                     $("input[name='hospital_logo']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
         },
 
@@ -228,15 +237,6 @@
         }
     });
 
-    $(".multiple").multipleSelect({
-        filter: true,
-        multiple: true,
-        selectAll: true
-    });
-
-    $(function () {
-        $("#new-apply-form-target").multipleSelect("checkAll");
-    });
 
     $('#form-cancel').on('click', function(){
         window.location.href = '__PRO_PATH__/Apply/index';

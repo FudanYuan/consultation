@@ -206,6 +206,4 @@ class Doctor extends Common
         }
     }
 
-
-
 }
