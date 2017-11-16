@@ -190,6 +190,7 @@ class Apply extends Common
         $apply_info['apply_hospital_name'] ='某县级医院';
         $apply_info['apply_doctor_name'] ='某县级医院医生';
         $apply_info['apply_doctor_phone'] = '15115062214';
+        $apply_info['date']='2017/11/16';
         return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor,'apply_info'=>$apply_info]);
     }
 
