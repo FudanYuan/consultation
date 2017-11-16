@@ -293,13 +293,13 @@
     var vm = new Vue({
         el: '#new-apply-form',
         data: {
-            params: {},
-
+            params: {
+                patient_id: '{$patient.id}'
+            },
             seen:{
                 ill_type: false,
                 apply_project:false
             },
-
             errors:{
                 ID_number:'',
                 age:'',
