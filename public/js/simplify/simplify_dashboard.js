@@ -17,10 +17,10 @@ icons.set("skycon3", "wind");
 icons.set("skycon4", "clear-day");
 icons.play();
 
-//Scrollable Chat Widget
-$('#chatScroll').slimScroll({
-	height:'300px'
-});
+// //Scrollable Chat Widget
+// $('#chatScroll').slimScroll({
+// 	height:'230px'
+// });
 
 //Chat notification
 setTimeout(function() {

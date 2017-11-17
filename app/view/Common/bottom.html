@@ -68,6 +68,44 @@
 {include file="Common/popup_warn" /}
 <!-- show time -->
 <script>
+    //去除空格
+    String.prototype.Trim = function() {
+        return this.replace(/\s+/g, "");
+    };
+
+    //去除换行
+    function ClearBr(key) {
+        key = key.replace(/<\/?.+?>/g,"");
+        key = key.replace(/[\r\n]/g, "");
+        return key;
+    }
+
+    //去除左侧空格
+    function LTrim(str) {
+        return str.replace(/^\s*/g,"");
+    }
+
+    //去右空格
+    function RTrim(str) {
+        return str.replace(/\s*$/g,"");
+    }
+
+    //去掉字符串两端的空格
+    function trim(str) {
+        return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
+
+    //去除字符串中间空格
+    function CTim(str) {
+        return str.replace(/\s/g,'');
+    }
+
+    //是否为由数字组成的字符串
+    function is_digitals(str) {
+        var reg=/^[0-9]*$/; //匹配整数
+        return reg.test(str);
+    }
+
     function startTime() {
         var today = new Date();//定义日期对象
         var yyyy = today.getFullYear();//通过日期对象的getFullYear()方法返回年
@@ -311,7 +349,7 @@
         data: {
             user: '',
             logo: '',
-            doctor_id: ''
+            user_id: ''
         },
         methods:{
             getUser: function () {
@@ -319,7 +357,7 @@
                     if(res.error_code == 0){
                         vm3.user = res.username;
                         vm3.logo = res.logo;
-                        vm3.doctor_id = res.doctor_id;
+                        vm3.user_id = res.user_id;
                     }
                 });
             }
@@ -332,7 +370,7 @@
         data: {
             user: '',
             logo: '',
-            doctor_id: ''
+            user_id: ''
         },
         mounted: function () {
             $('.logout').on('click', function () {
@@ -351,7 +389,7 @@
                     if(res.error_code == 0){
                         vm4.user = res.username;
                         vm4.logo = res.logo;
-                        vm3.doctor_id = res.doctor_id;
+                        vm3.user_id = res.user_id;
                     }
                 });
             }
