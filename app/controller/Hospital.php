@@ -147,6 +147,7 @@ class Hospital extends Common
             }
             $this->jsonReturn($ret);
         }else{
+            mydump($hospital);
             return view('',['Hospital' => $hospital]);
         }
     }
