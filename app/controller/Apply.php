@@ -315,12 +315,12 @@ class Apply extends Common
     public function edit(){
         $id = input('get.id');
         $data = input('post.');
-        $Apply = D('Apply')->getById($id);
+        $apply = D('Apply')->getById($id);
         if(!empty($data)){
             $ret['data'] = $data;
             $this->jsonReturn($ret);
         }
-        return view('',['Apply' => $Apply]);
+        return view('',['apply' => $apply]);
     }
 
     /**
