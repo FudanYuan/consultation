@@ -163,35 +163,35 @@
                     <div class="col-sm-4" id="eyes_ill_type" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type1" name="ill_type" value="1" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type1" name="ill_type1" value="1" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type1"></label>
                             </div>
                             <div class="inline-block vertical-top">眼表</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type2" name="ill_type" value="2" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type2" name="ill_type1" value="2" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type2"></label>
                             </div>
                             <div class="inline-block vertical-top">眼前节</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type3" name="ill_type" value="3" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type3" name="ill_type1" value="3" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type3"></label>
                             </div>
                             <div class="inline-block vertical-top">眼底</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type4" name="ill_type" value="4" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type4" name="ill_type1" value="4" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type4"></label>
                             </div>
                             <div class="inline-block vertical-top">视光</div>
                         </div>
                         <div class="radio inline-block" >
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type5" name="ill_type" value="5" onclick="clickRadio(this.value)" value="2">
+                                <input type="radio" id="eyes_ill_type5" name="ill_type1" value="5" onclick="clickRadio(this.value)" value="2">
                                 <label for="eyes_ill_type5"></label>
                             </div>
                             <div class="inline-block vertical-top">其他</div>
@@ -310,7 +310,8 @@
             }
         },
         mounted:function () {
-
+            $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
+            $('select[name="ill_type1"]').val('{$patient.ill_type??""}');
             $(".flatpickr").flatpickr({time_24hr:true});
             myupload({
                 container: 'upload-wrapper',

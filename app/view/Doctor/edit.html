@@ -19,24 +19,22 @@
                     </div>
                 </div>
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+
+                <div class="form-group }">
                     <label class="col-sm-2 control-label">医生照片：</label>
-                    <div class="col-sm-4">
-                        <div id="filelist_doctor_photo">
-                            <div>{$data.doctor_photo_origin??''}<b></b></div>
-                        </div>
+                    <div class="col-sm-4" style="height: 100px;width: 120px">
+                        <img id="photo" src="{$doctor.photo?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                         <br/>
-                        <div id="upload_doctor_photo">
-                            <a id="pickfiles_doctor_photo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                            <a id="uploadfiles_doctor_photo" href="javascript:;">上传</a>
+                        <div id="upload_photo">
+                            <a id="upload_photo_photo" href="javascript:;" style="position: relative;z-index: 1;">
+                                <i class="fa fa-camera fa-lg"></i>
+                            </a>
                         </div>
-                        <input type="hidden" name="doctor_photo" value="{$doctor.photo??''}"/>
-                        <input type="hidden" name="doctor_photo_origin" value="{$doctor.photo_origin??''}"/>
-                        <span class="help-block">{$errors.doctor_photo?? ''}</span>
+                        <input type="hidden" name="photo" value="{$doctor.photo??''}"/>
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
+                <div :class="['form-group', errors.gender!= '' ? 'has-error' : '']" >
                     <label for="hospital_gender" class="col-sm-2 control-label">医生性别：</label>
                     <div class="col-sm-4" id="hospital_gender" >
                         <div class="radio inline-block">
@@ -136,6 +134,7 @@
     </div>
 </div>
 
+{include file="Common/progress"}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
@@ -181,22 +180,26 @@
             $(".flatpickr").flatpickr({time_24hr:true});
             $("input[name='gender'][value='{$doctor.gender?? ''}']").attr("checked",true);
 
-            myupload({
-                container: 'upload_doctor_photo',
-                browse: 'pickfiles_doctor_photo',
+            changeLogo({
+                container: 'upload_photo',
+                browse: 'upload_photo_photo',
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
-                filelist: 'filelist_doctor_photo',
-                uploadfiles: 'uploadfiles_doctor_photo',
+                filelist: 'filelist_hospital_logo',
+                uploadfiles: 'uploadfiles_hospital_logo',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='doctor_photo_origin']").val(file.name);
+//                    $("input[name='hospital_logo_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $("input[name='doctor_photo']").val(res.result.file);
+                    $('#photo').attr('src',res.result.file);
+                    $("input[name='photo']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
+
         },
 
         methods: {
