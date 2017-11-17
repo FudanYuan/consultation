@@ -12,15 +12,14 @@ class Chat extends Model{
     protected $table = 'consultation_chat';
     protected $pk = 'id';
     protected $fields = array(
-        'id', 'apply_id','source_user_id','target_user_id','words_info', 'files_info',
-        'time','status','create_time','update_time'
+        'id', 'apply_id', 'source_user_id', 'target_user_id', 'type', 'content',
+        'content_origin', 'status', 'create_time', 'update_time'
     );
     protected $type = [
         'id' => 'integer',
         'apply_id' => 'integer',
         'source_user_id' => 'integer',
         'target_user_id' => 'integer',
-        'time' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'
     ];
@@ -33,8 +32,8 @@ class Chat extends Model{
         if(!isset($cond['status'])){
             $cond['status'] = ['<>', 2];
         }
-        $res = $this->field('id,apply_id,source_user_id,target_user_id,words_info, 
-        files_info,time,status,create_time,update_time')
+        $res = $this->field('id, apply_id, source_user_id, target_user_id, type, content,
+        content_origin, status, create_time')
             ->order('create_time desc')
             ->where($cond)
             ->select();
@@ -47,8 +46,8 @@ class Chat extends Model{
      * @return mixed
      */
     public function getById($id){
-        $res = $this->field('id,apply_id,source_user_id,target_user_id,words_info, 
-        files_info,time,status,create_time,update_time')
+        $res = $this->field('id, apply_id, source_user_id, target_user_id, type, content,
+        content_origin, status, create_time, update_time')
             ->where(['id' => $id])
             ->find();
         return $res;

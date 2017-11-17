@@ -111,7 +111,7 @@ class UserAdmin extends Common{
             $hospital_id = $hospital_office_info['hospital_id'];
             $office_id = $hospital_office_info['office_id'];
             $hospital_info = D('Hospital')->getById($hospital_id);
-            $office_info = D('office')->getById($office_id);
+            $office_info = D('Office')->getById($office_id);
             $item['hospital_id'] = $hospital_id;
             $item['hospital_name'] = $hospital_info['name'];
             $item['office_id'] = $hospital_id;
@@ -236,6 +236,7 @@ class UserAdmin extends Common{
         $user_info = D('UserAdmin')->getById($user_id);
         $ret['username'] = $user_info['username'];
         $ret['logo'] = $user_info['logo'];
+        $ret['user_id'] = $user_info['id'];
         $ret['doctor_id'] = $user_info['doctor_id'];
         $this->jsonReturn($ret);
     }

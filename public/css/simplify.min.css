@@ -2585,8 +2585,11 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
 }
 
 .chat li.left .chat-body {
-    margin-left: 70px;
-    background-color: #fff
+    float: left;
+    max-width: 60%;
+    margin-left: 15px;
+    background-color: #fff;
+    border-radius: 10px;
 }
 
 .chat li.left .chat-body:before {
@@ -2608,8 +2611,11 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
 }
 
 .chat li.right .chat-body {
-    margin-right: 70px;
-    background-color: #fff
+    float: right;
+    max-width: 60%;
+    margin-right: 15px;
+    background-color: #fff;
+    border-radius: 10px;
 }
 
 .chat li.right .chat-body:before {
@@ -2639,7 +2645,7 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
 
 .chat li .chat-body {
     position: relative;
-    font-size: 11px;
+    font-size: 13px;
     padding: 10px;
     border: 1px solid #eee;
     box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
@@ -2648,7 +2654,7 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
 }
 
 .chat li .chat-body .header {
-    padding-bottom: 5px;
+    padding-bottom: 20px;
     border-bottom: 1px solid #eee
 }
 
@@ -3889,8 +3895,8 @@ table tbody td.text-right {
 }
 
 .smart-widget .smart-widget-footer {
-    padding: 10px 15px;
-    background-color: #f5f5f5;
+    padding-top: 10px;
+    /*background-color: #f5f5f5;*/
     border-top: 1px solid #ddd;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px

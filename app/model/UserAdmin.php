@@ -94,6 +94,12 @@ class UserAdmin extends Model{
         return $res;
     }
 
+    /**
+     * 关联表
+     * @param $select
+     * @param $cond
+     * @return mixed
+     */
     public function getUserAdmin($select,$cond){
         $res = $this->alias('a')->field($select)
             ->join('consultation_doctor b','b.id = a.doctor_id')

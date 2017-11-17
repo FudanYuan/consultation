@@ -81,7 +81,7 @@ class Hospital extends Common
     public function create(){
         $params = input('post.');
         if(!empty($params)) {
-            $ret = ['error_code' => 0, 'msg' => '新建成功'];
+            $ret = ['error_code' => 2, 'msg' => '新建成功'];
             $data['name'] = input('post.hospital_name');
             $data['master'] = input('post.hospital_master');
             $data['logo'] = input('post.hospital_logo');
@@ -120,7 +120,7 @@ class Hospital extends Common
         $params = input('post.');
         $hospital = D('Hospital')->getById($id);
         if(!empty($params)){
-            $ret = ['error_code' => 2, 'msg' =>'编辑成功'];
+            $ret = ['error_code' => 0, 'msg' =>'编辑成功'];
             $data['name'] = input('post.hospital_name');
             $data['master'] = input('post.hospital_master');
             $data['logo'] = input('post.hospital_logo');
@@ -139,6 +139,9 @@ class Hospital extends Common
             }elseif ($Role == '可会诊医院'){
                 $data['role'] = 1;
             }
+            if(empty($data['logo'])){
+                unset($data['logo']);
+            }
             $res = D('Hospital')->saveData($params['hospital_id'],$data);
             if(!empty($res['errors'])) {
                 $ret['error_code'] = 2;
@@ -147,7 +150,6 @@ class Hospital extends Common
             }
             $this->jsonReturn($ret);
         }else{
-            mydump($hospital);
             return view('',['Hospital' => $hospital]);
         }
     }

@@ -1,6 +1,38 @@
 {include file="Common/top" title="首页" metas='' /}
 {if condition="authority('Talk')"}
-<link href="__PUBLIC__/css/chat.css" rel="stylesheet">
+<style>
+    .chat-input{
+        height: 100px;
+        width: 100%;
+        resize: none;
+        border: none;
+        outline: none;
+    }
+    .toolbar{
+        width: 100%;
+        height: 30px;
+        margin-top: 5px;
+    }
+
+    .toolbar ul{
+        float: left;
+        list-style: none;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-box-orient: horizontal;
+    }
+
+    .toolbar ul li{
+        padding:5px;
+    }
+
+    .chat li .img{
+        width: 100px;
+        height: 100px;
+        -webkit-border-radius: 0;
+        padding-top: 5px;
+    }
+</style>
 <script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <div class="main-container">
     <div class="padding-md">
@@ -8,28 +40,26 @@
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li>在线互动</li>
         </ul>
-        <div class="row" style=" height: 300px">
+
+        <div class="row" id="chat">
             <div class="col-lg-12">
                 <div class="smart-widget widget-purple">
                     <div class="smart-widget-header">
-                        <i class="fa fa-comment"></i> Chat
+                        <i class="fa fa-comment"></i> {{chat_to_user.name}}--{{item}}
                         <span class="smart-widget-option">
-												<span class="refresh-icon-animated">
-													<i class="fa fa-circle-o-notch fa-spin"></i>
-												</span>
-					                            <a href="#" class="widget-toggle-hidden-option">
-					                                <i class="fa fa-cog"></i>
-					                            </a>
-					                            <a href="#" class="widget-collapse-option" data-toggle="collapse">
-					                                <i class="fa fa-chevron-up"></i>
-					                            </a>
-					                            <a href="#" class="widget-refresh-option">
-					                                <i class="fa fa-refresh"></i>
-					                            </a>
-					                            <a href="#" class="widget-remove-option">
-					                                <i class="fa fa-times"></i>
-					                            </a>
-					                        </span>
+                            <span class="refresh-icon-animated">
+                                <i class="fa fa-circle-o-notch fa-spin"></i>
+                            </span>
+                            <a href="#" class="widget-toggle-hidden-option">
+                                <i class="fa fa-cog"></i>
+                            </a>
+                            <a href="#" class="widget-collapse-option" data-toggle="collapse">
+					            <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a href="#" class="widget-refresh-option">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </span>
                     </div>
                     <div class="smart-widget-inner">
                         <div class="smart-widget-hidden-section">
@@ -49,77 +79,59 @@
                         <div class="smart-widget-body">
                             <div id="chatScroll">
                                 <ul class="chat">
-                                    <li class="left clearfix">
-															<span class="chat-img pull-left">
-																<img src="__PUBLIC__/images/profile/profile2.jpg" alt="User Avatar">
-															</span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header">
-                                                <strong class="primary-font">John Doe</strong>
-                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago</small>
+                                    <template v-for="model in chat">
+                                        <li :class="[model.source_user_id != vm3.user_id ? 'left' : 'right' ,'clearfix']">
+                                        <span :class="['chat-img', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">
+                                            <img class="logo" :src="model.source_user_id != vm3.user_id ? chat_to_user.logo : chat_user.logo" :title="model.source_user_id != vm3.user_id ? chat_to_user.name : chat_user.name">
+                                        </span>
+                                            <div class="chat-body clearfix">
+                                                <div class="header">
+                                                    <strong :class="['primary-font', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">{{model.source_user_id != vm3.user_id ? chat_to_user.name : chat_user.name}}</strong>
+                                                    <!--<small class="pull-right text-muted">-->
+                                                    <!--<i class="fa fa-clock-o"></i>-->
+                                                    <!--12 mins ago-->
+                                                    <!--</small>-->
+                                                </div>
+                                                <!-- 1 - text -->
+                                                <template v-if="model.type == 1">
+                                                    <p :class="['chat-img', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">
+                                                        {{model.content}}
+                                                    </p>
+                                                </template>
+                                                <!-- 2 - image -->
+                                                <template v-if="model.type == 2">
+                                                    <img class="img" :src="model.content">
+                                                </template>
+
                                             </div>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="right clearfix">
-															<span class="chat-img pull-right">
-																<img src="__PUBLIC__/images/profile/profile3.jpg" alt="User Avatar">
-															</span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header">
-                                                <strong class="primary-font">Jane Doe</strong>
-                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago</small>
-                                            </div>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="left clearfix">
-															<span class="chat-img pull-left">
-																<img src="__PUBLIC__/images/profile/profile2.jpg" alt="User Avatar">
-															</span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header">
-                                                <strong class="primary-font">John Doe</strong>
-                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 20 mins ago</small>
-                                            </div>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            </p>
-                                        </div>
-                                    </li>
-                                    <li class="right clearfix">
-															<span class="chat-img pull-right">
-																<img src="__PUBLIC__/images/profile/profile3.jpg" alt="User Avatar">
-															</span>
-                                        <div class="chat-body clearfix">
-                                            <div class="header">
-                                                <strong class="primary-font">Jane Doe</strong>
-                                                <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 25 mins ago</small>
-                                            </div>
-                                            <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur bibendum ornare dolor, quis ullamcorper ligula sodales at.
-                                            </p>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    </template>
                                 </ul>
                             </div>
                         </div>
                         <div class="smart-widget-footer">
+                            <div class="col-lg-12 toolbar">
+                                <ul>
+                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                </ul>
+                            </div>
                             <div class="input-group">
-                                <input id="btn-input" type="text" class="form-control input-sm" placeholder="type your message here...">
+                                <textarea id="btn-input" class="col-lg-12 chat-input" placeholder="请输入消息···" @keyup.13="send($event)" v-model="content"></textarea>
                                 <span class="input-group-btn">
-														<button class="btn btn-success btn-sm no-shadow" id="btn-chat">Send</button>
-													</span>
+                                    <button class="btn btn-success btn-sm no-shadow" id="btn-chat" style="height: 100px;">发送</button>
+                                </span>
                             </div><!-- /input-group -->
                         </div><!-- ./smart-widget-footer -->
                     </div><!-- ./smart-widget-inner -->
                 </div><!-- ./smart-widget -->
             </div><!-- ./col -->
         </div>
+
     </div><!-- ./row -->
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -136,71 +148,89 @@
 <script>
     $('#consultation-nav-chat').addClass('active');
 
-    function clickRadio(value)
-    {
-        if(value == 5){
-            vm.seen['ill_type'] = !vm.seen['ill_type'];
-        } else{
-            vm.seen['ill_type'] = false;
-        }
-    }
-
-    function clickRadio_apply_project(value)
-    {
-        if(value == 4){
-            vm.seen['apply_project'] = !vm.seen['apply_project'];
-        } else{
-            vm.seen['apply_project'] = false;
-        }
-    }
-
     var vm = new Vue({
-        el: '#new-apply-form',
+        el: '#chat',
         data: {
-            params: {},
-            patient:{
-                patient_ID_number: '',
-                patient_name: '',
-                patient_age:'',
-                patient_phone:'',
-                patient_illness_state:'',
-                patient_gender:'',
-                patient_eyes_type:'',
-                patient_vision_left:'',
-                patient_vision_right:'',
-                patient_pressure_left:'',
-                patient_pressure_right:'',
+            to_send: false,
+            params: {
+                target_user_id: '{$target_user_id}',
+                source_user_id: '{$account.id}',
+                type: '',
+                content: '',
+                content_origin: ''
+            },
+            receieve_params:{
+                target_user_id: '{$target_user_id}',
+                source_user_id: '{$account.id}',
+                total: 0,
+                per_page: 20,
+                current_page: 1,
+                pages: 1
+            },
+            item: '讨论4号病患的病情',
+            content: '',
+            chat_to_user: {
+                id: '{$target_user_id}',
+                logo: '__PUBLIC__/images/profile/profile1.jpg',
+                name: 'Jeremy'
+            },
+            chat_user: {
+                id: vm3.user_id,
+                logo: '__PUBLIC__/images/profile/profile2.jpg',
+                name: 'Smith'
             },
             seen:{
-                ill_type: false,
-                apply_project:false,
             },
 
             errors:{
-                ID_number:'',
-                name:'',
-                age:'',
-                gender:'',
-                ill_state:'',
-                ill_type:'',
-                phone:'',
-                apply_date:'',
-                apply_project:'',
-                target_office_id:'',
-                consultation_goal:''
-            }
+
+            },
+            chat: []
         },
         mounted:function () {
-            $('.sidebar-right').toggleClass('active');
-            $('.wrapper').toggleClass('display-right');
-            $('footer').toggleClass('display-right');
+            // comet实现
+            /*
+            $(function () {
+                (function longPolling() {
+                    $.ajax({
+                        url: "__PRO_PATH__/Chat/receive",
+                        data: {"timed": Date.parse(new Date()) / 1000},
+                        dataType: "json",
+                        timeout: 5000, //5秒超时，可自定义设置
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            $(".wait_num").text('');
+                            if (textStatus == "timeout") { // 请求超时
+                                longPolling(); // 递归调用
+                            } else { // 其他错误，如网络错误等
+                                longPolling();
+                            }
+                        },
+                        success: function (data, textStatus) {
+                            if (data != 0) {
+                            }
+                            else {
+                            }
+                            if (textStatus == "success") { // 请求成功
+                                longPolling();
+                            }
+                        }
+                    });
 
-            $(".multiple").multipleSelect({
-                filter: true,
-                multiple: true,
-                selectAll: true
+                })();
             });
-            $(".flatpickr").flatpickr({time_24hr:true});
+            */
+
+//            $('.sidebar-right').toggleClass('active');
+//            $('.wrapper').toggleClass('display-right');
+//            $('.footer').toggleClass('display-right');
+            //Scrollable Chat Widget
+            $('#chatScroll').slimScroll({
+                height:'300px',
+                start: 'bottom'
+            });
+            $('#btn-chat').click(function () {
+                submit();
+            });
             myupload({
                 container: 'upload-wrapper',
                 browse: 'pickfiles',
@@ -252,75 +282,80 @@
         },
 
         methods: {
-            createNewApply: function () {
-                getParams();
-                $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
-                    if (res.error_code == 0) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
-                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
-                    } else if (res.error_code == 2) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
-                        $.each(res.errors, function (k, v) {
-                            vm.errors[k] = v;
-                        });
-                        console.log(JSON.stringify(vm.errors));
-                    }
-                });
-            },
-
-            check_by_ID_number: function () {
-                console.log("check_by_ID_number");
-                $.post('__PRO_PATH__/Patient/getPatientByIDNum', {'patient_ID_number': vm.patient['patient_ID_number']}, function (res) {
-                    if (res.error_code == 2) {
-                        popWarn('未找到这名患者的信息 ,请手动输入');
-                    } else {
-                        $.each(res.patient, function (k, v) {
-                            if(k=='id'){
-                                vm.params['patient_id']=v;
-                            }
-                            vm.patient[k] = v;
-                        });
-                        console.log(JSON.stringify(vm.errors));
-                    }
-                });
+            send:function(ev){
+                console.log(check());
+                if(ev.keyCode == 13 && !check()){
+                    ev.returnValue = false;
+                }
+                else if(ev.keyCode == 13 && check()){
+                    submit();
+                }
             }
-
         }
     });
 
-
-    $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Apply/index';
-    });
-
-    function change_hospital(){
-        console.log("执行了");
-        var hospital_id = $('#consultation_hospital').val();
-        console.log(hospital_id);
-        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});
+    /**
+     * 检查输入的字符串是否合格
+     */
+    function check() {
+        if(ClearBr(vm.content) == '') {
+            return false;
+        }
+        vm.params['type'] = 'text';
+        vm.params['content'] = vm.content;
+        pushMessage(vm.chat_to_user['source_user_id'], vm.content);
+        vm.content = '';
+        vm.to_send = true;
+        return true;
     }
 
-    function getParams(){
-        vm.params['office_ids'] = [];
-        vm.params['doctor_ids'] = [];
-        var data = $('#new-apply-form').serializeArray();
-        $.each(data, function() {
-            if(this.name == 'office_ids' || this.name == 'doctor_ids'){
-                vm.params[this.name].push(this.value);
-            } else {
-                vm.params[this.name] = this.value;
+    /**
+     * 显示发送信息
+     * @param id
+     * @param content
+     * @returns {boolean}
+     */
+    function pushMessage(id, content) {
+        if(content == ''){
+            return false;
+        }
+        vm.chat.push({'source_user_id': id, 'type': 'text', 'content': content, 'time': 15231325131135});
+        return true;
+    }
+
+    /**
+     * 发送信息
+     */
+    function submit() {
+        $.post("__PRO_PATH__/Chat/send", vm.params, function (res) {
+            if(res.error_code == 0){
+                vm.to_send = false;
+                console.log(res.msg);
+                $('#chatScroll').slimScroll({
+                    height:'300px',
+                    start: 'bottom'
+                });
+            } else{
+                // 报错
             }
         });
-        $.each(vm.patient, function (k, v) {
-            vm.params[k] = v;
-        });
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
     }
+
+    /**
+     * 接收信息
+     */
+    function receive(){
+        $.post("__PRO_PATH__/Chat/receive", vm.receieve_params, function (res) {
+            if(res.error_code == 0){
+                vm.chat = res.data;
+                console.log(vm.chat);
+            } else{
+                console.log(res.msg);
+            }
+        });
+    }
+
+    receive();
 </script>
 {else /}
 <div class="main-container">
