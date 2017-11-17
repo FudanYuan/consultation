@@ -114,6 +114,7 @@
                     </div>
                 </div>
 
+
                 <div :class="['form-group']" >
                     <label class="col-sm-2 control-label">眼睛视力：</label>
                     <div class="col-sm-9">
@@ -124,37 +125,31 @@
                     </div>
                 </div>
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+                <div class="form-group }">
                     <label class="col-sm-2 control-label">左眼照片：</label>
-                    <div class="col-sm-4">
-                        <div id="filelist_left_eye">
-                            <div>{$data.img_origin??''}<b></b></div>
-                        </div>
+                    <div class="col-sm-4" style="height: 100px;width: 120px">
+                        <img id="filelist_left_eye" src="{$patient.eye_photo_left_origin?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                         <br/>
                         <div id="upload_left_eye">
-                            <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                            <a id="uploadfiles_left_eye" href="javascript:;">上传</a>
+                            <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
+                                <i class="fa fa-camera fa-lg"></i>
+                            </a>
                         </div>
-                        <input type="hidden" name="eye_photo_left" value="{$patient.eye_photo_left??''}"/>
                         <input type="hidden" name="eye_photo_left_origin" value="{$patient.eye_photo_left_origin??''}"/>
-                        <span class="help-block">{$errors.img ?? ''}</span>
                     </div>
                 </div>
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+                <div class="form-group }">
                     <label class="col-sm-2 control-label">右眼照片：</label>
-                    <div class="col-sm-4">
-                        <div id="filelist_right_eye">
-                            <div>{$data.img_origin??''}<b></b></div>
-                        </div>
+                    <div class="col-sm-4" style="height: 100px;width: 120px">
+                        <img id="filelist_right_eye" src="{$patient.eye_photo_right_origin?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                         <br/>
                         <div id="upload_right_eye">
-                            <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                            <a id="uploadfiles_right_eye" href="javascript:;">上传</a>
+                            <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
+                                <i class="fa fa-camera fa-lg"></i>
+                            </a>
                         </div>
-                        <input type="hidden" name="eye_photo_right" value="{$patient.eye_photo_right??''}"/>
-                        <input type="hidden" name="eye_photo_right_origin" value="{$data.eye_photo_right_origin??''}"/>
-                        <span class="help-block">{$errors.eye_photo_right?? ''}</span>
+                        <input type="hidden" name="eye_photo_right_origin" value="{$patient.eye_photo_right_origin??''}"/>
                     </div>
                 </div>
 
@@ -163,35 +158,35 @@
                     <div class="col-sm-4" id="eyes_ill_type" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type1" name="ill_type1" value="1" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type1" name="ill_type" value="1" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type1"></label>
                             </div>
                             <div class="inline-block vertical-top">眼表</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type2" name="ill_type1" value="2" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type2" name="ill_type" value="2" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type2"></label>
                             </div>
                             <div class="inline-block vertical-top">眼前节</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type3" name="ill_type1" value="3" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type3" name="ill_type" value="3" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type3"></label>
                             </div>
                             <div class="inline-block vertical-top">眼底</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type4" name="ill_type1" value="4" onclick="clickRadio(this.value)">
+                                <input type="radio" id="eyes_ill_type4" name="ill_type" value="4" onclick="clickRadio(this.value)">
                                 <label for="eyes_ill_type4"></label>
                             </div>
                             <div class="inline-block vertical-top">视光</div>
                         </div>
                         <div class="radio inline-block" >
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="eyes_ill_type5" name="ill_type1" value="5" onclick="clickRadio(this.value)" value="2">
+                                <input type="radio" id="eyes_ill_type5" name="ill_type" value="5" onclick="clickRadio(this.value)" value="2">
                                 <label for="eyes_ill_type5"></label>
                             </div>
                             <div class="inline-block vertical-top">其他</div>
@@ -269,6 +264,7 @@
         </div>
     </div>
 </div>
+{include file="Common/progress"}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
@@ -310,8 +306,11 @@
             }
         },
         mounted:function () {
+            $('#narrator').val('{$patient.narrator??""}');
+            $('#main_narrate').val('{$patient.main_narrate??""}');
+            $('#in_hospital_time').val('{$patient.in_hospital_time??""}');
             $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
-            $('select[name="ill_type1"]').val('{$patient.ill_type??""}');
+            $("input[name='ill_type'][value='{$patient.ill_type?? ''}']").attr("checked",true);
             $(".flatpickr").flatpickr({time_24hr:true});
             myupload({
                 container: 'upload-wrapper',
@@ -329,7 +328,7 @@
                 },
                 isMulti: false
             });
-            myupload({
+            changeLogo({
                 container: 'upload_left_eye',
                 browse: 'pickfiles_left_eye',
                 url: '__PRO_PATH__/Media/upload?dir=import',
@@ -339,13 +338,15 @@
                 uploadfiles: 'uploadfiles_left_eye',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_left_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $("input[name='eye_photo_left']").val(res.result.file);
+                    $('#filelist_left_eye').attr('src',res.result.file);
+                    $("input[name='eye_photo_left_origin']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
-            myupload({
+            changeLogo({
                 container: 'upload_right_eye',
                 browse: 'pickfiles_right_eye',
                 url: '__PRO_PATH__/Media/upload?dir=import',
@@ -355,25 +356,26 @@
                 uploadfiles: 'uploadfiles_right_eye',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_right_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $("input[name='eye_photo_right']").val(res.result.file);
+                    $('#filelist_right_eye').attr('src',res.result.file);
+                    $("input[name='eye_photo_right_origin']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
         },
 
         methods: {
             createNewApply: function () {
                 getParams();
-                console.log("herhrhrhrrr");
                 console.log(JSON.stringify(vm.params));
                 $.post('__PRO_PATH__/Patient/edit', vm.params, function (res) {
                     if (res.error_code == 0) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('新建成功');
+                        popWarn('保存成功');
                         window.location.href = '__PRO_PATH__/Patient/index';
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {

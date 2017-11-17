@@ -210,8 +210,8 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Doctor/index';
+                        popWarn('保存成功');
+                        //window.location.href = '__PRO_PATH__/Doctor/index';
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
