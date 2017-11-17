@@ -187,10 +187,15 @@ class Apply extends Common
         $hospital_office_id = $hospital_office[0]['id'];
         $doctor = D('Doctor')->getList(['hospital_office_id' => $hospital_office_id]);
 
+        mydump($hospital);
+        mydump($office);
+        mydump($doctor);
+
         $apply_info['apply_hospital_name'] ='某县级医院';
         $apply_info['apply_doctor_name'] ='某县级医院医生';
         $apply_info['apply_doctor_phone'] = '15115062214';
         $apply_info['date']='2017/11/16';
+
         return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor,'apply_info'=>$apply_info]);
     }
 
@@ -315,12 +320,12 @@ class Apply extends Common
     public function edit(){
         $id = input('get.id');
         $data = input('post.');
-        $Apply = D('Apply')->getById($id);
+        $apply = D('Apply')->getById($id);
         if(!empty($data)){
             $ret['data'] = $data;
             $this->jsonReturn($ret);
         }
-        return view('',['Apply' => $Apply]);
+        return view('',['apply' => $apply]);
     }
 
     /**

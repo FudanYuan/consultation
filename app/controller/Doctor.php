@@ -104,7 +104,7 @@ class Doctor extends Common
             $data['phone'] = input('post.doctor_phone');
             $data['email'] = input('post.doctor_email');
             $data['address'] = input('post.doctor_address');
-            $data['postcode'] = input('post.postcode');
+            $data['postcode'] = input('post.doctor_postcode');
             $data['info'] = input('post.doctor_info');
             $data['honor'] = input('post.doctor_honor');
             $data['remark'] = input('post.doctor_remark');
@@ -114,6 +114,7 @@ class Doctor extends Common
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res['errors'];
             }
+            $ret['params'] = $params;
             $this->jsonReturn($ret);
         }
         $select = ['id,name'];
@@ -180,28 +181,32 @@ class Doctor extends Common
         $doctor = D('Doctor')->getById($id);
         if(!empty($params)){
             $ret['data'] = $params;
-            $ret = ['error_code' => 0, 'msg' => '新建成功'];
+            $ret = ['error_code' => 0, 'msg' => '编辑成功'];
             $data['name'] = input('post.doctor_name');
             $data['photo'] = input('post.doctor_photo');
             $photo_origin = input('post.doctor_photo_origin');
-            $data['gender'] = input('post.hospital_gender','');
+            $data['gender'] = input('post.gender','');
             $data['age'] = input('post.hospital_age');
             $data['position'] = input('post.hospital_position');
             $data['phone'] = input('post.doctor_phone');
             $data['email'] = input('post.doctor_email');
             $data['address'] = input('post.doctor_address');
-            $data['postcode'] = input('post.postcode');
+            $data['postcode'] = input('post.doctor_postcode');
             $data['info'] = input('post.doctor_info');
             $data['honor'] = input('post.doctor_honor');
             $data['remark'] = input('post.doctor_remark');
+            if(empty($data['doctor_photo'])){
+                unset($data['doctor_photo']);
+            }
             $res = D('Doctor')->saveData($params['doctor_id'],$data);
             if(!empty($res['errors'])) {
                 $ret['error_code'] = 2;
-                $ret['msg'] = '新建失败';
+                $ret['msg'] = '编辑失败';
                 $ret['errors'] = $res['errors'];
             }
             $this->jsonReturn($ret);
         }else{
+            mydump($doctor);
             return view('',['doctor' => $doctor]);
         }
     }

@@ -47,7 +47,7 @@ class Patient extends Model{
      */
     public function addData($data){
         $ret = [];
-        $errors = $this->filterField($data);
+        $errors = $this->filterField($data,false);
         $ret['errors'] = $errors;
         if(empty($errors)){
             $data['status'] = 1;
@@ -60,19 +60,21 @@ class Patient extends Model{
         $res = Db('patient')->insertGetId($data);
         return $res;
     }
+
     /**
      * 过滤必要字段
      * @param $data
+     * @param $editFlag
      * @return array
      */
-    private function filterField($data){
+    private function filterField($data,$editFlag){
         $errors = [];
         if(isset($data['name']) && !$data['name']){
             $errors['name'] = '名字不能为空';
         }
         if(isset($data['ID_number']) && !$data['ID_number']){
             $errors['ID_number'] = '身份证号不能为空';
-        }else{
+        }else if(!$editFlag){
             $ret = $this->getPatientByIdNum($data['ID_number']);
             if(!empty($ret)){
                 $errors['ID_number'] = '此人已存在';
@@ -96,9 +98,6 @@ class Patient extends Model{
         return $errors;
     }
 
-
-
-    ///////未修改///////
     /**
      * 获取患者列表
      * @param array $cond
@@ -133,7 +132,7 @@ class Patient extends Model{
      */
     public function saveData($id, $data){
         $ret = [];
-        $errors = $this->filterField($data);
+        $errors = $this->filterField($data,true);
         $ret['errors'] = $errors;
         if(empty($errors)){
             $data['update_time'] = time();
@@ -142,8 +141,6 @@ class Patient extends Model{
         return $ret;
     }
     ///////未修改///////
-
-
 
     /**
      * 批量增加患者信息

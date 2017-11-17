@@ -28,13 +28,6 @@
                     </div>
                 </div>
 
-                <!--<div :class="['form-group']" >
-                    <label for="hospital_logo" class="col-sm-2 control-label">医院logo：</label>
-                    <div class="col-sm-4">
-                        <input class="form-control" type="text" name ="hospital_logo" value="" placeholder="请上传医院LOGO" id="hospital_logo">
-                    </div>
-                </div>-->
-
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医院logo：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
@@ -47,19 +40,6 @@
                         </div>
                         <input type="hidden" name="hospital_logo" value="{$Hospital.logo??''}"/>
                     </div>
-                    <!--<div class="col-sm-4">-->
-                        <!--<div id="filelist_hospital_logo">-->
-                            <!--<div>{$Hospital.logo??''}<b></b></div>-->
-                        <!--</div>-->
-                        <!--<br/>-->
-                        <!--<div id="upload_right_eye">-->
-                            <!--<a id="pickfiles_hospital_logo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>-->
-                            <!--<a id="uploadfiles_hospital_logo" href="javascript:;">上传</a>-->
-                        <!--</div>-->
-                        <!--<input type="hidden" name="hospital_logo" value="{$Hospital.logo??''}"/>-->
-                        <!--<input type="hidden" name="hospital_logo_origin" value="{$Hospital.logo??''}"/>-->
-                        <!--<span class="help-block">{$errors.hospital_logo?? ''}</span>-->
-                    <!--</div>-->
                 </div>
 
                 <div :class="['form-group', errors.phone != '' ? 'has-error' : '']">
@@ -220,7 +200,7 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('新建成功');
+                        popWarn('保存成功');
                         window.location.href = '__PRO_PATH__/Hospital/index';
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
@@ -233,7 +213,6 @@
                     }
                 });
             },
-
         }
     });
 

@@ -284,12 +284,31 @@
 
                     </td>
 
+                    <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
 
-                    <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">诊疗情况</td>
+                    <div :class="['form-group', errors.ill_state != '' ? 'has-error' : '']" >
+                        <td colspan="5" style="text-align: left; height: auto; padding: 20px;">
+                            <textarea  class="form-control" type="text" v-model="patient.patient_illness_state" id="patient_illness_state" placeholder="请输入患者简要病情"></textarea>
+                            <p class="help-block">{{errors.ill_state}}</p>
+                        </td>
+                    </div>
+                </tr>
+                <!--<td colspan="5" style="text-align: left; height: auto; padding: 20px;">-->
+                    <!--<div :class="['form-group']" >-->
+                        <!--<textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况"></textarea>-->
+                    <!--</div>-->
+                <!--</td>-->
+                <tr></tr>
 
-                    <td colspan="5" style="text-align: left; height: auto; padding: 20px;">
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">诊疗情况：</td>
+                </tr>
+                <tr></tr>
+
+                <tr>
+                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
                         <div :class="['form-group']" >
-                            <textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况"></textarea>
+                            <textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 80px" id="diagnose_state" placeholder="请输入诊疗情况"></textarea>
                         </div>
                     </td>
                 </tr>
