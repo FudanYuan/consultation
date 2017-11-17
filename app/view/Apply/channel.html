@@ -228,7 +228,7 @@
                             {/if}
 
                             {if condition="authority('ChannelEdit')"}
-                            <a :href="'__PRO_PATH__/Apply/channelEdit?id='+model.id" title="编辑" v-if="model.status == 1 && model.doctor_id == vm3.doctor_id">
+                            <a :href="'__PRO_PATH__/Apply/channelEdit?id='+model.id" title="编辑" v-if="model.status == 1 && model.user_id == vm3.user_id">
                                 <i class="fa fa-pencil-square fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             {/if}

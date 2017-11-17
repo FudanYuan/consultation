@@ -70,7 +70,7 @@ $(function	()	{
 	$('.sidebarRight-toggle').click(function()	{
 		$('.sidebar-right').toggleClass('active');
 		$('.wrapper').toggleClass('display-right');
-		$('footer').toggleClass('display-right');
+		$('.footer').toggleClass('display-right');
 
 		return false;
 	});
