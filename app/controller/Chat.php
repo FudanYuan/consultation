@@ -17,22 +17,40 @@ class Chat extends Common
      */
     public function index(){
         $data = input('get.');
-        // 获取当前userId
-        $account_id = $this->getUserId();
-        $select = ['a.id as id'];
-        $cond = ['a.id' => $account_id];
-        $account = D('UserAdmin')->getUserAdmin($select, $cond);
-        $cond = [];
-        $cond['id'] = ['<>', $account_id];
-        $users = D('UserAdmin')->getList($cond);
-
-        if(!empty($data)){
-            $apply_id = input('post.apply_id');
-            $apply = D('Apply')->getById($apply_id);
-            $user_id_post = input('post.user_id');
-            return view('', ['users' => $users, 'account' => $account, 'apply' => $apply, 'target_user_id' => $user_id_post]);
+        $apply_id = input('get.id', '');
+        $cond_and = [];
+        $cond_and['a.status'] = ['>=', 3];
+        if(!$apply_id){
+            $apply = D('Apply')->getList([], $cond_and, []);
+            if(count($apply) > 0){
+                $apply_id = $apply[0]['id'];
+            } else {
+                return view('', ['error' => '您的会话记录为空，赶紧发起申请，激烈讨论吧!']);
+            }
         }
-        return view('', ['users' => $users, 'account' => $account, 'target_user_id' => $users[0]['id']]);
+        // 获取当前userId
+        $source_user_id = $this->getUserId();
+        $apply_info = D('Apply')->getById($apply_id);
+        $target_doctor_ids = $apply_info['target_doctor_ids'];
+
+        $target_user_id = [];
+        $array_target_doctor_id = explode('-',$target_doctor_ids);
+        $target_doctor_ids = [];
+        for($index=0;$index<count($array_target_doctor_id);$index++) {
+            if($array_target_doctor_id[$index] != ''){
+                array_push($target_doctor_ids, $array_target_doctor_id[$index]);
+            }
+        }
+        $ids = implode(",",$target_doctor_ids);
+        $select = ['a.id as id'];
+        $cond = ['b.id' => ['in', $ids]];
+        $user_ids = D('UserAdmin')->getUserAdmin($select,$cond);
+
+        for($i=0;$i<count($user_ids);$i++){
+            array_push($target_user_id, $user_ids[$i]['id']);
+        }
+        $target_user_id = implode("-",$target_user_id);
+        return view('', ['error' => '', 'apply_id' => $apply_id, 'source_user_id' => $source_user_id, 'target_user_id' => $target_user_id,]);
     }
 
     /**
@@ -47,16 +65,21 @@ class Chat extends Common
         if($keywords){
             $cond_or['d.name|f.name|g.name'] = ['like','%'.myTrim($keywords).'%'];
         }
-        $cond_and['b.is_green_channel'] = 0;
-        $cond_and['a.target_user_id'] = $user_id;
+
         $select = ['c.id as user_id,d.id as doctor_id,d.name as doctor_name,f.id as hospital_id,
                     f.name as hospital_name,g.name as office, d.photo as logo,b.id as apply_id,
                     count(a.id) as count'];
-        $normal =  D('Chat')->getList($select,$cond_or,$cond_and);
+        $cond_and['a.target_user_id'] = $user_id;
         $cond_and['b.is_green_channel'] = 1;
-        $green =  D('Chat')->getList($select,$cond_or,$cond_and);
+        $normal = D('Chat')->getUserList($select,$cond_or,$cond_and);
+
+        $ret['cond_and1'] = $cond_and;
+        $cond_and['b.is_green_channel'] = 0;
+        $green = D('Chat')->getUserList($select,$cond_or,$cond_and);
+
         $ret['normal'] = $normal;
         $ret['green'] = $green;
+        $ret['cond_and2'] = $cond_and;
         $this->jsonReturn($ret);
     }
 
@@ -95,6 +118,7 @@ class Chat extends Common
      */
     public function send(){
         $data = input('post.');
+        $apply_id = input('post.apply_id', '');
         $target_user_id = input('post.target_user_id', '');
         $source_user_id = input('post.source_user_id', '');
         $type = input('post.type', '');
@@ -104,9 +128,16 @@ class Chat extends Common
         /**
          * 发送逻辑
          */
-        $res = D('Chat')->addData($data);
+        unset($data['target_user_id']);
+        $dataSet = [];
+        $target_user_id = explode('-',$target_user_id);
+        foreach($target_user_id as $item){
+            $data['target_user_id'] = $item;
+            array_push($dataSet, $data);
+        }
+        $res = D('Chat')->addAllData($dataSet);
         if(!empty($res['errors'])){
-            $ret['error_code'] = 2;
+            $ret['error_code'] = 1;
             $ret['errors'] = $res['errors'];
         }
         $this->jsonReturn($ret);
@@ -118,6 +149,7 @@ class Chat extends Common
     public function receive(){
         $params = input('post.');
         $request_new = input('post.request_time', 0);
+        $apply_id = input('post.apply_id', -1);
         $source_user_id = input('post.source_user_id', -1);
         $target_user_id = input('post.target_user_id', -1);
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
@@ -125,8 +157,7 @@ class Chat extends Common
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-            $cond['source_user_id | target_user_id'] = ['=', $source_user_id];
-            $cond['source_user_id | target_user_id'] = ['=', $target_user_id];
+            $cond['apply_id'] = ['=', $apply_id];
             $cond['status'] = ['<>', 2];
             $list = D('Chat')->getList($cond);
 
@@ -140,8 +171,7 @@ class Chat extends Common
             date_default_timezone_set("PRC");
             set_time_limit(0);//无限请求超时时间
             while (true) {
-                $cond['source_user_id'] = ['=', $source_user_id];
-                $cond['target_user_id'] = ['=', $target_user_id];
+                $cond['apply_id'] = ['=', $apply_id];
                 $cond['status'] = ['=', 0];
                 $list = D('Chat')->getList($cond);
                 if (count($list) > 0) { // 如果有新的消息，则返回数据信息

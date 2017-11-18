@@ -29,10 +29,10 @@
                                     </div>
                                 </div>
                                 <!--<div class="chat-status">-->
-                                    <!--<i class="fa fa-circle-o text-success"></i>-->
+                                <!--<i class="fa fa-circle-o text-success"></i>-->
                                 <!--</div>-->
                                 <div class="chat-alert">
-                                    <span class="badge badge-danger bounceIn animation-delay2">1</span>
+                                    <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
                                 </div>
                             </a>
                         </li>
@@ -47,7 +47,7 @@
             </div>
             <div class="content-block">
                 <ul class="sidebar-list">
-                    <template v-for="model in normal">
+                    <template v-for="model in green">
                         <li>
                             <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
                                 <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
@@ -65,7 +65,7 @@
                                 <!--<i class="fa fa-circle-o text-success"></i>-->
                                 <!--</div>-->
                                 <div class="chat-alert">
-                                    <span class="badge badge-danger bounceIn animation-delay2">1</span>
+                                    <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
                                 </div>
                             </a>
                         </li>

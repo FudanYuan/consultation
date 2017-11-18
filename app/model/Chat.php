@@ -24,21 +24,35 @@ class Chat extends Model{
         'update_time' => 'integer'
     ];
 
-
     /**
      * 获取消息列表
+     * @param array $cond
+     * @return mixed
+     */
+    public function getList($cond = []){
+        if(!isset($cond_and['status'])){
+            $cond_and['status'] = ['<>', 2];
+        }
+        $res = $this->field('*')
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
+    /**
+     * 获取用户列表
      * @param $select
      * @param $cond_or
      * @param $cond_and
      * @return mixed
      */
-    public function getList($select,$cond_or,$cond_and){
+    public function getUserList($select = '*',$cond_or = [],$cond_and = []){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 2];
         }
         $res = $this->alias('a')->field($select)
             ->join('consultation_apply b','a.apply_id = b.id')
-            ->join('user_admin c','a.source_user_id = c.id')
+            ->join('consultation_user_admin c','a.source_user_id = c.id')
             ->join('consultation_doctor d','c.doctor_id = d.id')
             ->join('consultation_hospital_office e','d.hospital_office_id = e.id')
             ->join('consultation_hospital f','f.id = e.hospital_id')
@@ -97,7 +111,7 @@ class Chat extends Model{
 
 
     /**
-     * 批量增加消息列表
+     * 批量增加消息
      * @param $dataSet
      * @return array
      */

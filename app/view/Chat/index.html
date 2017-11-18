@@ -42,6 +42,7 @@
         </ul>
 
         <div class="row" id="chat">
+            {if condition="$error eq ''"}
             <div class="col-lg-12">
                 <div class="smart-widget widget-purple">
                     <div class="smart-widget-header">
@@ -130,8 +131,10 @@
                     </div><!-- ./smart-widget-inner -->
                 </div><!-- ./smart-widget -->
             </div><!-- ./col -->
+            {else /}
+            <div class="col-lg-12" style="text-align: center">{$error ?? ''}</div>
+            {/if}
         </div>
-
     </div><!-- ./row -->
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -145,6 +148,7 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+{if condition="$error eq ''"}
 <script>
     $('#consultation-nav-chat').addClass('active');
 
@@ -153,16 +157,18 @@
         data: {
             to_send: false,
             params: {
-                target_user_id: '{$target_user_id}',
-                source_user_id: '{$account.id}',
+                apply_id: "{$apply_id ?? ''}",
+                target_user_id: "{$target_user_id ?? ''}",
+                source_user_id: "{$source_user_id ?? ''}",
                 type: '',
                 content: '',
                 content_origin: '',
                 status: 0
             },
             receive_params:{
-                target_user_id: '{$target_user_id}',
-                source_user_id: '{$account.id}',
+                apply_id: "{$apply_id ?? ''}",
+                target_user_id: "{$target_user_id ?? ''}",
+                source_user_id: "{$source_user_id ?? ''}",
                 total: 0,
                 per_page: 20,
                 current_page: 1,
@@ -171,7 +177,7 @@
             item: '讨论4号病患的病情',
             content: '',
             chat_to_user: {
-                id: '{$target_user_id}',
+                id: "{$target_user_id ?? ''}",
                 logo: '__PUBLIC__/images/profile/profile1.jpg',
                 name: 'Jeremy'
             },
@@ -201,8 +207,9 @@
 //                        url: "__PRO_PATH__/Chat/receive",
 //                        data: {
 //                            request_time: Date.parse(new Date()) / 1000,
-//                            target_user_id: '{$target_user_id}',
-//                            source_user_id: '{$account.id}'
+//                            apply_id: "{$apply_id ?? ''}",
+//                            target_user_id: "{$target_user_id ?? ''}",
+//                            source_user_id: "{$source_user_id ?? ''}",
 //                        },
 //                        dataType: "json",
 //                        timeout: 2000, //5秒超时，可自定义设置
@@ -311,7 +318,7 @@
                 if(content == ''){
                     return false;
                 }
-                vm.chat.push({'source_user_id': '{$account.id}', 'target_user_id': '{$target_user_id}', 'type': type, 'content': content, 'create_time': Date.parse(new Date()) / 1000, 'status': 0});
+                vm.chat.push({'source_user_id': "{$source_user_id ?? ''}", 'target_user_id': "{$target_user_id ?? ''}", 'type': type, 'content': content, 'create_time': Date.parse(new Date()) / 1000, 'status': 0});
                 return true;
             },
 
@@ -388,6 +395,7 @@
 
     update();
 </script>
+{/if}
 {else /}
 <div class="main-container">
     <div class="padding-md">
