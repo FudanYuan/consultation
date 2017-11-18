@@ -215,52 +215,49 @@
 
             },
             chat: [],
-
+            list: [], // 用作暂存数据用
             receiveIds: [],
 
             readIds: []
         },
         mounted:function () {
             // comet实现
-//            $(function () {
-//                (function longPolling() {
-//                    $.ajax({
-//                        type:"POST",
-//                        url: "__PRO_PATH__/Chat/receive",
-//                        data: {
-//                            request_time: Date.parse(new Date()) / 1000,
-//                            apply_id: "{$apply_id ?? ''}",
-//                            target_user_id: "{$target_user_id ?? ''}",
-//                            source_user_id: "{$source_user_id ?? ''}",
-//                        },
-//                        dataType: "json",
-//                        timeout: 2000, //5秒超时，可自定义设置
-//                        error: function (XMLHttpRequest, textStatus, errorThrown) {
-//                            if (textStatus == "timeout") { // 请求超时
-//                                longPolling(); // 递归调用
-//                            } else { // 其他错误，如网络错误等
-//                                longPolling();
-//                            }
-//                        },
-//                        success: function (res) {
-//                            console.log(JSON.stringify(res));
-//                            if (res.error_code == 0) { // 请求成功
-//                                if (res.data.length != 0) {
-//                                    vm.receiveMsg(res.data);
-//                                }
-//                            }
-//                            longPolling();
-//                        }
-//                    });
-//                })();
-//            });
-
-            //Scrollable Chat Widget
-            $('#chatScroll').slimScroll({
-                height:'300px',
-                start: 'bottom'
+            $(function () {
+                (function longPolling() {
+                    $.ajax({
+                        type:"POST",
+                        url: "__PRO_PATH__/Chat/receive",
+                        data: {
+                            request_time: Date.parse(new Date()) / 1000,
+                            apply_id: "{$apply_id ?? ''}",
+                            target_user_id: "{$target_user_id ?? ''}",
+                            source_user_id: "{$source_user_id ?? ''}"
+                        },
+                        dataType: "json",
+                        timeout: 2000, //5秒超时，可自定义设置
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            if (textStatus == "timeout") { // 请求超时
+                                longPolling(); // 递归调用
+                            } else { // 其他错误，如网络错误等
+                                longPolling();
+                            }
+                        },
+                        success: function (res) {
+                            console.log(JSON.stringify(res));
+                            if (res.error_code == 0) { // 请求成功
+                                if (res.data.length != 0) {
+                                    vm.receiveMsg(res.data);
+                                }
+                            }
+                            longPolling();
+                        }
+                    });
+                })();
             });
 
+            $(function () {
+                update();
+            });
             $('#btn-chat').click(function () {
                 if(vm.check()){
                     vm.send();
@@ -339,7 +336,7 @@
             getReadIds: function () {
                 vm.readIds = [];
                 for(var i=0; i<vm.chat.length;i++){
-                    if(vm.chat[i]['status'] == 0){
+                    if(vm.chat[i]['status'] == 0 && vm.chat[i]['target_user_id'] == vm.params['source_user_id']){
                         vm.readIds.push(vm.chat[i]['id']);
                     }
                 }
@@ -356,14 +353,20 @@
             },
 
             markRead: function () {
-                $.post("__PRO_PATH__/Chat/markRead", {ids: vm.getReadIds()}, function (res) {
-                    if(res.error_code == 0){
-                    } else{
-                        console.log(res.msg);
-                    }
-                });
+                console.log(vm.getReadIds());
+                if(vm.getReadIds() != ''){
+                    $.post("__PRO_PATH__/Chat/markRead", {ids: vm.getReadIds()}, function (res) {
+                        if(res.error_code == 0){
+                        } else{
+                            console.log(res.msg);
+                        }
+                    });
+                }
             },
 
+            /**
+             * 接收信息
+             */
             receiveMsg: function (data) {
                 for(var i=0; i<data.length; i++){
                     if($.inArray(data[i]['id'], vm.receiveIds) == -1){
@@ -371,6 +374,9 @@
                         vm.chat.push(data[i]);
                     }
                 }
+                $('#chatScroll').slimScroll({
+                    scrollTo : ($('#chatScroll ul').height())+'px'
+                });
                 vm.markRead();
             },
 
@@ -383,21 +389,33 @@
                     if(res.error_code == 0){
                         vm.to_send = false;
                         $('#chatScroll').slimScroll({
-                            height:'300px',
-                            start: 'bottom'
+                            scrollTo : ($('#chatScroll ul').height())+'px'
                         });
                     } else{
                         // 报错
                     }
                 });
             },
+
+            /**
+             * 加载更多消息记录
+             */
             loadMore: function () {
+                vm.list = vm.chat;
+                console.log(vm.list);
+                console.log(vm.chat);
                 vm.chat = [];
-                vm.receive_params['per_page'] =  parseInt(vm.receive_params['per_page']) * 2;
                 vm.receive_params['current_page'] = parseInt(vm.receive_params['current_page']) - 1;
                 update();
-            },
-
+                console.log(vm.chat);
+                vm.chat = vm.chat.concat(vm.list);
+                console.log(vm.chat);
+                vm.list = [];
+                $('#chatScroll').slimScroll({
+                    scrollTo : '0px'
+                });
+                console.log(vm.chat.length, vm.receive_params['current_page']);
+            }
         },
         filters:{
             formatTime: function (time) {
@@ -425,19 +443,12 @@
                 vm.receive_params['total'] = res.total;
                 vm.receive_params['pages'] = Math.ceil(res.total / vm.receive_params['per_page']);
                 vm.receive_params['current_page'] = res.current_page;
-                console.log(vm.receive_params);
+                console.log(vm.receive_params['current_page']);
             } else{
                 console.log(res.msg);
             }
         });
     }
-
-    update();
-
-    $('#chatScroll').slimScroll({
-        height:'300px',
-        start: 'bottom'
-    });
 </script>
 {/if}
 {else /}

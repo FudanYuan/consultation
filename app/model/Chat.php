@@ -59,6 +59,7 @@ class Chat extends Model{
             ->join('consultation_office g','g.id = e.office_id')
             ->where($cond_and)
             ->where($cond_or)
+            ->order('a.create_time asc')
             ->group('a.apply_id')
             ->select();
         return $res;

@@ -183,8 +183,9 @@ class Chat extends Common
             date_default_timezone_set("PRC");
             set_time_limit(0);//无限请求超时时间
             while (true) {
-                $cond['apply_id'] = ['=', $apply_id];
-                $cond['status'] = ['=', 0];
+                $cond['apply_id'] = $apply_id;
+                $cond['target_user_id'] = $source_user_id;
+                $cond['status'] = 0;
                 $list = D('Chat')->getList($cond);
                 if (count($list) > 0) { // 如果有新的消息，则返回数据信息
                     $ret["data"] = $list;
