@@ -24,18 +24,28 @@ class Chat extends Model{
         'update_time' => 'integer'
     ];
 
+
     /**
      * 获取消息列表
-     * @param array $cond
+     * @param $select
+     * @param $cond_or
+     * @param $cond_and
+     * @return mixed
      */
-    public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
+    public function getList($select,$cond_or,$cond_and){
+        if(!isset($cond_and['a.status'])){
+            $cond_and['a.status'] = ['<>', 2];
         }
-        $res = $this->field('id, apply_id, source_user_id, target_user_id, type, content,
-        content_origin, status, create_time')
-            ->order('create_time desc')
-            ->where($cond)
+        $res = $this->alias('a')->field($select)
+            ->join('consultation_apply b','a.apply_id = b.id')
+            ->join('user_admin c','a.source_user_id = c.id')
+            ->join('consultation_doctor d','c.doctor_id = d.id')
+            ->join('consultation_hospital_office e','d.hospital_office_id = e.id')
+            ->join('consultation_hospital f','f.id = e.hospital_id')
+            ->join('consultation_office g','g.id = e.office_id')
+            ->where($cond_and)
+            ->where($cond_or)
+            ->group('a.apply_id')
             ->select();
         return $res;
     }

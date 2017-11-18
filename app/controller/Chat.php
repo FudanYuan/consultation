@@ -20,8 +20,7 @@ class Chat extends Common
         // 获取当前userId
         $account_id = $this->getUserId();
         $select = ['a.id as id'];
-        $cond = [];
-        $cond['a.id'] = $account_id;
+        $cond = ['a.id' => $account_id];
         $account = D('UserAdmin')->getUserAdmin($select, $cond);
         $cond = [];
         $cond['id'] = ['<>', $account_id];
@@ -43,16 +42,19 @@ class Chat extends Common
         $params = input('post.');
         $keywords = input('post.search','');
         $ret = ['error_code' => 0, 'msg' => '加载成功'];
-
+        $user_id = $this->getUserId();
         $cond_or = [];
-
         if($keywords){
-            $cond_or[''] = ['like','%'.myTrim($keywords).'%'];
+            $cond_or['d.name|f.name|g.name'] = ['like','%'.myTrim($keywords).'%'];
         }
-        $cond_and['a.is_green_channel'] = 0;
-        $normal = D('Chat')->getList($cond_or,$cond_and,[]);
-        $cond_and['a.is_green_channel'] = 1;
-        $green = D('Chat')->getList($cond_or,$cond_and,[]);
+        $cond_and['b.is_green_channel'] = 0;
+        $cond_and['a.target_user_id'] = $user_id;
+        $select = ['c.id as user_id,d.id as doctor_id,d.name as doctor_name,f.id as hospital_id,
+                    f.name as hospital_name,g.name as office, d.photo as logo,b.id as apply_id,
+                    count(a.id) as count'];
+        $normal =  D('Chat')->getList($select,$cond_or,$cond_and);
+        $cond_and['b.is_green_channel'] = 1;
+        $green =  D('Chat')->getList($select,$cond_or,$cond_and);
         $ret['normal'] = $normal;
         $ret['green'] = $green;
         $this->jsonReturn($ret);
