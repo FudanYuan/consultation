@@ -132,6 +132,7 @@ class Chat extends Common
                     exit();
                 } else { // 模拟没有数据变化，将休眠 hold住连接
                     sleep(10);
+                    exit();
                 }
             }
         }
