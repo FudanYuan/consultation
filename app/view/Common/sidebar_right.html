@@ -1,17 +1,17 @@
 <div class="sidebar-right">
     <div class="sidebar-inner scrollable-sidebar" style="overflow: hidden; width: auto; height: 100%;" id="apply-right">
         <div class="sidebar-header clearfix">
-            <input class="form-control dark-input" placeholder="搜索···" type="text" v-model="search">
+            <input class="form-control dark-input" placeholder="搜索···" type="text" v-model="search" @keyup.13="enter($event)">
         </div>
         <template v-if="fail">
             <div class="title-block" style="color: #e36159; text-align: center">
                 加载失败
             </div>
         </template>
+        <div class="title-block">
+            会诊申请
+        </div>
         <template v-if="normal.length != 0">
-            <div class="title-block">
-                会诊申请
-            </div>
             <div class="content-block">
                 <ul class="sidebar-list">
                     <template v-for="model in normal">
@@ -40,11 +40,16 @@
                 </ul>
             </div>
         </template>
-
-        <template v-if="green.length != 0">
-            <div class="title-block">
-                绿色通道
+        <template v-else>
+            <div class="title-block" style="color: #e36159; text-align: center">
+                暂无会话
             </div>
+        </template>
+
+        <div class="title-block">
+            绿色通道
+        </div>
+        <template v-if="green.length != 0">
             <div class="content-block">
                 <ul class="sidebar-list">
                     <template v-for="model in green">
@@ -73,6 +78,11 @@
                 </ul>
             </div>
         </template>
+        <template v-else>
+            <div class="title-block" style="color: #e36159; text-align: center">
+                暂无会话
+            </div>
+        </template>
     </div>
 </div>
 
@@ -89,19 +99,24 @@
         mounted: function () {
 
         },
-        methods: function () {
-            getParams();
-        }
+        methods:{
+            enter:function(ev){
+                if(ev.keyCode == 13){
+                    vm_right.params['search'] = vm_right.search;
+                    getChatList();
+                }
+            }
+        },
     });
 
     // 获取列表
     function getChatList() {
-        var url = '__PRO_PATH__/Chat/getChatList';
-        $.post(url, vm_right.params, function (res) {
+        $.post('__PRO_PATH__/Chat/getChatList', vm_right.params, function (res) {
             if(res.error_code == 0){
                 vm_right.fail = false;
                 vm_right.normal = res.normal;
                 vm_right.green = res.green;
+                vm_right.params['search'] = '';
             } else {
                 vm_right.fail = true;
             }

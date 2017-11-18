@@ -7052,7 +7052,9 @@ label.parsley-error {
 }
 
 .text-muted {
-    color: #aaa
+    color: #aaa;
+    margin: 0 10px;
+    color: cornflowerblue;
 }
 
 .text-muted-light {

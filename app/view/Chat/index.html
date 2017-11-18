@@ -57,7 +57,7 @@
                             <a href="#" class="widget-collapse-option" data-toggle="collapse">
 					            <i class="fa fa-chevron-up"></i>
                             </a>
-                            <a href="#" class="widget-refresh-option">
+                            <a href="javascript:;" class="widget-refresh-option" onclick="update()">
                                 <i class="fa fa-refresh"></i>
                             </a>
                         </span>
@@ -79,6 +79,10 @@
                         </div>
                         <div class="smart-widget-body">
                             <div id="chatScroll">
+                                <template v-if="receive_params['current_page'] != 1">
+                                    <a class="col-lg-12" href="javascript:;" @click="loadMore" style="text-align: center; margin: 10px 0">加载更多···</a>
+                                </template>
+
                                 <ul class="chat">
                                     <template v-for="model in chat">
                                         <li :class="[model.source_user_id != vm3.user_id ? 'left' : 'right' ,'clearfix']">
@@ -88,10 +92,10 @@
                                             <div class="chat-body clearfix">
                                                 <div class="header">
                                                     <strong :class="['primary-font', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">{{model.source_user_id != vm3.user_id ? chat_to_user.name : chat_user.name}}</strong>
-                                                    <!--<small class="pull-right text-muted">-->
-                                                    <!--<i class="fa fa-clock-o"></i>-->
-                                                    <!--12 mins ago-->
-                                                    <!--</small>-->
+                                                    <small class="pull-right text-muted">
+                                                        <i class="fa fa-clock-o"></i>
+                                                        {{model.create_time | formatTime}}
+                                                    </small>
                                                 </div>
                                                 <!-- 1 - text -->
                                                 <template v-if="model.type == 1">
@@ -101,9 +105,17 @@
                                                 </template>
                                                 <!-- 2 - image -->
                                                 <template v-if="model.type == 2">
-                                                    <img class="img" :src="model.content">
+                                                    <a :href="model.content" target="_blank" :title="model.content_origin">
+                                                        <img class="img" :src="model.content" :title="model.content_origin">
+                                                    </a>
                                                 </template>
 
+                                                <!-- 3 - file -->
+                                                <template v-if="model.type == 3">
+                                                    <a :href="model.content">
+                                                        <img class="img" src="__PUBLIC__/images/file.png" :title="model.content_origin">
+                                                    </a>
+                                                </template>
                                             </div>
                                         </li>
                                     </template>
@@ -113,12 +125,21 @@
                         <div class="smart-widget-footer">
                             <div class="col-lg-12 toolbar">
                                 <ul>
-                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
-                                    <li><i class="fa fa-file-o fa-lg" aria-hidden="true"></i></li>
+                                    <li>
+                                        <div id="upload-pictures">
+                                            <a id="picture" href="javascript:;" title="发送照片">
+                                                <i class="fa fa-camera fa-lg"></i>
+                                            </a>
+                                        </div>
+
+                                    </li>
+                                    <li>
+                                        <div id="upload-files">
+                                            <a id="file" href="javascript:;" title="发送文件">
+                                                <i class="fa fa-file-o fa-lg"></i>
+                                            </a>
+                                        </div>
+
                                 </ul>
                             </div>
                             <div class="input-group">
@@ -137,6 +158,7 @@
         </div>
     </div><!-- ./row -->
 </div><!-- /main-container -->
+{include file="Common/progress"}
 {include file="Common/bottom" /}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
@@ -171,8 +193,8 @@
                 source_user_id: "{$source_user_id ?? ''}",
                 total: 0,
                 per_page: 20,
-                current_page: 1,
-                pages: 1
+                current_page: 0,
+                pages: 0
             },
             item: '讨论4号病患的病情',
             content: '',
@@ -245,35 +267,39 @@
                 }
             });
 
-            myupload({
-                container: 'upload-wrapper',
-                browse: 'pickfiles',
+            chatUpload({
+                container: 'upload-pictures',
+                browse: 'picture',
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
-                filelist: 'filelist',
-                uploadfiles: 'uploadfiles',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='files_path_origin']").val(file.name);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                     var res = JSON.parse(result.response);
-                    $("input[name='files_path']").val(res.result.file);
+                    console.log(file.name);
+                    if(vm.pushMessage(2, res.result.file, file.name)){
+                        vm.send();
+                    }
                 },
                 isMulti: false
             });
-            myupload({
-                container: 'upload_left_eye',
-                browse: 'pickfiles_left_eye',
+            chatUpload({
+                container: 'upload-files',
+                browse: 'file',
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
-                filelist: 'filelist_left_eye',
-                uploadfiles: 'uploadfiles_left_eye',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_left_origin']").val(file.name);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                     var res = JSON.parse(result.response);
-                    $("input[name='eye_photo_left']").val(res.result.file);
+                    console.log(file.name);
+                    if(vm.pushMessage(3, res.result.file, file.name)){
+                        vm.send();
+                    }
                 },
                 isMulti: false
             });
@@ -303,22 +329,26 @@
                 if(ClearBr(vm.content) == '') {
                     return false;
                 }
-                vm.params['type'] = 1;
-                vm.params['content'] = vm.content;
-                vm.params['create_time'] = Date.parse(new Date()) / 1000;
                 vm.pushMessage(1, vm.content);
-                vm.content = '';
-                vm.to_send = true;
                 return true;
             },
             /**
              *  显示发送信息
              */
-            pushMessage: function (type, content) {
+            pushMessage: function (type, content, content_origin) {
+                content_origin = content_origin || '';
                 if(content == ''){
                     return false;
                 }
-                vm.chat.push({'source_user_id': "{$source_user_id ?? ''}", 'target_user_id': "{$target_user_id ?? ''}", 'type': type, 'content': content, 'create_time': Date.parse(new Date()) / 1000, 'status': 0});
+                vm.params['type'] = type;
+                vm.params['content'] = content;
+                vm.params['content_origin'] = content_origin;
+                vm.params['create_time'] = Date.parse(new Date()) / 1000;
+                if(type == 1){
+                    vm.content = '';
+                }
+                vm.to_send = true;
+                vm.chat.push({'source_user_id': "{$source_user_id ?? ''}", 'target_user_id': "{$target_user_id ?? ''}", 'type': type, 'content': content, 'content_origin': content_origin, 'create_time': Date.parse(new Date()) / 1000, 'status': 0});
                 return true;
             },
 
@@ -376,6 +406,26 @@
                         // 报错
                     }
                 });
+            },
+            loadMore: function () {
+                vm.chat = [];
+                vm.receive_params['per_page'] =  parseInt(vm.receive_params['per_page']) * 2;
+                vm.receive_params['current_page'] = parseInt(vm.receive_params['current_page']) - 1;
+                update();
+            }
+        },
+        filters:{
+            formatTime: function (time) {
+                if (!time) return '';
+                var formatTime = '';
+                var curTime = Math.ceil(new Date().getTime() / 1000);
+                var interval = parseInt(curTime) - parseInt(time);
+                if (interval >= 3600 * 24) {
+                    formatTime = new Date(parseInt(time) * 1000).format('yyyy年M月d日 hh:mm');
+                } else {
+                    formatTime=new Date(parseInt(time) * 1000).format('hh:mm');
+                }
+                return formatTime;
             }
         }
     });
@@ -387,6 +437,10 @@
         $.post("__PRO_PATH__/Chat/receive", vm.receive_params, function (res) {
             if(res.error_code == 0){
                 vm.receiveMsg(res.data);
+                vm.receive_params['total'] = res.total;
+                vm.receive_params['pages'] = Math.ceil(res.total / vm.receive_params['per_page']);
+                vm.receive_params['current_page'] = res.current_page;
+                console.log(vm.receive_params);
             } else{
                 console.log(res.msg);
             }

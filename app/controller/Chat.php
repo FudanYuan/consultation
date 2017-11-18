@@ -76,11 +76,11 @@ class Chat extends Common
                     count(a.id) as count, b.is_green_channel as is_green_channel'];
         $cond_and['a.target_user_id'] = $user_id;
         $cond_and['b.status'] = ['<', 3];
-        //$cond_and['a.status'] = ['=', 0];
-        $cond_and['b.is_green_channel'] = 1;
+//        $cond_and['a.status'] = ['=', 0];
+        $cond_and['b.is_green_channel'] = 0;
         $normal = D('Chat')->getUserList($select,$cond_or,$cond_and);
 
-        $cond_and['b.is_green_channel'] = 0;
+        $cond_and['b.is_green_channel'] = 1;
         $green = D('Chat')->getUserList($select,$cond_or,$cond_and);
 
         $ret['normal'] = $normal;
@@ -169,8 +169,14 @@ class Chat extends Common
 
             //分页时需要获取记录总数，键值为 total
             $ret["total"] = count($list);
-            //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
-            $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
+            //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置,
+            //取最后一页
+            if($page == 0){
+                $page = ceil(count($list) / $per_page);
+                $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
+            } else{
+                $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
+            }
             $ret['current_page'] = $page;
             $this->jsonReturn($ret);
         } else{
