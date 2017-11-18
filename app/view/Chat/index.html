@@ -105,7 +105,7 @@
                                                 </template>
                                                 <!-- 2 - image -->
                                                 <template v-if="model.type == 2">
-                                                    <a :href="model.content" target="_blank" :title="model.content_origin">
+                                                    <a :href="model.content" :title="model.content_origin" data-lighter>
                                                         <img class="img" :src="model.content" :title="model.content_origin">
                                                     </a>
                                                 </template>
@@ -303,22 +303,6 @@
                 },
                 isMulti: false
             });
-            myupload({
-                container: 'upload_right_eye',
-                browse: 'pickfiles_right_eye',
-                url: '__PRO_PATH__/Media/upload?dir=import',
-                img_types: 'jpg,gif,png',
-                zip_types: 'zip',
-                filelist: 'filelist_right_eye',
-                uploadfiles: 'uploadfiles_right_eye',
-                file_size: '10mb',
-                onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_right_origin']").val(file.name);
-                    var res = JSON.parse(result.response);
-                    $("input[name='eye_photo_right']").val(res.result.file);
-                },
-                isMulti: false
-            });
         },
 
         methods: {
@@ -412,7 +396,8 @@
                 vm.receive_params['per_page'] =  parseInt(vm.receive_params['per_page']) * 2;
                 vm.receive_params['current_page'] = parseInt(vm.receive_params['current_page']) - 1;
                 update();
-            }
+            },
+
         },
         filters:{
             formatTime: function (time) {
@@ -448,6 +433,11 @@
     }
 
     update();
+
+    $('#chatScroll').slimScroll({
+        height:'300px',
+        start: 'bottom'
+    });
 </script>
 {/if}
 {else /}
