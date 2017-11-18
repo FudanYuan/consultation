@@ -174,16 +174,16 @@ class Patient extends Common
                 $data['eye_photo_right'] = input('post.eye_photo_right');
                 $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
                 $data['eye_photo_right_origin'] = input('post.eye_photo_right_origin');
-                $data['ill_type'] = input('post.patient_eyes_type');
+                $data['ill_type'] = input('post.ill_type');
                 $data['other_ill_type'] = input('post.other_ill_type','');
                 $data['ill_state'] = input('post.patient_illness_state');
                 $data['diagnose_state'] = input('post.diagnose_state');
                 $data['files_path'] = input('post.files_path');
                 $data['files_path_origin'] = input('post.files_path_origin');
-                $data['in_hospital_time'] = input('post.in_hospital_time');
+                $in_hospital_time = input('post.in_hospital_time');
                 $data['narrator'] = input('post.narrator');
                 $data['main_narrate'] = input('post.main_narrate');
-                $data['in_hospital_time'] = strtotime($data['in_hospital_time']);
+                $data['in_hospital_time'] = strtotime($in_hospital_time);
                 if(empty($data['eye_photo_left'])){
                     unset($data['eye_photo_left']);
                     unset($data['eye_photo_left_origin']);
@@ -192,14 +192,22 @@ class Patient extends Common
                     unset($data['eye_photo_right']);
                     unset($data['eye_photo_right_origin']);
                 }
+                if(empty($patient)){
+                    unset($data['files_path']);
+                    unset($data['files_path_origin']);
+                }
                 $res = D('Patient')->saveData($params['patient_id'],$data);
                 if(!empty($res['errors'])) {
                     $ret['error_code'] = 2;
                     $ret['msg'] = '编辑失败';
                     $ret['errors'] = $res['errors'];
                 }
+                $ret['time'] = $data['in_hospital_time'];
+                $ret['time2'] = $in_hospital_time;
                 $this->jsonReturn($ret);
             }else{
+                $in_hospital_time = date('Y-m-d H:i:s',$patient['in_hospital_time']);
+                $patient['in_hospital_time'] = $in_hospital_time;
                 return view('',['patient' => $patient]);
             }
     }
