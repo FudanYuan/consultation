@@ -39,7 +39,7 @@ class Apply extends Model{
      * @param $order
      * @return mixed
      */
-    public function getList($cond_and,$cond_or,$order){
+    public function getList($cond_and=[],$cond_or=[],$order=[]){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 0];
         }
@@ -152,6 +152,18 @@ class Apply extends Model{
             $this->save($data, ['id' => $id]);
         }
         return $ret;
+    }
+
+    /**
+     * 标记为已读
+     * @param array $cond
+     * @return false|int
+     * @throws MyException
+     */
+    public function markRead($cond = []){
+        $res = $this->save(['status' => 2, 'update_time' => time()], $cond);
+        if($res === false) throw new MyException('2', '标记失败');
+        return $res;
     }
 
     /**

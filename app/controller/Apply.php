@@ -214,16 +214,10 @@ class Apply extends Common
     public function getApplyInfo(){
         $id = input('post.id');
         $ret = ['error_code' => 0, 'msg' => ''];
-        $res = D('Apply')->getStatusById($id);
-        if($res['status'] == 1){
-            try{
-                //D('Apply')->UpdateStatus(['id' => ['=', $id]], 2);
-            }catch(MyException $e){
-                $ret['error_code'] = 1;
-                $ret['msg'] = '标记失败';
-            }
-        }
+
+        $user_id = $this->getUserId();
         $apply_info = D('Apply')->getById($id);
+
         $patient_id = $apply_info['patient_id'];
         $source_user_id = $apply_info['source_user_id'];
         // 获取目标医院信息
@@ -233,12 +227,10 @@ class Apply extends Common
         $ret['target_hospital_info'] = $target_hospital_info;
         $ret['target_doctor_info'] = [];
         $ret['target_office_info'] = [];
-        $ret['debug'] = [];
         $target_doctor_ids = $apply_info['target_doctor_ids'];
         $target_office_ids = $apply_info['target_office_ids'];
         $array_target_doctor_id = explode('-',$target_doctor_ids);
         for($index=0;$index<count($array_target_doctor_id);$index++) {
-            array_push($ret['debug'], $array_target_doctor_id[$index]);
             if($array_target_doctor_id[$index] != ''){
                 array_push($ret['target_doctor_info'], D('Doctor')->getById((int)$array_target_doctor_id[$index]));
             }
@@ -271,6 +263,31 @@ class Apply extends Common
         $this->jsonReturn($ret);
     }
 
+    /**
+     * 标记为已读
+     */
+    public function markRead(){
+        $ret = ['error_code' => 0, 'msg' => '标记成功'];
+        $ids = input('post.ids');
+
+        $target_user_ids = [];
+        $user_id = $this->getUserId();
+        $res = D('Apply')->getList(['a.id' => ['in', $ids]], [], []);
+        for($i=0;$i<count($res);$i++){
+            array_push($target_user_ids, $res[$i]['user_id']);
+        }
+
+        if(!in_array($user_id, $target_user_ids)){
+            try{
+                $res = D('Apply')->markRead(['id' => ['in', $ids]]);
+            }catch(MyException $e){
+                $ret['error_code'] = 1;
+                $ret['msg'] = '标记失败';
+            }
+        }
+
+        $this->jsonReturn($ret);
+    }
     /**
      * 回复申请
      */

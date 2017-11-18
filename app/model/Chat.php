@@ -52,7 +52,7 @@ class Chat extends Model{
         }
         $res = $this->alias('a')->field($select)
             ->join('consultation_apply b','a.apply_id = b.id')
-            ->join('consultation_user_admin c','a.source_user_id = c.id')
+            ->join('consultation_user_admin c','b.source_user_id = c.id')
             ->join('consultation_doctor d','c.doctor_id = d.id')
             ->join('consultation_hospital_office e','d.hospital_office_id = e.id')
             ->join('consultation_hospital f','f.id = e.hospital_id')

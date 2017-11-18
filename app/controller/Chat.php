@@ -19,7 +19,7 @@ class Chat extends Common
         $data = input('get.');
         $apply_id = input('get.id', '');
         $cond_and = [];
-        $cond_and['a.status'] = ['>=', 3];
+        $cond_and['a.status'] = ['>=', 2];
         if(!$apply_id){
             $apply = D('Apply')->getList([], $cond_and, []);
             if(count($apply) > 0){
@@ -32,24 +32,29 @@ class Chat extends Common
         $source_user_id = $this->getUserId();
         $apply_info = D('Apply')->getById($apply_id);
         $target_doctor_ids = $apply_info['target_doctor_ids'];
-
-        $target_user_id = [];
-        $array_target_doctor_id = explode('-',$target_doctor_ids);
-        $target_doctor_ids = [];
-        for($index=0;$index<count($array_target_doctor_id);$index++) {
-            if($array_target_doctor_id[$index] != ''){
-                array_push($target_doctor_ids, $array_target_doctor_id[$index]);
+        $source_user_id_apply = $apply_info['source_user_id'];
+        if($source_user_id == $source_user_id_apply){
+            $target_user_id = [];
+            $array_target_doctor_id = explode('-',$target_doctor_ids);
+            $target_doctor_ids = [];
+            for($index=0;$index<count($array_target_doctor_id);$index++) {
+                if($array_target_doctor_id[$index] != ''){
+                    array_push($target_doctor_ids, $array_target_doctor_id[$index]);
+                }
             }
-        }
-        $ids = implode(",",$target_doctor_ids);
-        $select = ['a.id as id'];
-        $cond = ['b.id' => ['in', $ids]];
-        $user_ids = D('UserAdmin')->getUserAdmin($select,$cond);
+            $ids = implode(",",$target_doctor_ids);
+            $select = ['a.id as id'];
+            $cond = ['b.id' => ['in', $ids]];
+            $user_ids = D('UserAdmin')->getUserAdmin($select,$cond);
 
-        for($i=0;$i<count($user_ids);$i++){
-            array_push($target_user_id, $user_ids[$i]['id']);
+            for($i=0;$i<count($user_ids);$i++){
+                array_push($target_user_id, $user_ids[$i]['id']);
+            }
+            $target_user_id = implode("-",$target_user_id);
         }
-        $target_user_id = implode("-",$target_user_id);
+        else{
+            $target_user_id = $source_user_id_apply;
+        }
         return view('', ['error' => '', 'apply_id' => $apply_id, 'source_user_id' => $source_user_id, 'target_user_id' => $target_user_id,]);
     }
 
@@ -66,20 +71,20 @@ class Chat extends Common
             $cond_or['d.name|f.name|g.name'] = ['like','%'.myTrim($keywords).'%'];
         }
 
-        $select = ['c.id as user_id,d.id as doctor_id,d.name as doctor_name,f.id as hospital_id,
+        $select = ['b.id as apply_id, c.id as user_id,d.id as doctor_id,d.name as doctor_name,f.id as hospital_id,
                     f.name as hospital_name,g.name as office, d.photo as logo,b.id as apply_id,
-                    count(a.id) as count'];
+                    count(a.id) as count, b.is_green_channel as is_green_channel'];
         $cond_and['a.target_user_id'] = $user_id;
+        $cond_and['b.status'] = ['<', 3];
+        //$cond_and['a.status'] = ['=', 0];
         $cond_and['b.is_green_channel'] = 1;
         $normal = D('Chat')->getUserList($select,$cond_or,$cond_and);
 
-        $ret['cond_and1'] = $cond_and;
         $cond_and['b.is_green_channel'] = 0;
         $green = D('Chat')->getUserList($select,$cond_or,$cond_and);
 
         $ret['normal'] = $normal;
         $ret['green'] = $green;
-        $ret['cond_and2'] = $cond_and;
         $this->jsonReturn($ret);
     }
 
@@ -135,6 +140,7 @@ class Chat extends Common
             $data['target_user_id'] = $item;
             array_push($dataSet, $data);
         }
+        $ret['target'] = $dataSet;
         $res = D('Chat')->addAllData($dataSet);
         if(!empty($res['errors'])){
             $ret['error_code'] = 1;
@@ -157,7 +163,7 @@ class Chat extends Common
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-            $cond['apply_id'] = ['=', $apply_id];
+            $cond['apply_id'] = $apply_id;
             $cond['status'] = ['<>', 2];
             $list = D('Chat')->getList($cond);
 

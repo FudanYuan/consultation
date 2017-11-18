@@ -224,14 +224,14 @@ $(window).load(function() {
 	$('.wrapper').removeClass('preload');
 
 	//Chat Notification on top navigation
-	setTimeout(function() {
-		$('.chat-notification').find('.badge').addClass('active');
-		$('.chat-alert').addClass('active');
-	}, 3000);
-
-	setTimeout(function() {
-		$('.chat-alert').removeClass('active');
-	}, 8000);
+	// setTimeout(function() {
+	// 	$('.chat-notification').find('.badge').addClass('active');
+	// 	$('.chat-alert').addClass('active');
+	// }, 3000);
+    //
+	// setTimeout(function() {
+	// 	$('.chat-alert').removeClass('active');
+	// }, 8000);
 });
 
 // Toggle Scroll to Top button

@@ -240,7 +240,7 @@
                             {/if}
 
                             {if condition="authority('ChannelCommunication')"}
-                            <a :href="'__PRO_PATH__/Chat/index?id='+ model.id +'&user_id='+ model.user_id" title="讨论" v-if="model.status >= 2">
+                            <a :href="'__PRO_PATH__/Chat/index?id='+ model.id" title="讨论" v-if="model.status >= 2">
                                 <i class="fa fa-comments fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
                             {/if}
