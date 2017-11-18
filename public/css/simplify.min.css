@@ -1549,7 +1549,7 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
     float: left;
     background: #14171b;
     border-color: #14171b;
-    width: 210px
+    width: 240px
 }
 
 .sidebar-right .sidebar-header .sidebar-setting {
@@ -1622,7 +1622,7 @@ a.list-group-item.active, a.list-group-item.active:focus, a.list-group-item.acti
 .sidebar-right .content-block .sidebar-list li a .chat-alert {
     float: right;
     line-height: 40px;
-    margin-right: 10px
+    /*margin-right: 10px*/
 }
 
 .sidebar-right .content-block .sidebar-list li a .chat-status {

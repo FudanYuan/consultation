@@ -19,7 +19,7 @@ class Chat extends Common
         $data = input('get.');
         // 获取当前userId
         $account_id = $this->getUserId();
-        $select = ['*'];
+        $select = ['a.id as id'];
         $cond = [];
         $cond['a.id'] = $account_id;
         $account = D('UserAdmin')->getUserAdmin($select, $cond);
@@ -33,12 +33,29 @@ class Chat extends Common
             $user_id_post = input('post.user_id');
             return view('', ['users' => $users, 'account' => $account, 'apply' => $apply, 'target_user_id' => $user_id_post]);
         }
-
-        //mydump($users);
-
-//        mydump($account_id);
-//        mydump($account);
         return view('', ['users' => $users, 'account' => $account, 'target_user_id' => $users[0]['id']]);
+    }
+
+    /**
+     * 获取聊天列表
+     */
+    public function getChatList(){
+        $params = input('post.');
+        $keywords = input('post.search','');
+        $ret = ['error_code' => 0, 'msg' => '加载成功'];
+
+        $cond_or = [];
+
+        if($keywords){
+            $cond_or[''] = ['like','%'.myTrim($keywords).'%'];
+        }
+        $cond_and['a.is_green_channel'] = 0;
+        $normal = D('Chat')->getList($cond_or,$cond_and,[]);
+        $cond_and['a.is_green_channel'] = 1;
+        $green = D('Chat')->getList($cond_or,$cond_and,[]);
+        $ret['normal'] = $normal;
+        $ret['green'] = $green;
+        $this->jsonReturn($ret);
     }
 
     /**
@@ -125,8 +142,7 @@ class Chat extends Common
                 $cond['target_user_id'] = ['=', $target_user_id];
                 $cond['status'] = ['=', 0];
                 $list = D('Chat')->getList($cond);
-                if (count($list) > 0) { // 如果随机数在20-56之间就视为有效数据，模拟数据发生变化
-                    // 返回数据信息
+                if (count($list) > 0) { // 如果有新的消息，则返回数据信息
                     $ret["data"] = $list;
                     $this->jsonReturn($ret);
                     exit();
