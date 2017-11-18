@@ -150,7 +150,7 @@ class Patient extends Common
             $params = input('post.');
             $patient = D('Patient')->getById($id);
             if(!empty($params)){
-                $ret = ['error_code' => 2, 'msg' => '编辑成功'];
+                $ret = ['error_code' => 0, 'msg' => '编辑成功'];
                 $data['name'] = input('patient_name');
                 $data['ID_number'] = input('post.patient_ID_number');
                 $data['gender'] = input('post.patient_gender','');
@@ -208,7 +208,6 @@ class Patient extends Common
             }else{
                 $in_hospital_time = date('Y-m-d H:i:s',$patient['in_hospital_time']);
                 $patient['in_hospital_time'] = $in_hospital_time;
-                mydump($patient);
                 return view('',['patient' => $patient]);
             }
     }
