@@ -4,7 +4,7 @@
     <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
-            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Hospital/index">医院信息</a></li>
+            <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/Patient/index">患者信息</a></li>
             <li>编辑信息</li>
         </ul>
 
@@ -128,13 +128,14 @@
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">左眼照片：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="filelist_left_eye" src="{$patient.eye_photo_left_origin?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                        <img id="filelist_left_eye" src="{$patient.eye_photo_left?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                         <br/>
                         <div id="upload_left_eye">
                             <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
                                 <i class="fa fa-camera fa-lg"></i>
                             </a>
                         </div>
+                        <input type="hidden" name="eye_photo_left" value="{$patient.eye_photo_left??''}"/>
                         <input type="hidden" name="eye_photo_left_origin" value="{$patient.eye_photo_left_origin??''}"/>
                     </div>
                 </div>
@@ -142,13 +143,14 @@
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">右眼照片：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="filelist_right_eye" src="{$patient.eye_photo_right_origin?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                        <img id="filelist_right_eye" src="{$patient.eye_photo_right?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                         <br/>
                         <div id="upload_right_eye">
                             <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
                                 <i class="fa fa-camera fa-lg"></i>
                             </a>
                         </div>
+                        <input type="hidden" name="eye_photo_right" value="{$patient.eye_photo_right??''}"/>
                         <input type="hidden" name="eye_photo_right_origin" value="{$patient.eye_photo_right_origin??''}"/>
                     </div>
                 </div>
@@ -275,7 +277,7 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    $('#consensus-nav-apply').addClass('active');
+    $('#consultation-nav-patient').addClass('active');
 
     function clickRadio(value)
     {
@@ -293,7 +295,7 @@
                 patient_id: '{$patient.id}'
             },
             seen:{
-                ill_type: false,
+                ill_type: {$patient.ill_type == 5 ? 'true' : 'false'},
                 apply_project:false
             },
             errors:{
@@ -312,6 +314,7 @@
             $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
             $("input[name='ill_type'][value='{$patient.ill_type?? ''}']").attr("checked",true);
             $(".flatpickr").flatpickr({time_24hr:true});
+
             myupload({
                 container: 'upload-wrapper',
                 browse: 'pickfiles',
@@ -340,7 +343,8 @@
                 onUploaded: function (up, file, result) {
                     var res = JSON.parse(result.response);
                     $('#filelist_left_eye').attr('src',res.result.file);
-                    $("input[name='eye_photo_left_origin']").val(res.result.file);
+                    $("input[name='eye_photo_left_origin']").val(file.name);
+                    $("input[name='eye_photo_left']").val(res.result.file);
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
                 },
@@ -358,7 +362,8 @@
                 onUploaded: function (up, file, result) {
                     var res = JSON.parse(result.response);
                     $('#filelist_right_eye').attr('src',res.result.file);
-                    $("input[name='eye_photo_right_origin']").val(res.result.file);
+                    $("input[name='eye_photo_right_origin']").val(file.name);
+                    $("input[name='eye_photo_right']").val(res.result.file);
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
                 },
@@ -376,7 +381,7 @@
                             vm.errors[k] = '';
                         });
                         popWarn('保存成功');
-                        window.location.href = '__PRO_PATH__/Patient/index';
+                        //window.location.href = '__PRO_PATH__/Patient/index';
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
