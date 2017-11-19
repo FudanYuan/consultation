@@ -8,80 +8,86 @@
                 加载失败
             </div>
         </template>
-        <div class="title-block">
-            会诊申请
-        </div>
-        <template v-if="normal.length != 0">
-            <div class="content-block">
-                <ul class="sidebar-list">
-                    <template v-for="model in normal">
-                        <li>
-                            <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
-                                <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
-                                <div class="chat-detail m-left-sm">
-                                    <div class="chat-name">
-                                        <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
-                                        {{model.doctor_name}}
-                                    </div>
-                                    <div class="chat-message">
-                                        <!--<a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id">{{model.hospital_name}}</a>-->
-                                        {{model.hospital_name}}
-                                    </div>
-                                </div>
-                                <!--<div class="chat-status">-->
-                                <!--<i class="fa fa-circle-o text-success"></i>-->
-                                <!--</div>-->
-                                <div class="chat-alert">
-                                    <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
-                                </div>
-                            </a>
-                        </li>
-                    </template>
-                </ul>
-            </div>
-        </template>
         <template v-else>
-            <div class="title-block" style="color: #e36159; text-align: center">
-                暂无会话
+            <div class="title-block">
+                会诊申请
             </div>
-        </template>
+            <template v-if="normal.length != 0">
+                <div class="content-block">
+                    <ul class="sidebar-list">
+                        <template v-for="model in normal">
+                            <li>
+                                <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
+                                    <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
+                                    <div class="chat-detail m-left-sm">
+                                        <div class="chat-name">
+                                            <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
+                                            {{model.doctor_name}}
+                                        </div>
+                                        <div class="chat-message">
+                                            <!--<a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id">{{model.hospital_name}}</a>-->
+                                            {{model.hospital_name}}
+                                        </div>
+                                    </div>
+                                    <!--<div class="chat-status">-->
+                                    <!--<i class="fa fa-circle-o text-success"></i>-->
+                                    <!--</div>-->
+                                    <template v-if="model.count != 0">
+                                        <div class="chat-alert">
+                                            <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
+                                        </div>
+                                    </template>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <template v-else>
+                <div class="title-block" style="color: #e36159; text-align: center">
+                    暂无会话
+                </div>
+            </template>
 
-        <div class="title-block">
-            绿色通道
-        </div>
-        <template v-if="green.length != 0">
-            <div class="content-block">
-                <ul class="sidebar-list">
-                    <template v-for="model in green">
-                        <li>
-                            <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
-                                <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
-                                <div class="chat-detail m-left-sm">
-                                    <div class="chat-name">
-                                        <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
-                                        {{model.doctor_name}}
-                                    </div>
-                                    <div class="chat-message">
-                                        <!--<a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id">{{model.hospital_name}}</a>-->
-                                        {{model.hospital_name}}
-                                    </div>
-                                </div>
-                                <!--<div class="chat-status">-->
-                                <!--<i class="fa fa-circle-o text-success"></i>-->
-                                <!--</div>-->
-                                <div class="chat-alert">
-                                    <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
-                                </div>
-                            </a>
-                        </li>
-                    </template>
-                </ul>
+            <div class="title-block">
+                绿色通道
             </div>
-        </template>
-        <template v-else>
-            <div class="title-block" style="color: #e36159; text-align: center">
-                暂无会话
-            </div>
+            <template v-if="green.length != 0">
+                <div class="content-block">
+                    <ul class="sidebar-list">
+                        <template v-for="model in green">
+                            <li>
+                                <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
+                                    <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
+                                    <div class="chat-detail m-left-sm">
+                                        <div class="chat-name">
+                                            <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
+                                            {{model.doctor_name}}
+                                        </div>
+                                        <div class="chat-message">
+                                            <!--<a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id">{{model.hospital_name}}</a>-->
+                                            {{model.hospital_name}}
+                                        </div>
+                                    </div>
+                                    <!--<div class="chat-status">-->
+                                    <!--<i class="fa fa-circle-o text-success"></i>-->
+                                    <!--</div>-->
+                                    <template v-if="model.count != 0">
+                                        <div class="chat-alert">
+                                            <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
+                                        </div>
+                                    </template>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+            <template v-else>
+                <div class="title-block" style="color: #e36159; text-align: center">
+                    暂无会话
+                </div>
+            </template>
         </template>
     </div>
 </div>
@@ -97,7 +103,6 @@
             fail: true
         },
         mounted: function () {
-
         },
         methods:{
             enter:function(ev){
@@ -117,6 +122,22 @@
                 vm_right.normal = res.normal;
                 vm_right.green = res.green;
                 vm_right.params['search'] = '';
+                var chat_count = 0;
+
+                for(var i=0;i<res.normal.length;i++){
+                    chat_count += parseInt(res.normal[i]['count']);
+                }
+                for(var i=0;i<res.green.length;i++){
+                    chat_count += parseInt(res.green[i]['count']);
+                }
+                if(chat_count != 0){
+                    $('#chat_count').html(chat_count);
+                    setTimeout(function() {
+                        $('.chat-notification').find('.badge').addClass('active');
+                    }, 2000);
+                } else{
+                    $('.chat-notification').find('.badge').removeClass('active');
+                }
             } else {
                 vm_right.fail = true;
             }
