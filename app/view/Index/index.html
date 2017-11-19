@@ -1,77 +1,105 @@
 {include file="Common/top" title="首页" metas='' /}
-{include file="Common/search" /}
+
 <style>
-    .unit{
-        font-size: 25%;
+    .index-wel-wrapper{
+        width:350px;
+        margin:200px auto;
+    }
+    .index-wel{
+        width:100px;
+        height:100px;
+        border-radius:200px;
+        border:1px solid gray;
+        float:left;
+        font-size:60px;
+        line-height:100px;
+        text-align:center;
+    }
+    .index-wel-r{
+        margin-left:150px;
     }
 </style>
-
 <div class="main-container">
     <div class="padding-md">
-        <!-- 总览 -->
-        <div class="row m-top-md">
-            <div class="col-lg-2 col-sm-2">
-                <div class="statistic-box bg-success m-bottom-md" style="background-color: #1b6d85">
-                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/DataMonitor/index">文章总数</a></div>
-                    <div class="statistic-value">7798<span class="unit"></span></div>
-                    <div class="statistic-icon-background">
-                        <i class="ion-eye"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-2 col-sm-2">
-                <div class="statistic-box bg-success m-bottom-md">
-                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/DataMonitor/index">正面舆情</a></div>
-                    <div class="statistic-value">7621<span class="unit"></span></div>
-                    <div class="statistic-icon-background">
-                        <i class="ion-eye"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-2 col-sm-2">
-                <div class="statistic-box bg-danger m-bottom-md">
-                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Company/index">负面舆情</a></div>
-                    <div class="statistic-value">177<span class="unit"></span></div>
-                    <div class="statistic-icon-background">
-                        <i class="ion-stats-bars"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-2 col-sm-2">
-                <div class="statistic-box bg-info m-bottom-md">
-                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Theme/index">舆情跟踪</a></div>
-                    <div class="statistic-value">20<span class="unit"></span></div>
-                    <div class="statistic-icon-background">
-                        <i class="ion-person-add"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-2 col-sm-2">
-                <div class="statistic-box bg-purple m-bottom-md">
-                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Media/index">今日预警</a></div>
-                    <div class="statistic-value">0<span class="unit"></span></div>
-                    <div class="statistic-icon-background">
-                        <i class="ion-ios7-cart-outline"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-lg-2 col-sm-2">
-                <div class="statistic-box bg-success m-bottom-md" style="background-color: #00AA88">
-                    <div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Media/index">舆情级别</a></div>
-                    <div class="statistic-value"><span style="font-size: 25px">一般</span></div>
-                    <div class="statistic-icon-background">
-                        <i class="ion-ios7-cart-outline"></i>
-                    </div>
-                </div>
-            </div>
+        <div class="index-wel-wrapper">
+            <div class="index-wel index-wel-l">欢</div>
+            <div class="index-wel index-wel-r">迎</div>
         </div>
     </div>
 </div><!-- /main-container -->
+
+<!--<style>-->
+    <!--.unit{-->
+        <!--font-size: 25%;-->
+    <!--}-->
+<!--</style>-->
+
+<!--<div class="main-container" style="display: none">-->
+    <!--<div class="padding-md">-->
+        <!--&lt;!&ndash; 总览 &ndash;&gt;-->
+        <!--<div class="row m-top-md">-->
+            <!--<div class="col-lg-2 col-sm-2">-->
+                <!--<div class="statistic-box bg-success m-bottom-md" style="background-color: #1b6d85">-->
+                    <!--<div class="statistic-title"><a style="color: white" href="__PRO_PATH__/DataMonitor/index">文章总数</a></div>-->
+                    <!--<div class="statistic-value">7798<span class="unit"></span></div>-->
+                    <!--<div class="statistic-icon-background">-->
+                        <!--<i class="ion-eye"></i>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-2 col-sm-2">-->
+                <!--<div class="statistic-box bg-success m-bottom-md">-->
+                    <!--<div class="statistic-title"><a style="color: white" href="__PRO_PATH__/DataMonitor/index">正面舆情</a></div>-->
+                    <!--<div class="statistic-value">7621<span class="unit"></span></div>-->
+                    <!--<div class="statistic-icon-background">-->
+                        <!--<i class="ion-eye"></i>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-2 col-sm-2">-->
+                <!--<div class="statistic-box bg-danger m-bottom-md">-->
+                    <!--<div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Company/index">负面舆情</a></div>-->
+                    <!--<div class="statistic-value">177<span class="unit"></span></div>-->
+                    <!--<div class="statistic-icon-background">-->
+                        <!--<i class="ion-stats-bars"></i>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-2 col-sm-2">-->
+                <!--<div class="statistic-box bg-info m-bottom-md">-->
+                    <!--<div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Theme/index">舆情跟踪</a></div>-->
+                    <!--<div class="statistic-value">20<span class="unit"></span></div>-->
+                    <!--<div class="statistic-icon-background">-->
+                        <!--<i class="ion-person-add"></i>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-2 col-sm-2">-->
+                <!--<div class="statistic-box bg-purple m-bottom-md">-->
+                    <!--<div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Media/index">今日预警</a></div>-->
+                    <!--<div class="statistic-value">0<span class="unit"></span></div>-->
+                    <!--<div class="statistic-icon-background">-->
+                        <!--<i class="ion-ios7-cart-outline"></i>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-2 col-sm-2">-->
+                <!--<div class="statistic-box bg-success m-bottom-md" style="background-color: #00AA88">-->
+                    <!--<div class="statistic-title"><a style="color: white" href="__PRO_PATH__/Media/index">舆情级别</a></div>-->
+                    <!--<div class="statistic-value"><span style="font-size: 25px">一般</span></div>-->
+                    <!--<div class="statistic-icon-background">-->
+                        <!--<i class="ion-ios7-cart-outline"></i>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>&lt;!&ndash; /main-container &ndash;&gt;-->
 {include file="Common/bottom"/}
 
 <script>

@@ -17,10 +17,10 @@ class Chat extends Common
      */
     public function index(){
         $data = input('get.');
-        $apply_id = input('get.id', '');
+        $apply_id = input('get.id', -1);
         $cond_and = [];
         $cond_and['a.status'] = ['>=', 2];
-        if(!$apply_id){
+        if($apply_id == -1){
             $apply = D('Apply')->getList([], $cond_and, []);
             if(count($apply) > 0){
                 $apply_id = $apply[0]['id'];
@@ -55,75 +55,6 @@ class Chat extends Common
         else{
             $target_user_id = $source_user_id_apply;
         }
-
-        //
-
-        $ret = ['error_code' => 0, 'msg' => '加载成功'];
-        $user_id = $this->getUserId();
-        $cond_or = [];
-
-        // 获取所有的会诊申请记录
-        $select = ['b.id as apply_id, a.status as status, count(*) as count, b.source_user_id as source_user_id, b.target_doctor_ids as target_doctor_ids, c.id as target_user_id, d.id as doctor_id,d.name as doctor_name,
-        f.id as hospital_id, f.name as hospital_name, f.logo as hospital_logo, g.name as office, d.photo as logo'];
-        $cond_and['a.target_user_id'] = $user_id;
-        $cond_and['a.status'] = ['<>', 2];
-        $cond_and['b.status'] = ['<', 3];
-        $cond_and['b.is_green_channel'] = 0;
-        $normal = D('Chat')->getUserList($select,$cond_or,$cond_and,'a.apply_id, a.status');
-        $cond_and['b.is_green_channel'] = 1;
-        $green = D('Chat')->getUserList($select,$cond_or,$cond_and,'a.apply_id, a.status');
-
-        for($i=0;$i<count($normal);$i++){
-            // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
-            if($normal[$i]['source_user_id'] == $user_id && $normal[$i]['target_doctor_ids']){
-                $normal[$i]['logo'] = $normal[$i]['hospital_logo'];
-                $normal[$i]['doctor_name'] = $normal[$i]['hospital_name'];
-                $normal[$i]['hospital_name'] = '';
-            }
-        }
-
-        for($i=0;$i<count($green);$i++){
-            // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
-            if($green[$i]['source_user_id'] == $user_id && $green[$i]['target_doctor_ids']){
-                $green[$i]['logo'] = $green[$i]['hospital_logo'];
-                $green[$i]['doctor_name'] = $green[$i]['hospital_name'];
-                $green[$i]['hospital_name'] = '';
-            }
-        }
-        // 根据apply_id合并
-        $normal_ret = [];
-        $normal_apply_ids = [];
-        for($i=0; $i<count($normal);$i++){
-            $apply_id_temp = $normal[$i]['apply_id'];
-            $status_temp = $normal[$i]['status'];
-            $normal[$i]['count'] = $status_temp == 0 ? $normal[$i]['count'] : 0;
-            if(!in_array($apply_id_temp, $normal_apply_ids)){
-                array_push($normal_apply_ids, $apply_id_temp);
-                array_push($normal_ret, $normal[$i]);
-            } else{
-                $index = array_search($apply_id_temp, $normal_apply_ids);
-                $normal_ret[$index]['count'] += $normal[$i]['count'];
-            }
-        }
-
-        $green_ret = [];
-        $green_apply_ids = [];
-        for($i=0; $i<count($green);$i++){
-            $apply_id_temp = $green[$i]['apply_id'];
-            $status_temp = $green[$i]['status'];
-            $green[$i]['count'] = $status_temp == 0 ? $green[$i]['count'] : 0;
-            if(!in_array($apply_id_temp, $green_apply_ids)){
-                array_push($green_apply_ids, $apply_id_temp);
-                array_push($green_ret, $green[$i]);
-            } else{
-                $index = array_search($apply_id_temp, $green_apply_ids);
-                $green_ret[$index]['count'] += $green[$i]['count'];
-            }
-        }
-
-        $ret['normal'] = $normal_ret;
-        $ret['green'] = $green_ret;
-        //
         return view('', ['error' => '', 'apply_id' => $apply_id, 'source_user_id' => $source_user_id, 'target_user_id' => $target_user_id,]);
     }
 
@@ -141,7 +72,7 @@ class Chat extends Common
         }
         // 获取所有的会诊申请记录
         $select = ['b.id as apply_id, a.status as status, count(*) as count, b.source_user_id as source_user_id, b.target_doctor_ids as target_doctor_ids, c.id as target_user_id, d.id as doctor_id,d.name as doctor_name,
-        f.id as hospital_id, f.name as hospital_name, f.logo as hospital_logo, g.name as office, d.photo as logo'];
+        f.id as hospital_id, f.name as hospital_name, f.logo as hospital_logo, g.name as target_hospital_name, g.logo as target_hospital_logo, h.name as office, d.photo as logo'];
         $cond_and['a.target_user_id'] = $user_id;
         $cond_and['a.status'] = ['<>', 2];
         $cond_and['b.status'] = ['<', 3];
@@ -153,8 +84,8 @@ class Chat extends Common
         for($i=0;$i<count($normal);$i++){
             // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
             if($normal[$i]['source_user_id'] == $user_id && $normal[$i]['target_doctor_ids']){
-                $normal[$i]['logo'] = $normal[$i]['hospital_logo'];
-                $normal[$i]['doctor_name'] = $normal[$i]['hospital_name'];
+                $normal[$i]['logo'] = $normal[$i]['target_hospital_logo'];
+                $normal[$i]['doctor_name'] = $normal[$i]['target_hospital_name'];
                 $normal[$i]['hospital_name'] = '';
             }
         }
@@ -162,8 +93,8 @@ class Chat extends Common
         for($i=0;$i<count($green);$i++){
             // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
             if($green[$i]['source_user_id'] == $user_id && $green[$i]['target_doctor_ids']){
-                $green[$i]['logo'] = $green[$i]['hospital_logo'];
-                $green[$i]['doctor_name'] = $green[$i]['hospital_name'];
+                $green[$i]['logo'] = $green[$i]['target_hospital_logo'];
+                $green[$i]['doctor_name'] = $green[$i]['target_hospital_name'];
                 $green[$i]['hospital_name'] = '';
             }
         }
