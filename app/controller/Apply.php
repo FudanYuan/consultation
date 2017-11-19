@@ -171,10 +171,11 @@ class Apply extends Common
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
             }
+
             $this->jsonReturn($ret);
         }
         $select = ['id,name'];
-        $cond['role'] = ['=',1];
+        $cond = ['role' => 1];
         $hospital = D('Hospital')->getHospital($select,$cond);
         $hospital_id = $hospital[0]['id'];
         $hospital_office = D('HospitalOffice')->getList(['hospital_id' => $hospital_id]);
@@ -185,11 +186,16 @@ class Apply extends Common
         }
         $hospital_office_id = $hospital_office[0]['id'];
         $doctor = D('Doctor')->getList(['hospital_office_id' => $hospital_office_id]);
+
         $select = ['d.name as apply_hospital_name,b.name as apply_doctor_name,b.phone as apply_doctor_phone'];
-        $cond['a.id'] = ['=',$this->getUserId()];
+        $cond = ['a.id' => $this->getUserId()];
         $info = D('UserAdmin')->getUserAdmin($select,$cond);
         $apply_info = $info[0];
         $apply_info['date'] = time();
+//        $apply_info['apply_hospital_name'] ='某县级医院';
+//        $apply_info['apply_doctor_name'] ='某县级医院医生';
+//        $apply_info['apply_doctor_phone'] = '15115062214';
+//        $apply_info['date']='2017/11/16';
         return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor,'apply_info'=>$apply_info]);
     }
 
@@ -336,19 +342,17 @@ class Apply extends Common
             $ret['data'] = $data;
             $this->jsonReturn($ret);
         }
-        mydump($patient);
+        $select = ['id,name'];
+        $cond = ['role' => 1];
+        $hospital = D('Hospital')->getHospital($select,$cond);
 
-        mydump($apply);
+        $select = ['d.name as apply_hospital_name,b.name as apply_doctor_name,b.phone as apply_doctor_phone'];
+        $cond = ['a.id' => $this->getUserId()];
+        $info = D('UserAdmin')->getUserAdmin($select,$cond);
+        $apply_info = $info[0];
+        $apply_info['date'] = time();
 
-//        $hospital['name']='中南大学湘雅医学院';
-//        $hospital['id']='1';
-//
-//        $apply_info['apply_hospital_name']='当前用户的医院';
-//        $apply_info['apply_doctor_name']='当前用户的医生姓名';
-//        $apply_info['apply_doctor_phone']='当前用户的医生电话';
-//        $apply_info['date']='当前的日期';
-
-        return view('',['apply' => $apply,'patient' => $patient]);
+        return view('',['hospital' => $hospital,'apply' => $apply,'patient' => $patient,'apply_info'=>$apply_info]);
     }
 
     /**
