@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{if condition="authority('ApplyReply')"}
+{if condition="authority('ApplyCreate')"}
 <script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <style>
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
@@ -350,250 +350,247 @@
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
 {include file="Common/upload"}
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
-<script>
-    $('#consultation-nav-apply').addClass('active');   //定位导航栏的
-    function change_eyes_ill_type(value)
-    {
-        if(value == 5){
-            vm.seen['ill_type'] = !vm.seen['ill_type'];
-        } else{
-            vm.seen['ill_type'] = false;
-        }
-    }
+<!--<script>-->
+    <!--$('#consultation-nav-apply').addClass('active');   //定位导航栏的-->
+    <!--function change_eyes_ill_type(value)-->
+    <!--{-->
+        <!--if(value == 5){-->
+            <!--vm.seen['ill_type'] = !vm.seen['ill_type'];-->
+        <!--} else{-->
+            <!--vm.seen['ill_type'] = false;-->
+        <!--}-->
+    <!--}-->
 
-    function change_apply_project(value)
-    {
-        if(value == 4){
-            console.log("执行了vaule=4");
-            vm.seen['apply_project'] = !vm.seen['apply_project'];
-        } else{
-            vm.seen['apply_project'] = false;
-        }
-    }
+    <!--function change_apply_project(value)-->
+    <!--{-->
+        <!--if(value == 4){-->
+            <!--console.log("执行了vaule=4");-->
+            <!--vm.seen['apply_project'] = !vm.seen['apply_project'];-->
+        <!--} else{-->
+            <!--vm.seen['apply_project'] = false;-->
+        <!--}-->
+    <!--}-->
 
 
-    var vm = new Vue({
-        el: '#apply-reply',
-        data: {
-            apply_info: {},
-            patient_info: {},
-            source_hospital_info: {},
-            source_doctor_info: {},
-            target_hospital_info: {},
-            target_office_info: [],
-            target_doctor_info: [],
-            reply: {
-                status: '',
-                consultation_result: '',
-                update_time_str: '',
-                price: 0
-            },
-            errors:{
-                doctor_phone:'',
-                ID_number:'',
-                name:'',
-                age:'',
-                gender:'',
-                ill_state:'',
-                ill_type:'',
-                phone:'',
-                apply_date:'',
-                apply_project:'',
-                target_office_id:'',
-                consultation_goal:''
-            },
-            params: {},
-            patient:{
-                patient_ID_number: '',
-                patient_name: '',
-                patient_age:'',
-                patient_phone:'',
-                patient_illness_state:'',
-                patient_gender:'',
-                patient_eyes_type:'',
-                patient_vision_left:'',
-                patient_vision_right:'',
-                patient_pressure_left:'',
-                patient_pressure_right:'',
-            },
-            seen:{
-                ill_type: false,
-                apply_project:false,
-            },
+    <!--var vm = new Vue({-->
+        <!--el: '#apply-reply',-->
+        <!--data: {-->
+            <!--apply_info: {},-->
+            <!--patient_info: {},-->
+            <!--source_hospital_info: {},-->
+            <!--source_doctor_info: {},-->
+            <!--target_hospital_info: {},-->
+            <!--target_office_info: [],-->
+            <!--target_doctor_info: [],-->
+            <!--reply: {-->
+                <!--status: '',-->
+                <!--consultation_result: '',-->
+                <!--update_time_str: '',-->
+                <!--price: 0-->
+            <!--},-->
+            <!--errors:{-->
+                <!--doctor_phone:'',-->
+                <!--ID_number:'',-->
+                <!--name:'',-->
+                <!--age:'',-->
+                <!--gender:'',-->
+                <!--ill_state:'',-->
+                <!--ill_type:'',-->
+                <!--phone:'',-->
+                <!--apply_date:'',-->
+                <!--apply_project:'',-->
+                <!--target_office_id:'',-->
+                <!--consultation_goal:''-->
+            <!--},-->
+            <!--params: {},-->
+            <!--patient:{-->
+                <!--patient_ID_number: '',-->
+                <!--patient_name: '',-->
+                <!--patient_age:'',-->
+                <!--patient_phone:'',-->
+                <!--patient_illness_state:'',-->
+                <!--patient_gender:'',-->
+                <!--patient_eyes_type:'',-->
+                <!--patient_vision_left:'',-->
+                <!--patient_vision_right:'',-->
+                <!--patient_pressure_left:'',-->
+                <!--patient_pressure_right:'',-->
+            <!--},-->
+            <!--seen:{-->
+                <!--ill_type: false,-->
+                <!--apply_project:false,-->
+            <!--},-->
 
-        },
-        mounted:function () {
+        <!--},-->
+        <!--mounted:function () {-->
 
-            $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
-            $(".multiple").multipleSelect({
-                filter: true,
-                multiple: true,
-                selectAll: true
-            });
-            $(".flatpickr").flatpickr({time_24hr:false});
-            myupload({
-                container: 'upload-wrapper',
-                browse: 'pickfiles',
-                url: '__PRO_PATH__/Media/upload?dir=import',
-                img_types: 'jpg,gif,png',
-                zip_types: 'zip',
-                filelist: 'filelist',
-                uploadfiles: 'uploadfiles',
-                file_size: '10mb',
-                onUploaded: function (up, file, result) {
-                    $("input[name='files_path_origin']").val(file.name);
-                    var res = JSON.parse(result.response);
-                    $("input[name='files_path']").val(res.result.file);
-                },
-                isMulti: false
-            });
-            changeLogo({
-                container: 'upload_left_eye',
-                browse: 'pickfiles_left_eye',
-                url: '__PRO_PATH__/Media/upload?dir=import',
-                img_types: 'jpg,gif,png',
-                zip_types: 'zip',
-                filelist: 'filelist_left_eye',
-                uploadfiles: 'uploadfiles_left_eye',
-                file_size: '10mb',
-                onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_left_origin']").val(file.name);
-                    var res = JSON.parse(result.response);
-                    $('#img_left_eye').attr('src',res.result.file);
-                    $("input[name='eye_photo_left']").val(res.result.file);
-                    chageTitle('上传成功');
-                    setTimeout("cancel()", 1000);
-                },
-                isMulti: true
-            });
-            changeLogo({
-                container: 'upload_right_eye',
-                browse: 'pickfiles_right_eye',
-                url: '__PRO_PATH__/Media/upload?dir=import',
-                img_types: 'jpg,gif,png',
-                zip_types: 'zip',
-                filelist: 'filelist_right_eye',
-                uploadfiles: 'uploadfiles_right_eye',
-                file_size: '10mb',
-                onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_right_origin']").val(file.name);
-                    var res = JSON.parse(result.response);
-                    $('#eye_photo_right').attr('src',res.result.file);
-                    $("input[name='eye_photo_right']").val(res.result.file);
-                    chageTitle('上传成功');
-                    setTimeout("cancel()", 1000);
-                },
-                isMulti: true
-            });
-        },
-        methods:{
-            resetError: function () {
-                $.each(vm.errors, function (k, v) {
-                    vm.errors[k] = '';
-                });
-            },
+            <!--$(".flatpickr").flatpickr({time_24hr:true, readonly: false});-->
+            <!--$(".multiple").multipleSelect({-->
+                <!--filter: true,-->
+                <!--multiple: true,-->
+                <!--selectAll: true-->
+            <!--});-->
+            <!--$(".flatpickr").flatpickr({time_24hr:false});-->
+            <!--myupload({-->
+                <!--container: 'upload-wrapper',-->
+                <!--browse: 'pickfiles',-->
+                <!--url: '__PRO_PATH__/Media/upload?dir=import',-->
+                <!--img_types: 'jpg,gif,png',-->
+                <!--zip_types: 'zip',-->
+                <!--filelist: 'filelist',-->
+                <!--uploadfiles: 'uploadfiles',-->
+                <!--file_size: '10mb',-->
+                <!--onUploaded: function (up, file, result) {-->
+                    <!--$("input[name='files_path_origin']").val(file.name);-->
+                    <!--var res = JSON.parse(result.response);-->
+                    <!--$("input[name='files_path']").val(res.result.file);-->
+                <!--},-->
+                <!--isMulti: false-->
+            <!--});-->
+            <!--changeLogo({-->
+                <!--container: 'upload_left_eye',-->
+                <!--browse: 'pickfiles_left_eye',-->
+                <!--url: '__PRO_PATH__/Media/upload?dir=import',-->
+                <!--img_types: 'jpg,gif,png',-->
+                <!--zip_types: 'zip',-->
+                <!--filelist: 'filelist_left_eye',-->
+                <!--uploadfiles: 'uploadfiles_left_eye',-->
+                <!--file_size: '10mb',-->
+                <!--onUploaded: function (up, file, result) {-->
+                    <!--$("input[name='eye_photo_left_origin']").val(file.name);-->
+                    <!--var res = JSON.parse(result.response);-->
+                    <!--$('#img_left_eye').attr('src',res.result.file);-->
+                    <!--$("input[name='eye_photo_left']").val(res.result.file);-->
+                    <!--chageTitle('上传成功');-->
+                    <!--setTimeout("cancel()", 1000);-->
+                <!--},-->
+                <!--isMulti: true-->
+            <!--});-->
+            <!--changeLogo({-->
+                <!--container: 'upload_right_eye',-->
+                <!--browse: 'pickfiles_right_eye',-->
+                <!--url: '__PRO_PATH__/Media/upload?dir=import',-->
+                <!--img_types: 'jpg,gif,png',-->
+                <!--zip_types: 'zip',-->
+                <!--filelist: 'filelist_right_eye',-->
+                <!--uploadfiles: 'uploadfiles_right_eye',-->
+                <!--file_size: '10mb',-->
+                <!--onUploaded: function (up, file, result) {-->
+                    <!--$("input[name='eye_photo_right_origin']").val(file.name);-->
+                    <!--var res = JSON.parse(result.response);-->
+                    <!--$('#eye_photo_right').attr('src',res.result.file);-->
+                    <!--$("input[name='eye_photo_right']").val(res.result.file);-->
+                    <!--chageTitle('上传成功');-->
+                    <!--setTimeout("cancel()", 1000);-->
+                <!--},-->
+                <!--isMulti: true-->
+            <!--});-->
+        <!--},-->
+        <!--methods:{-->
+            <!--resetError: function () {-->
+                <!--$.each(vm.errors, function (k, v) {-->
+                    <!--vm.errors[k] = '';-->
+                <!--});-->
+            <!--},-->
 
-            createNewApply: function () {
-                getParams();
-                $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
-                    if (res.error_code == 0) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
-                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
-                    } else if (res.error_code == 2) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
-                        $.each(res.errors, function (k, v) {
-                            vm.errors[k] = v;
-                        });
-                        console.log(JSON.stringify(vm.errors));
-                    }
-                });
-            },
+            <!--createNewApply: function () {-->
+                <!--getParams();-->
+                <!--$.post('__PRO_PATH__/Apply/create', vm.params, function (res) {-->
+                    <!--if (res.error_code == 0) {-->
+                        <!--$.each(vm.errors, function (k) {-->
+                            <!--vm.errors[k] = '';-->
+                        <!--});-->
+                        <!--//popWarn('新建成功', '__PRO_PATH__/Apply/index');-->
+                    <!--} else if (res.error_code == 2) {-->
+                        <!--$.each(vm.errors, function (k) {-->
+                            <!--vm.errors[k] = '';-->
+                        <!--});-->
+                        <!--$.each(res.errors, function (k, v) {-->
+                            <!--vm.errors[k] = v;-->
+                        <!--});-->
+                        <!--console.log(JSON.stringify(vm.errors));-->
+                    <!--}-->
+                <!--});-->
+            <!--},-->
 
-            check_by_ID_number:function(){
-                console.log("check_by_ID_number");
-                $.post('__PRO_PATH__/Patient/getPatientByIDNum', {'patient_ID_number': vm.patient['patient_ID_number']}, function (res) {
-                    if (res.error_code == 2) {
-                        popWarn('未找到这名患者的信息 ,请手动输入');
-                    } else {
-                        $.each(res.patient, function (k, v) {
-                            if(k=='id'){
-                                vm.params['patient_id']=v;
-                            }
-                            vm.patient[k] = v;
-                        });
-                        console.log(JSON.stringify(vm.patient));
-                    }
-                });
-            },
+            <!--check_by_ID_number:function(){-->
+                <!--console.log("check_by_ID_number");-->
+                <!--$.post('__PRO_PATH__/Patient/getPatientByIDNum', {'patient_ID_number': vm.patient['patient_ID_number']}, function (res) {-->
+                    <!--if (res.error_code == 2) {-->
+                        <!--popWarn('未找到这名患者的信息 ,请手动输入');-->
+                    <!--} else {-->
+                        <!--$.each(res.patient, function (k, v) {-->
+                            <!--if(k=='id'){-->
+                                <!--vm.params['patient_id']=v;-->
+                            <!--}-->
+                            <!--vm.patient[k] = v;-->
+                        <!--});-->
+                        <!--console.log(JSON.stringify(vm.patient));-->
+                    <!--}-->
+                <!--});-->
+            <!--},-->
 
-            submitReply: function (value) {
-                vm.resetError();
-                vm.reply['status'] = value;
-                vm.reply['update_time_str'] = $('#update_time').val();
-                $.post('__PRO_PATH__/Apply/Reply', vm.reply, function (res) {
-                    if(res.error_code == 0){
-                        popWarn(res.msg, '__PRO_PATH__/Apply/index');
-                    } else{
-                        $.each(res.errors, function (k, v) {
-                            vm.errors[k] = v;
-                        });
-                    }
-                })
-            }
-        },
-    });
+            <!--submitReply: function (value) {-->
+                <!--vm.resetError();-->
+                <!--vm.reply['status'] = value;-->
+                <!--vm.reply['update_time_str'] = $('#update_time').val();-->
+                <!--$.post('__PRO_PATH__/Apply/Reply', vm.reply, function (res) {-->
+                    <!--if(res.error_code == 0){-->
+                        <!--popWarn(res.msg, '__PRO_PATH__/Apply/index');-->
+                    <!--} else{-->
+                        <!--$.each(res.errors, function (k, v) {-->
+                            <!--vm.errors[k] = v;-->
+                        <!--});-->
+                    <!--}-->
+                <!--})-->
+            <!--}-->
+        <!--},-->
+    <!--});-->
 
-    submit();
+    <!--submit();-->
 
-    function change_hospital(){
-        console.log("执行了");
-        var hospital_id = $('#consultation_hospital').val();
-        console.log(hospital_id);
-        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});
-    }
+    <!--function change_hospital(){-->
+        <!--console.log("执行了");-->
+        <!--var hospital_id = $('#consultation_hospital').val();-->
+        <!--console.log(hospital_id);-->
+        <!--$.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});-->
+    <!--}-->
 
-    function getParams(){
-        vm.params['office_ids'] = [];
-        vm.params['doctor_ids'] = [];
-        var data = $('#new-apply-form').serializeArray();
-        $.each(data, function() {
-            if(this.name == 'office_ids' || this.name == 'doctor_ids'){
-                vm.params[this.name].push(this.value);
-            } else {
-                vm.params[this.name] = this.value;
-            }
-        });
-        $.each(vm.patient, function (k, v) {
-            vm.params[k] = v;
-        });
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
-    }
+    <!--function getParams(){-->
+        <!--vm.params['office_ids'] = [];-->
+        <!--vm.params['doctor_ids'] = [];-->
+        <!--var data = $('#new-apply-form').serializeArray();-->
+        <!--$.each(data, function() {-->
+            <!--if(this.name == 'office_ids' || this.name == 'doctor_ids'){-->
+                <!--vm.params[this.name].push(this.value);-->
+            <!--} else {-->
+                <!--vm.params[this.name] = this.value;-->
+            <!--}-->
+        <!--});-->
+        <!--$.each(vm.patient, function (k, v) {-->
+            <!--vm.params[k] = v;-->
+        <!--});-->
+        <!--console.log(JSON.stringify(data));-->
+        <!--console.log(JSON.stringify(vm.params));-->
+    <!--}-->
 
-    // 异步提交数据
-    function submit() {
-        $.post('__PRO_PATH__/Apply/getApplyInfo', {id: vm.id}, function (res) {
-            if (res.error_code == 0) {
-                vm.apply_info = res.apply_info;
-                vm.patient_info = res.patient_info;
-                vm.source_doctor_info = res.source_doctor_info;
-                vm.source_hospital_info = res.source_hospital_info;
-                vm.target_hospital_info = res.target_hospital_info;
-                vm.target_office_info = res.target_office_info;
-                vm.target_doctor_info = res.target_doctor_info;
-            }
-        });
-    }
+    <!--// 异步提交数据-->
+    <!--function submit() {-->
+        <!--$.post('__PRO_PATH__/Apply/getApplyInfo', {id: vm.id}, function (res) {-->
+            <!--if (res.error_code == 0) {-->
+                <!--vm.apply_info = res.apply_info;-->
+                <!--vm.patient_info = res.patient_info;-->
+                <!--vm.source_doctor_info = res.source_doctor_info;-->
+                <!--vm.source_hospital_info = res.source_hospital_info;-->
+                <!--vm.target_hospital_info = res.target_hospital_info;-->
+                <!--vm.target_office_info = res.target_office_info;-->
+                <!--vm.target_doctor_info = res.target_doctor_info;-->
+            <!--}-->
+        <!--});-->
+    <!--}-->
 
 
-</script>
+<!--</script>-->
 {else /}
 <div class="main-container">
     <div class="padding-md">
