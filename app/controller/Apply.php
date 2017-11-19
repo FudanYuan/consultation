@@ -171,7 +171,6 @@ class Apply extends Common
                 $ret['error_code'] = 2;
                 $ret['errors'] = $res['errors'];
             }
-
             $this->jsonReturn($ret);
         }
         $select = ['id,name'];
@@ -186,16 +185,11 @@ class Apply extends Common
         }
         $hospital_office_id = $hospital_office[0]['id'];
         $doctor = D('Doctor')->getList(['hospital_office_id' => $hospital_office_id]);
-
-        mydump($hospital);
-        mydump($office);
-        mydump($doctor);
-
-        $apply_info['apply_hospital_name'] ='某县级医院';
-        $apply_info['apply_doctor_name'] ='某县级医院医生';
-        $apply_info['apply_doctor_phone'] = '15115062214';
-        $apply_info['date']='2017/11/16';
-
+        $select = ['d.name as apply_hospital_name,b.name as apply_doctor_name,b.phone as apply_doctor_phone'];
+        $cond['a.id'] = ['=',$this->getUserId()];
+        $info = D('UserAdmin')->getUserAdmin($select,$cond);
+        $apply_info = $info[0];
+        $apply_info['date'] = time();
         return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor,'apply_info'=>$apply_info]);
     }
 
@@ -285,7 +279,6 @@ class Apply extends Common
                 $ret['msg'] = '标记失败';
             }
         }
-
         $this->jsonReturn($ret);
     }
     /**
@@ -338,12 +331,12 @@ class Apply extends Common
         $id = input('get.id');
         $data = input('post.');
         $apply = D('Apply')->getById($id);
+        $patient = D('Patient')->getById($apply['patient_id']);
         if(!empty($data)){
             $ret['data'] = $data;
             $this->jsonReturn($ret);
         }
-        mydump($apply);
-        return view('',['apply' => $apply]);
+        return view('',['apply' => $apply,'patient' => $patient]);
     }
 
     /**

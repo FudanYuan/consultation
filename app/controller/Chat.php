@@ -189,12 +189,11 @@ class Chat extends Common
                 $list = D('Chat')->getList($cond);
                 if (count($list) > 0) { // 如果有新的消息，则返回数据信息
                     $ret["data"] = $list;
-                    $this->jsonReturn($ret);
-                    exit();
                 } else { // 模拟没有数据变化，将休眠 hold住连接
                     sleep(10);
-                    exit();
                 }
+                $this->jsonReturn($ret);
+                exit();
             }
         }
     }
