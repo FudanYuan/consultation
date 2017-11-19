@@ -16,8 +16,8 @@
         margin-bottom: 0;
     }
 </style>
-<div class="main-container" onload="time()">
-    <div class="padding-md" onload="time()">
+<div class="main-container" >
+    <div class="padding-md" >
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
@@ -354,7 +354,7 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-
+    $('#consultation-nav-apply').addClass('active');   //定位导航栏的
     function change_eyes_ill_type(value)
     {
         if(value == 5){
@@ -362,15 +362,6 @@
         } else{
             vm.seen['ill_type'] = false;
         }
-    }
-
-    function time()
-    {
-        var now= new Date();
-        var year=now.getFullYear();
-        var month=now.getMonth();
-        var date=now.getDate();
-        document.getElementById("today_date").innerHTML=year+"年"+(month+1)+"月"+date+"日";
     }
 
     function change_apply_project(value)
@@ -435,7 +426,7 @@
 
         },
         mounted:function () {
-            $('#consultation-nav-apply').addClass('active');
+
             $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
             $(".multiple").multipleSelect({
                 filter: true,
@@ -512,7 +503,7 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('新建成功', '__PRO_PATH__/Apply/index');
+                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
