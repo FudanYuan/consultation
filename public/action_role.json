@@ -65,8 +65,8 @@
   },
   {
     "id": 9,
-    "name": "话题讨论",
-    "tag": "Talk",
+    "name": "交流互动",
+    "tag": "Chat",
     "pid": 0,
     "pids": "0",
     "level": 1

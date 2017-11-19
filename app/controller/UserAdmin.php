@@ -158,6 +158,17 @@ class UserAdmin extends Common{
 		$data = input('post.');
 		if(!empty($data)){
 			$ret = ['error_code' => 0, 'msg' => '创建用户成功'];
+            $username = input('post.username', '');
+            if($username){
+                $cond['username'] = ['=', $username];
+                $res = D('UserAdmin')->getList($cond);
+                if(!empty($res)){
+                    $ret['error_code'] = 1;
+                    $ret['msg'] = '创建用户失败';
+                    $this->jsonReturn($ret);
+                }
+            }
+
 			$res = D('UserAdmin')->addData($data);
 			if(!$res){
 				$ret['error_code'] = 1;

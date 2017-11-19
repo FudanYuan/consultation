@@ -46,7 +46,7 @@ class Chat extends Model{
      * @param $cond_and
      * @return mixed
      */
-    public function getUserList($select = '*',$cond_or = [],$cond_and = []){
+    public function getUserList($select = '*',$cond_or = [],$cond_and = [], $group = ''){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 2];
         }
@@ -56,11 +56,11 @@ class Chat extends Model{
             ->join('consultation_doctor d','c.doctor_id = d.id')
             ->join('consultation_hospital_office e','d.hospital_office_id = e.id')
             ->join('consultation_hospital f','f.id = e.hospital_id')
-            ->join('consultation_office g','g.id = e.office_id')
+            ->join('consultation_hospital g','g.id = b.target_hospital_id')
+            ->join('consultation_office h','h.id = e.office_id')
             ->where($cond_and)
             ->where($cond_or)
-            ->order('a.create_time asc')
-            ->group('a.apply_id')
+            ->group($group)
             ->select();
         return $res;
     }

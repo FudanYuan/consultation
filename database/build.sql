@@ -196,7 +196,8 @@ CREATE TABLE `consultation_doctor` (
 
 INSERT INTO `consultation_doctor` (`hospital_office_id`, `name`, `photo`, `gender`, `age`, `position`, `phone`, `remark`, `address`, `postcode`, `info`, `honor`, `status`, `create_time`, `update_time`) VALUES
 (1, 'Reply', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市天心区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL),
-(2, 'Apply', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL);
+(2, 'Apply1', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL),
+(3, 'Apply2', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL);
 
 
 # Dump of table consultation_apply
@@ -231,8 +232,8 @@ CREATE TABLE `consultation_apply` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `consultation_apply` (`patient_id`, `source_user_id`, `apply_type`, `is_definite_purpose`, `target_hospital_id`, `target_office_ids`, `target_doctor_ids`, `consultation_goal`, `apply_project`, `other_apply_project`, `apply_date`, `consultation_result`, `price`, `is_charge`, `status`, `create_time`, `update_time`) VALUES
-(1, 2, 2, 1, 1, '-1-', '-1-2-', '发不过真的是个复杂的是官方代购', 2, '', 1510372800, '但是发达数电分复旦飒风', 1200, 0, 3, 1510378491, 1510372800),
-(1, 2, 2, 1, 1, '-1-', '-1-2-', '浮动工资法国政府多个', 3, '', 1510372800, NULL, 0, 0, 1, 1510379139, NULL);
+(1, 2, 2, 1, 1, '-1-', '-2-3-', '发不过真的是个复杂的是官方代购', 2, '', 1510372800, '但是发达数电分复旦飒风', 1200, 0, 3, 1510378491, 1510372800),
+(1, 3, 2, 1, 1, '-1-', '-2-3-', '浮动工资法国政府多个', 3, '', 1510372800, NULL, 0, 0, 1, 1510379139, NULL);
 
 
 # Dump of table consultation_chat
@@ -272,9 +273,9 @@ CREATE TABLE `consultation_role_admin` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `consultation_role_admin` (`name`, `remark`, `status`, `create_time`, `update_time`) VALUES
-('admin', '管理员', 1, 1503037656, 1510378203),
-('edit', '普通管理员', 1, 1503037656, 1510378218),
-('开发者', '开发者', 1, 1510369829, 1510369829);
+('开发者', '开发者', 1, 1510369829, 1510369829),
+('admin', '管理员', 1, 1503037656, 1510378203);
+
 
 # Dump of table consultation_user_admin
 # ------------------------------------------------------------
@@ -300,8 +301,9 @@ CREATE TABLE `consultation_user_admin` (
 
 
 INSERT INTO `consultation_user_admin` (`doctor_id`, `username`, `pass`, `role_id`, `remark`, `status`, `login_time`, `create_time`, `update_time`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 3, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
-(2, 'role', '29a7e96467b69a9f5a93332e29e9b0de', 1, '县级医院管理员', 1, NULL, 1510115628, 1510115628);
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
+(2, 'role', '29a7e96467b69a9f5a93332e29e9b0de', 2, '县级医院管理员', 1, NULL, 1510115628, 1510115628),
+(3, 'test', '29a7e96467b69a9f5a93332e29e9b0de', 2, '县级医院管理员', 1, NULL, 1510115628, 1510115628);
 
 
 

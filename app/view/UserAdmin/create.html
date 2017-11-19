@@ -103,12 +103,12 @@
             popWarn('请选择角色');
             return;
         }
-        var obj = $('#main-form [name="username"]');
-        var valid = obj.siblings('.help-block').html();
-        if(!valid){
-            popWarn('用户名已存在');
-            return;
-        }
+//        var obj = $('#main-form [name="username"]');
+//        var valid = obj.siblings('.help-block').html();
+//        if(!valid){
+//            popWarn('用户名已存在');
+//            return;
+//        }
         $.post('__PRO_PATH__/UserAdmin/create', data, function (res) {
             if (res.error_code == 0) {
                 popWarn(res.msg, '__PRO_PATH__/UserAdmin/index');
