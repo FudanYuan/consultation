@@ -336,6 +336,18 @@ class Apply extends Common
             $ret['data'] = $data;
             $this->jsonReturn($ret);
         }
+        mydump($patient);
+
+        mydump($apply);
+
+//        $hospital['name']='中南大学湘雅医学院';
+//        $hospital['id']='1';
+//
+//        $apply_info['apply_hospital_name']='当前用户的医院';
+//        $apply_info['apply_doctor_name']='当前用户的医生姓名';
+//        $apply_info['apply_doctor_phone']='当前用户的医生电话';
+//        $apply_info['date']='当前的日期';
+
         return view('',['apply' => $apply,'patient' => $patient]);
     }
 

@@ -145,7 +145,7 @@
                         <td colspan="3" >
                             <div :class="['form-group', errors.ID_number != '' ? 'has-error' : '']" >
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" v-model="patient.patient_ID_number" value="" placeholder="请输入患者身份证号" id="patient_ID_number">
+                                    <input class="form-control" type="text" v-model="patient.patient_ID_number" value="{$patient.ID_number}" placeholder="请输入患者身份证号" id="patient_ID_number">
                                     <p class="help-block">{{errors.ID_number}}</p>
                                 </div>
                             </div>
@@ -157,23 +157,23 @@
                         <td>联系方式</td>
                         <td colspan="1" >
                             <div :class="['form-group', errors.phone != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" v-model="patient.patient_phone" value="" placeholder="患者电话" id="patient_phone">
+                                <input class="form-control" type="text" v-model="patient.patient_phone" value="{$patient.phone}" placeholder="患者电话" id="patient_phone">
                                 <p class="help-block">{{errors.phone}}</p>
                             </div>
                         </td>
                         <td>眼压(左/右)</td>
                         <td>
-                            <input class="form-control" type="text" v-model="patient.patient_pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
+                            <input class="form-control" type="text" v-model="patient.patient_pressure_left"  value="{$patient.pressure_left}" placeholder="左眼眼压" id="pressure_left">
                         </td>
                         <td>
-                            <input class="form-control" type="text"  v-model="patient.patient_pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
+                            <input class="form-control" type="text"  v-model="patient.patient_pressure_right" value="{$patient.pressure_right}" placeholder="右眼眼压" id="pressure_right">
                         </td>
                     </tr>
                     <tr>
                         <td>姓名</td>
                         <td>
                             <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" v-model="patient.patient_name" value="" placeholder="姓名" id="patient_name">
+                                <input class="form-control" type="text" v-model="patient.patient_name" value="{$patient.name}" placeholder="姓名" id="patient_name">
                                 <p class="help-block">{{errors.name}}</p>
                             </div>
                         </td>
@@ -200,16 +200,16 @@
                         <td>年龄</td>
                         <td>
                             <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" v-model="patient.patient_age" value="" placeholder="年龄" id="patient_age">
+                                <input class="form-control" type="text" v-model="patient.patient_age" value="{$patient.age}" placeholder="年龄" id="patient_age">
                                 <p class="help-block">{{errors.age}}</p>
                             </div>
                         </td>
                         <td>视力(左/右)</td>
                         <td>
-                            <input class="form-control"  type="text" v-model="patient.patient_vision_left"    value="" placeholder="左眼视力" id="vision_left">
+                            <input class="form-control"  type="text" v-model="patient.patient_vision_left"    value="{$patient.vision_left}" placeholder="左眼视力" id="vision_left">
                         </td>
                         <td>
-                            <input class="form-control"  type="text" v-model="patient.patient_vision_right"   value="" placeholder="右眼视力" id="vision_right">
+                            <input class="form-control"  type="text" v-model="patient.patient_vision_right"   value="{$patient.vision_right}" placeholder="右眼视力" id="vision_right">
                         </td>
                     </tr>
                     <tr>
@@ -225,8 +225,8 @@
                                     <a id="pickfiles" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
                                     <a id="uploadfiles" href="javascript:;">上传</a>
                                 </div>
-                                <input type="hidden" name="files_path" value="{$data.files_path??''}"/>
-                                <input type="hidden" name="files_path_origin" value="{$data.files_path_origin??''}"/>
+                                <input type="hidden" name="files_path" value="{$patient.files_path??''}"/>
+                                <input type="hidden" name="files_path_origin" value="{$patient.files_path_origin??''}"/>
                                 <span class="help-block">{$errors.files_path ?? ''}</span>
                             </div>
                         </td>
@@ -234,30 +234,30 @@
                         <td rowspan="4">局部病变图(左眼)</td>
                         <td colspan="2" rowspan="4">
                             <div class="form-group {$errors.img ?= 'has-error'}">
-                                <img id="img_left_eye" src="{$data.img_left_eye ?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                                <img id="img_left_eye" src="{$patient.eye_photo_left?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                                 <br/>
                                 <div id="upload_left_eye">
                                     <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
                                         <i class="fa fa-camera fa-lg"></i>
                                     </a>
                                 </div>
-                                <input type="hidden" name="eye_photo_left" value="{$data.img_left_eye??''}"/>
-                                <input type="hidden" name="eye_photo_left_origin" value="{$data.img_origin_left_eye??''}"/>
+                                <input type="hidden" name="eye_photo_left" value="{$patient.eye_photo_left??''}"/>
+                                <input type="hidden" name="eye_photo_left_origin" value="{$data.eye_photo_left_origin??''}"/>
                                 <span class="help-block">{$errors.img ?? ''}</span>
                             </div>
                         </td>
                         <td rowspan="4">局部病变图(右眼)</td>
                         <td colspan="2" rowspan="4">
                             <div class="form-group {$errors.img ?= 'has-error'}">
-                                <img id="eye_photo_right" src="{$data.eye_photo_right ?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                                <img id="eye_photo_right" src="{$patient.eye_photo_right?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
                                 <br/>
                                 <div id="upload_right_eye">
                                     <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
                                         <i class="fa fa-camera fa-lg"></i>
                                     </a>
                                 </div>
-                                <input type="hidden" name="eye_photo_right" value="{$data.eye_photo_right??''}"/>
-                                <input type="hidden" name="eye_photo_right_origin" value="{$data.eye_photo_right_origin??''}"/>
+                                <input type="hidden" name="eye_photo_right" value="{$patient.eye_photo_right??''}"/>
+                                <input type="hidden" name="eye_photo_right_origin" value="{$patient.eye_photo_right_origin??''}"/>
                                 <span class="help-block">{$errors.eye_photo_right?? ''}</span>
                             </div>
                         </td>
@@ -279,7 +279,7 @@
                             </select>
 
                             <div :class="['form-group']" v-if="seen.ill_type">
-                                <input class="form-control" type="text" name="other_ill_type" value="" placeholder="请输入其他眼病类型" id="other_ill_type">
+                                <input class="form-control" type="text" name="other_ill_type" value="{$patient.other_ill_type}" placeholder="请输入其他眼病类型" id="other_ill_type">
                             </div>
 
                         </td>
@@ -289,7 +289,7 @@
 
                         <td colspan="5" style="text-align: left; height: auto; padding: 20px;">
                             <div :class="['form-group']" >
-                                <textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况"></textarea>
+                                <textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况">{$patient.diagnose_state}</textarea>
                             </div>
                         </td>
                     </tr>
@@ -304,7 +304,7 @@
                     <tr>
                         <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
                             <div :class="['form-group', errors.consultation_goal != '' ? 'has-error' : '']" >
-                                <textarea  class="form-control" type="text" v-model="patient.consultation_goal" style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的"></textarea>
+                                <textarea  class="form-control" type="text" v-model="patient.consultation_goal" style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的">{$apply.consultation_goal}</textarea>
                                 <p class="help-block">{{errors.consultation_goal}}</p>
                             </div>
                         </td>
@@ -315,7 +315,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-5 col-sm-10 lab-btns">
                     <div class="col-sm-4">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">申请</a>
+                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
                         <a id="form-cancel" class="btn btn-info"  href="__PRO_PATH__/Apply/index">取消</a>
 
                     </div>
@@ -422,6 +422,14 @@
             $('#consultation-nav-apply').addClass('active');
             $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
 
+            $("input[name='priority'][value='{$apply.apply_type?? ''}']").attr("checked",true);
+
+//            $('#narrator').val('{$patient.narrator??""}');
+//            $('#main_narrate').val('{$patient.main_narrate??""}');
+//            $('#in_hospital_time').val('{$patient.in_hospital_time??""}');
+//            $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
+//            $("input[name='ill_type'][value='{$patient.ill_type?? ''}']").attr("checked",true);
+
             $(".multiple").multipleSelect({
                 filter: true,
                 multiple: true,
@@ -492,7 +500,7 @@
 
             createNewApply: function () {
                 getParams();
-                $.post('__PRO_PATH__/Apply/create', vm.params, function (res) {
+                $.post('__PRO_PATH__/Apply/edit', vm.params, function (res) {
                     if (res.error_code == 0) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
