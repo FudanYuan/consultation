@@ -214,6 +214,14 @@
                         });
                     }
                 })
+            },
+            markRead: function () {
+                $.post("__PRO_PATH__/Apply/markRead", {ids: '{$id}'}, function (res) {
+                    if(res.error_code == 0){
+                    } else{
+                        console.log(res.msg);
+                    }
+                });
             }
         },
         filters:{
@@ -290,6 +298,7 @@
                 vm.target_hospital_info = res.target_hospital_info;
                 vm.target_office_info = res.target_office_info;
                 vm.target_doctor_info = res.target_doctor_info;
+                vm.markRead();
             }
         });
     }

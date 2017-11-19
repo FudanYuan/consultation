@@ -206,7 +206,6 @@ class Doctor extends Common
             }
             $this->jsonReturn($ret);
         }else{
-            mydump($doctor);
             return view('',['doctor' => $doctor]);
         }
     }

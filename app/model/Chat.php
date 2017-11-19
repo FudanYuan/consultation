@@ -27,15 +27,40 @@ class Chat extends Model{
     /**
      * 获取消息列表
      * @param array $cond
+     * @return mixed
      */
     public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
+        if(!isset($cond_and['status'])){
+            $cond_and['status'] = ['<>', 2];
         }
-        $res = $this->field('id, apply_id, source_user_id, target_user_id, type, content,
-        content_origin, status, create_time')
-            ->order('create_time desc')
+        $res = $this->field('*')
             ->where($cond)
+            ->select();
+        return $res;
+    }
+
+    /**
+     * 获取用户列表
+     * @param $select
+     * @param $cond_or
+     * @param $cond_and
+     * @return mixed
+     */
+    public function getUserList($select = '*',$cond_or = [],$cond_and = []){
+        if(!isset($cond_and['a.status'])){
+            $cond_and['a.status'] = ['<>', 2];
+        }
+        $res = $this->alias('a')->field($select)
+            ->join('consultation_apply b','a.apply_id = b.id')
+            ->join('consultation_user_admin c','b.source_user_id = c.id')
+            ->join('consultation_doctor d','c.doctor_id = d.id')
+            ->join('consultation_hospital_office e','d.hospital_office_id = e.id')
+            ->join('consultation_hospital f','f.id = e.hospital_id')
+            ->join('consultation_office g','g.id = e.office_id')
+            ->where($cond_and)
+            ->where($cond_or)
+            ->order('a.create_time asc')
+            ->group('a.apply_id')
             ->select();
         return $res;
     }
@@ -87,7 +112,7 @@ class Chat extends Model{
 
 
     /**
-     * 批量增加消息列表
+     * 批量增加消息
      * @param $dataSet
      * @return array
      */
@@ -123,9 +148,29 @@ class Chat extends Model{
      * @throws MyException
      */
     public function markRead($cond = []){
-        $res = $this->save(['status' => 1], $cond);
+        $res = $this->save(['status' => 1, 'update_time' => time()], $cond);
         if($res === false) throw new MyException('2', '标记失败');
         return $res;
+    }
+
+    /**
+     * 对结果进行过滤
+     * @param $data
+     * @param $fields
+     * @return array
+     */
+    public function filterResult($data, $fields){
+        $ret = [];
+        for($i=0;$i<count($data);$i++){
+            $temp = [];
+            foreach ($data[$i] as $k => $value){
+                if(in_array($k, $fields)){
+                    $temp[$k] = $data[$i][$k];
+                }
+            }
+            array_push($ret, $temp);
+        }
+        return $ret;
     }
 
     /**
@@ -142,6 +187,13 @@ class Chat extends Model{
         if(isset($data['target_user_id']) && !$data['target_user_id']){
             $errors['target_user_id'] = '接收用户不能为空';
         }
+        if(isset($data['type']) && !$data['type']){
+            $errors['type'] = '消息类型不能为空';
+        }
+        if(isset($data['content']) && !$data['content']){
+            $errors['content'] = '内容不能为空';
+        }
+
         return $errors;
     }
 }

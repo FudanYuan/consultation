@@ -23,7 +23,6 @@ class Patient extends Model{
     );
     protected $type = [
         'id' => 'integer',
-        'in_hospital_time' =>'integer',
         'record_time' => 'integer',
         'create_time' => 'integer',
         'update_time' => 'integer'

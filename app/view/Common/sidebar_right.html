@@ -1,197 +1,126 @@
 <div class="sidebar-right">
-    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: auto;"><div class="sidebar-inner scrollable-sidebar" style="overflow: hidden; width: auto; height: 100%;">
+    <div class="sidebar-inner scrollable-sidebar" style="overflow: hidden; width: auto; height: 100%;" id="apply-right">
         <div class="sidebar-header clearfix">
-            <input class="form-control dark-input" placeholder="Search" type="text">
-            <div class="btn-group pull-right" style="font-size: 15px; margin: 0;">
-                <a href="#" class="sidebar-setting" data-toggle="dropdown"><i class="fa fa-cog fa-lg"></i></a>
-                <ul class="dropdown-menu pull-right flipInV">
-                    <li><a href="#"><i class="fa fa-circle text-danger"></i><span class="m-left-xs">Busy</span></a></li>
-                    <li><a href="#"><i class="fa fa-circle-o"></i><span class="m-left-xs">Turn Off Chat</span></a></li>
+            <input class="form-control dark-input" placeholder="搜索···" type="text" v-model="search" @keyup.13="enter($event)">
+        </div>
+        <template v-if="fail">
+            <div class="title-block" style="color: #e36159; text-align: center">
+                加载失败
+            </div>
+        </template>
+        <div class="title-block">
+            会诊申请
+        </div>
+        <template v-if="normal.length != 0">
+            <div class="content-block">
+                <ul class="sidebar-list">
+                    <template v-for="model in normal">
+                        <li>
+                            <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
+                                <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
+                                <div class="chat-detail m-left-sm">
+                                    <div class="chat-name">
+                                        <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
+                                        {{model.doctor_name}}
+                                    </div>
+                                    <div class="chat-message">
+                                        <!--<a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id">{{model.hospital_name}}</a>-->
+                                        {{model.hospital_name}}
+                                    </div>
+                                </div>
+                                <!--<div class="chat-status">-->
+                                <!--<i class="fa fa-circle-o text-success"></i>-->
+                                <!--</div>-->
+                                <div class="chat-alert">
+                                    <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
+                                </div>
+                            </a>
+                        </li>
+                    </template>
                 </ul>
             </div>
-        </div>
+        </template>
+        <template v-else>
+            <div class="title-block" style="color: #e36159; text-align: center">
+                暂无会话
+            </div>
+        </template>
+
         <div class="title-block">
-            Group Chat
+            绿色通道
         </div>
-        <div class="content-block">
-            <ul class="sidebar-list">
-                <li>
-                    <a href="#">
-                        <i class="fa fa-circle-o text-success"></i><span class="m-left-xs">Close Friends</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="fa fa-circle-o text-success"></i><span class="m-left-xs">Business</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="title-block">
-            Favorites
-        </div>
-        <div class="content-block">
-            <ul class="sidebar-list">
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile2.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                John Doe
-                            </div>
-                            <div class="chat-message">
-                                Where are you?
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-success"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <span class="badge badge-purple bounceIn animation-delay2">2</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile3.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                Jane Doe
-                            </div>
-                            <div class="chat-message">
-                                Hello
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-success"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <span class="badge badge-info bounceIn animation-delay2">1</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile4.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                John Doe
-                            </div>
-                            <div class="chat-message">
-                                See you again next week.
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-danger"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <i class="fa fa-check text-success"></i>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile5.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                John Doe
-                            </div>
-                            <div class="chat-message">
-                                Hello, Are you there?
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-danger"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <i class="fa fa-reply"></i>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="title-block">
-            More friends
-        </div>
-        <div class="content-block">
-            <ul class="sidebar-list">
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile6.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                John Doe
-                            </div>
-                            <div class="chat-message">
-                                Where are you?
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-success"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <span class="badge badge-success bounceIn animation-delay2">2</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile7.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                Jane Doe
-                            </div>
-                            <div class="chat-message">
-                                Hello
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-success"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <span class="badge badge-danger bounceIn animation-delay2">1</span>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile8.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                John Doe
-                            </div>
-                            <div class="chat-message">
-                                See you again next week.
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-danger"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <i class="fa fa-check text-success"></i>
-                        </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="clearfix">
-                        <img src="__PUBLIC__/images/profile/profile9.jpg" class="img-circle" alt="user avatar">
-                        <div class="chat-detail m-left-sm">
-                            <div class="chat-name">
-                                John Doe
-                            </div>
-                            <div class="chat-message">
-                                Hello, Are you there?
-                            </div>
-                        </div>
-                        <div class="chat-status">
-                            <i class="fa fa-circle-o text-danger"></i>
-                        </div>
-                        <div class="chat-alert">
-                            <i class="fa fa-reply"></i>
-                        </div>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div><div class="slimScrollBar" style="background: rgb(0, 0, 0); width: 0px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 146.77px;"></div><div class="slimScrollRail" style="width: 0px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div></div><!-- sidebar-inner -->
+        <template v-if="green.length != 0">
+            <div class="content-block">
+                <ul class="sidebar-list">
+                    <template v-for="model in green">
+                        <li>
+                            <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
+                                <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
+                                <div class="chat-detail m-left-sm">
+                                    <div class="chat-name">
+                                        <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
+                                        {{model.doctor_name}}
+                                    </div>
+                                    <div class="chat-message">
+                                        <!--<a :href="'__PRO_PATH__/Hospital/info?id='+model.hospital_id">{{model.hospital_name}}</a>-->
+                                        {{model.hospital_name}}
+                                    </div>
+                                </div>
+                                <!--<div class="chat-status">-->
+                                <!--<i class="fa fa-circle-o text-success"></i>-->
+                                <!--</div>-->
+                                <div class="chat-alert">
+                                    <span class="badge badge-danger bounceIn animation-delay2">{{model.count}}</span>
+                                </div>
+                            </a>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+        <template v-else>
+            <div class="title-block" style="color: #e36159; text-align: center">
+                暂无会话
+            </div>
+        </template>
+    </div>
 </div>
+
+<script>
+    var vm_right = new Vue({
+        el: '#apply-right',
+        data: {
+            normal:[],
+            green: [],
+            search: '',
+            params: {},
+            fail: true
+        },
+        mounted: function () {
+
+        },
+        methods:{
+            enter:function(ev){
+                if(ev.keyCode == 13){
+                    vm_right.params['search'] = vm_right.search;
+                    getChatList();
+                }
+            }
+        },
+    });
+
+    // 获取列表
+    function getChatList() {
+        $.post('__PRO_PATH__/Chat/getChatList', vm_right.params, function (res) {
+            if(res.error_code == 0){
+                vm_right.fail = false;
+                vm_right.normal = res.normal;
+                vm_right.green = res.green;
+                vm_right.params['search'] = '';
+            } else {
+                vm_right.fail = true;
+            }
+        });
+    }
+    getChatList();
+</script>
