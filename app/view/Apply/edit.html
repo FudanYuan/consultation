@@ -89,7 +89,7 @@
                         <td>预约日期</td>
                         <td colspan="2">
                             <div :class="['form-group']" >
-                                <input placeholder="" id="apply_date" name="apply_date" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
+                                <input placeholder="" id="apply_date" name="{$apply.apply_date}" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
                                 <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date}}</p>
                             </div>
                         </td>

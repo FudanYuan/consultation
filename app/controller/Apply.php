@@ -342,6 +342,7 @@ class Apply extends Common
             $ret['data'] = $data;
             $this->jsonReturn($ret);
         }
+        mydump($apply);
         return view('',['apply' => $apply]);
     }
 

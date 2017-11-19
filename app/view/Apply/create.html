@@ -376,7 +376,7 @@
     function change_apply_project(value)
     {
         if(value == 4){
-            console.log("执行了vaule=4")
+            console.log("执行了vaule=4");
             vm.seen['apply_project'] = !vm.seen['apply_project'];
         } else{
             vm.seen['apply_project'] = false;
@@ -437,7 +437,6 @@
         mounted:function () {
             $('#consultation-nav-apply').addClass('active');
             $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
-
             $(".multiple").multipleSelect({
                 filter: true,
                 multiple: true,
@@ -513,7 +512,7 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
+                        popWarn('新建成功', '__PRO_PATH__/Apply/index');
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
