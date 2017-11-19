@@ -21,7 +21,11 @@ class Role extends Common{
         $params = input('post.');
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond = [];
-        $list = D('Role')->getList();
+        $name = input('post.name', '');
+        if($name){
+            $cond['name'] = $name;
+        }
+        $list = D('Role')->getList($cond);
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         //分页时需要获取记录总数，键值为 total
@@ -44,7 +48,7 @@ class Role extends Common{
     public function create(){
         $data = input('post.');
         if(!empty($data)){
-            $ret = ['error_code' => 0, 'msg' => ''];
+            $ret = ['error_code' => 0, 'msg' => '创建角色成功'];
             $res = D('Role')->addData($data);
             if(!$res){
                 $ret['error_code'] = 1;
@@ -54,7 +58,7 @@ class Role extends Common{
             $log['user_id'] = $this->getUserId();
             $log['IP'] = $this->getUserIp();
             $log['section'] = '角色设置';
-            $log['action_descr'] = '新建角色-' . $data['id'];
+            $log['action_descr'] = '新建角色-' . $data['name'];
             D('OperationLog')->addData($log);
 
             $this->jsonReturn($ret);
@@ -91,7 +95,7 @@ class Role extends Common{
      * 批量删除
      */
     public function remove(){
-        $ret = ['code' => 1, 'msg' => '成功'];
+        $ret = ['code' => 1, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
             $res = D('Role')->remove(['id' => ['in', $ids]]);

@@ -164,7 +164,7 @@ class UserAdmin extends Common{
                 $res = D('UserAdmin')->getList($cond);
                 if(!empty($res)){
                     $ret['error_code'] = 1;
-                    $ret['msg'] = '创建用户失败';
+                    $ret['msg'] = '用户已存在';
                     $this->jsonReturn($ret);
                 }
             }
@@ -179,7 +179,7 @@ class UserAdmin extends Common{
             $log['user_id'] = $this->getUserId();
             $log['IP'] = $this->getUserIp();
             $log['section'] = '用户设置';
-            $log['action_descr'] = '新建用户-' . $data['id'];
+            $log['action_descr'] = '新建用户-' . $data['username'];
             D('OperationLog')->addData($log);
 
             $this->jsonReturn($ret);
@@ -205,7 +205,7 @@ class UserAdmin extends Common{
             $log['user_id'] = $this->getUserId();
             $log['IP'] = $this->getUserIp();
             $log['section'] = '用户设置';
-            $log['action_descr'] = '编辑用户-' . $data['id'];
+            $log['action_descr'] = '编辑用户-' . $data['username'];
             D('OperationLog')->addData($log);
 
             $this->jsonReturn($ret);

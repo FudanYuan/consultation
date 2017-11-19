@@ -19,9 +19,9 @@ function popupEdit(config){
 	});
 	$('.confirm-do').on('click', function(){
 		$('#confirm-popup').popup('hide');
-		$.get(config.remove, {ids: config.id}, function(res){
+		$.post(config.remove, {ids: config.id}, function(res){
 			if(res['code'] == 1){
-				window.location.href = config.list;
+				popWarn(res.msg, config.list);
 			}else{
 				popWarn('删除失败');
 			}
