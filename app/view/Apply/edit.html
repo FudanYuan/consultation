@@ -64,32 +64,18 @@
                     <tr>
                         <td>会诊科室</td>
                         <td colspan="2">
-                            <div :class="['form-group', errors.target_office_id != '' ? 'has-error' : '']">
-                                <select multiple="multiple" class="multiple" name="office_ids"  id="office_ids">
-                                    {foreach name="office" item="model" key = "k"}
-                                    <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
-                                    {/foreach}
-                                </select>
-                                <p class="help-block">{{errors.target_office_id}}</p>
-                            </div>
+
                         </td>
 
                         <td>会诊医生</td>
                         <td colspan="2">
-                            <div  :class="['form-group']" >
-                                <select multiple="multiple" class="multiple" id="doctor_ids" name="doctor_ids">
-                                    {foreach name="doctor" item="model"}
-                                    <option value="{$model.id}">{$model.name}</option>
-                                    {/foreach}
-                                </select>
-                                <p class="help-block">{$errors.doctor??''}</p>
-                            </div>
+
                         </td>
 
                         <td>预约日期</td>
                         <td colspan="2">
                             <div :class="['form-group']" >
-                                <input placeholder="" id="apply_date" name="{$apply.apply_date}" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
+                                <input placeholder="" id="apply_date" name="apply_date" vaule="{$apply.apply_date}" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
                                 <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date}}</p>
                             </div>
                         </td>
@@ -145,7 +131,7 @@
                         <td colspan="3" >
                             <div :class="['form-group', errors.ID_number != '' ? 'has-error' : '']" >
                                 <div class="col-sm-9">
-                                    <input class="form-control" type="text" v-model="patient.patient_ID_number" value="{$patient.ID_number}" placeholder="请输入患者身份证号" id="patient_ID_number">
+                                    <input class="form-control" name="patient_ID_number" type="text"  value="{$patient.ID_number}" placeholder="请输入患者身份证号" id="patient_ID_number">
                                     <p class="help-block">{{errors.ID_number}}</p>
                                 </div>
                             </div>
@@ -157,23 +143,23 @@
                         <td>联系方式</td>
                         <td colspan="1" >
                             <div :class="['form-group', errors.phone != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" v-model="patient.patient_phone" value="{$patient.phone}" placeholder="患者电话" id="patient_phone">
+                                <input class="form-control" name="patient_phone" type="text"  value="{$patient.phone}" placeholder="患者电话" id="patient_phone">
                                 <p class="help-block">{{errors.phone}}</p>
                             </div>
                         </td>
                         <td>眼压(左/右)</td>
                         <td>
-                            <input class="form-control" type="text" v-model="patient.patient_pressure_left"  value="{$patient.pressure_left}" placeholder="左眼眼压" id="pressure_left">
+                            <input class="form-control" type="text" name="patient_pressure_left" value="{$patient.pressure_left}" placeholder="左眼眼压" id="pressure_left">
                         </td>
                         <td>
-                            <input class="form-control" type="text"  v-model="patient.patient_pressure_right" value="{$patient.pressure_right}" placeholder="右眼眼压" id="pressure_right">
+                            <input class="form-control" type="text" name="patient_pressure_right" value="{$patient.pressure_right}" placeholder="右眼眼压" id="pressure_right">
                         </td>
                     </tr>
                     <tr>
                         <td>姓名</td>
                         <td>
                             <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" v-model="patient.patient_name" value="{$patient.name}" placeholder="姓名" id="patient_name">
+                                <input class="form-control" name="patient_name" type="text" value="{$patient.name}" placeholder="姓名" id="patient_name">
                                 <p class="help-block">{{errors.name}}</p>
                             </div>
                         </td>
@@ -182,14 +168,14 @@
                             <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
                                 <div class="radio inline-block">
                                     <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="patient_gender1" v-model="patient.patient_gender" value="1">
+                                        <input type="radio" id="patient_gender1" name="patient_gender" value="1">
                                         <label for="patient_gender1"></label>
                                     </div>
                                     <div class="inline-block vertical-top">男</div>
                                 </div>
                                 <div class="radio inline-block">
                                     <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="patient_gender2" v-model="patient.patient_gender" value="2">
+                                        <input type="radio" id="patient_gender2" name="patient_gender" value="2">
                                         <label for="patient_gender2"></label>
                                     </div>
                                     <div class="inline-block vertical-top">女</div>
@@ -200,16 +186,16 @@
                         <td>年龄</td>
                         <td>
                             <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" v-model="patient.patient_age" value="{$patient.age}" placeholder="年龄" id="patient_age">
+                                <input class="form-control" type="text" name="patient_age" value="{$patient.age}" placeholder="年龄" id="patient_age">
                                 <p class="help-block">{{errors.age}}</p>
                             </div>
                         </td>
                         <td>视力(左/右)</td>
                         <td>
-                            <input class="form-control"  type="text" v-model="patient.patient_vision_left"    value="{$patient.vision_left}" placeholder="左眼视力" id="vision_left">
+                            <input class="form-control"  type="text" name="patient_vision_left" value="{$patient.vision_left}" placeholder="左眼视力" id="vision_left">
                         </td>
                         <td>
-                            <input class="form-control"  type="text" v-model="patient.patient_vision_right"   value="{$patient.vision_right}" placeholder="右眼视力" id="vision_right">
+                            <input class="form-control"  type="text" name="patient_vision_right" value="{$patient.vision_right}" placeholder="右眼视力" id="vision_right">
                         </td>
                     </tr>
                     <tr>
@@ -270,7 +256,7 @@
                         <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">眼病类型</td>
 
                         <td colspan="2" style="text-align: left; height: auto; padding: 20px;">
-                            <select v-model="patient.patient_eyes_type" class="form-control" onchange="change_eyes_ill_type(this.value)" id="eyes_ill_type">
+                            <select name="ill_type"  class="form-control" onchange="change_eyes_ill_type(this.value)" id="eyes_ill_type">
                                 <option value="1">眼表</option>
                                 <option value="2">眼前节</option>
                                 <option value="3">眼底</option>
@@ -284,12 +270,27 @@
 
                         </td>
 
+                        <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
 
-                        <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">诊疗情况</td>
+                        <div :class="['form-group', errors.ill_state != '' ? 'has-error' : '']" >
+                            <td colspan="5" style="text-align: left; height: auto; padding: 20px;">
+                                <textarea  class="form-control" name="patient_illness_state" type="text"  id="patient_illness_state" placeholder="请输入患者简要病情">{$patient.ill_state}</textarea>
+                                <p class="help-block">{{errors.ill_state}}</p>
+                            </td>
+                        </div>
+                    </tr>
 
-                        <td colspan="5" style="text-align: left; height: auto; padding: 20px;">
+                    <tr></tr>
+
+                    <tr>
+                        <td colspan="9" rowspan="2"  style="font-size: medium; font-weight: bold; text-align: left">诊疗情况</td>
+                    </tr>
+                    <tr></tr>
+
+                    <tr>
+                        <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
                             <div :class="['form-group']" >
-                                <textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况">{$patient.diagnose_state}</textarea>
+                                <textarea name="diagnose_state" class="form-control" type="text"  style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况">{$patient.diagnose_state}</textarea>
                             </div>
                         </td>
                     </tr>
@@ -304,7 +305,7 @@
                     <tr>
                         <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
                             <div :class="['form-group', errors.consultation_goal != '' ? 'has-error' : '']" >
-                                <textarea  class="form-control" type="text" v-model="patient.consultation_goal" style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的">{$apply.consultation_goal}</textarea>
+                                <textarea  class="form-control" name="consultation_goal" type="text"  style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的">{$apply.consultation_goal}</textarea>
                                 <p class="help-block">{{errors.consultation_goal}}</p>
                             </div>
                         </td>
@@ -317,7 +318,6 @@
                     <div class="col-sm-4">
                         <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
                         <a id="form-cancel" class="btn btn-info"  href="__PRO_PATH__/Apply/index">取消</a>
-
                     </div>
                 </div>
             </div>
@@ -399,19 +399,19 @@
                 consultation_goal:''
             },
             params: {},
-            patient:{
-                patient_ID_number: '',
-                patient_name: '',
-                patient_age:'',
-                patient_phone:'',
-                patient_illness_state:'',
-                patient_gender:'',
-                patient_eyes_type:'',
-                patient_vision_left:'',
-                patient_vision_right:'',
-                patient_pressure_left:'',
-                patient_pressure_right:'',
-            },
+//            patient:{
+//                patient_ID_number: '',
+//                patient_name: '',
+//                patient_age:'',
+//                patient_phone:'',
+//                patient_illness_state:'',
+//                patient_gender:'',
+//                patient_eyes_type:'',
+//                patient_vision_left:'',
+//                patient_vision_right:'',
+//                patient_pressure_left:'',
+//                patient_pressure_right:'',
+//            },
             seen:{
                 ill_type: false,
                 apply_project:false,
@@ -421,8 +421,10 @@
         mounted:function () {
             $('#consultation-nav-apply').addClass('active');
             $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
-
             $("input[name='priority'][value='{$apply.apply_type?? ''}']").attr("checked",true);
+            $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
+            $('select[name="ill_type"]').val('{$patient.ill_type??""}');
+            $('#apply_date').val('{$apply.apply_date??""}');
 
 //            $('#narrator').val('{$patient.narrator??""}');
 //            $('#main_narrate').val('{$patient.main_narrate??""}');
@@ -550,6 +552,13 @@
                 })
             }
         },
+        filters:{
+            moment: function (value, formatString) {
+                formatString = formatString || 'YYYY-MM-DD HH:mm';
+                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+                return time;
+            },
+        }
     });
 
     submit();
@@ -558,7 +567,11 @@
         console.log("执行了");
         var hospital_id = $('#consultation_hospital').val();
         console.log(hospital_id);
-        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});
+        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {
+            office=res;
+            console.log("这是点击医院的响应");
+            console.log(res);
+        });
     }
 
     function getParams(){
@@ -572,9 +585,9 @@
                 vm.params[this.name] = this.value;
             }
         });
-        $.each(vm.patient, function (k, v) {
-            vm.params[k] = v;
-        });
+//        $.each(vm.patient, function (k, v) {
+//            vm.params[k] = v;
+//        });
         console.log(JSON.stringify(data));
         console.log(JSON.stringify(vm.params));
     }

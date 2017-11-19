@@ -352,6 +352,11 @@ class Apply extends Common
         $apply_info = $info[0];
         $apply_info['date'] = time();
 
+        mydump($hospital);
+        mydump($apply);
+        mydump($patient);
+        mydump($apply_info);
+
         return view('',['hospital' => $hospital,'apply' => $apply,'patient' => $patient,'apply_info'=>$apply_info]);
     }
 
