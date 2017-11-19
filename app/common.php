@@ -322,7 +322,7 @@ function objToArr($obj)
  */
 function authority($tag)
 {
-//    return true;
+    //return true;
     static $actions;
     $user = config('user');
     //if ($user['role_id'] == 1) return true;

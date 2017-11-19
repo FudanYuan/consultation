@@ -1,5 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
-{if condition="authority('ApplyReply')"}
+{if condition="authority('ApplyEdit')"}
 <script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <style>
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
@@ -16,8 +16,8 @@
         margin-bottom: 0;
     }
 </style>
-<div class="main-container" onload="time()">
-    <div class="padding-md" onload="time()">
+<div class="main-container">
+    <div class="padding-md">
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
@@ -76,7 +76,7 @@
                         <td colspan="2">
                             <div :class="['form-group']" >
                                 <input placeholder="" id="apply_date" name="apply_date" vaule="{$apply.apply_date}" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
-                                <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date}}</p>
+                                <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date | moment}}</p>
                             </div>
                         </td>
 
@@ -345,15 +345,6 @@
         }
     }
 
-    function time()
-    {
-        var now= new Date();
-        var year=now.getFullYear();
-        var month=now.getMonth();
-        var date=now.getDate();
-        document.getElementById("today_date").innerHTML=year+"年"+(month+1)+"月"+date+"日";
-    }
-
     function change_apply_project(value)
     {
         if(value == 4){
@@ -363,7 +354,6 @@
             vm.seen['apply_project'] = false;
         }
     }
-
 
     var vm = new Vue({
         el: '#apply-reply',

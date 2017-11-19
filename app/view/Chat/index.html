@@ -373,6 +373,9 @@
                 if(vm.getReadIds() != ''){
                     $.post("__PRO_PATH__/Chat/markRead", {ids: vm.getReadIds()}, function (res) {
                         if(res.error_code == 0){
+                            $('#chatScroll').slimScroll({
+                                scrollTo : ($('#chatScroll ul').height())+'px'
+                            });
                         } else{
                             console.log(res.msg);
                         }
@@ -390,12 +393,16 @@
                         vm.chat.push(data[i]);
                     }
                 }
+                vm.markRead();
             },
 
             /**
              * 发送信息
              */
             send: function () {
+                $('#chatScroll').slimScroll({
+                    scrollTo : ($('#chatScroll ul').height())+'px'
+                });
                 $.post("__PRO_PATH__/Chat/send", vm.params, function (res) {
                     if(res.error_code == 0){
                         vm.to_send = false;
@@ -451,7 +458,6 @@
         $.post("__PRO_PATH__/Chat/receive", vm.receive_params, function (res) {
             if(res.error_code == 0){
                 vm.receiveMsg(res.data);
-                vm.markRead();
                 vm.receive_params['total'] = res.total;
                 vm.receive_params['pages'] = Math.ceil(res.total / vm.receive_params['per_page']);
                 vm.receive_params['current_page'] = res.current_page;
