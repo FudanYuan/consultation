@@ -380,7 +380,7 @@ class Apply extends Common
 
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
-            $resApply = D('Apply')->saveData($params['apply_id'],$data);
+            $resApply = [];// D('Apply')->saveData($params['apply_id'],$data);
 
             if(!empty($res['errors'])){
                 $ret['error_code'] = 2;
@@ -407,7 +407,7 @@ class Apply extends Common
             $patient['eye_photo_right_origin']= input('post.eye_photo_right_origin');
             $patient['files_path'] = input('post.files_path');
             $patient['files_path_origin'] = input('post.files_path_origin');
-            $resPatient = D('Patient')->saveData($params['patient_id'],$patient);
+            $resPatient = [];// D('Patient')->saveData($params['patient_id'],$patient);
             if(!empty($resPatient)){
                 $ret['error_code'] = 2;
                 $ret['errors'] = $resPatient['errors'];
