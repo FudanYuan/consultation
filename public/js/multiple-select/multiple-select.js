@@ -736,8 +736,8 @@
         filterAcceptOnEnter: false,
         hideOptgroupCheckboxes: false,
 
-        selectAllText: 'Select all',
-        allSelected: 'All selected',
+        selectAllText: '选择全部',
+        allSelected: '全部选择',
         countSelected: '# of % selected',
         noMatchesFound: 'No matches found',
 

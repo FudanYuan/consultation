@@ -111,6 +111,9 @@ class Patient extends Model{
                 $errors['ID_number'] = '此人已存在';
             }
         }
+        if(isset($data['gender']) && !$data['gender']){
+            $errors['gender'] = '性别不能为空';
+        }
         if(isset($data['age']) && !$data['age']){
             $errors['age'] = '年龄不能为空';
         }
@@ -118,19 +121,13 @@ class Patient extends Model{
             $errors['phone'] = '电话不能为空';
         }
         if(isset($data['ill_state']) && !$data['ill_state']){
-            $errors['ill_state'] = '病情简介不能为空';
+            $errors['ill_state'] = '简要病情不能为空';
         }
         if(isset($data['ill_type']) && !$data['ill_type']){
             $errors['ill_type'] = '病情类型不能为空';
-            if($data['ill_type'] == 5){
-                if(isset($data['other_ill_type']) && !$data['other_ill_type']){
-                    $errors['other_ill_type'] = '其他病情详情不能为空';
-                }
-            }
         }
-
-        if(isset($data['gender']) && !$data['gender']){
-            $errors['gender'] = '性别不能为空';
+        if(isset($data['other_ill_type']) && $data['ill_type'] == 5 && !$data['other_ill_type']){
+            $errors['other_ill_type'] = '其他病情详情不能为空';
         }
         return $errors;
     }

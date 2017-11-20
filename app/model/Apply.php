@@ -233,6 +233,9 @@ class Apply extends Model{
         if(isset($data['apply_project']) && !$data['apply_project']){
             $errors['apply_project'] = '申请会诊类型不能为空';
         }
+        if(isset($data['other_apply_project']) && $data['apply_project'] == 4 && !$data['other_apply_project']){
+            $errors['other_apply_project'] = '其他申请类型不能为空';
+        }
         return $errors;
     }
 

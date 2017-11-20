@@ -89,7 +89,7 @@
                         <td colspan="2">
                             <div :class="['form-group', errors.apply_date != '' ? 'has-error' : '']" >
                                 <input placeholder="" id="apply_date" name="apply_date" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
-                                <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date}}</p>
+                                <p class="help-block">{{errors.apply_date}}</p>
                             </div>
                         </td>
 
@@ -113,16 +113,17 @@
                         <td colspan="2">
                             <div :class="['form-group', errors.apply_project != '' ? 'has-error' : '']" >
                                 <select  name="apply_project" class="form-control" onchange="change_apply_project(this.value)" id="apply_project">
-                                    <option value="-1">--请选择--</option>
+                                    <option value="">--请选择--</option>
                                     <option value="1">咨询</option>
                                     <option value="2">住院</option>
                                     <option value="3">手术</option>
                                     <option value="4">其他</option>
                                 </select>
-
-                                <div :class="['form-group', errors.other_apply_project != '' ? 'has-error' : '']" v-if="seen.apply_project">
-                                    <input class="form-control" type="text" name="other_apply_project" value="" placeholder="请输入其他申请类型" id="other_apply_project">
-                                </div>
+                                <p class="help-block">{{errors.apply_project}}</p>
+                            </div>
+                            <div :class="['form-group', errors.other_apply_project != '' ? 'has-error' : '']" v-if="seen.apply_project">
+                                <input class="form-control" type="text" name="other_apply_project" value="" placeholder="请输入其他申请类型" id="other_apply_project">
+                                <p class="help-block">{{errors.other_apply_project}}</p>
                             </div>
                         </td>
                         <!--<td colspan="2" >{{source_doctor_info.name}}</td>-->
@@ -166,7 +167,7 @@
                         <td>
                             <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
                                 <select v-model="patient.gender" class="form-control" id="patient_gender">
-                                    <option value="-1">--请选择--</option>
+                                    <option value="">--请选择--</option>
                                     <option value="1">男</option>
                                     <option value="2">女</option>
                                 </select>
@@ -202,7 +203,7 @@
 
                         <td colspan="2" style="text-align: left; height: auto;">
                             <select v-model="patient.ill_type" class="form-control" onchange="change_eyes_ill_type(this.value)" id="ill_type">
-                                <option value="-1" selected>--请选择--</option>
+                                <option value="" selected>--请选择--</option>
                                 <option value="1">眼表</option>
                                 <option value="2">眼前节</option>
                                 <option value="3">眼底</option>
@@ -397,10 +398,10 @@
                 ill_state:'',
                 ill_type:'',
                 other_ill_type:'',
+                apply_project:'',
                 other_apply_project: '',
                 phone:'',
                 apply_date:'',
-                apply_project:'',
                 target_office_id:'',
                 consultation_goal:'',
                 diagnose_state: ''
@@ -410,10 +411,10 @@
                 id: '',
                 ID_number: '',
                 name: '',
-                gender:'-1',
+                gender:'',
                 age:'',
                 phone:'',
-                ill_type:'-1',
+                ill_type:'',
                 other_ill_type:'',
                 vision_left:'',
                 vision_right:'',
