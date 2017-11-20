@@ -413,6 +413,7 @@ class Apply extends Common
             $apply_info['date'] = $apply['create_time'];
         }
         //被申请人及科室
+        $select = ['id,name'];
         $office = [];
         $doctor = [];
         $target_doctor_ids = $apply['target_doctor_ids'];
@@ -420,16 +421,21 @@ class Apply extends Common
         $array_target_doctor_id = explode('-',$target_doctor_ids);
         for($index=0;$index<count($array_target_doctor_id);$index++) {
             if($array_target_doctor_id[$index] != ''){
-                array_push($doctor, D('Doctor')->getById((int)$array_target_doctor_id[$index]));
+                array_push($doctor, D('Doctor')->getDoctor($select,['id' =>(int)$array_target_doctor_id[$index]]));
             }
         }
         $array_target_office_id = explode('-',$target_office_ids);
         for($index=0;$index<count($array_target_office_id);$index++) {
             if($array_target_office_id[$index] != ''){
-                array_push($office, D('Office')->getById((int)$array_target_office_id[$index]));
+                array_push($office, D('Office')->getOffice($select,['id' =>(int)$array_target_office_id[$index]]));
             }
         }
-
+        mydump($hospital);
+        mydump($doctor);
+        mydump($office);
+        mydump($apply);
+        mydump($patient);
+        mydump($apply_info);
         return view('',['hospital' => $hospital,'doctor'=>$doctor,'office'=>$office,'apply' => $apply,'patient' => $patient,'apply_info'=>$apply_info]);
     }
 

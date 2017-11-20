@@ -69,6 +69,14 @@ class Doctor extends Model{
             ->find();
         return $res;
     }
+
+    public function getDoctor($select,$cond){
+        $res = $this->field($select)
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
     /**
      * 添加医生信息
      * @param $data
@@ -127,13 +135,6 @@ class Doctor extends Model{
             $errors['email'] = '邮箱不能为空';
         }
         return $errors;
-    }
-
-    public function getDoctor($select,$cond){
-        $res = $this->field($select)
-            ->where($cond)
-            ->select();
-        return $res;
     }
     //////未修改/////
 
