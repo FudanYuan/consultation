@@ -87,7 +87,6 @@
                                 <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date | moment}}</p>
                             </div>
                         </td>
-
                     </tr>
                     <tr>
                         <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
@@ -228,7 +227,7 @@
                         <td rowspan="4">局部病变图(左眼)</td>
                         <td colspan="2" rowspan="4">
                             <div class="form-group {$errors.img ?= 'has-error'}">
-                                <img id="img_left_eye" src="{$patient.eye_photo_left?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                                <img id="img_left_eye" src="{$patient.eye_photo_left??'__PUBLIC__/images/profile/profile1.jpg'}">
                                 <br/>
                                 <div id="upload_left_eye">
                                     <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
@@ -243,7 +242,7 @@
                         <td rowspan="4">局部病变图(右眼)</td>
                         <td colspan="2" rowspan="4">
                             <div class="form-group {$errors.img ?= 'has-error'}">
-                                <img id="eye_photo_right" src="{$patient.eye_photo_right?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                                <img id="eye_photo_right" src="{$patient.eye_photo_right??'__PUBLIC__/images/profile/profile1.jpg'}">
                                 <br/>
                                 <div id="upload_right_eye">
                                     <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
