@@ -25,16 +25,15 @@ class Patient extends Common
      */
     public function getPatientByIDNum(){
         $params = input('post.');
-        $ID_number = input('post.patient_ID_number');
-        $ret = ['error_code' => 0, 'msg' =>''];
-        $patient_data = D('Patient')->getPatientByIdNum($ID_number);
+        $ID_number = input('post.ID_number', '');
+        $ret = ['error_code' => 0, 'msg' =>'查找成功'];
+        $patient_data = D('Patient')->getByIdNum($ID_number);
         if(empty($patient_data)){
-            $ret['error_code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '未找到这名患者';
         }else{
             $ret['patient'] = $patient_data;
         }
-        $ret['id_number'] = $params;
         $this->jsonReturn($ret);
     }
 

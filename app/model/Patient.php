@@ -16,10 +16,10 @@ class Patient extends Model{
         'birthplace', 'address', 'work_unit', 'postcode', 'height', 'weight',
         'vision_left', 'vision_right', 'pressure_left', 'pressure_right', 'exam_img',
         'exam_img_origin', 'eye_photo_left', 'eye_photo_left_origin', 'eye_photo_right',
-        'eye_photo_right_origin', 'ill_type', 'ill_state', 'diagnose_state',
-        'files_path', 'files_path_origin', 'in_hospital_time', 'narrator',
-        'main_narrate', 'present_ill_history', 'past_history', 'system_retrospect',
-        'personal_history', 'physical_exam_record', 'status', 'create_time', 'update_time'
+        'eye_photo_right_origin', 'ill_type', 'other_ill_type', 'ill_state', 'diagnose_state',
+        'files_path', 'files_path_origin', 'in_hospital_time', 'narrator', 'main_narrate',
+        'present_ill_history', 'past_history', 'system_retrospect', 'personal_history',
+        'physical_exam_record', 'status', 'create_time', 'update_time'
     );
     protected $type = [
         'id' => 'integer',
@@ -28,12 +28,44 @@ class Patient extends Model{
         'update_time' => 'integer'
     ];
 
-    public function getPatientByIdNum($Id_Num){
-        $res = $this->field('id as patient_id,name as patient_name,age as patient_age,
-                    phone as patient_phone,ill_state as patient_illness_state,
-                    diagnose_state,gender as patient_gender,ill_type as patient_eyes_type,
-                    vision_left as  patient_vision_left,vision_right as patient_vision_right,
-                    pressure_left as patient_pressure_left,pressure_right as patient_pressure_right')
+
+    /**
+     * 获取患者列表
+     * @param array $cond
+     */
+    public function getList($cond = []){
+        if(!isset($cond['status'])){
+            $cond['status'] = ['<>', 2];
+        }
+        $res = $this->field('*')
+            ->order('create_time desc')
+            ->where($cond)
+            ->select();
+        return $res;
+    }
+
+    /**
+     * 通过ID获取
+     * @param $id
+     * @return mixed
+     */
+    public function getById($id){
+        $res = $this->field('*')
+            ->where(['id' => $id])
+            ->find();
+        return $res;
+    }
+
+    /**
+     * 根据身份证号获取
+     * @param $Id_Num
+     * @return mixed
+     */
+    public function getByIdNum($Id_Num){
+        $res = $this->field('id, name, ID_number, gender, age,phone,vision_left,
+                vision_right, pressure_left, pressure_right, exam_img, exam_img_origin,
+                eye_photo_left, eye_photo_left_origin, eye_photo_right, eye_photo_right_origin,
+                ill_type, other_ill_type, ill_state, diagnose_state, files_path, files_path_origin')
             ->where(['ID_number' => $Id_Num])
             ->find();
         return $res;
@@ -90,38 +122,17 @@ class Patient extends Model{
         }
         if(isset($data['ill_type']) && !$data['ill_type']){
             $errors['ill_type'] = '病情类型不能为空';
+            if($data['ill_type'] == 5){
+                if(isset($data['other_ill_type']) && !$data['other_ill_type']){
+                    $errors['other_ill_type'] = '其他病情详情不能为空';
+                }
+            }
         }
+
         if(isset($data['gender']) && !$data['gender']){
             $errors['gender'] = '性别不能为空';
         }
         return $errors;
-    }
-
-    /**
-     * 获取患者列表
-     * @param array $cond
-     */
-    public function getList($cond = []){
-        if(!isset($cond['status'])){
-            $cond['status'] = ['<>', 2];
-        }
-        $res = $this->field('*')
-            ->order('create_time desc')
-            ->where($cond)
-            ->select();
-        return $res;
-    }
-
-    /**
-     * 通过ID获取
-     * @param $id
-     * @return mixed
-     */
-    public function getById($id){
-        $res = $this->field('*')
-            ->where(['id' => $id])
-            ->find();
-        return $res;
     }
 
     /**
