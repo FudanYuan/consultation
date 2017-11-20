@@ -100,11 +100,11 @@
             silverlight_xap_url : '__PUBLIC__/js/plupload/Moxie.xap',
             prevent_duplicates:true,
             filters : {
-                /*max_file_size : config.file_size,
-                 mime_types: [
-                 {title : "Image files", extensions : config.img_types},
-                 {title : "Zip files", extensions : config.zip_types}
-                 ]*/
+                max_file_size : config.file_size,
+                mime_types: [
+//                    {title : "Image files", extensions : config.img_types},
+//                    {title : "Zip files", extensions : config.zip_types}
+                ]
             },
 
             init: {
@@ -122,6 +122,14 @@
                             document.getElementById(config.filelist).innerHTML += '<div id="' + file.id + '">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
                         });
                     }else{
+                        var file_name = files[0].name;
+                        var index1 = file_name.lastIndexOf(".");
+                        var index2 = file_name.length;
+                        var postf = file_name.substring(index1,index2);//后缀名
+                        if(postf != '.jpg' && postf != '.png'){
+                            popWarn('格式不正确！');
+                            return;
+                        }
                         up.splice(0, up.files.length - 1);
                         var file = files[files.length - 1];
                         uploader.start();
