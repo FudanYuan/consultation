@@ -417,7 +417,7 @@
             },
 
         },
-        mounted:function () {
+            mounted:function () {
             $('#consultation-nav-apply').addClass('active');
             $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
             $("input[name='apply_type'][value='{$apply.apply_type?? ''}']").attr("checked",true);
@@ -497,14 +497,15 @@
                 isMulti: true
             });
         },
+
         methods:{
-            resetError: function () {
+            resetError: function() {
                 $.each(vm.errors, function (k, v) {
                     vm.errors[k] = '';
                 });
             },
 
-            createNewApply: function () {
+            createNewApply: function() {
                 getParams();
                 $.post('__PRO_PATH__/Apply/edit', vm.params, function (res) {
                     if (res.error_code == 0) {

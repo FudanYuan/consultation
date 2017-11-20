@@ -11,6 +11,17 @@
         <div class="form-wrapper">
             <form class="form-horizontal" method="post" id="new-apply-form">
 
+                <div :class="['form-group', errors.target_office_id != '' ? 'has-error' : '']" >
+                    <label for="office_ids" class="col-sm-2 control-label">所属科室：</label>
+                    <div class="col-sm-4">
+                        <select name="office_ids" class="form-control" onchange="change_hospital()" id="office_ids">
+                            {foreach name="office" item="item"}
+                            <option value="{$item.id}">{$item.name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </div>
+
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                     <label for="doctor_name" class="col-sm-2 control-label">医生姓名：</label>
                     <div class="col-sm-4">
@@ -19,20 +30,17 @@
                     </div>
                 </div>
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+                <div class="form-group }">
                     <label class="col-sm-2 control-label">医生照片：</label>
-                    <div class="col-sm-4">
-                        <div id="filelist_doctor_photo">
-                            <div>{$data.doctor_photo_origin??''}<b></b></div>
-                        </div>
+                    <div class="col-sm-4" style="height: 100px;width: 120px">
+                        <img id="logo" src="{$doctor.doctor_photo?? '/__PUBLIC__/images/profile/profile1.jpg'}">
                         <br/>
-                        <div id="upload_doctor_photo">
-                            <a id="pickfiles_doctor_photo" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
-                            <a id="uploadfiles_doctor_photo" href="javascript:;">上传</a>
+                        <div id="upload_logo">
+                            <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
+                                <i class="fa fa-camera fa-lg"></i>
+                            </a>
                         </div>
-                        <input type="hidden" name="doctor_photo" value="{$data.doctor_photo??''}"/>
-                        <input type="hidden" name="doctor_photo_origin" value="{$data.doctor_photo_origin??''}"/>
-                        <span class="help-block">{$errors.doctor_photo?? ''}</span>
+                        <input type="hidden" name="doctor_photo" />
                     </div>
                 </div>
 
@@ -137,6 +145,7 @@
         </div>
     </div>
 </div><!-- /main-container -->
+{include file="Common/progress"}
 {include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
@@ -147,7 +156,7 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-    $('#consensus-nav-apply').addClass('active');
+    $('#consultation-nav-doctor').addClass('active');
     $(".flatpickr").flatpickr({time_24hr:true});
 
     function clickRadio(value)
@@ -160,7 +169,6 @@
     }
 
 
-
     var vm = new Vue({
         el: '#new-apply-form',
         data: {
@@ -169,6 +177,7 @@
                 ill_type: false
             },
             errors:{
+                'target_office_id':'',
                 'age':'',
                 'email':'',
                 'name':'',
@@ -184,21 +193,23 @@
                 multiple: true,
                 selectAll: true
             });
-            myupload({
-                container: 'upload_doctor_photo',
-                browse: 'pickfiles_doctor_photo',
+            changeLogo({
+                container: 'upload_logo',
+                browse: 'upload_logo_logo',
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
-                filelist: 'filelist_doctor_photo',
-                uploadfiles: 'uploadfiles_doctor_photo',
+                filelist: 'filelist_hospital_logo',
+                uploadfiles: 'uploadfiles_hospital_logo',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='doctor_photo_origin']").val(file.name);
                     var res = JSON.parse(result.response);
+                    $('#logo').attr('src',res.result.file);
                     $("input[name='doctor_photo']").val(res.result.file);
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
-                isMulti: false
+                isMulti: true
             });
         },
 

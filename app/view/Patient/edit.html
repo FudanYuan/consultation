@@ -155,6 +155,22 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">辅助检查照片：</label>
+                    <div class="col-sm-4">
+                        <div id="filelist_exam_img">
+                            <div>{$patient.img_origin??''}<b></b></div>
+                        </div>
+                        <br/>
+                        <div id="exam_img">
+                            <a id="pickfiles_exam_img" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                            <a id="uploadfiles_exam_img" href="javascript:;">上传</a>
+                        </div>
+                        <input type="hidden" name="exam_img" value="{$patient.exam_img??''}"/>
+                        <input type="hidden" name="exam_img_origin" value="{$patient.exam_img_origin??''}"/>
+                    </div>
+                </div>
+
                 <div :class="['form-group']" >
                     <label for="eyes_ill_type" class="col-sm-2 control-label">眼病类型：</label>
                     <div class="col-sm-4" id="eyes_ill_type" >
