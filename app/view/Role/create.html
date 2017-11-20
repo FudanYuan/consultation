@@ -136,7 +136,7 @@
         data.authority = JSON.stringify(authority);
         $.post('__PRO_PATH__/Role/create', data, function (res) {
             if (res.error_code == 0) {
-                window.location.href = '__PRO_PATH__/Role/index';
+                popWarn(res.msg, '__PRO_PATH__/Role/index');
             } else {
                 popWarn(res.msg);
                 return;

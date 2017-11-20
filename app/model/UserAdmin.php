@@ -268,5 +268,20 @@ class UserAdmin extends Model{
         $rand = $_SERVER['REQUEST_TIME'].rand(0, 1000);
         return md5($id.$rand);
     }
+
+    /**
+     * 检查密码是否正确
+     * @param $user_id
+     * @param $pass
+     * @return bool
+     */
+    public function checkPass($user_id, $pass){
+        $res['errors'] = [];
+        $user = $this->getById($user_id);
+        if(md5($pass) != $user['pass']){
+            $res['errors'] = ['pass' => '密码错误'];
+        }
+        return $res;
+    }
 }
 ?>
