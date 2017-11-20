@@ -37,14 +37,14 @@
                             <div class="col-sm-7" id="new-inform-form-priority" >
                                 <div class="radio inline-block">
                                     <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="priority1" name="priority" value="1">
+                                        <input type="radio" id="priority1" name="apply_type" value="1">
                                         <label for="priority1"></label>
                                     </div>
                                     <div class="inline-block vertical-top">紧急</div>
                                 </div>
                                 <div class="radio inline-block">
                                     <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="priority2" name="priority" value="2" checked>
+                                        <input type="radio" id="priority2" name="apply_type" value="2" checked>
                                         <label for="priority2"></label>
                                     </div>
                                     <div class="inline-block vertical-top">非紧急</div>
@@ -74,8 +74,8 @@
                         <td>会诊医生</td>
                         <td colspan="2">
                             <select multiple="multiple" class="multiple" id="doctor_ids" name="doctor_ids">
-                                {foreach name="doctor" item="model"}
-                                <option value="{$model.id}">{$model.name}</option>
+                                {foreach name="doctor" item="model" key = "k"}
+                                <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
                                 {/foreach}
                             </select>
                         </td>
@@ -83,7 +83,7 @@
                         <td>预约日期</td>
                         <td colspan="2">
                             <div :class="['form-group']" >
-                                <input placeholder="" id="apply_date" name="apply_date" vaule="{$apply.apply_date}" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
+                                <input placeholder="" id="apply_date" name="apply_date" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
                                 <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date | moment}}</p>
                             </div>
                         </td>
@@ -126,7 +126,7 @@
                         </td>
                         <td>填表日期</td>
                         <td colspan="2">
-                            {$apply_info.date}
+                            {:date('Y-m-d', $apply_info.date)}
                         </td>
                     </tr>
                     <tr>
@@ -365,8 +365,6 @@
     var vm = new Vue({
         el: '#apply-reply',
         data: {
-
-
             apply_info: {},
             patient_info: {},
             source_hospital_info: {},
@@ -414,7 +412,7 @@
 //                patient_pressure_right:'',
 //            },
             seen:{
-                ill_type: false,
+                ill_type: {$patient.ill_type == 5 ? 'true' : 'false'},
                 apply_project:false,
             },
 
@@ -422,7 +420,7 @@
         mounted:function () {
             $('#consultation-nav-apply').addClass('active');
             $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
-            $("input[name='priority'][value='{$apply.apply_type?? ''}']").attr("checked",true);
+            $("input[name='apply_type'][value='{$apply.apply_type?? ''}']").attr("checked",true);
             $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
             $('select[name="ill_type"]').val('{$patient.ill_type??""}');
             $('#apply_date').val('{$apply.apply_date??""}');
@@ -438,7 +436,12 @@
                 multiple: true,
                 selectAll: true
             });
-            $(".flatpickr").flatpickr({time_24hr:false});
+            $(".flatpickr").flatpickr({
+                time_24hr:true,
+                readonly: false,
+                defaultDate: "{:date('Y-m-d h:m', $apply_info.date)}"
+            });
+//            $(".flatpickr").flatpickr({time_24hr:false});
             myupload({
                 container: 'upload-wrapper',
                 browse: 'pickfiles',

@@ -198,6 +198,11 @@ class Apply extends Common
         $info = D('UserAdmin')->getUserAdmin($select,$cond);
         $apply_info = $info[0];
         $apply_info['date'] = time();
+        mydump($hospital);
+        mydump($office);
+        mydump($doctor);
+        mydump($apply_info);
+
         return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor,'apply_info'=>$apply_info]);
         //        $apply_info['apply_hospital_name'] ='某县级医院';
 //        $apply_info['apply_doctor_name'] ='某县级医院医生';
@@ -449,12 +454,23 @@ class Apply extends Common
                 array_push($office, D('Office')->getOffice($select,['id' =>(int)$array_target_office_id[$index]]));
             }
         }
+//        $hospital['id']='1';
+//        $hospital['name']='中南大学湘雅医学院';
+//
+//        $doctor['id']='1';
+//        $doctor['name']='Reply';
+//
+//        $temp['id']='1';
+//        $temp['name']='眼科';
+//        $office[0]=$temp;
+
         mydump($hospital);
         mydump($doctor);
         mydump($office);
         mydump($apply);
         mydump($patient);
         mydump($apply_info);
+
         return view('',['hospital' => $hospital,'doctor'=>$doctor,'office'=>$office,'apply' => $apply,'patient' => $patient,'apply_info'=>$apply_info]);
     }
 

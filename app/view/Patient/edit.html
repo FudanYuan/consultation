@@ -128,7 +128,7 @@
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">左眼照片：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="filelist_left_eye" src="{$patient.eye_photo_left?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                        <img id="filelist_left_eye" src="{$patient.eye_photo_left?? '/__PUBLIC__/images/profile/profile1.jpg'}">
                         <br/>
                         <div id="upload_left_eye">
                             <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
@@ -143,7 +143,7 @@
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">右眼照片：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="filelist_right_eye" src="{$patient.eye_photo_right?? ''}" onerror="this.src='/__PUBLIC__/images/profile/profile1.jpg'">
+                        <img id="filelist_right_eye" src="{$patient.eye_photo_right??'/__PUBLIC__/images/profile/profile1.jpg'}">
                         <br/>
                         <div id="upload_right_eye">
                             <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">

@@ -37,14 +37,14 @@
                         <div class="col-sm-7" id="new-inform-form-priority" >
                             <div class="radio inline-block">
                                 <div class="custom-radio m-right-xs">
-                                    <input type="radio" id="priority1" name="priority" value="1">
+                                    <input type="radio" id="priority1" name="apply_type" value="1">
                                     <label for="priority1"></label>
                                 </div>
                                 <div class="inline-block vertical-top">紧急</div>
                             </div>
                             <div class="radio inline-block">
                                 <div class="custom-radio m-right-xs">
-                                    <input type="radio" id="priority2" name="priority" value="2" checked>
+                                    <input type="radio" id="priority2" name="apply_type" value="2" checked>
                                     <label for="priority2"></label>
                                 </div>
                                 <div class="inline-block vertical-top">非紧急</div>
@@ -133,7 +133,7 @@
                     </td>
                     <td>填表日期</td>
                     <td colspan="2">
-                        {$apply_info.date}
+                        {:date('Y-m-d', $apply_info.date)}
                     </td>
                 </tr>
                 <tr>
@@ -418,20 +418,18 @@
                 patient_pressure_right:'',
             },
             seen:{
-                ill_type: false,
+                ill_type:{},
                 apply_project:false,
             },
 
         },
         mounted:function () {
-
-            $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
             $(".multiple").multipleSelect({
                 filter: true,
                 multiple: true,
                 selectAll: true
             });
-            $(".flatpickr").flatpickr({time_24hr:false});
+            $(".flatpickr").flatpickr({time_24hr:true});
             myupload({
                 container: 'upload-wrapper',
                 browse: 'pickfiles',
