@@ -16,77 +16,52 @@
         margin-bottom: 0;
     }
 </style>
-<div class="main-container">
-    <div class="padding-md">
+<div class="main-container" >
+    <div class="padding-md" >
         <ul class="breadcrumb">
             <li><span class="primary-font"><i class="icon-home"></i></span><a href="__PRO_PATH__/">首页</a></li>
             <li><a href="__PRO_PATH__/Apply/index">会诊申请</a></li>
-            <li>编辑</li>
+            <li>编辑申请</li>
         </ul>
 
         <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-reply">
-
+            <a class="btn btn-info" style="margin: 5px 0" href="__PRO_PATH__/Apply/index">返回</a>
             <form  method="post" id="new-apply-form">
-                <table class="table" style="width: auto; margin: 0 30px">
+                <table class="table" style="width: auto;">
                     <tr>
                         <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
                     </tr>
                     <tr>
                         <td>会诊类型</td>
                         <td colspan="3">
-                            <div class="col-sm-7" id="new-inform-form-priority" >
-                                <div class="radio inline-block">
-                                    <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="priority1" name="apply_type" value="1">
-                                        <label for="priority1"></label>
-                                    </div>
-                                    <div class="inline-block vertical-top">紧急</div>
-                                </div>
-                                <div class="radio inline-block">
-                                    <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="priority2" name="apply_type" value="2" checked>
-                                        <label for="priority2"></label>
-                                    </div>
-                                    <div class="inline-block vertical-top">非紧急</div>
-                                </div>
-                            </div>
+                            {{apply_info.apply_type | getApplyType}}
                         </td>
 
                         <td>会诊医院</td>
                         <td colspan="4">
-                            <select name="consultation_hospital" class="form-control" onchange="change_hospital()" id="consultation_hospital">
-                                {foreach name="hospital" item="item1"}
-                                <option value="{$item1.id}">{$item1.name}</option>
-                                {/foreach}
-                            </select>
+                            {{target_hospital_info.name}}
                         </td>
                     </tr>
                     <tr>
                         <td>会诊科室</td>
                         <td colspan="2">
-                            <select multiple="multiple" class="multiple" name="office_ids" class="form-control"  id="office_ids">
-                                {foreach name="office" item="model" key = "k"}
-                                <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
-                                {/foreach}
-                            </select>
+                            <template v-for="model in target_office_info">
+                                {{model.name}}&nbsp;&nbsp;
+                            </template>
                         </td>
 
                         <td>会诊医生</td>
                         <td colspan="2">
-                            <select multiple="multiple" class="multiple" id="doctor_ids" name="doctor_ids">
-                                {foreach name="doctor" item="model" key = "k"}
-                                <option value="{$model[$k]['id']}">{$model[$k]['name']}</option>
-                                {/foreach}
-                            </select>
+                            <template v-for="model in target_doctor_info">
+                                {{model.name}}&nbsp;&nbsp;
+                            </template>
                         </td>
 
                         <td>预约日期</td>
                         <td colspan="2">
-                            <div :class="['form-group']" >
-                                <input placeholder="" id="apply_date" name="apply_date" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input">
-                                <p class="help-block" v-if="errors.apply_date != ''">{{errors.apply_date | moment}}</p>
-                            </div>
+                            {{apply_info.apply_date | moment('yyyy年M月d日 hh:mm', apply_info.apply_date)}}
                         </td>
+
                     </tr>
                     <tr>
                         <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
@@ -95,175 +70,95 @@
                     <tr>
                         <td>申请单位</td>
                         <td colspan="5">
-                            {$apply_info.apply_hospital_name}
+                            {{source_hospital_info.name}}
                         </td>
                         <td>申请人</td>
                         <td colspan="2">
-                            {$apply_info.apply_doctor_name}
+                            {{source_doctor_info.name}}
                         </td>
                     </tr>
                     <tr>
                         <td>申请类型</td>
                         <td colspan="2">
-                            <select  name="apply_project" class="form-control" onchange="change_apply_project(this.value)" id="apply_project">
-                                <option value="1">咨询</option>
-                                <option value="2">住院</option>
-                                <option value="3">手术</option>
-                                <option value="4">其他</option>
-                            </select>
-
-                            <div :class="['form-group']" v-if="seen.apply_project">
-                                <input class="form-control" type="text" name="other_apply_project" value="" placeholder="请输入其他申请类型" id="other_apply_project">
-                            </div>
+                            {{apply_info.apply_type | getApplyProject}}
                         </td>
-                        <!--<td colspan="2" >{{source_doctor_info.name}}</td>-->
+
                         <td>联系电话</td>
                         <td colspan="2">
-                            <div :class="['form-group',errors.doctor_phone != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" name="doctor_phone" value="{$apply_info.apply_doctor_phone}" placeholder="联系电话" id="doctor_phone">
-                                <p class="help-block">{{errors.doctor_phone}}</p>
-                            </div>
+                            {{source_doctor_info.phone}}
                         </td>
                         <td>填表日期</td>
                         <td colspan="2">
-                            {:date('Y-m-d', $apply_info.date)}
+                            {{apply_info.create_time | moment}}
                         </td>
                     </tr>
+
                     <tr>
                         <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
                     </tr>
                     <tr></tr>
                     <tr>
                         <td>身份证号</td>
-                        <td colspan="3" >
+                        <td colspan="3">
                             <div :class="['form-group', errors.ID_number != '' ? 'has-error' : '']" >
                                 <div class="col-sm-9">
-                                    <input class="form-control" name="patient_ID_number" type="text"  value="{$patient.ID_number}" placeholder="请输入患者身份证号" id="patient_ID_number">
-                                    <p class="help-block">{{errors.ID_number}}</p>
+                                    {{patient.ID_number}}
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <a class="btn btn-success" id="check_ID_number" @click="check_by_ID_number">检验</a>
-                                <!--<a id="check_ID_number_" class="btn btn-info">取消</a>-->
-                            </div>
                         </td>
-                        <td>联系方式</td>
-                        <td colspan="1" >
-                            <div :class="['form-group', errors.phone != '' ? 'has-error' : '']" >
-                                <input class="form-control" name="patient_phone" type="text"  value="{$patient.phone}" placeholder="患者电话" id="patient_phone">
-                                <p class="help-block">{{errors.phone}}</p>
-                            </div>
-                        </td>
-                        <td>眼压(左/右)</td>
-                        <td>
-                            <input class="form-control" type="text" name="patient_pressure_left" value="{$patient.pressure_left}" placeholder="左眼眼压" id="pressure_left">
-                        </td>
-                        <td>
-                            <input class="form-control" type="text" name="patient_pressure_right" value="{$patient.pressure_right}" placeholder="右眼眼压" id="pressure_right">
-                        </td>
-                    </tr>
-                    <tr>
                         <td>姓名</td>
-                        <td>
+                        <td colspan="2">
                             <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
-                                <input class="form-control" name="patient_name" type="text" value="{$patient.name}" placeholder="姓名" id="patient_name">
-                                <p class="help-block">{{errors.name}}</p>
+                               {{patient.name}}
                             </div>
                         </td>
                         <td>性别</td>
                         <td>
                             <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
-                                <div class="radio inline-block">
-                                    <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="patient_gender1" name="patient_gender" value="1">
-                                        <label for="patient_gender1"></label>
-                                    </div>
-                                    <div class="inline-block vertical-top">男</div>
-                                </div>
-                                <div class="radio inline-block">
-                                    <div class="custom-radio m-right-xs">
-                                        <input type="radio" id="patient_gender2" name="patient_gender" value="2">
-                                        <label for="patient_gender2"></label>
-                                    </div>
-                                    <div class="inline-block vertical-top">女</div>
-                                </div>
-                                <p class="help-block">{{errors.gender}}</p>
+                                {{patient.gender | getGender}}
                             </div>
-                        </td>
-                        <td>年龄</td>
-                        <td>
-                            <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
-                                <input class="form-control" type="text" name="patient_age" value="{$patient.age}" placeholder="年龄" id="patient_age">
-                                <p class="help-block">{{errors.age}}</p>
-                            </div>
-                        </td>
-                        <td>视力(左/右)</td>
-                        <td>
-                            <input class="form-control"  type="text" name="patient_vision_left" value="{$patient.vision_left}" placeholder="左眼视力" id="vision_left">
-                        </td>
-                        <td>
-                            <input class="form-control"  type="text" name="patient_vision_right" value="{$patient.vision_right}" placeholder="右眼视力" id="vision_right">
                         </td>
                     </tr>
                     <tr>
-                        <td rowspan="2">辅助检查(文件)</td>
+                        <td>年龄</td>
+                        <td>{{patient.age}}</td>
 
-                        <td colspan="2" rowspan="4">
-                            <div class="form-group {$errors.img ?= 'has-error'}">
+                        <td>联系方式</td>
+                        <td colspan="2" >
+                            {{patient.phone}}
+                        </td>
+
+                        <td>附件上传</td>
+                        <td colspan="3">
+                            <div class="['form-group', errors.files_path != '' ? 'has-error' : '']" >
                                 <div id="filelist">
-                                    <div>{$data.img_origin??''}<b></b></div>
+                                    <div>
+                                        <a :href="patient.files_path" :title="patient.files_path_origin" target="_blank">
+                                            {{patient.files_path_origin}}
+                                        </a>
+                                    </div>
                                 </div>
-                                <br/>
-                                <div id="upload-wrapper">
-                                    <a id="pickfiles" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                                <div id="upload_file_path">
+                                    <a id="pickfiles" href="javascript:;">选择文件</a>
                                     <a id="uploadfiles" href="javascript:;">上传</a>
                                 </div>
-                                <input type="hidden" name="files_path" value="{$patient.files_path??''}"/>
-                                <input type="hidden" name="files_path_origin" value="{$patient.files_path_origin??''}"/>
-                                <span class="help-block">{$errors.files_path ?? ''}</span>
-                            </div>
-                        </td>
-
-                        <td rowspan="4">局部病变图(左眼)</td>
-                        <td colspan="2" rowspan="4">
-                            <div class="form-group {$errors.img ?= 'has-error'}">
-                                <img id="img_left_eye" src="{$patient.eye_photo_left??'__PUBLIC__/images/profile/profile1.jpg'}">
                                 <br/>
-                                <div id="upload_left_eye">
-                                    <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
-                                        <i class="fa fa-camera fa-lg"></i>
-                                    </a>
-                                </div>
-                                <input type="hidden" name="eye_photo_left" value="{$patient.eye_photo_left??''}"/>
-                                <input type="hidden" name="eye_photo_left_origin" value="{$data.eye_photo_left_origin??''}"/>
-                                <span class="help-block">{$errors.img ?? ''}</span>
-                            </div>
-                        </td>
-                        <td rowspan="4">局部病变图(右眼)</td>
-                        <td colspan="2" rowspan="4">
-                            <div class="form-group {$errors.img ?= 'has-error'}">
-                                <img id="eye_photo_right" src="{$patient.eye_photo_right??'__PUBLIC__/images/profile/profile1.jpg'}">
-                                <br/>
-                                <div id="upload_right_eye">
-                                    <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
-                                        <i class="fa fa-camera fa-lg"></i>
-                                    </a>
-                                </div>
-                                <input type="hidden" name="eye_photo_right" value="{$patient.eye_photo_right??''}"/>
-                                <input type="hidden" name="eye_photo_right_origin" value="{$patient.eye_photo_right_origin??''}"/>
-                                <span class="help-block">{$errors.eye_photo_right?? ''}</span>
+                                <input type="hidden" name="files_path"/>
+                                <input type="hidden" name="files_path_origin"/>
+                                <span class="help-block">{{errors.files_path}}</span>
                             </div>
                         </td>
                     </tr>
-                    <tr></tr>
-                    <tr></tr>
-                    <tr></tr>
 
                     <tr>
-                        <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">眼病类型</td>
-
-                        <td colspan="2" style="text-align: left; height: auto; padding: 20px;">
-                            <select name="ill_type"  class="form-control" onchange="change_eyes_ill_type(this.value)" id="eyes_ill_type">
+                        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td>眼病类型</td>
+                        <td colspan="2" style="text-align: left; height: auto;">
+                            <select v-model="patient.ill_type" class="form-control" onchange="change_eyes_ill_type(this.value)" id="ill_type">
+                                <option value="" selected>--请选择--</option>
                                 <option value="1">眼表</option>
                                 <option value="2">眼前节</option>
                                 <option value="3">眼底</option>
@@ -271,48 +166,112 @@
                                 <option value="5">其他</option>
                             </select>
 
-                            <div :class="['form-group']" v-if="seen.ill_type">
-                                <input class="form-control" type="text" name="other_ill_type" value="{$patient.other_ill_type}" placeholder="请输入其他眼病类型" id="other_ill_type">
+                            <div :class="['form-group', errors.other_ill_type != '' ? 'has-error' : '']" v-if="seen.ill_type">
+                                <input class="form-control" type="text" v-model="patient.other_ill_type" value="" placeholder="请输入其他眼病类型" id="other_ill_type">
                             </div>
-
                         </td>
 
-                        <td colspan="1" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
+                        <td>眼压(左/右)</td>
+                        <td>
+                            <input class="form-control" type="text" v-model="patient.pressure_left"  value="" placeholder="左眼眼压" id="pressure_left">
+                        </td>
+                        <td>
+                            <input class="form-control" type="text"  v-model="patient.pressure_right" value="" placeholder="右眼眼压" id="pressure_right">
+                        </td>
 
-                        <div :class="['form-group', errors.ill_state != '' ? 'has-error' : '']" >
-                            <td colspan="5" style="text-align: left; height: auto; padding: 20px;">
-                                <textarea  class="form-control" name="patient_illness_state" type="text"  id="patient_illness_state" placeholder="请输入患者简要病情">{$patient.ill_state}</textarea>
+                        <td>视力(左/右)</td>
+                        <td>
+                            <input class="form-control"  type="text" v-model="patient.vision_left"    value="" placeholder="左眼视力" id="vision_left">
+                        </td>
+                        <td>
+                            <input class="form-control"  type="text" v-model="patient.vision_right"   value="" placeholder="右眼视力" id="vision_right">
+                        </td>
+                    </tr>
+                    <tr></tr>
+
+                    <tr>
+                        <td rowspan="2">辅助检查(图)</td>
+                        <td colspan="2" rowspan="4">
+                            <div :class="['form-group', errors.exam_img != '' ? 'has-error' : '']" >
+                                <a :href="patient.exam_img" title="patient.exam_img_origin" data-lighter>
+                                    <img id="exam_img" :src="patient.exam_img" :title="patient.exam_img_origin">
+                                </a>
+
+                                <br/>
+                                <div id="upload_exam_img">
+                                    <a id="pickfiles_exam_img" href="javascript:;" style="position: relative;z-index: 1;">
+                                        <i class="fa fa-camera fa-lg"></i>
+                                    </a>
+                                </div>
+                                <span class="help-block">{{errors.files_path}}</span>
+                            </div>
+                        </td>
+
+                        <td rowspan="4">局部病变图(左眼)</td>
+                        <td colspan="2" rowspan="4">
+                            <div :class="['form-group', errors.eye_photo_left != '' ? 'has-error' : '']" >
+                                <a :href="patient.eye_photo_left" title="patient.eye_photo_left_origin" data-lighter>
+                                    <img id="eye_photo_left" :src="patient.eye_photo_left" :title="patient.eye_photo_left_origin">
+                                </a>
+                                <br/>
+                                <div id="upload_left_eye">
+                                    <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
+                                        <i class="fa fa-camera fa-lg"></i>
+                                    </a>
+                                </div>
+                                <span class="help-block">{{errors.eye_photo_left}}</span>
+                            </div>
+                        </td>
+                        <td rowspan="4">局部病变图(右眼)</td>
+                        <td colspan="2" rowspan="4">
+                            <div :class="['form-group', errors.eye_photo_right != '' ? 'has-error' : '']" >
+                                <a :href="patient.eye_photo_right" title="patient.eye_photo_right_origin" data-lighter>
+                                    <img id="eye_photo_right" :src="patient.eye_photo_right" :title="patient.eye_photo_right_origin">
+                                </a>
+                                <br/>
+                                <div id="upload_right_eye">
+                                    <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
+                                        <i class="fa fa-camera fa-lg"></i>
+                                    </a>
+                                </div>
+                                <span class="help-block">{{errors.eye_photo_right}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="9" style="text-align: left; height: auto;">
+                            <div :class="['form-group', errors.ill_state != '' ? 'has-error' : '']" >
+                                <textarea  class="form-control" type="text" v-model="patient.ill_state" style="height: 80px" id="patient_illness_state" placeholder="请输入患者简要病情"></textarea>
                                 <p class="help-block">{{errors.ill_state}}</p>
-                            </td>
-                        </div>
-                    </tr>
-
-                    <tr></tr>
-
-                    <tr>
-                        <td colspan="9" rowspan="2"  style="font-size: medium; font-weight: bold; text-align: left">诊疗情况</td>
-                    </tr>
-                    <tr></tr>
-
-                    <tr>
-                        <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
-                            <div :class="['form-group']" >
-                                <textarea name="diagnose_state" class="form-control" type="text"  style="height: 45px" id="diagnose_state" placeholder="请输入目前的诊疗情况">{$patient.diagnose_state}</textarea>
                             </div>
                         </td>
                     </tr>
 
+                    <tr>
+                        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">诊疗情况：</td>
+                    </tr>
+                    <tr></tr>
+                    <tr>
+                        <td colspan="9" style="text-align: left; height: auto;">
+                            <div :class="['form-group', errors.diagnose_state != '' ? 'has-error' : '']" >
+                                <textarea  class="form-control" type="text" v-model="patient.diagnose_state" style="height: 80px" id="diagnose_state" placeholder="请输入诊疗情况"></textarea>
+                                <p class="help-block">{{errors.diagnose_state}}</p>
+                            </div>
+                        </td>
+                    </tr>
                     <tr></tr>
 
                     <tr>
                         <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
                     </tr>
                     <tr></tr>
-
                     <tr>
-                        <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
+                        <td colspan="9" style="text-align: left; height: auto;">
                             <div :class="['form-group', errors.consultation_goal != '' ? 'has-error' : '']" >
-                                <textarea  class="form-control" name="consultation_goal" type="text"  style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的">{$apply.consultation_goal}</textarea>
+                                <textarea  class="form-control" type="text" v-model="params.consultation_goal" style="height: 80px" id="consultation_goal" placeholder="请输入会诊要求及目的"></textarea>
                                 <p class="help-block">{{errors.consultation_goal}}</p>
                             </div>
                         </td>
@@ -323,7 +282,7 @@
             <div class="form-group">
                 <div class="col-sm-offset-5 col-sm-10 lab-btns">
                     <div class="col-sm-4">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
+                        <a class="btn btn-success" id="new-apply-form-save" @click="saveEdit">保存</a>
                         <a id="form-cancel" class="btn btn-info"  href="__PRO_PATH__/Apply/index">取消</a>
                     </div>
                 </div>
@@ -338,35 +297,14 @@
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
 {include file="Common/upload"}
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
-
-    function change_eyes_ill_type(value)
-    {
-        if(value == 5){
-            vm.seen['ill_type'] = !vm.seen['ill_type'];
-        } else{
-            vm.seen['ill_type'] = false;
-        }
-    }
-
-    function change_apply_project(value)
-    {
-        if(value == 4){
-            console.log("执行了vaule=4")
-            vm.seen['apply_project'] = !vm.seen['apply_project'];
-        } else{
-            vm.seen['apply_project'] = false;
-        }
-    }
+    $('#consultation-nav-apply').addClass('active');   //定位导航栏的
 
     var vm = new Vue({
         el: '#apply-reply',
         data: {
+            id: '{$id}',
             apply_info: {},
-            patient_info: {},
             source_hospital_info: {},
             source_doctor_info: {},
             target_hospital_info: {},
@@ -380,81 +318,96 @@
             },
             errors:{
                 doctor_phone:'',
-                consultation_result: '',
-                update_time: '',
-                price: '',
                 ID_number:'',
                 name:'',
                 age:'',
                 gender:'',
                 ill_state:'',
                 ill_type:'',
+                other_ill_type:'',
+                apply_project:'',
+                other_apply_project: '',
                 phone:'',
                 apply_date:'',
-                apply_project:'',
                 target_office_id:'',
-                consultation_goal:''
+                consultation_goal:'',
+                diagnose_state: ''
             },
             params: {
-                apply_id: '{$apply.id}'
+                consultation_goal: ''
             },
-//            patient:{
-//                patient_ID_number: '',
-//                patient_name: '',
-//                patient_age:'',
-//                patient_phone:'',
-//                patient_illness_state:'',
-//                patient_gender:'',
-//                patient_eyes_type:'',
-//                patient_vision_left:'',
-//                patient_vision_right:'',
-//                patient_pressure_left:'',
-//                patient_pressure_right:'',
-//            },
+            patient:{
+                id: '',
+                ID_number: '',
+                name: '',
+                gender:'',
+                age:'',
+                phone:'',
+                ill_type:'',
+                other_ill_type:'',
+                vision_left:'',
+                vision_right:'',
+                pressure_left:'',
+                pressure_right:'',
+                exam_img: '',
+                exam_img_origin: '',
+                eye_photo_left: '',
+                eye_photo_left_origin: '',
+                eye_photo_right: '',
+                eye_photo_right_origin: '',
+                files_path: '',
+                files_path_origin: '',
+                ill_state:'',
+                diagnose_state: ''
+            },
             seen:{
-                ill_type: {$patient.ill_type == 5 ? 'true' : 'false'},
-                apply_project:false,
-            },
-
+                ill_type: false,
+                apply_project:false
+            }
         },
         mounted:function () {
-            $('#consultation-nav-apply').addClass('active');
-            $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
-            $("input[name='apply_type'][value='{$apply.apply_type?? ''}']").attr("checked",true);
-            $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
-            $('select[name="ill_type"]').val('{$patient.ill_type??""}');
-            $('#apply_date').val('{$apply.apply_date??""}');
+            $(function () {
+                submit();
+            });
 
-//            $('#narrator').val('{$patient.narrator??""}');
-//            $('#main_narrate').val('{$patient.main_narrate??""}');
-//            $('#in_hospital_time').val('{$patient.in_hospital_time??""}');
-//            $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
-//            $("input[name='ill_type'][value='{$patient.ill_type?? ''}']").attr("checked",true);
-
+            $(".flatpickr").flatpickr({
+                time_24hr:true,
+                readonly: false
+            });
             $(".multiple").multipleSelect({
                 filter: true,
                 multiple: true,
                 selectAll: true
             });
-            $(".flatpickr").flatpickr({
-                time_24hr:true,
-                readonly: false,
-                defaultDate: "{:date('Y-m-d h:m', $apply_info.date)}"
-            });
-//            $(".flatpickr").flatpickr({time_24hr:false});
             myupload({
-                container: 'upload-wrapper',
+                container: 'upload_file_path',
                 browse: 'pickfiles',
-                url: '__PRO_PATH__/Media/upload?dir=import',
+                url: '__PRO_PATH__/Media/upload?dir=member',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
                 filelist: 'filelist',
                 uploadfiles: 'uploadfiles',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='files_path_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $("input[name='files_path']").val(res.result.file);
+                    vm.patient['files_path'] = res.result.file;
+                    vm.patient['files_path_origin'] = file.name;
+                },
+                isMulti: false
+            });
+            changeLogo({
+                container: 'upload_exam_img',
+                browse: 'pickfiles_exam_img',
+                url: '__PRO_PATH__/Media/upload?dir=import',
+                img_types: 'jpg,gif,png',
+                zip_types: 'zip',
+                file_size: '10mb',
+                onUploaded: function (up, file, result) {
+                    var res = JSON.parse(result.response);
+                    vm.patient['exam_img'] = res.result.file;
+                    vm.patient['exam_img_origin'] = file.name;
+                    chageTitle('上传成功');
+                    setTimeout("cancel()", 1000);
                 },
                 isMulti: false
             });
@@ -464,18 +417,15 @@
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
-                filelist: 'filelist_left_eye',
-                uploadfiles: 'uploadfiles_left_eye',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_left_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $('#img_left_eye').attr('src',res.result.file);
-                    $("input[name='eye_photo_left']").val(res.result.file);
+                    vm.patient['eye_photo_left'] = res.result.file;
+                    vm.patient['eye_photo_left_origin'] = file.name;
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
                 },
-                isMulti: true
+                isMulti: false
             });
             changeLogo({
                 container: 'upload_right_eye',
@@ -483,18 +433,15 @@
                 url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
-                filelist: 'filelist_right_eye',
-                uploadfiles: 'uploadfiles_right_eye',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-                    $("input[name='eye_photo_right_origin']").val(file.name);
                     var res = JSON.parse(result.response);
-                    $('#eye_photo_right').attr('src',res.result.file);
-                    $("input[name='eye_photo_right']").val(res.result.file);
+                    vm.patient['eye_photo_right'] = res.result.file;
+                    vm.patient['eye_photo_right_origin'] = file.name;
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
                 },
-                isMulti: true
+                isMulti: false
             });
         },
         methods:{
@@ -504,15 +451,15 @@
                 });
             },
 
-            createNewApply: function () {
+            saveEdit: function () {
                 getParams();
-                $.post('__PRO_PATH__/Apply/edit', vm.params, function (res) {
+                $.post('__PRO_PATH__/Apply/Edit', vm.params, function (res) {
                     if (res.error_code == 0) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        //popWarn('新建成功', '__PRO_PATH__/Apply/index');
-                    } else if (res.error_code == 2) {
+                        popWarn(res.msg, '__PRO_PATH__/Apply/index');
+                    } else if (res.error_code == 1) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
@@ -522,77 +469,92 @@
                         console.log(JSON.stringify(vm.errors));
                     }
                 });
-            },
-
-            check_by_ID_number:function(){
-                console.log("check_by_ID_number");
-                $.post('__PRO_PATH__/Patient/getPatientByIDNum', {'patient_ID_number': vm.patient['patient_ID_number']}, function (res) {
-                    if (res.error_code == 2) {
-                        popWarn('未找到这名患者的信息 ,请手动输入');
-                    } else {
-                        $.each(res.patient, function (k, v) {
-                            if(k=='id'){
-                                vm.params['patient_id']=v;
-                            }
-                            vm.patient[k] = v;
-                        });
-                        console.log(JSON.stringify(vm.patient));
-                    }
-                });
-            },
-
-            submitReply: function (value) {
-                vm.resetError();
-                vm.reply['status'] = value;
-                vm.reply['update_time_str'] = $('#update_time').val();
-                $.post('__PRO_PATH__/Apply/Reply', vm.reply, function (res) {
-                    if(res.error_code == 0){
-                        popWarn(res.msg, '__PRO_PATH__/Apply/index');
-                    } else{
-                        $.each(res.errors, function (k, v) {
-                            vm.errors[k] = v;
-                        });
-                    }
-                })
             }
         },
         filters:{
             moment: function (value, formatString) {
-                formatString = formatString || 'YYYY-MM-DD HH:mm';
-                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+                formatString = formatString || 'yyyy年M月d日';
+                var time=new Date(parseInt(value) * 1000).format(formatString);
                 return time;
             },
+            getApplyStatus: function (value) {
+                var ret = "";
+                if(value==1){
+                    ret = "待处理";
+                }
+                if(value==2){
+                    ret = "处理中";
+                }
+                if(value==3){
+                    ret = "会诊成功";
+                }
+                if(value==4){
+                    ret = "会诊失败";
+                }
+                return ret;
+            },
+            getApplyType: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '一般';
+                }
+                if(value == 2){
+                    ret = '紧急';
+                }
+                return ret;
+            },
+            getApplyProject: function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '咨询';
+                }
+                else if(value == 2){
+                    ret = '住院';
+                }
+                else if(value == 3){
+                    ret = '手术';
+                }
+                return ret;
+            },
+            getChargeStatus: function (value) {
+                var ret = '';
+                if(value == 0){
+                    ret = '未缴费';
+                }
+                if(value == 1){
+                    ret = '已缴费';
+                }
+                return ret;
+            },
+            getGender : function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '男';
+                }
+                if(value == 2){
+                    ret = '女';
+                }
+                return ret;
+            },
+            formatText: function (text, len) {
+                return cutString(text, len);
+            }
         }
     });
 
-    submit();
-
-    function change_hospital(){
-        console.log("执行了");
-        var hospital_id = $('#consultation_hospital').val();
-        console.log(hospital_id);
-        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {
-            office=res;
-            console.log("这是点击医院的响应");
-            console.log(res);
-        });
+    function change_eyes_ill_type(value) {
+        if(value == 5){
+            vm.seen['ill_type'] = !vm.seen['ill_type'];
+        } else{
+            vm.seen['ill_type'] = false;
+        }
     }
 
     function getParams(){
-        vm.params['office_ids'] = [];
-        vm.params['doctor_ids'] = [];
-        var data = $('#new-apply-form').serializeArray();
-        $.each(data, function() {
-            if(this.name == 'office_ids' || this.name == 'doctor_ids'){
-                vm.params[this.name].push(this.value);
-            } else {
-                vm.params[this.name] = this.value;
-            }
+        vm.params['patient'] = {};
+        $.each(vm.patient, function (k, v) {
+            vm.params['patient'][k] = v;
         });
-//        $.each(vm.patient, function (k, v) {
-//            vm.params[k] = v;
-//        });
-        console.log(JSON.stringify(data));
         console.log(JSON.stringify(vm.params));
     }
 
@@ -601,17 +563,19 @@
         $.post('__PRO_PATH__/Apply/getApplyInfo', {id: vm.id}, function (res) {
             if (res.error_code == 0) {
                 vm.apply_info = res.apply_info;
-                vm.patient_info = res.patient_info;
+                vm.patient = res.patient_info;
+                vm.params['consultation_goal'] = vm.apply_info['consultation_goal'];
+                vm.params['id'] = vm.apply_info['id'];
                 vm.source_doctor_info = res.source_doctor_info;
                 vm.source_hospital_info = res.source_hospital_info;
                 vm.target_hospital_info = res.target_hospital_info;
                 vm.target_office_info = res.target_office_info;
                 vm.target_doctor_info = res.target_doctor_info;
+                vm.seen.ill_type = vm.patient['ill_type'] == 5;
+                vm.resetError();
             }
         });
     }
-
-
 </script>
 {else /}
 <div class="main-container">

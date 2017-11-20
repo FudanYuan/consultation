@@ -235,14 +235,14 @@
                                 <template v-if="list.length != 0">
                                     <template v-for="(model, index) in list">
                                     <li>
-                                        <a class="clearfix" href="javascript:;" @click="info(index)">
-                                            <img :src="model.hospital_logo != '' ? 'model.hospital_logo' : '__PUBLIC__/images/profile/profile2.jpg' " alt="model.hospital_name">
+                                        <a class="clearfix" :href="'__PRO_PATH__/Apply/Reply?id='+model.id">
+                                            <img :src="model.hospital_logo != '' ? 'model.hospital_logo' : '__PUBLIC__/images/img_none.png' " alt="model.hospital_name">
                                             <div class="detail">
                                                 <strong>{{model.hospital_name}}</strong>
                                                 <p class="no-margin">
                                                     {{model.consultation_goal | formatText(30, model.consultation_goal)}}
                                                 </p>
-                                                <small class="text-muted"><i class="fa fa-check text-success"></i>
+                                                <small class="text-muted" style="margin: 0; color: darkgreen"><i class="fa fa-check text-success"></i>
                                                     {{model.create_time | formatTime}}
                                                 </small>
                                             </div>

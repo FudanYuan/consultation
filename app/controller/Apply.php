@@ -41,32 +41,32 @@ class Apply extends Common
         // 获取当前登陆的用户id，根据此id查询表，返回结果
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         if(!empty($params)){
-            $apply_type = input('post.apply_type','-1');
-            $apply_project = input('post.apply_project','-1');
-            $status = input('post.status','-1');
-            $is_charge = input('post.is_charge','-1');
+            $apply_type = input('post.apply_type','');
+            $apply_project = input('post.apply_project','');
+            $status = input('post.status','');
+            $is_charge = input('post.is_charge','');
             $apply_date = input('post.apply_date_str','');
-            $hospital = input('post.hospital','-1');
+            $hospital = input('post.hospital','');
             $keywords = input('post.keywords','');
             $green_channel = input('post.is_green_channel', 0);
             $cond_and = [];
             $cond_or = [];
-            if($apply_type!=-1){
+            if($apply_type){
                 $cond_and['apply_type'] = $apply_type;
             }
-            if($apply_project!=-1){
+            if($apply_project){
                 $cond_and['apply_type'] = $apply_project;
             }
-            if($status != -1){
+            if($status){
                 $cond_and['a.status'] = $status;
             }
-            if($is_charge != -1){
+            if($is_charge){
                 $cond_and['is_charge'] = $is_charge;
             }
             if($apply_date){
                 $cond_and['apply_date'] = strtotime($apply_date);
             }
-            if($hospital!=-1){
+            if($hospital){
                 $cond_and['e.id'] = $hospital;
             }
             if($keywords){
@@ -114,6 +114,18 @@ class Apply extends Common
 
             if (!isset($params['doctor_ids'])) {
                 $doctor_ids = [];
+                if(!empty($office_ids)){
+                    $office_ids = [1];
+                    $hospital_id = 1;
+                    $office_ids_implode = implode($office_ids, ',');
+
+                    $cond_and['c.id'] = $hospital_id;
+                    $cond_and['d.id'] = ['in', $office_ids_implode];
+                    $doctor_ids_ret = D('Doctor')->getDoctorList([], $cond_and);
+                    for($i=0;$i<count($doctor_ids_ret);$i++){
+                        array_push($doctor_ids, $doctor_ids_ret[$i]['id']);
+                    }
+                }
             }else{
                 $doctor_ids = $params['doctor_ids'];
             }
@@ -121,10 +133,12 @@ class Apply extends Common
             if(!empty($office_ids)){
                 $data['is_definite_purpose'] = 1;
             }
+
             $data['target_doctor_ids'] = '-';
             foreach ($doctor_ids as $id){
                 $data['target_doctor_ids'] = $data['target_doctor_ids'].$id.'-';
             }
+
             $data['target_office_ids'] = '-';
             foreach ($office_ids as $id){
                 $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
@@ -143,19 +157,21 @@ class Apply extends Common
             if (!empty($patient) && !$patient['id']) {
                 $res = D('Patient')->addData($patient);
                 if(!empty($res['errors'])){
-                    $ret = ['error_code' => 1,
-                        'msg' => '病人信息不全',
-                        'errors' =>$res['errors'] ];
+                    $ret['error_code'] = 1;
+                    $ret['errors'] = $res['errors'];
+                    $ret['msg'] = '病人新建失败';
                     $this->jsonReturn($ret);
                 }
-                $data['patient_id'] = $res['id'];
+                $patient_id = D('Patient')->getByIdNum($patient['ID_number']);
+                $data['patient_id'] = $patient_id['id'];
             }else {
                 $resPatient = D('Patient')->saveData($patient['id'],$patient);
                 if(!empty($resPatient['errors'])){
                     $ret['error_code'] = 1;
                     $ret['errors'] = $resPatient['errors'];
-                    $ret['msg'] = '新建失败';
+                    $ret['msg'] = '病人保存失败';
                 }
+                $data['patient_id'] = $patient['id'];
             }
             $res = D('Apply')->addData($data);
             if(!empty($res['errors'])){
@@ -181,9 +197,14 @@ class Apply extends Common
         $select = ['d.name as apply_hospital_name,b.name as apply_doctor_name,b.phone as apply_doctor_phone'];
         $cond = ['a.id' => $this->getUserId()];
         $info = D('UserAdmin')->getUserAdmin($select,$cond);
-        $apply_info = $info[0];
+        if(count($info)>0){
+            $apply_info = $info[0];
+        } else{
+            $apply_info = [];
+        }
         $apply_info['date'] = time();
         return view('', ['hospital' => $hospital,'office' => $office, 'doctor' => $doctor,'apply_info'=>$apply_info]);
+
     }
 
     /**
@@ -323,120 +344,35 @@ class Apply extends Common
     public function edit(){
         $id = input('get.id');
         $params = input('post.');
-        if(!empty($params)){
-            $ret['error_code'] = 1;
-            $ret['data'] = $params;
-            $data['apply_date'] = input('post.apply_date');
-            $data['source_user_id'] = $this->getUserId();
-            $data['apply_project'] = (int)input('post.apply_project');
-            $data['apply_type'] = (int)input('post.apply_type', '2');
-            $data['target_hospital_id'] = (int)input('post.consultation_hospital');
-            $data['patient_id'] = (int)input('post.patient_id',-1);
+        if(!empty($params)) {
+            $data = [];
+            $ret = ['error_code' => 0, 'msg' => '保存成功'];
 
-            if (!isset($params['office_ids'])) {
-                $office_ids = [];
-            } else{
-                $office_ids = $params['office_ids'];
-            }
-
-            if (!isset($params['doctor_ids'])) {
-                $doctor_ids = [];
-            }else{
-                $doctor_ids = $params['doctor_ids'];
-            }
-
-            $data['is_definite_purpose'] = 0;
-            if(!empty($office_ids)){
-                $data['is_definite_purpose'] = 1;
-            }
-
-            $data['target_doctor_ids'] = '-';
-            foreach ($doctor_ids as $id){
-                $data['target_doctor_ids'] = $data['target_doctor_ids'].$id.'-';
-            }
-            $data['target_office_ids'] = '-';
-            foreach ($office_ids as $id){
-                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
-            }
-
+            $data['id'] = input('post.id', '');
             $data['consultation_goal'] = input('post.consultation_goal', '');
-            $data['other_apply_project'] = input('post.other_apply_project', '');
-            $resApply = [];// D('Apply')->saveData($params['apply_id'],$data);
 
-            if(!empty($res['errors'])){
-                $ret['error_code'] = 1;
-                $ret['errors'] = $resApply['errors'];
+            if (!isset($params['patient'])) {
+                $patient = [];
+            }else{
+                $patient = $params['patient'];
             }
-
-            $patient = [];
-            $patient['name'] = input('post.patient_name');
-            $patient['ID_number'] = input('post.patient_ID_number');
-            $patient['gender'] = input('post.patient_gender');
-            $patient['age'] = input('post.patient_age');
-            $patient['phone'] = input('post.patient_phone');
-            $patient['ill_state'] = input('post.patient_illness_state');
-            $patient['ill_type'] = input('post.patient_eyes_type');
-            $patient['diagnose_state'] = input('post.diagnose_state');
-            $patient['vision_left'] = input('post.patient_vision_left');
-            $patient['vision_right'] = input('post.patient_vision_right');
-            $patient['pressure_left'] = input('post.patient_pressure_left');
-            $patient['pressure_right'] = input('post.patient_pressure_right');
-            $patient['eye_photo_left'] = input('post.eye_photo_left');
-            $patient['eye_photo_right'] = input('post.eye_photo_right');
-            $patient['other_ill_type'] = input('post.other_ill_type','');
-            $patient['eye_photo_left_origin']= input('post.eye_photo_left_origin');
-            $patient['eye_photo_right_origin']= input('post.eye_photo_right_origin');
-            $patient['files_path'] = input('post.files_path');
-            $patient['files_path_origin'] = input('post.files_path_origin');
-            $resPatient = [];// D('Patient')->saveData($params['patient_id'],$patient);
-            if(!empty($resPatient)){
+            // 更新病患信息
+            $resPatient = D('Patient')->saveData($patient['id'],$patient);
+            if(!empty($resPatient['errors'])){
                 $ret['error_code'] = 1;
                 $ret['errors'] = $resPatient['errors'];
+                $ret['msg'] = '保存失败';
+            }
+
+            $res = D('Apply')->saveData($data['id'], $data);
+            if(!empty($res['errors'])){
+                $ret['error_code'] = 1;
+                $ret['errors'] = $res['errors'];
+                $ret['msg'] = '保存失败';
             }
             $this->jsonReturn($ret);
         }
-        //申请
-        $apply = D('Apply')->getById($id);
-        //病人
-        $patient = D('Patient')->getById($apply['patient_id']);
-        //医院
-        $select = ['id,name'];
-        $cond = ['role' => 1];
-        $hospital = D('Hospital')->getHospital($select,$cond);
-        //申请人信息
-        $select = ['d.name as apply_hospital_name,b.name as apply_doctor_name,b.phone as apply_doctor_phone'];
-        $cond = ['a.id' => $apply['source_user_id']];
-        $info = D('UserAdmin')->getUserAdmin($select,$cond);
-        $apply_info = [];
-        if(!empty($info)){
-            $apply_info = $info[0];
-            $apply_info['date'] = $apply['create_time'];
-        }
-        //被申请人及科室
-        $select = ['id,name'];
-        $office = [];
-        $doctor = [];
-        $target_doctor_ids = $apply['target_doctor_ids'];
-        $target_office_ids = $apply['target_office_ids'];
-        $array_target_doctor_id = explode('-',$target_doctor_ids);
-        for($index=0;$index<count($array_target_doctor_id);$index++) {
-            if($array_target_doctor_id[$index] != ''){
-                array_push($doctor, D('Doctor')->getDoctor($select,['id' =>(int)$array_target_doctor_id[$index]]));
-            }
-        }
-        $array_target_office_id = explode('-',$target_office_ids);
-        for($index=0;$index<count($array_target_office_id);$index++) {
-            if($array_target_office_id[$index] != ''){
-                array_push($office, D('Office')->getOffice($select,['id' =>(int)$array_target_office_id[$index]]));
-            }
-        }
-        mydump($hospital);
-        mydump($doctor);
-        mydump($office);
-        mydump($apply);
-        mydump($patient);
-        mydump($apply_info);
-        return view('',['hospital' => $hospital,'doctor'=>$doctor,'office'=>$office,'apply' => $apply,'patient' => $patient,'apply_info'=>$apply_info]);
+        return view('', ['id' => $id]);
     }
 
     /**

@@ -41,7 +41,7 @@ class Doctor extends Model{
      * @param $order
      * @return mixed
      */
-    public function getDoctorList($cond_or,$cond_and,$order){
+    public function getDoctorList($cond_or=[],$cond_and=[],$order=[]){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 2];
         }
