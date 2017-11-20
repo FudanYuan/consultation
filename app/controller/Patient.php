@@ -1,6 +1,9 @@
 <?php
 /**
  * 患者信息--控制器
+ *
+ *
+
  * Created by
  * time 2017.10.19
  */
@@ -8,9 +11,9 @@ namespace app\controller;
 
 class Patient extends Common
 {
+
     public $exportCols = [];
     public $colsText = [];
-
     /**
      * 患者信息
      * @return mixed

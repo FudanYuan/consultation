@@ -83,12 +83,13 @@ class Patient extends Model{
         if(empty($errors)){
             $data['status'] = 1;
             $data['create_time'] = time();
-            $ret['id'] = $this->save_1($data);
+            $this->save($data);
         }
         return $ret;
     }
+
     public function save_1($data){
-        $res = Db('patient')->insertGetId($data);
+        $res = Db('consultation_patient')->insertGetId($data);
         return $res;
     }
 
@@ -106,7 +107,7 @@ class Patient extends Model{
         if(isset($data['ID_number']) && !$data['ID_number']){
             $errors['ID_number'] = '身份证号不能为空';
         }else if(!$editFlag){
-            $ret = $this->getPatientByIdNum($data['ID_number']);
+            $ret = $this->getByIdNum($data['ID_number']);
             if(!empty($ret)){
                 $errors['ID_number'] = '此人已存在';
             }
@@ -125,6 +126,12 @@ class Patient extends Model{
         }
         if(isset($data['ill_type']) && !$data['ill_type']){
             $errors['ill_type'] = '病情类型不能为空';
+        }
+        if(isset($data['diagnose_state']) && !$data['diagnose_state']){
+            $errors['diagnose_state'] = '诊疗情况不能为空';
+        }
+        if(isset($data['diagnose_state']) && !$data['diagnose_state']){
+            $errors['diagnose_state'] = '诊疗情况不能为空';
         }
         if(isset($data['other_ill_type']) && $data['ill_type'] == 5 && !$data['other_ill_type']){
             $errors['other_ill_type'] = '其他病情详情不能为空';

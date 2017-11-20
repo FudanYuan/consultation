@@ -24,16 +24,20 @@
         </ul>
 
         <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-reply">
-            <a id="form-cancel" class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/index">返回</a>
-            <table class="table" style="width: auto; margin: 0 30px">
+            <a class="btn btn-info" style="margin: 5px 0" href="__PRO_PATH__/Apply/index">返回</a>
+            <table class="table" style="width: auto;">
                 <tr>
                     <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
                 </tr>
                 <tr>
                     <td>编号</td>
-                    <td colspan="4">{{apply_info.id}}</td>
+                    <td colspan="2">{{apply_info.id}}</td>
+                    <td>会诊类型</td>
+                    <td colspan="2">
+                        {{apply_info.apply_type | getApplyType}}
+                    </td>
                     <td>预约日期</td>
-                    <td colspan="3">{{apply_info.apply_date | moment}}</td>
+                    <td colspan="3">{{apply_info.apply_date | moment('yyyy年M月d日 hh:mm', apply_info.apply_date)}}</td>
                 </tr>
                 <tr>
                     <td>会诊医院</td>
@@ -69,48 +73,117 @@
                     <td>填表日期</td>
                     <td colspan="2">{{apply_info.create_time | moment}}</td>
                 </tr>
+
+                <!-- 患者信息 -->
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
                 </tr>
                 <tr></tr>
                 <tr>
+                    <td>身份证号</td>
+                    <td colspan="3">
+                        {{patient_info.ID_number}}
+                    </td>
                     <td>姓名</td>
-                    <td>{{patient_info.name}}</td>
+                    <td colspan="2">
+                        {{patient_info.name}}
+                    </td>
                     <td>性别</td>
-                    <td>{{patient_info.gender}}</td>
+                    <td>
+                        {{patient_info.gender | getGender}}
+                    </td>
+                </tr>
+                <tr>
                     <td>年龄</td>
                     <td>{{patient_info.age}}</td>
-                    <td>视力(左/右)</td>
-                    <td>{{patient_info.vision_left}}</td>
-                    <td>{{patient_info.vision_right}}</td>
-                </tr>
-                <tr>
-                    <td>身份证号</td>
-                    <td colspan="2" >{{patient_info.ID_number}}</td>
+
                     <td>联系方式</td>
-                    <td colspan="2" >{{patient_info.phone}}</td>
-                    <td>眼压(左/右)</td>
-                    <td>{{patient_info.pressure_left}}</td>
-                    <td>{{patient_info.pressure_right}}</td>
+                    <td colspan="2" >
+                        {{patient_info.phone}}
+                    </td>
+
+                    <td>附件下载</td>
+                    <td colspan="3">
+                        <a :href="patient_info.files_path" :title="patient_info.files_path_origin" target="_blank">
+                            {{patient_info.files_path_origin}}
+                        </a>
+                    </td>
                 </tr>
+
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>眼病类型</td>
+                    <td colspan="2" style="text-align: left; height: auto;">
+                        {{patient_info.ill_type | getIllType}}
+                    </td>
+
+                    <td>眼压(左/右)</td>
+                    <td>
+                        {{patient_info.pressure_left}}
+                    </td>
+                    <td>
+                        {{patient_info.pressure_right}}
+                    </td>
+
+                    <td>视力(左/右)</td>
+                    <td>
+                        {{patient_info.vision_left}}
+                    </td>
+                    <td>
+                        {{patient_info.vision_right}}
+                    </td>
+                </tr>
+                <tr></tr>
+
                 <tr>
                     <td rowspan="4">辅助检查(图)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td colspan="2" rowspan="4">
+                        <a :href="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :title="patient_info.exam_img_origin" data-lighter>
+                            <img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin">
+                        </a>
+                    </td>
+
                     <td rowspan="4">局部病变图(左眼)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td colspan="2" rowspan="4">
+                        <a :href="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :title="patient_info.eye_photo_left_origin" data-lighter>
+                            <img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.eye_photo_left_origin">
+                        </a>
                     <td rowspan="4">局部病变图(左眼)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td colspan="2" rowspan="4">
+                        <a :href="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :title="patient_info.eye_photo_right_origin" data-lighter>
+                            <img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.eye_photo_right_origin">
+                        </a>
+                    </td>
                 </tr>
                 <tr></tr>
                 <tr></tr>
                 <tr></tr>
+                <tr>
+                    <td colspan="9" style="text-align: left; height: auto;">
+                        &nbsp;&nbsp;&nbsp;&nbsp;简要病情详情：{{patient_info.ill_state}}
+                    </td>
+                </tr>
+
+                <!---->
+
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">初步诊断</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="9" style="text-align: left; height: auto;">&nbsp;&nbsp;&nbsp;&nbsp;{{patient_info.diagnose_state}}</td>
+                </tr>
+
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
                 </tr>
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
+                    <td colspan="9" style="text-align: left; height: auto;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
                 </tr>
 
                 <tr>
@@ -119,12 +192,10 @@
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
+                    <td colspan="9" style="text-align: left; height: auto;">
                         <div :class="['form-group', errors.consultation_result != '' ? 'has-error' : '']" >
-                            <div class="col-lg-12">
-                                <textarea  class="form-control" type="text" v-model="reply.consultation_result" id="consultation_goal" placeholder="请输入会诊单位意见..." style="height: 100px"></textarea>
-                                <p class="help-block" v-if="errors.consultation_result != ''">{{errors.consultation_result}}</p>
-                            </div>
+                            <textarea  class="form-control" type="text" v-model="reply.consultation_result" id="consultation_goal" placeholder="请输入会诊单位意见..." style="height: 100px"></textarea>
+                            <p class="help-block" v-if="errors.consultation_result != ''">{{errors.consultation_result}}</p>
                         </div>
                     </td>
                 </tr>
@@ -184,7 +255,7 @@
                 status: '',
                 consultation_result: '',
                 update_time_str: '',
-                price: 0
+                price: ''
             },
             errors:{
                 consultation_result: '',
@@ -226,8 +297,8 @@
         },
         filters:{
             moment: function (value, formatString) {
-                formatString = formatString || 'YYYY-MM-DD HH:mm';
-                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日');
+                formatString = formatString || 'yyyy年M月d日';
+                var time=new Date(parseInt(value) * 1000).format(formatString);
                 return time;
             },
             getApplyStatus: function (value) {
@@ -276,6 +347,35 @@
                 }
                 if(value == 1){
                     ret = '已缴费';
+                }
+                return ret;
+            },
+            getIllType: function (value) {
+                var ret = '';
+                if(value==1){
+                    ret = '眼表';
+                }
+                if(value==2){
+                    ret = "眼前节";
+                }
+                if(value==3){
+                    ret = "眼底";
+                }
+                if(value==4){
+                    ret = "视光";
+                }
+                if(value==5){
+                    ret = vm.patient_info.other_ill_type;
+                }
+                return ret;
+            },
+            getGender : function (value) {
+                var ret = '';
+                if(value == 1){
+                    ret = '男';
+                }
+                if(value == 2){
+                    ret = '女';
                 }
                 return ret;
             },

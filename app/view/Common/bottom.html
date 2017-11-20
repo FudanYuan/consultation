@@ -255,15 +255,6 @@
                         vm2.list = res.data;
                     }
                 });
-            },
-            info: function (index) {
-                popupPreview(vm2.list[index]);
-                if(vm2.list[index]['status'] == 0){
-                    $.post('__PRO_PATH__/Apply/markRead', {ids: vm2.list[index]['id']}, function (res) {
-                        if (res['code'] == 1) {
-                        }
-                    });
-                }
             }
         },
         filters:{
@@ -341,9 +332,9 @@
         }
     });
 
-//    setInterval(function () {
-//        vm2.getApply();
-//    }, 2000);
+    setInterval(function () {
+        vm2.getApply();
+    }, 2000);
 
     // 获得用户名称
     var vm3 = new Vue({

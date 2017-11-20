@@ -236,6 +236,15 @@ class Apply extends Model{
         if(isset($data['other_apply_project']) && $data['apply_project'] == 4 && !$data['other_apply_project']){
             $errors['other_apply_project'] = '其他申请类型不能为空';
         }
+        if(isset($data['consultation_result']) && !$data['consultation_result']){
+            $errors['consultation_result'] = '会诊单位意见不能为空';
+        }
+        if(isset($data['update_time']) && !$data['update_time']){
+            $errors['update_time'] = '会诊时间不能为空';
+        }
+        if(isset($data['price']) && !$data['price']){
+            $errors['price'] = '会诊费用不能为空';
+        }
         return $errors;
     }
 
