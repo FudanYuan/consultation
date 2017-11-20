@@ -34,12 +34,12 @@ class Apply extends Model{
 
     /**
      * 获取申请信息列表
-     * @param $cond_and
-     * @param $cond_or
-     * @param $order
+     * @param array $cond_or
+     * @param array $cond_and
+     * @param array $order
      * @return mixed
      */
-    public function getList($cond_and=[],$cond_or=[],$order=[]){
+    public function getList($cond_or=[],$cond_and=[],$order=[]){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 0];
         }
