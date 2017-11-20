@@ -368,6 +368,8 @@
     var vm = new Vue({
         el: '#apply-reply',
         data: {
+
+
             apply_info: {},
             patient_info: {},
             source_hospital_info: {},
@@ -398,7 +400,9 @@
                 target_office_id:'',
                 consultation_goal:''
             },
-            params: {},
+            params: {
+                apply_id: '{$apply.id}'
+            },
 //            patient:{
 //                patient_ID_number: '',
 //                patient_name: '',
