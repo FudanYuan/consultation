@@ -448,7 +448,12 @@ class Apply extends Common
                 array_push($office, D('Office')->getById((int)$array_target_office_id[$index]));
             }
         }
-
+        mydump($hospital);
+        mydump($doctor);
+        mydump($office);
+        mydump($apply);
+        mydump($patient);
+        mydump($apply_info);
         return view('',['hospital' => $hospital,'doctor'=>$doctor,'office'=>$office,'apply' => $apply,'patient' => $patient,'apply_info'=>$apply_info]);
     }
 
