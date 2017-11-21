@@ -45,16 +45,17 @@ class Apply extends Model{
         }
         $res = $this->alias('a')->field('a.id as id,b.id as user_id, e.id as hospital_id,e.logo as hospital_logo,
                 e.name as hospital_name,c.id as doctor_id,c.name as doctor_name,
-                c.phone as phone,apply_type,apply_project,other_apply_project,is_green_channel,
+                c.phone as phone,f.name as hospital_name_target, apply_type,apply_project,other_apply_project,is_green_channel,
                 consultation_goal,apply_date,a.status,price,is_charge,a.create_time')
-                ->join('user_admin b','b.id = a.source_user_id')
-                ->join('consultation_doctor c','c.id = b.doctor_id')
-                ->join('consultation_hospital_office d','d.id = c.hospital_office_id')
-                ->join('consultation_hospital e','e.id = d.hospital_id')
-                ->where($cond_and)
-                ->where($cond_or)
-                ->order($order)
-                ->select();
+            ->join('consultation_user_admin b','b.id = a.source_user_id')
+            ->join('consultation_doctor c','c.id = b.doctor_id')
+            ->join('consultation_hospital_office d','d.id = c.hospital_office_id')
+            ->join('consultation_hospital e','e.id = d.hospital_id')
+            ->join('consultation_hospital f','f.id = a.target_hospital_id')
+            ->where($cond_and)
+            ->where($cond_or)
+            ->order($order)
+            ->select();
         return $res;
     }
 

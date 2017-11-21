@@ -39,7 +39,6 @@ class Apply extends Common
             $keywords = input('post.keywords','');
             $green_channel = input('post.is_green_channel', 0);
             $cond_and = [];
-            $cond_or = [];
             if($apply_type){
                 $cond_and['a.apply_type'] = $apply_type;
             }
@@ -53,25 +52,30 @@ class Apply extends Common
                 $cond_and['a.is_charge'] = $is_charge;
             }
             if($apply_date){
-                $cond_and['a.apply_date'] = strtotime($apply_date);
+                $cond_and['a.apply_date'] = ['between', [strtotime($apply_date),strtotime($apply_date) + 3600*24]];
             }
             if($hospital){
                 $cond_and['e.id'] = $hospital;
             }
             if($keywords){
-                $cond_or['a.other_apply_project|e.name|c.name|c.phone'] = ['like','%'. myTrim($keywords) .'%'];
+                $cond_and['a.other_apply_project|e.name|c.name|c.phone'] = ['like','%'. myTrim($keywords) .'%'];
             }
             $cond_and['a.is_green_channel'] = $green_channel;
             $user_id = $this->getUserId();
-            $select = ['b.id as doctor_id'];
+            $select = ['b.id as doctor_id, d.role as role'];
             $cond['a.id'] = ['=',$user_id];
-            $user_doctor_id = D('UserAdmin')->getUserAdmin($select,$cond);
-            //$cond_and['c.id'] = ['=',$user_doctor_id[0]['doctor_id']];
-
+            $user_info = D('UserAdmin')->getUserAdmin($select,$cond);
+            $user_doctor_id  = $user_info[0]['doctor_id'];
+            $user_role  = $user_info[0]['role'];
+            $cond_or = "c.id = " . $user_doctor_id
+                . " or a.target_doctor_ids like '%-"
+                . $user_doctor_id . "-%'";
             $list = D('Apply')->getList($cond_or,$cond_and,[]);
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total
+
+            $ret["role"] = $user_role; // 获取当前医生的角色，是否具有会诊资格
             $ret["total"] = count($list);
             //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
             $ret["data"] = array_slice($list, ($page-1)*$per_page, $per_page);
