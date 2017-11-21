@@ -210,7 +210,7 @@ class Patient extends Common
             }else{
                 $in_hospital_time = date('Y-m-d H:i:s',$patient['in_hospital_time']);
                 $patient['in_hospital_time'] = $in_hospital_time;
-                mydump($patient);
+                //mydump($patient);
                 return view('',['patient' => $patient]);
             }
     }

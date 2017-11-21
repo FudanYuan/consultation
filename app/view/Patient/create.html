@@ -248,10 +248,11 @@
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.diagnose_state != '' ? 'has-error' : '']" >
                     <label for="diagnose_state" class="col-sm-2 control-label">诊疗情况：</label>
                     <div class="col-sm-4">
                         <textarea  class="form-control" type="text" name="diagnose_state" id="diagnose_state" placeholder="请输入患者诊疗情况"></textarea>
+                        <p class="help-block">{{errors.diagnose_state}}</p>
                     </div>
                 </div>
 
@@ -412,8 +413,8 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Patient/index';
+                        popWarn('新建成功','__PRO_PATH__/Patient/index');
+                        //window.location.href = ;
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
@@ -430,7 +431,7 @@
 
 
     $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Apply/index';
+        window.location.href = '__PRO_PATH__/Patient/index';
     });
 
     function change_hospital(){

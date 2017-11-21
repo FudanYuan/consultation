@@ -121,8 +121,8 @@ class Doctor extends Common
         $hospital = D('Hospital')->getHospital($select,[]);
 
         $office = D('Office')->getOffice($select,[]);
-        mydump($hospital);
-        mydump($office);
+//        mydump($hospital);
+//        mydump($office);
         return view('', ['office' => $office,'hospital' =>$hospital]);
     }
 

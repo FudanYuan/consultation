@@ -33,7 +33,7 @@
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医生照片：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="logo" src="{$doctor.doctor_photo?? '/__PUBLIC__/images/profile/profile1.jpg'}">
+                        <img id="logo" style="max-height: 80px;max-width: 80px" src="{$doctor.doctor_photo?? '/__PUBLIC__/images/profile/profile1.jpg'}">
                         <br/>
                         <div id="upload_logo">
                             <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
@@ -221,8 +221,8 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('新建成功');
-                        window.location.href = '__PRO_PATH__/Doctor/index';
+                        popWarn('新建成功','__PRO_PATH__/Doctor/index');
+                        //window.location.href = '__PRO_PATH__/Doctor/index';
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
@@ -249,7 +249,7 @@
     });
 
     $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Apply/index';
+        window.location.href = '__PRO_PATH__/Doctor/index';
     });
 
     function getParams(){

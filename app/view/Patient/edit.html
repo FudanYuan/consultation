@@ -125,33 +125,39 @@
                     </div>
                 </div>
 
-                <div class="form-group }">
+                <!-- -->
+
+                <div class="form-group {$errors.img ?= 'has-error'}">
                     <label class="col-sm-2 control-label">左眼照片：</label>
-                    <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="filelist_left_eye" src="{$patient.eye_photo_left?? '/__PUBLIC__/images/profile/profile1.jpg'}">
+                    <div class="col-sm-4">
+                        <div id="filelist_left_eye">
+                            <div>{$patient.eye_photo_left_origin??''}<b></b></div>
+                        </div>
                         <br/>
                         <div id="upload_left_eye">
-                            <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">
-                                <i class="fa fa-camera fa-lg"></i>
-                            </a>
+                            <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                            <a id="uploadfiles_left_eye" href="javascript:;">上传</a>
                         </div>
                         <input type="hidden" name="eye_photo_left" value="{$patient.eye_photo_left??''}"/>
                         <input type="hidden" name="eye_photo_left_origin" value="{$patient.eye_photo_left_origin??''}"/>
+                        <span class="help-block">{$errors.eye_photo_left?? ''}</span>
                     </div>
                 </div>
 
-                <div class="form-group }">
+                <div class="form-group {$errors.img ?= 'has-error'}">
                     <label class="col-sm-2 control-label">右眼照片：</label>
-                    <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="filelist_right_eye" src="{$patient.eye_photo_right??'/__PUBLIC__/images/profile/profile1.jpg'}">
+                    <div class="col-sm-4">
+                        <div id="filelist_right_eye">
+                            <div>{$patient.eye_photo_right_origin??''}<b></b></div>
+                        </div>
                         <br/>
                         <div id="upload_right_eye">
-                            <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">
-                                <i class="fa fa-camera fa-lg"></i>
-                            </a>
+                            <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
+                            <a id="uploadfiles_right_eye" href="javascript:;">上传</a>
                         </div>
                         <input type="hidden" name="eye_photo_right" value="{$patient.eye_photo_right??''}"/>
                         <input type="hidden" name="eye_photo_right_origin" value="{$patient.eye_photo_right_origin??''}"/>
+                        <span class="help-block">{$errors.eye_photo_right?? ''}</span>
                     </div>
                 </div>
 
@@ -159,7 +165,7 @@
                     <label class="col-sm-2 control-label">辅助检查照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_exam_img">
-                            <div>{$patient.img_origin??''}<b></b></div>
+                            <div>{$patient.exam_img_origin??''}<b></b></div>
                         </div>
                         <br/>
                         <div id="exam_img">
@@ -347,26 +353,24 @@
                 },
                 isMulti: false
             });
-            changeLogo({
-                container: 'upload_left_eye',
-                browse: 'pickfiles_left_eye',
-                url: '__PRO_PATH__/Media/upload?dir=import',
-                img_types: 'jpg,gif,png',
-                zip_types: 'zip',
-                filelist: 'filelist_left_eye',
-                uploadfiles: 'uploadfiles_left_eye',
-                file_size: '10mb',
-                onUploaded: function (up, file, result) {
-                    var res = JSON.parse(result.response);
-                    $('#filelist_left_eye').attr('src',res.result.file);
-                    $("input[name='eye_photo_left_origin']").val(file.name);
-                    $("input[name='eye_photo_left']").val(res.result.file);
-                    chageTitle('上传成功');
-                    setTimeout("cancel()", 1000);
-                },
-                isMulti: true
-            });
-            changeLogo({
+        myupload({
+            container: 'upload_left_eye',
+            browse: 'pickfiles_left_eye',
+            url: '__PRO_PATH__/Media/upload?dir=import',
+            img_types: 'jpg,gif,png',
+            zip_types: 'zip',
+            filelist: 'filelist_left_eye',
+            uploadfiles: 'uploadfiles_left_eye',
+            file_size: '10mb',
+            onUploaded: function (up, file, result) {
+                var res = JSON.parse(result.response);
+                $('#filelist_left_eye').attr('src',res.result.file);
+                $("input[name='eye_photo_left_origin']").val(file.name);
+                $("input[name='eye_photo_left']").val(res.result.file);
+            },
+            isMulti: true
+        });
+        myupload({
                 container: 'upload_right_eye',
                 browse: 'pickfiles_right_eye',
                 url: '__PRO_PATH__/Media/upload?dir=import',
@@ -380,12 +384,28 @@
                     $('#filelist_right_eye').attr('src',res.result.file);
                     $("input[name='eye_photo_right_origin']").val(file.name);
                     $("input[name='eye_photo_right']").val(res.result.file);
-                    chageTitle('上传成功');
-                    setTimeout("cancel()", 1000);
                 },
                 isMulti: true
             });
-        },
+
+        myupload({
+            container: 'exam_img',
+            browse: 'pickfiles_exam_img',
+            url: '__PRO_PATH__/Media/upload?dir=import',
+            img_types: 'jpg,gif,png',
+            zip_types: 'zip',
+            filelist: 'filelist_exam_img',
+            uploadfiles: 'uploadfiles_exam_img',
+            file_size: '10mb',
+            onUploaded: function (up, file, result) {
+                var res = JSON.parse(result.response);
+                $('#filelist_left_eye').attr('src',res.result.file);
+                $("input[name='exam_img_origin']").val(file.name);
+                $("input[name='exam_img']").val(res.result.file);
+            },
+            isMulti: false
+        });
+    },
 
         methods: {
             createNewApply: function () {
@@ -396,7 +416,7 @@
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
-                        popWarn('保存成功');
+                        popWarn('保存成功','__PRO_PATH__/Patient/index');
                         //window.location.href = '__PRO_PATH__/Patient/index';
                     } else if (res.error_code == 2) {
                         $.each(vm.errors, function (k) {
@@ -414,7 +434,7 @@
 
 
     $('#form-cancel').on('click', function(){
-        window.location.href = '__PRO_PATH__/Apply/index';
+        window.location.href = '__PRO_PATH__/Patient/index';
     });
 
     function change_hospital(){
