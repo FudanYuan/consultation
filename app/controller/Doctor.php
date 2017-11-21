@@ -108,6 +108,13 @@ class Doctor extends Common
             $data['info'] = input('post.doctor_info');
             $data['honor'] = input('post.doctor_honor');
             $data['remark'] = input('post.doctor_remark');
+            $office_id = input('post.office_ids');
+            $user_id = $this->getUserId();
+            $select = ['d.id as hospital_id'];
+            $cond = ['a.id' => $user_id];
+            $hospital_id = D('UserAdmin')->getUserAdmin($select,$cond);
+            $hospital_office_id = D('HospitalOffice')->getIdByHospitalOffice(['id'],['hospital_id'=>$hospital_id[0]['hospital_id'],'office_id'=>$office_id]);
+            $data['hospital_office_id'] = $hospital_office_id['id'];
             $res = D('Doctor')->addData($data);
             if(!empty($res['errors'])) {
                 $ret['error_code'] = 2;
@@ -119,7 +126,6 @@ class Doctor extends Common
         }
         $select = ['id,name'];
         $hospital = D('Hospital')->getHospital($select,[]);
-
         $office = D('Office')->getOffice($select,[]);
 //        mydump($hospital);
 //        mydump($office);
@@ -184,8 +190,7 @@ class Doctor extends Common
             $ret['data'] = $params;
             $ret = ['error_code' => 0, 'msg' => '编辑成功'];
             $data['name'] = input('post.doctor_name');
-            $data['photo'] = input('post.doctor_photo');
-            $photo_origin = input('post.doctor_photo_origin');
+            $data['photo'] = input('post.photo');
             $data['gender'] = input('post.gender','');
             $data['age'] = input('post.hospital_age');
             $data['position'] = input('post.hospital_position');
@@ -199,6 +204,7 @@ class Doctor extends Common
             if(empty($data['doctor_photo'])){
                 unset($data['doctor_photo']);
             }
+            $ret['params'] = $params;
             $res = D('Doctor')->saveData($params['doctor_id'],$data);
             if(!empty($res['errors'])) {
                 $ret['error_code'] = 2;

@@ -115,8 +115,8 @@ class Patient extends Common
             $data['vision_right'] = input('post.patient_vision_right');
             $data['pressure_left'] = input('post.patient_pressure_left');
             $data['pressure_right'] = input('post.patient_pressure_right');
-//            $data['exam_img'] = input('post.eye_photo_left');
-//            $data['exam_img_origin'] = input('post.eye_photo_left_origin');
+            $data['exam_img'] = input('post.exam_img');
+            $data['exam_img_origin'] = input('post.exam_img_origin');
             $data['eye_photo_left'] = input('post.eye_photo_left');
             $data['eye_photo_right'] = input('post.eye_photo_right');
             $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
@@ -134,7 +134,7 @@ class Patient extends Common
             $res = D('Patient')->addData($data);
             $ret['params'] = $params;
             if(!empty($res['errors'])) {
-                $ret['error_code'] = 2;
+                $ret['error_code'] = 1;
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res['errors'];
             }
@@ -170,8 +170,8 @@ class Patient extends Common
                 $data['vision_right'] = input('post.patient_vision_right');
                 $data['pressure_left'] = input('post.patient_pressure_left');
                 $data['pressure_right'] = input('post.patient_pressure_right');
-//            $data['exam_img'] = input('post.eye_photo_left');
-//            $data['exam_img_origin'] = input('post.eye_photo_left_origin');
+                $data['exam_img'] = input('post.exam_img');
+                $data['exam_img_origin'] = input('post.exam_img_origin');
                 $data['eye_photo_left'] = input('post.eye_photo_left');
                 $data['eye_photo_right'] = input('post.eye_photo_right');
                 $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
@@ -200,7 +200,7 @@ class Patient extends Common
                 }
                 $res = D('Patient')->saveData($params['patient_id'],$data);
                 if(!empty($res['errors'])) {
-                    $ret['error_code'] = 2;
+                    $ret['error_code'] = 1;
                     $ret['msg'] = '编辑失败';
                     $ret['errors'] = $res['errors'];
                 }
@@ -210,7 +210,6 @@ class Patient extends Common
             }else{
                 $in_hospital_time = date('Y-m-d H:i:s',$patient['in_hospital_time']);
                 $patient['in_hospital_time'] = $in_hospital_time;
-                //mydump($patient);
                 return view('',['patient' => $patient]);
             }
     }
@@ -220,7 +219,7 @@ class Patient extends Common
      * 删除患者信息
      */
     public function remove(){
-        $ret = ['code' => 1, 'msg' => '删除成功'];
+        $ret = ['code' =>0, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
             $res = D('Patient')->remove(['id' => ['in', $ids]]);
