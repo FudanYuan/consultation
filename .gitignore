@@ -1,5 +1,5 @@
 /.idea
 /.gitignore
-#/runtime/temp
-#/runtime/log
-#/runtime/cache/
+/runtime/temp
+/runtime/log
+/runtime/cache/
