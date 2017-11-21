@@ -24,7 +24,7 @@
             <li>新建申请</li>
         </ul>
 
-        <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-reply">
+        <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-create">
             <a class="btn btn-info" style="margin: 5px 0" href="__PRO_PATH__/Apply/index">返回</a>
             <form  method="post" id="new-apply-form">
                 <table class="table" style="width: auto;">
@@ -366,7 +366,7 @@
     $('#consultation-nav-apply').addClass('active');
 
     var vm = new Vue({
-        el: '#apply-reply',
+        el: '#apply-create',
         data: {
             apply_info: {},
             patient_info: {},
@@ -586,6 +586,7 @@
                 vm.params[this.name] = this.value;
             }
         });
+        vm.params['is_green_channel'] = 0;
         vm.params['patient'] = {};
         $.each(vm.patient, function (k, v) {
             vm.params['patient'][k] = v;

@@ -14,7 +14,7 @@
                         <label for="apply_type">申请类型：</label>
                         <ul class="radio-group" id="apply_type">
                             <li class="radio-list">
-                                <input type="radio" name="apply_type" class="labelauty" id="type-all" value="-1" style="display: none;" checked>
+                                <input type="radio" name="apply_type" class="labelauty" id="type-all" value="" style="display: none;" checked>
                                 <label for="type-all">
                                     <span class="labelauty-unchecked">全部</span>
                                     <span class="labelauty-checked">全部</span>
@@ -40,7 +40,7 @@
                         <label for="apply_type">申请项目：</label>
                         <ul class="radio-group" id="apply_project">
                             <li class="radio-list">
-                                <input type="radio" name="apply_project" class="labelauty" id="project-all" value="-1" style="display: none;" checked>
+                                <input type="radio" name="apply_project" class="labelauty" id="project-all" value="" style="display: none;" checked>
                                 <label for="project-all">
                                     <span class="labelauty-unchecked">全部</span>
                                     <span class="labelauty-checked">全部</span>
@@ -80,7 +80,7 @@
                         <label for="status">处理状态：</label>
                         <ul class="radio-group" id="status">
                             <li class="radio-list">
-                                <input type="radio" name="status" class="labelauty" id="status-all" value="-1" style="display: none;" checked>
+                                <input type="radio" name="status" class="labelauty" id="status-all" value="" style="display: none;" checked>
                                 <label for="status-all">
                                     <span class="labelauty-unchecked">全部</span>
                                     <span class="labelauty-checked">全部</span>
@@ -121,7 +121,7 @@
                         <label for="is_charge">收费状态：</label>
                         <ul class="radio-group" id="is_charge">
                             <li class="radio-list">
-                                <input type="radio" name="is_charge" class="labelauty" id="charge-all" value="-1" style="display: none;" checked>
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-all" value="" style="display: none;" checked>
                                 <label for="charge-all">
                                     <span class="labelauty-unchecked">全部</span>
                                     <span class="labelauty-checked">全部</span>
@@ -150,7 +150,7 @@
                     <div class="form-group">
                         <label for="hospital">医院名称：</label>
                         <select name="hospital" class="form-control" id="hospital" style="width:100px">
-                            <option value="-1">全部</option>
+                            <option value="">全部</option>
                             {foreach name="hospital" item="model"}
                             <option value="{$model.id}">{$model.name}</option>
                             {/foreach}
@@ -160,7 +160,7 @@
                         <label for="keywords">关键词：</label>
                         <input name="keywords" class="form-control" id="keywords" style="width:150px" value=""/>
                     </div>
-                    {if condition="authority('ChannelSelect')"}
+                    {if condition="authority('ApplySelect')"}
                     <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
                     {/if}
                 </form>
@@ -452,10 +452,6 @@
             },
             formatText: function (text, len) {
                 return cutString(text, len);
-            },
-            base64: function (value) {
-                var base = new Base64();
-                return base.encode(value);
             }
         }
     });
@@ -487,7 +483,6 @@
         vm.params['per_page'] = vm.per_page;
         vm.params['current_page'] = vm.current_page;
     }
-
 </script>
 {else /}
 <div class="main-container">

@@ -317,16 +317,15 @@ function objToArr($obj)
 
 /**
  * 验证权限
- * @param unknown $tag
- * @return boolean
+ * @param $tag
+ * @return bool
  */
 function authority($tag)
 {
-//    return true;
+    return true;
     static $actions;
     $user = config('user');
-//    if ($user['role_id'] == 1)
-    return true;
+//    if ($user['role_id'] == 1) return true;
     if (empty($actions))
         $actions = D('Role')->getActionsByRoleId($user['role_id']);
     return in_array($tag, $actions);

@@ -1,6 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
 {if condition="authority('ApplyEdit')"}
-<script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <style>
     .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
         padding: 8px;
@@ -24,7 +23,7 @@
             <li>编辑申请</li>
         </ul>
 
-        <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-reply">
+        <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-edit">
             <a class="btn btn-info" style="margin: 5px 0" href="__PRO_PATH__/Apply/index">返回</a>
             <form  method="post" id="new-apply-form">
                 <table class="table" style="width: auto;">
@@ -301,7 +300,7 @@
     $('#consultation-nav-apply').addClass('active');   //定位导航栏的
 
     var vm = new Vue({
-        el: '#apply-reply',
+        el: '#apply-edit',
         data: {
             id: '{$id}',
             apply_info: {},
@@ -374,11 +373,7 @@
                 time_24hr:true,
                 readonly: false
             });
-            $(".multiple").multipleSelect({
-                filter: true,
-                multiple: true,
-                selectAll: true
-            });
+
             myupload({
                 container: 'upload_file_path',
                 browse: 'pickfiles',

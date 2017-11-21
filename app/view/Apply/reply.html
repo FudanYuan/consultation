@@ -264,6 +264,9 @@
             }
         },
         mounted:function () {
+            $(function () {
+                submit();
+            });
             $(".flatpickr").flatpickr({time_24hr:false});
         },
         methods:{
@@ -384,8 +387,6 @@
             }
         }
     });
-
-    submit();
 
     // 异步提交数据
     function submit() {

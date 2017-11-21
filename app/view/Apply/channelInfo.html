@@ -22,16 +22,20 @@
         </ul>
 
         <div class="col-lg-12" style="background-color: #FFF; padding: 30px 10px" id="apply-info">
-            <a id="form-cancel" class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/channel">返回</a>
-            <table class="table" style="width: auto; margin: 0 30px">
+            <a class="btn btn-info" style="margin: 5px 0" href="__PRO_PATH__/Apply/channel">返回</a>
+            <table class="table" style="width: auto;">
                 <tr>
                     <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
                 </tr>
                 <tr>
                     <td>编号</td>
-                    <td colspan="4">{{apply_info.id}}</td>
+                    <td colspan="2">{{apply_info.id}}</td>
+                    <td>会诊类型</td>
+                    <td colspan="2">
+                        {{apply_info.apply_type | getApplyType}}
+                    </td>
                     <td>预约日期</td>
-                    <td colspan="3">{{apply_info.apply_date | moment}}</td>
+                    <td colspan="3">{{apply_info.apply_date | moment('yyyy年M月d日 hh:mm', apply_info.apply_date)}}</td>
                 </tr>
                 <tr>
                     <td>会诊医院</td>
@@ -67,50 +71,118 @@
                     <td>填表日期</td>
                     <td colspan="2">{{apply_info.create_time | moment}}</td>
                 </tr>
+
+                <!-- 患者信息 -->
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
                 </tr>
                 <tr></tr>
                 <tr>
+                    <td>身份证号</td>
+                    <td colspan="3">
+                        {{patient_info.ID_number}}
+                    </td>
                     <td>姓名</td>
-                    <td>{{patient_info.name}}</td>
+                    <td colspan="2">
+                        {{patient_info.name}}
+                    </td>
                     <td>性别</td>
-                    <td>{{patient_info.gender | getGender}}</td>
+                    <td>
+                        {{patient_info.gender | getGender}}
+                    </td>
+                </tr>
+                <tr>
                     <td>年龄</td>
                     <td>{{patient_info.age}}</td>
-                    <td>视力(左/右)</td>
-                    <td>{{patient_info.vision_left}}</td>
-                    <td>{{patient_info.vision_right}}</td>
-                </tr>
-                <tr>
-                    <td>身份证号</td>
-                    <td colspan="2" >{{patient_info.ID_number}}</td>
+
                     <td>联系方式</td>
-                    <td colspan="2" >{{patient_info.phone}}</td>
-                    <td>眼压(左/右)</td>
-                    <td>{{patient_info.pressure_left}}</td>
-                    <td>{{patient_info.pressure_right}}</td>
+                    <td colspan="2" >
+                        {{patient_info.phone}}
+                    </td>
+
+                    <td>附件下载</td>
+                    <td colspan="3">
+                        <a :href="patient_info.files_path" :title="patient_info.files_path_origin" target="_blank">
+                            {{patient_info.files_path_origin}}
+                        </a>
+                    </td>
                 </tr>
+
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td>眼病类型</td>
+                    <td colspan="2" style="text-align: left; height: auto;">
+                        {{patient_info.ill_type | getIllType}}
+                    </td>
+
+                    <td>眼压(左/右)</td>
+                    <td>
+                        {{patient_info.pressure_left}}
+                    </td>
+                    <td>
+                        {{patient_info.pressure_right}}
+                    </td>
+
+                    <td>视力(左/右)</td>
+                    <td>
+                        {{patient_info.vision_left}}
+                    </td>
+                    <td>
+                        {{patient_info.vision_right}}
+                    </td>
+                </tr>
+                <tr></tr>
+
                 <tr>
                     <td rowspan="4">辅助检查(图)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td colspan="2" rowspan="4">
+                        <a :href="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :title="patient_info.exam_img_origin" data-lighter>
+                            <img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin">
+                        </a>
+                    </td>
+
                     <td rowspan="4">局部病变图(左眼)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td colspan="2" rowspan="4">
+                        <a :href="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :title="patient_info.eye_photo_left_origin" data-lighter>
+                            <img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.eye_photo_left_origin">
+                        </a>
                     <td rowspan="4">局部病变图(左眼)</td>
-                    <td colspan="2" rowspan="4"><img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin"></td>
+                    <td colspan="2" rowspan="4">
+                        <a :href="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :title="patient_info.eye_photo_right_origin" data-lighter>
+                            <img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.eye_photo_right_origin">
+                        </a>
+                    </td>
                 </tr>
                 <tr></tr>
                 <tr></tr>
                 <tr></tr>
+                <tr>
+                    <td colspan="9" style="text-align: left; height: auto;">
+                        &nbsp;&nbsp;&nbsp;&nbsp;简要病情详情：{{patient_info.ill_state}}
+                    </td>
+                </tr>
+
+                <!---->
+
+                <tr>
+                    <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">初步诊断</td>
+                </tr>
+                <tr></tr>
+                <tr>
+                    <td colspan="9" style="text-align: left; height: auto;">&nbsp;&nbsp;&nbsp;&nbsp;{{patient_info.diagnose_state}}</td>
+                </tr>
+
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
                 </tr>
                 <tr></tr>
 
                 <tr>
-                    <td colspan="9" style="text-align: left; height: auto; padding: 20px;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
+                    <td colspan="9" style="text-align: left; height: auto;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
                 </tr>
-
                 <tr>
                     <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊单位意见</td>
                 </tr>
@@ -141,7 +213,6 @@
                 </tr>
             </table>
         </div>
-
     </div>
 </div><!-- /main-container -->
 {include file="Common/bottom" /}
@@ -149,7 +220,7 @@
 {include file="Common/calendar" /}
 <script src="__PUBLIC__/js/datapicker/daterangepicker.js"></script>
 <script>
-    $('#consultation-nav-apply').addClass('active');
+    $('#consultation-nav-channel').addClass('active');
 
     var vm = new Vue({
         el: '#apply-info',
@@ -162,6 +233,11 @@
             target_hospital_info: {},
             target_office_info: [],
             target_doctor_info: []
+        },
+        mounted: function(){
+            $(function () {
+                submit();
+            });
         },
         methods:{
             remove: function (id) {
@@ -256,8 +332,6 @@
             }
         }
     });
-
-    submit();
 
     // 异步提交数据
     function submit() {

@@ -235,6 +235,11 @@
             target_office_info: [],
             target_doctor_info: []
         },
+        mounted: function(){
+            $(function () {
+                submit();
+            });
+        },
         methods:{
             remove: function (id) {
                 var ids = [];
@@ -347,8 +352,6 @@
             }
         }
     });
-
-    submit();
 
     // 异步提交数据
     function submit() {
