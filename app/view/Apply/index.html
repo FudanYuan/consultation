@@ -9,162 +9,168 @@
         </ul>
         <div id="apply">
             <div class="list-search">
-            <form action="" class="form-inline" method="post" id="main-form">
-                <div class="form-group">
-                    <label for="apply_type">申请类型：</label>
-                    <ul class="radio-group" id="apply_type">
-                        <li class="radio-list">
-                            <input type="radio" name="apply_type" class="labelauty" id="type-all" value="" style="display: none;" checked>
-                            <label for="type-all">
-                                <span class="labelauty-unchecked">全部</span>
-                                <span class="labelauty-checked">全部</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="apply_type" class="labelauty" id="type-normal" value="1" style="display: none;">
-                            <label for="type-normal">
-                                <span class="labelauty-unchecked">普通</span>
-                                <span class="labelauty-checked">普通</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="apply_type" class="labelauty" id="type-urgent" value="2" style="display: none;">
-                            <label for="type-urgent">
-                                <span class="labelauty-unchecked">紧急</span>
-                                <span class="labelauty-checked">紧急</span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div class="form-group">
-                    <label for="apply_type">申请项目：</label>
-                    <ul class="radio-group" id="apply_project">
-                        <li class="radio-list">
-                            <input type="radio" name="apply_project" class="labelauty" id="project-all" value="" style="display: none;" checked>
-                            <label for="project-all">
-                                <span class="labelauty-unchecked">全部</span>
-                                <span class="labelauty-checked">全部</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="apply_project" class="labelauty" id="project1" value="1" style="display: none;">
-                            <label for="project1">
-                                <span class="labelauty-unchecked">咨询</span>
-                                <span class="labelauty-checked">咨询</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="apply_project" class="labelauty" id="project2" value="2" style="display: none;">
-                            <label for="project2">
-                                <span class="labelauty-unchecked">住院</span>
-                                <span class="labelauty-checked">住院</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="apply_project" class="labelauty" id="project3" value="3" style="display: none;">
-                            <label for="project3">
-                                <span class="labelauty-unchecked">手术</span>
-                                <span class="labelauty-checked">手术</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="apply_project" class="labelauty" id="project4" value="4" style="display: none;">
-                            <label for="project4">
-                                <span class="labelauty-unchecked">其他</span>
-                                <span class="labelauty-checked">其他</span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div class="form-group">
-                    <label for="status">处理状态：</label>
-                    <ul class="radio-group" id="status">
-                        <li class="radio-list">
-                            <input type="radio" name="status" class="labelauty" id="status-all" value="" style="display: none;" checked>
-                            <label for="status-all">
-                                <span class="labelauty-unchecked">全部</span>
-                                <span class="labelauty-checked">全部</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="status" class="labelauty" id="status-wait" value="1" style="display: none;">
-                            <label for="status-wait">
-                                <span class="labelauty-unchecked">待处理</span>
-                                <span class="labelauty-checked">待处理</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="status" class="labelauty" id="status-more" value="2" style="display: none;">
-                            <label for="status-more">
-                                <span class="labelauty-unchecked">处理中</span>
-                                <span class="labelauty-checked">处理中</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="status" class="labelauty" id="status-success" value="3" style="display: none;">
-                            <label for="status-success">
-                                <span class="labelauty-unchecked">成功</span>
-                                <span class="labelauty-checked">成功</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="status" class="labelauty" id="status-fail" value="4" style="display: none;">
-                            <label for="status-fail">
-                                <span class="labelauty-unchecked">失败</span>
-                                <span class="labelauty-checked">失败</span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <br><br>
-                <div class="form-group">
-                    <label for="is_charge">收费状态：</label>
-                    <ul class="radio-group" id="is_charge">
-                        <li class="radio-list">
-                            <input type="radio" name="is_charge" class="labelauty" id="charge-all" value="" style="display: none;" checked>
-                            <label for="charge-all">
-                                <span class="labelauty-unchecked">全部</span>
-                                <span class="labelauty-checked">全部</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="is_charge" class="labelauty" id="charge-false" value="0" style="display: none;">
-                            <label for="charge-false">
-                                <span class="labelauty-unchecked">未收费</span>
-                                <span class="labelauty-checked">未收费</span>
-                            </label>
-                        </li>
-                        <li class="radio-list">
-                            <input type="radio" name="is_charge" class="labelauty" id="charge-true" value="1" style="display: none;">
-                            <label for="charge-true">
-                                <span class="labelauty-unchecked">已收费</span>
-                                <span class="labelauty-checked">已收费</span>
-                            </label>
-                        </li>
-                    </ul>
-                </div>
-                <div class="form-group">
-                    <label for="apply_date">预约时间：</label>
-                    <input placeholder="" id="apply_date" name="apply_date_str" data-enable-time="true" data-time_24hr="true" class="form-control flatpickr flatpickr-input"  style="width: 120px">
-                </div>
-                <div class="form-group">
-                    <label for="hospital">医院名称：</label>
-                    <select name="hospital" class="form-control" id="hospital" style="width:100px">
-                        <option value="">全部</option>
-                        {foreach name="hospital" item="model"}
-                        <option value="{$model.id}">{$model.name}</option>
-                        {/foreach}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="keywords">关键词：</label>
-                    <input name="keywords" class="form-control" id="keywords" style="width:150px" value=""/>
-                </div>
-                {if condition="authority('ApplySelect')"}
-                <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
-                {/if}
-            </form>
-        </div>
+                <form action="" class="form-inline" method="post" id="main-form">
+                    <div class="form-group">
+                        <label for="apply_type">申请类型：</label>
+                        <ul class="radio-group" id="apply_type">
+                            <li class="radio-list">
+                                <input type="radio" name="apply_type" class="labelauty" id="type-all" value="" style="display: none;" checked>
+                                <label for="type-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_type" class="labelauty" id="type-normal" value="1" style="display: none;">
+                                <label for="type-normal">
+                                    <span class="labelauty-unchecked">普通</span>
+                                    <span class="labelauty-checked">普通</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_type" class="labelauty" id="type-urgent" value="2" style="display: none;">
+                                <label for="type-urgent">
+                                    <span class="labelauty-unchecked">紧急</span>
+                                    <span class="labelauty-checked">紧急</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_type">申请项目：</label>
+                        <ul class="radio-group" id="apply_project">
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project-all" value="" style="display: none;" checked>
+                                <label for="project-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project1" value="1" style="display: none;">
+                                <label for="project1">
+                                    <span class="labelauty-unchecked">咨询</span>
+                                    <span class="labelauty-checked">咨询</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project2" value="2" style="display: none;">
+                                <label for="project2">
+                                    <span class="labelauty-unchecked">住院</span>
+                                    <span class="labelauty-checked">住院</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project3" value="3" style="display: none;">
+                                <label for="project3">
+                                    <span class="labelauty-unchecked">手术</span>
+                                    <span class="labelauty-checked">手术</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="apply_project" class="labelauty" id="project4" value="4" style="display: none;">
+                                <label for="project4">
+                                    <span class="labelauty-unchecked">其他</span>
+                                    <span class="labelauty-checked">其他</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">处理状态：</label>
+                        <ul class="radio-group" id="status">
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-all" value="" style="display: none;" checked>
+                                <label for="status-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-wait" value="1" style="display: none;">
+                                <label for="status-wait">
+                                    <span class="labelauty-unchecked">待处理</span>
+                                    <span class="labelauty-checked">待处理</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-more" value="2" style="display: none;">
+                                <label for="status-more">
+                                    <span class="labelauty-unchecked">处理中</span>
+                                    <span class="labelauty-checked">处理中</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-success" value="3" style="display: none;">
+                                <label for="status-success">
+                                    <span class="labelauty-unchecked">成功</span>
+                                    <span class="labelauty-checked">成功</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="status" class="labelauty" id="status-fail" value="4" style="display: none;">
+                                <label for="status-fail">
+                                    <span class="labelauty-unchecked">失败</span>
+                                    <span class="labelauty-checked">失败</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <br><br>
+                    <div class="form-group">
+                        <label for="is_charge">收费状态：</label>
+                        <ul class="radio-group" id="is_charge">
+                            <li class="radio-list">
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-all" value="" style="display: none;" checked>
+                                <label for="charge-all">
+                                    <span class="labelauty-unchecked">全部</span>
+                                    <span class="labelauty-checked">全部</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-false" value="0" style="display: none;">
+                                <label for="charge-false">
+                                    <span class="labelauty-unchecked">未收费</span>
+                                    <span class="labelauty-checked">未收费</span>
+                                </label>
+                            </li>
+                            <li class="radio-list">
+                                <input type="radio" name="is_charge" class="labelauty" id="charge-true" value="1" style="display: none;">
+                                <label for="charge-true">
+                                    <span class="labelauty-unchecked">已收费</span>
+                                    <span class="labelauty-checked">已收费</span>
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_date">预约时间：</label>
+                        <input placeholder="" id="apply_date" name="apply_date_str" data-enable-time="false" data-time_24hr="false" class="form-control flatpickr flatpickr-input"  style="width: 120px">
+                    </div>
+                    <div class="form-group">
+                        <label for="hospital">医院名称：</label>
+                        <select name="hospital" class="form-control" id="hospital" style="width:100px">
+                            <option value="">全部</option>
+                            {foreach name="hospital" item="model"}
+                            <option value="{$model.id}">{$model.name}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="keywords" >
+                            关键词：
+                            <i class="fa fa-question-circle" aria-hidden="true"
+                               data-toggle="popover" title="关键词搜索提示"
+                               data-content="您可以输入医院名称、医生姓名、联系方式来搜索您感兴趣的申请信息。"
+                               data-delay='{"show": 500, "hide": 500 }' data-trigger="hover"></i>
+                        </label>
+                        <input name="keywords" class="form-control" id="keywords" style="width:150px" value=""/>
+                    </div>
+                    {if condition="authority('ApplySelect')"}
+                    <a class="btn btn-info" href="javascript:;" onclick="submit()">查询</a>
+                    {/if}
+                </form>
+            </div>
             <div class="list-btns">
                 {if condition="authority('ApplyCreate')"}
                 <div class="btn-group">
@@ -274,6 +280,7 @@
     var vm = new Vue({
         el: '#apply',
         data: {
+            role: 0,
             list: [],
             params: {},
             check_all: false,
@@ -291,7 +298,7 @@
             window: 6
         },
         mounted: function () {
-            $(".flatpickr").flatpickr({time_24hr:true, readonly: false});
+            $(".flatpickr").flatpickr({time_24hr:false, readonly: false});
         },
         updated: function () {
             this.fore_pages = [];
@@ -464,6 +471,7 @@
         vm.resetParams();
         $.post('__PRO_PATH__/Apply/getApplyList', vm.params, function (res) {
             if (res.error_code == 0) {
+                vm.role = res.role;
                 vm.total = res.total;
                 vm.pages = Math.ceil(res.total / vm.per_page);
                 vm.current_page = res.current_page;

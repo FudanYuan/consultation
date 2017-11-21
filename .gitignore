@@ -2,4 +2,4 @@
 /.gitignore
 /runtime/temp
 /runtime/log
-runtime/cache/
+/runtime/cache/
