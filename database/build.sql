@@ -106,8 +106,8 @@ CREATE TABLE `consultation_hospital` (
 
 
 INSERT INTO `consultation_hospital` (`name`, `master`, `phone`, `url`, `email`, `address`,  `postcode`, `type`, `level`, `info`, `honor`, `role`, `status`, `create_time`, `update_time`) VALUES
-('中南大学湘雅医院', '张三', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市天心区', '471500', '综合医院', '三甲', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL),
-('县级医院', '李四', '0731-12345628', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市芙蓉区', '471500', '眼科医院', '一级', '暂无详细信息', '暂无详细信息', 2, 1, 1503037656, NULL);
+('中南大学湘雅二医院', '中南大学湘雅二医院院长', '0731-12345678', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市天心区', '471500', '综合医院', '三甲', '暂无详细信息', '暂无详细信息', 1, 1, 1503037656, NULL),
+('XX医院', 'XX医院院长', '0731-12345628', 'http://www.baidu.com', '123445@csd.com', '湖南省长沙市芙蓉区', '471500', '眼科医院', '一级', '暂无详细信息', '暂无详细信息', 2, 1, 1503037656, NULL);
 
 
 # Dump of table consultation_office

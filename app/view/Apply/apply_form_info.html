@@ -1,0 +1,191 @@
+<table class="table" style="width: auto;">
+    <tr>
+        <td colspan="9" style="font-weight: 900; font-size: large; color: #8B6420;">眼科医联体远程诊疗平台会诊单</td>
+    </tr>
+    <tr>
+        <td>编号</td>
+        <td colspan="2">{{apply_info.id}}</td>
+        <td>会诊类型</td>
+        <td colspan="2">
+            {{apply_info.apply_type | getApplyType}}
+        </td>
+        <td>预约日期</td>
+        <td colspan="3">{{apply_info.apply_date | moment('yyyy年M月d日 hh:mm', apply_info.apply_date)}}</td>
+    </tr>
+    <tr>
+        <td>会诊医院</td>
+        <td colspan="3">{{target_hospital_info.name}}</td>
+        <td>会诊科室</td>
+        <td>
+            {{target_office_info.name}}
+        </td>
+        <td>会诊医生</td>
+        <td colspan="2">
+            {{target_doctor_info.name}}
+        </td>
+    </tr>
+    <tr>
+        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">申请信息</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td>申请单位</td>
+        <td colspan="5">{{source_hospital_info.name}}</td>
+        <td>申请类型</td>
+        <td colspan="2">{{apply_info.apply_type | getApplyType}}</td>
+    </tr>
+    <tr>
+        <td>申请人</td>
+        <td colspan="2" >{{source_doctor_info.name}}</td>
+        <td>联系电话</td>
+        <td colspan="2" >{{source_doctor_info.phone}}</td>
+        <td>填表日期</td>
+        <td colspan="2">{{apply_info.create_time | moment}}</td>
+    </tr>
+
+    <!-- 患者信息 -->
+    <tr>
+        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">患者信息</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td>身份证号</td>
+        <td colspan="3">
+            {{patient_info.ID_number}}
+        </td>
+        <td>姓名</td>
+        <td colspan="2">
+            {{patient_info.name}}
+        </td>
+        <td>性别</td>
+        <td>
+            {{patient_info.gender | getGender}}
+        </td>
+    </tr>
+    <tr>
+        <td>年龄</td>
+        <td>{{patient_info.age}}</td>
+
+        <td>联系方式</td>
+        <td colspan="2" >
+            {{patient_info.phone}}
+        </td>
+
+        <td>
+            附件下载
+            <i class="fa fa-question-circle" aria-hidden="true"
+               data-toggle="popover" title="提示"
+               data-content="辅助检查图片压缩包下载！"
+               data-delay='{"show": 500, "hide": 500 }' data-trigger="hover"></i>
+        </td>
+        <td colspan="3">
+            <a :href="patient_info.files_path" :title="patient_info.files_path_origin" target="_blank">
+                {{patient_info.files_path_origin}}
+            </a>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">简要病情</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td>眼病类型</td>
+        <td colspan="2" style="text-align: left; height: auto;">
+            {{patient_info.ill_type | getIllType}}
+        </td>
+
+        <td>视力(左/右)</td>
+        <td>
+            {{patient_info.vision_left}}
+        </td>
+        <td>
+            {{patient_info.vision_right}}
+        </td>
+
+        <td>眼压(左/右)</td>
+        <td>
+            {{patient_info.pressure_left}}
+        </td>
+        <td>
+            {{patient_info.pressure_right}}
+        </td>
+    </tr>
+    <tr></tr>
+
+    <tr>
+        <td rowspan="4">辅助检查(图)</td>
+        <td colspan="2" rowspan="4">
+            <a :href="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :title="patient_info.exam_img_origin" data-lighter>
+                <img :src="patient_info.exam_img != '' ? patient_info.exam_img : '__PUBLIC__/images/img_none.png'" :alt="patient_info.exam_img_origin">
+            </a>
+        </td>
+
+        <td rowspan="4">局部病变图(左眼)</td>
+        <td colspan="2" rowspan="4">
+            <a :href="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :title="patient_info.eye_photo_left_origin" data-lighter>
+                <img :src="patient_info.eye_photo_left != '' ? patient_info.eye_photo_left : '__PUBLIC__/images/img_none.png'" :alt="patient_info.eye_photo_left_origin">
+            </a>
+        <td rowspan="4">局部病变图(左眼)</td>
+        <td colspan="2" rowspan="4">
+            <a :href="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :title="patient_info.eye_photo_right_origin" data-lighter>
+                <img :src="patient_info.eye_photo_right != '' ? patient_info.eye_photo_right : '__PUBLIC__/images/img_none.png'" :alt="patient_info.eye_photo_right_origin">
+            </a>
+        </td>
+    </tr>
+    <tr></tr>
+    <tr></tr>
+    <tr></tr>
+    <tr>
+        <td colspan="9" style="text-align: left; height: auto;">
+            &nbsp;&nbsp;&nbsp;&nbsp;简要病情详情：{{patient_info.ill_state}}
+        </td>
+    </tr>
+
+    <!---->
+
+    <tr>
+        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">初步诊断</td>
+    </tr>
+    <tr></tr>
+    <tr>
+        <td colspan="9" style="text-align: left; height: auto;">&nbsp;&nbsp;&nbsp;&nbsp;{{patient_info.diagnose_state}}</td>
+    </tr>
+
+    <tr>
+        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊要求及目的</td>
+    </tr>
+    <tr></tr>
+
+    <tr>
+        <td colspan="9" style="text-align: left; height: auto;">&nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_goal}}</td>
+    </tr>
+    <tr>
+        <td colspan="9" rowspan="2" style="font-size: medium; font-weight: bold; text-align: left">会诊单位意见</td>
+    </tr>
+    <tr></tr>
+
+    <tr>
+        <td colspan="9" style="text-align: left; height: auto; padding: 20px;">
+            <template v-if="apply_info.status == 3 || apply_info.status == 4">
+                &nbsp;&nbsp;&nbsp;&nbsp;{{apply_info.consultation_result}}
+            </template>
+        </td>
+    </tr>
+    <tr>
+        <td>会诊医生签字</td>
+        <td colspan="2">
+            <template v-if="apply_info.status == 3 || apply_info.status == 4">
+                {{target_doctor_info.name}}
+            </template>
+        </td>
+        <td>会诊日期</td>
+        <td colspan="2">
+            <template v-if="apply_info.status == 3 || apply_info.status == 4">
+                {{apply_info.update_time | moment}}
+            </template>
+        </td>
+        <td>会诊费用</td>
+        <td colspan="2">{{apply_info.price}}元</td>
+    </tr>
+</table>

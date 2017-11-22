@@ -30,11 +30,11 @@
 
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医院logo：</label>
-                    <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="logo" style="max-height: 80px;max-width: 80px"src="{$Hospital.logo?? '__PUBLIC__/images/profile/profile1.jpg'}">
+                    <div class="col-sm-4">
+                        <img id="logo" style="max-height: 80px;max-width: 80px; display: none" src="{$Hospital.logo?? ''}">
                         <br/>
                         <div id="upload_logo">
-                            <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
+                            <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1; top: -10px;">
                                 <i class="fa fa-camera fa-lg"></i>
                             </a>
                         </div>
@@ -189,6 +189,7 @@
                 onUploaded: function (up, file, result) {
                     var res = JSON.parse(result.response);
                     $('#logo').attr('src',res.result.file);
+                    $('#logo').show();
                     $("input[name='logo']").val(res.result.file);
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
@@ -201,12 +202,12 @@
             createNewApply: function () {
                 getParams();
                 $.post('__PRO_PATH__/Hospital/create', vm.params, function (res) {
-                    if (res.error_code == 2) {
+                    if (res.error_code == 0) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
                         popWarn('新建成功','__PRO_PATH__/Hospital/index');
-                    } else if (res.error_code == 0) {
+                    } else if (res.error_code == 1) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
