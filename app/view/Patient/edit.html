@@ -12,34 +12,34 @@
             <form class="form-horizontal" method="post" id="new-apply-form">
 
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
-                    <label for="patient_name" class="col-sm-2 control-label">患者姓名：</label>
+                    <label for="name" class="col-sm-2 control-label">患者姓名：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_name" value="{$patient.name}" placeholder="请输入患者姓名" id="patient_name">
+                        <input class="form-control" type="text" name="name" value="{$patient.name}" placeholder="请输入患者姓名" id="name">
                         <p class="help-block">{{errors.name}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group',errors.ID_number!='' ? 'has-error':'']" >
-                    <label for="patient_ID_number" class="col-sm-2 control-label">身份证号：</label>
+                    <label for="ID_number" class="col-sm-2 control-label">身份证号：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_ID_number" value="{$patient.ID_number}" placeholder="请输入患者身份证号" id="patient_ID_number">
+                        <input class="form-control" type="text" name="ID_number" value="{$patient.ID_number}" placeholder="请输入患者身份证号" id="ID_number">
                         <p class="help-block">{{errors.ID_number}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group',errors.gender!='' ? 'has-error':'']" >
-                    <label for="patient_gender" class="col-sm-2 control-label">患者性别：</label>
-                    <div class="col-sm-4" id="patient_gender" >
+                    <label for="gender" class="col-sm-2 control-label">患者性别：</label>
+                    <div class="col-sm-4" id="gender" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender1" name="patient_gender" value="1">
+                                <input type="radio" id="patient_gender1" name="gender" value="1">
                                 <label for="patient_gender1"></label>
                             </div>
                             <div class="inline-block vertical-top">男</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender2" name="patient_gender" value="2">
+                                <input type="radio" id="patient_gender2" name="gender" value="2">
                                 <label for="patient_gender2"></label>
                             </div>
                             <div class="inline-block vertical-top">女</div>
@@ -49,68 +49,68 @@
                 </div>
 
                 <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
-                    <label for="patient_age" class="col-sm-2 control-label">患者年龄：</label>
+                    <label for="age" class="col-sm-2 control-label">患者年龄：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_age" value="{$patient.age}" placeholder="请输入年龄" id="patient_age">
+                        <input class="form-control" type="text" name="age" value="{$patient.age}" placeholder="请输入年龄" id="age">
                         <p class="help-block">{{errors.age}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="patient_occupation" class="col-sm-2 control-label">职业：</label>
+                    <label for="occupation" class="col-sm-2 control-label">职业：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_occupation" value="{$patient.occupation}" placeholder="请输入职业" id="patient_occupation">
+                        <input class="form-control" type="text" name="occupation" value="{$patient.occupation}" placeholder="请输入职业" id="occupation">
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.phone != '' ? 'has-error' : '']" >
-                    <label for="patient_phone" class="col-sm-2 control-label">联系方式：</label>
+                    <label for="phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_phone" value="{$patient.phone}" placeholder="请输入联系方式" id="patient_phone">
+                        <input class="form-control" type="text" name="phone" value="{$patient.phone}" placeholder="请输入联系方式" id="phone">
                         <p class="help-block">{{errors.phone}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="patient_email" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="email" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_email" value="{$patient.email}" placeholder="请输入邮箱" id="patient_email">
+                        <input class="form-control" type="text" name="email" value="{$patient.email}" placeholder="请输入邮箱" id="email">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="patient_birthplace" class="col-sm-2 control-label">出生地：</label>
+                    <label for="birthplace" class="col-sm-2 control-label">出生地：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_birthplace" value="{$patient.birthplace}" placeholder="请输入出生地" id="patient_birthplace">
+                        <input class="form-control" type="text" name="birthplace" value="{$patient.birthplace}" placeholder="请输入出生地" id="birthplace">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="patient_address" class="col-sm-2 control-label">现住地：</label>
+                    <label for="address" class="col-sm-2 control-label">现住地：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_address" value="{$patient.address}" placeholder="请输入现居住地" id="patient_address">
+                        <input class="form-control" type="text" name="address" value="{$patient.address}" placeholder="请输入现居住地" id="address">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="patient_work_unit" class="col-sm-2 control-label">工作单位：</label>
+                    <label for="work_unit" class="col-sm-2 control-label">工作单位：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_work_unit" value="{$patient.work_unit}" placeholder="请输入工作单位" id="patient_work_unit">
+                        <input class="form-control" type="text" name="work_unit" value="{$patient.work_unit}" placeholder="请输入工作单位" id="work_unit">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="patient_postcode" class="col-sm-2 control-label">邮编：</label>
+                    <label for="postcode" class="col-sm-2 control-label">邮编：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="patient_postcode" value="{$patient.postcode}" placeholder="请输入邮编" id="patient_postcode">
+                        <input class="form-control" type="text" name="postcode" value="{$patient.postcode}" placeholder="请输入邮编" id="postcode">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
                     <label class="col-sm-2 control-label">身高体重：</label>
                     <div class="col-sm-9">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="patient_height"   value="{$patient.height}" placeholder="身高" id="patient_height">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="patient_weight"   value="{$patient.weight}" placeholder="体重" id="patient_weight">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="height"   value="{$patient.height}" placeholder="身高" id="height">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="weight"   value="{$patient.weight}" placeholder="体重" id="weight">
                     </div>
                 </div>
 
@@ -118,16 +118,16 @@
                 <div :class="['form-group']" >
                     <label class="col-sm-2 control-label">眼睛视力：</label>
                     <div class="col-sm-9">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="patient_vision_left"    value="{$patient.vision_left}" placeholder="左眼视力" id="vision_left">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="patient_vision_right"   value="{$patient.vision_right}" placeholder="右眼视力" id="vision_right">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="patient_pressure_left"  value="{$patient.pressure_left}" placeholder="左眼眼压" id="pressure_left">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="patient_pressure_right" value="{$patient.pressure_right}" placeholder="右眼眼压" id="pressure_right">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="vision_left"    value="{$patient.vision_left}" placeholder="左眼视力" id="vision_left">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="vision_right"   value="{$patient.vision_right}" placeholder="右眼视力" id="vision_right">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="pressure_left"  value="{$patient.pressure_left}" placeholder="左眼眼压" id="pressure_left">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="pressure_right" value="{$patient.pressure_right}" placeholder="右眼眼压" id="pressure_right">
                     </div>
                 </div>
 
                 <!-- -->
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+                <div class="form-group {$errors.eye_photo_left ?= 'has-error'}">
                     <label class="col-sm-2 control-label">左眼照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_left_eye">
@@ -144,7 +144,7 @@
                     </div>
                 </div>
 
-                <div class="form-group {$errors.img ?= 'has-error'}">
+                <div class="form-group {$errors.eye_photo_right ?= 'has-error'}">
                     <label class="col-sm-2 control-label">右眼照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_right_eye">
@@ -178,8 +178,8 @@
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="eyes_ill_type" class="col-sm-2 control-label">眼病类型：</label>
-                    <div class="col-sm-4" id="eyes_ill_type" >
+                    <label for="ill_type" class="col-sm-2 control-label">眼病类型：</label>
+                    <div class="col-sm-4" id="ill_type" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="eyes_ill_type1" name="ill_type" value="1" onclick="clickRadio(this.value)">
@@ -226,9 +226,9 @@
                 </div>
 
                 <div :class="['form-group', errors.ill_state != '' ? 'has-error' : '']" >
-                    <label for="patient_illness_state" class="col-sm-2 control-label">简要病情：</label>
+                    <label for="ill_state" class="col-sm-2 control-label">简要病情：</label>
                     <div class="col-sm-4">
-                        <textarea  class="form-control" type="text" name="patient_illness_state" id="patient_illness_state" placeholder="请输入患者简要病情">{$patient.ill_state}</textarea>
+                        <textarea  class="form-control" type="text" name="ill_state" id="ill_state" placeholder="请输入患者简要病情">{$patient.ill_state}</textarea>
                         <p class="help-block">{{errors.ill_state}}</p>
                     </div>
                 </div>
@@ -237,7 +237,7 @@
                     <label class="col-sm-2 control-label">上传病情文件：</label>
                     <div class="col-sm-4">
                         <div id="filelist">
-                            <div>{$data.img_origin??''}<b></b></div>
+                            <div>{$patient.files_path_origin??''}<b></b></div>
                         </div>
                         <br/>
                         <div id="upload-wrapper">
@@ -333,7 +333,7 @@
             $('#narrator').val('{$patient.narrator??""}');
             $('#main_narrate').val('{$patient.main_narrate??""}');
             $('#in_hospital_time').val('{$patient.in_hospital_time??""}');
-            $("input[name='patient_gender'][value='{$patient.gender?? ''}']").attr("checked",true);
+            $("input[name='gender'][value='{$patient.gender?? ''}']").attr("checked",true);
             $("input[name='ill_type'][value='{$patient.ill_type?? ''}']").attr("checked",true);
             $(".flatpickr").flatpickr({time_24hr:true});
 
@@ -351,7 +351,7 @@
                     var res = JSON.parse(result.response);
                     $("input[name='files_path']").val(res.result.file);
                 },
-                isMulti: false
+                isMulti: true
             });
         myupload({
             container: 'upload_left_eye',

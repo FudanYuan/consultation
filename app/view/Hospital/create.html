@@ -13,17 +13,17 @@
             <form class="form-horizontal" method="post" id="new-apply-form">
 
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
-                    <label for="hospital_name" class="col-sm-2 control-label">医院名称：</label>
+                    <label for="name" class="col-sm-2 control-label">医院名称：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_name" value="" placeholder="请输入医院全称" id="hospital_name">
+                        <input class="form-control" type="text" name="name" value="" placeholder="请输入医院全称" id="name">
                         <p class="help-block">{{errors.name}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.master != '' ? 'has-error' : '']" >
-                    <label for="hospital_master" class="col-sm-2 control-label">院长姓名：</label>
+                    <label for="master" class="col-sm-2 control-label">院长姓名：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_master" value="" placeholder="请输入院长姓名" id="hospital_master">
+                        <input class="form-control" type="text" name="master" value="" placeholder="请输入院长姓名" id="master">
                         <p class="help-block">{{errors.master}}</p>
                     </div>
                 </div>
@@ -31,89 +31,89 @@
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医院logo：</label>
                     <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="logo" style="max-height: 80px;max-width: 80px"src="{$Hospital.hospital_logo?? '__PUBLIC__/images/profile/profile1.jpg'}">
+                        <img id="logo" style="max-height: 80px;max-width: 80px"src="{$Hospital.logo?? '__PUBLIC__/images/profile/profile1.jpg'}">
                         <br/>
                         <div id="upload_logo">
                             <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
                                 <i class="fa fa-camera fa-lg"></i>
                             </a>
                         </div>
-                        <input type="hidden" name="hospital_logo" />
+                        <input type="hidden" name="logo" />
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.phone != '' ? 'has-error' : '']">
-                    <label for="hospital_phone" class="col-sm-2 control-label">联系方式：</label>
+                    <label for="phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_phone" value="" placeholder="请输入医院联系方式" id="hospital_phone">
+                        <input class="form-control" type="text" name="phone" value="" placeholder="请输入医院联系方式" id="phone">
                         <p class="help-block">{{errors.phone}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="hospital_url" class="col-sm-2 control-label">医院网站：</label>
+                    <label for="url" class="col-sm-2 control-label">医院网站：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_url" value="" placeholder="请输入医院网站" id="hospital_url">
+                        <input class="form-control" type="text" name="url" value="" placeholder="请输入医院网站" id="url">
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.email != '' ? 'has-error' : '']" >
-                    <label for="hospital_email" class="col-sm-2 control-label">医院邮箱：</label>
+                    <label for="email" class="col-sm-2 control-label">医院邮箱：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_email" value="" placeholder="请输入医院邮箱" id="hospital_email">
+                        <input class="form-control" type="text" name="email" value="" placeholder="请输入医院邮箱" id="email">
                         <p class="help-block">{{errors.email}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.address != '' ? 'has-error' : '']" >
-                    <label for="hospital_address" class="col-sm-2 control-label">医院地址：</label>
+                    <label for="address" class="col-sm-2 control-label">医院地址：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_address" value="" placeholder="请输入医院地址" id="hospital_address">
+                        <input class="form-control" type="text" name="address" value="" placeholder="请输入医院地址" id="address">
                         <p class="help-block">{{errors.address}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="hospital_postcode" class="col-sm-2 control-label">医院邮编：</label>
+                    <label for="postcode" class="col-sm-2 control-label">医院邮编：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_postcode" value="" placeholder="请输入医院邮编" id="hospital_postcode">
+                        <input class="form-control" type="text" name="postcode" value="" placeholder="请输入医院邮编" id="postcode">
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.type != '' ? 'has-error' : '']" >
-                    <label for="hospital_type" class="col-sm-2 control-label">医院类型：</label>
+                    <label for="type" class="col-sm-2 control-label">医院类型：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_type" value="" placeholder="比如：‘综合类’" id="hospital_type">
+                        <input class="form-control" type="text" name="type" value="" placeholder="比如：‘综合类’" id="type">
                         <p class="help-block">{{errors.type}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.level != '' ? 'has-error' : '']">
-                    <label for="hospital_level" class="col-sm-2 control-label">医院等级：</label>
+                    <label for="level" class="col-sm-2 control-label">医院等级：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_level" value="" placeholder="比如：‘三级甲等’" id="hospital_level">
+                        <input class="form-control" type="text" name="level" value="" placeholder="比如：‘三级甲等’" id="level">
                         <p class="help-block">{{errors.level}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="hospital_info" class="col-sm-2 control-label">医院信息：</label>
+                    <label for="info" class="col-sm-2 control-label">医院信息：</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" type="text" name="hospital_info" value="" placeholder="请输入医院详细信息" id="hospital_info"></textarea>
+                        <textarea class="form-control" type="text" name="info" value="" placeholder="请输入医院详细信息" id="info"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="hospital_honor" class="col-sm-2 control-label">所获荣誉：</label>
+                    <label for="honor" class="col-sm-2 control-label">所获荣誉：</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" type="text" name="hospital_honor" value="" placeholder="请输入所获荣誉奖项" id="hospital_honor"></textarea>
+                        <textarea class="form-control" type="text" name="honor" value="" placeholder="请输入所获荣誉奖项" id="honor"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="hospital_role" class="col-sm-2 control-label">医院角色：</label>
+                    <label for="role" class="col-sm-2 control-label">医院角色：</label>
                     <div class="col-sm-4">
-                        <select name="hospital_role" class="form-control"  id="hospital_role">
+                        <select name="role" class="form-control"  id="role">
                             <option value="不可会诊医院">不可会诊医院</option>
                             <option value="可会诊医院">可会诊医院</option>
                         </select>
@@ -161,6 +161,8 @@
                 ill_type: false
             },
             errors:{
+                email:'',
+                address:'',
                 name:'',
                 master:'',
                 level:'',
@@ -187,7 +189,7 @@
                 onUploaded: function (up, file, result) {
                     var res = JSON.parse(result.response);
                     $('#logo').attr('src',res.result.file);
-                    $("input[name='hospital_logo']").val(res.result.file);
+                    $("input[name='logo']").val(res.result.file);
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
                 },
