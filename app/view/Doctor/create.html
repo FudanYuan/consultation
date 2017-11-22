@@ -12,9 +12,9 @@
             <form class="form-horizontal" method="post" id="new-apply-form">
 
                 <div :class="['form-group', errors.target_office_id != '' ? 'has-error' : '']" >
-                    <label for="office_ids" class="col-sm-2 control-label">所属科室：</label>
+                    <label for="hospital_office_id" class="col-sm-2 control-label">所属科室：</label>
                     <div class="col-sm-4">
-                        <select name="office_ids" class="form-control" onchange="change_hospital()" id="office_ids">
+                        <select name="hospital_office_id" class="form-control" onchange="change_hospital()" id="hospital_office_id">
                             {foreach name="office" item="item"}
                             <option value="{$item.id}">{$item.name}</option>
                             {/foreach}
@@ -23,9 +23,9 @@
                 </div>
 
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
-                    <label for="doctor_name" class="col-sm-2 control-label">医生姓名：</label>
+                    <label for="name" class="col-sm-2 control-label">医生姓名：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_name" value="" placeholder="请输入姓名" id="doctor_name">
+                        <input class="form-control" type="text" name="name" value="" placeholder="请输入姓名" id="name">
                         <p class="help-block">{{errors.name}}</p>
                     </div>
                 </div>
@@ -40,98 +40,96 @@
                                 <i class="fa fa-camera fa-lg"></i>
                             </a>
                         </div>
-                        <input type="hidden" name="doctor_photo" />
+                        <input type="hidden" name="photo" />
                     </div>
                 </div>
 
-                <div :class="['form-group', errors.gender != '' ? 'has-error' : '']" >
-                    <label for="hospital_gender" class="col-sm-2 control-label">医生性别：</label>
-                    <div class="col-sm-4" id="hospital_gender" >
+                <div :class="['form-group', errors.gender!= '' ? 'has-error' : '']" >
+                    <label for="gender" class="col-sm-2 control-label">医生性别：</label>
+                    <div class="col-sm-4" id="gender" >
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender1" name="hospital_gender" value="1">
+                                <input type="radio" id="patient_gender1" name="gender" value="1">
                                 <label for="patient_gender1"></label>
                             </div>
                             <div class="inline-block vertical-top">男</div>
                         </div>
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
-                                <input type="radio" id="patient_gender2" name="hospital_gender" value="2">
+                                <input type="radio" id="patient_gender2" name="gender" value="2">
                                 <label for="patient_gender2"></label>
                             </div>
                             <div class="inline-block vertical-top">女</div>
                         </div>
                         <p class="help-block">{{errors.gender}}</p>
                     </div>
-
                 </div>
 
-
                 <div :class="['form-group', errors.age != '' ? 'has-error' : '']" >
-                    <label for="hospital_age" class="col-sm-2 control-label">年龄：</label>
+                    <label for="age" class="col-sm-2 control-label">年龄：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_age" value="" placeholder="请输入年龄" id="hospital_age">
+                        <input class="form-control" type="text" name="age" value="" placeholder="请输入年龄" id="age">
                         <p class="help-block">{{errors.age}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.position != '' ? 'has-error' : '']" >
-                    <label for="hospital_position" class="col-sm-2 control-label">职称：</label>
+                    <label for="position" class="col-sm-2 control-label">职称：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="hospital_position" value="" placeholder="请输入职称" id="hospital_position">
+                        <input class="form-control" type="text" name="position" value="" placeholder="请输入职称" id="position">
                         <p class="help-block">{{errors.position}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.phone != '' ? 'has-error' : '']" >
-                    <label for="doctor_phone" class="col-sm-2 control-label">联系方式：</label>
+                    <label for="phone" class="col-sm-2 control-label">联系方式：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_phone" value="" placeholder="请输入联系方式" id="doctor_phone">
+                        <input class="form-control" type="text" name="phone" value="" placeholder="请输入联系方式" id="phone">
                         <p class="help-block">{{errors.phone}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group', errors.email != '' ? 'has-error' : '']" >
-                    <label for="doctor_email" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="email" class="col-sm-2 control-label">邮箱：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_email" value="" placeholder="请输入邮箱" id="doctor_email">
+                        <input class="form-control" type="text" name="email" value="" placeholder="请输入邮箱" id="email">
                         <p class="help-block">{{errors.email}}</p>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="doctor_address" class="col-sm-2 control-label">地址：</label>
+                    <label for="address" class="col-sm-2 control-label">地址：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_address" value="" placeholder="请输入地址" id="doctor_address">
+                        <input class="form-control" type="text" name="address" value="" placeholder="请输入地址" id="address">
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="doctor_info" class="col-sm-2 control-label">邮编：</label>
+                    <label for="postcode" class="col-sm-2 control-label">邮编：</label>
                     <div class="col-sm-4">
-                        <input class="form-control" type="text" name="doctor_info" value="" placeholder="请输入邮编" id="doctor_info">
+                        <input class="form-control" type="text" name="postcode" value="" placeholder="请输入邮编" id="postcode">
 
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="doctor_postcode" class="col-sm-2 control-label">详细信息：</label>
+                    <label for="info" class="col-sm-2 control-label">详细信息：</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" type="text" name="doctor_postcode" value="" placeholder="请输入详细信息" id="doctor_postcode"></textarea>
+                        <textarea class="form-control" type="text" name="info" value="" placeholder="请输入详细信息" id="info"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="doctor_honor" class="col-sm-2 control-label">所获荣誉：</label>
+                    <label for="honor" class="col-sm-2 control-label">所获荣誉：</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" type="text" name="doctor_honor" value="" placeholder="请输入所获荣誉奖项" id="doctor_honor"></textarea>
+                        <textarea class="form-control" type="text" name="honor" value="" placeholder="请输入所获荣誉奖项" id="honor"></textarea>
                     </div>
                 </div>
 
                 <div :class="['form-group']" >
-                    <label for="doctor_remark" class="col-sm-2 control-label">备注：</label>
+                    <label for="remark" class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-4">
-                        <textarea class="form-control" type="text" name="doctor_remark" value="" placeholder="例如自己的诊疗特长" id="doctor_remark"></textarea>
+                        <textarea class="form-control" type="text" name="remark" value="" placeholder="例如自己的诊疗特长" id="remark"></textarea>
                     </div>
                 </div>
 
@@ -167,7 +165,6 @@
             vm.seen['ill_type'] = false;
         }
     }
-
 
     var vm = new Vue({
         el: '#new-apply-form',
@@ -205,7 +202,7 @@
                 onUploaded: function (up, file, result) {
                     var res = JSON.parse(result.response);
                     $('#logo').attr('src',res.result.file);
-                    $("input[name='doctor_photo']").val(res.result.file);
+                    $("input[name='photo']").val(res.result.file);
                     chageTitle('上传成功');
                     setTimeout("cancel()", 1000);
                 },

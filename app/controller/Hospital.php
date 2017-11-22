@@ -81,7 +81,7 @@ class Hospital extends Common
     public function create(){
         $params = input('post.');
         if(!empty($params)) {
-            $ret = ['error_code' => 2, 'msg' => '新建成功'];
+            $ret = ['error_code' => 0, 'msg' => '新建成功'];
             $data['name'] = input('post.hospital_name');
             $data['master'] = input('post.hospital_master');
             $data['logo'] = input('post.hospital_logo');
@@ -102,7 +102,7 @@ class Hospital extends Common
             }
             $res = D('Hospital')->addData($data);
             if(!empty($res['errors'])) {
-                $ret['error_code'] = 2;
+                $ret['error_code'] = 1;
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res['errors'];
             }
@@ -144,7 +144,7 @@ class Hospital extends Common
             }
             $res = D('Hospital')->saveData($params['hospital_id'],$data);
             if(!empty($res['errors'])) {
-                $ret['error_code'] = 2;
+                $ret['error_code'] = 1;
                 $ret['msg'] = '编辑失败';
                 $ret['errors'] = $res['errors'];
             }
