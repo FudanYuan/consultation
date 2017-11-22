@@ -79,7 +79,11 @@
                         </div>
                         <div class="smart-widget-body">
                             <div id="chatScroll">
-                                <template v-if="receive_params['current_page'] != 1">
+                                <template v-if="chat.length == 0">
+                                    <a class="col-lg-12" href="javascript:;" style="text-align: center; margin: 10px 0">暂无会话记录</a>
+                                </template>
+
+                                <template v-else-if="receive_params['current_page'] != 1">
                                     <a class="col-lg-12" href="javascript:;" @click="loadMore" style="text-align: center; margin: 10px 0">加载更多···</a>
                                 </template>
 

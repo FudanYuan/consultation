@@ -144,9 +144,13 @@ class Role extends Model{
  		if($res === false) throw new MyException('2', '删除失败');
  		return $res;
  	}
- 	/**
- 	 * 添加角色权限
- 	 */
+
+    /**
+     * 添加角色权限
+     * @param $role_id
+     * @param $action_ids
+     * @return int|string
+     */
  	public function addRoleAction($role_id, $action_ids){
  		$data = [];
  		$time = $_SERVER['REQUEST_TIME'];
@@ -155,9 +159,12 @@ class Role extends Model{
  		}
  		return Db::table('consultation_role_action_admin')->insertAll($data);
  	}
- 	/**
- 	 * 获取角色权限列表
- 	 */
+
+    /**
+     * 获取角色权限列表
+     * @param $role_id
+     * @return array
+     */
  	public function getRoleActions($role_id){
  		return Db::table('consultation_role_action_admin')->where(['role_id' => $role_id, 'status' => 1])->column('action_id');
  	}
@@ -171,9 +178,12 @@ class Role extends Model{
  	public function removeRoleActions($role_id, $action_ids){
  		return Db::table('consultation_role_action_admin')->where(['role_id' => $role_id, 'action_id' => ['in', $action_ids]])->delete();
  	}
- 	/**
- 	 * 根据角色获取操作列表
- 	 */
+
+    /**
+     * 根据角色获取操作列表
+     * @param $role_id
+     * @return array
+     */
  	public function getActionsByRoleId($role_id){
  		if(!$role_id) return [];
  		$res = [];

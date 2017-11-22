@@ -61,20 +61,45 @@ class Apply extends Common
                 $cond_and['a.other_apply_project|e.name|c.name|c.phone'] = ['like','%'. myTrim($keywords) .'%'];
             }
             $cond_and['a.is_green_channel'] = $green_channel;
+
+            // 获取当前用户信息，并判读是否具有会诊权限
             $user_id = $this->getUserId();
             $select = ['b.id as doctor_id, d.role as role'];
             $cond['a.id'] = ['=',$user_id];
             $user_info = D('UserAdmin')->getUserAdmin($select,$cond);
-            $user_doctor_id  = $user_info[0]['doctor_id'];
-            $user_role  = $user_info[0]['role'];
-            $cond_or = "c.id = " . $user_doctor_id
-                . " or a.target_doctor_ids like '%-"
-                . $user_doctor_id . "-%'";
-            $list = D('Apply')->getList($cond_or,$cond_and,[]);
+            $user_role = $user_info[0]['role'];
+
+            if($user_role == 1){ // 具有会诊能力, 显示申请方信息
+                $select = ['a.id as id, b.id as user_id, e.id as doctor_id, e.name as doctor_name,
+                 e.phone as phone, g.id as hospital_id, g.name as hospital_name, apply_type,apply_project,
+                 other_apply_project,is_green_channel,consultation_goal,apply_date,a.status,price,is_charge,
+                 a.create_time'];
+            } else{ // 不具有会诊能力，显示会诊方信息
+                $select = ['a.id as id, b.id as user_id, h.id as doctor_id, h.name as doctor_name,
+                 h.phone as phone, j.id as hospital_id, j.name as hospital_name, apply_type,apply_project,
+                 other_apply_project,is_green_channel,consultation_goal,apply_date,a.status,price,is_charge,
+                 a.create_time'];
+            }
+            $cond_or['a.source_user_id | c.target_user_id'] = $user_id;
+            $apply_info = D('Apply')->getList($select,$cond_or,$cond_and,[]);
+            //  如果一个申请同时申请了多名医生，则需要对结果进行合并
+            $apply_ids = [];
+            $list = [];
+            for($i=0;$i<count($apply_info);$i++){
+                $apply_id = $apply_info[$i]['id'];
+                if(!in_array($apply_id, $apply_ids)){
+                    array_push($apply_ids, $apply_id);
+                    array_push($list, $apply_info[$i]);
+                } else{
+                    $index = array_search($apply_id, $apply_ids);
+                    $list[$index]['doctor_name'] .= '、'.$apply_info[$i]['doctor_name'];
+                    $list[$index]['phone'] .= '、'.$apply_info[$i]['phone'];
+                }
+            }
+
             $page = input('post.current_page',0);
             $per_page = input('post.per_page',0);
             //分页时需要获取记录总数，键值为 total
-
             $ret["role"] = $user_role; // 获取当前医生的角色，是否具有会诊资格
             $ret["total"] = count($list);
             //根据传递过来的分页偏移量和分页量截取模拟分页 rows 可以根据前端的 dataField 来设置
@@ -97,56 +122,50 @@ class Apply extends Common
             $data['source_user_id'] = $this->getUserId();
             $data['apply_project'] = input('post.apply_project', '');
             $data['apply_type'] =input('post.apply_type', '');
-            $data['target_hospital_id'] = input('post.hospital', '');
             $data['is_green_channel'] = input('post.is_green_channel', '');
 
             if (!isset($params['office_ids'])) {
-                $office_ids = [];
+                $hospital_office_ids = [];
             } else{
-                $office_ids = $params['office_ids'];
+                $hospital_office_ids = $params['office_ids'];
             }
 
-            if (!isset($params['doctor_ids'])) {
-                $doctor_ids = [];
-                if(!empty($office_ids)){
-                    $office_ids = [1];
-                    $hospital_id = 1;
-                    $office_ids_implode = implode($office_ids, ',');
+            $data['is_definite_purpose'] = 0;
 
-                    $cond_and['c.id'] = $hospital_id;
-                    $cond_and['d.id'] = ['in', $office_ids_implode];
-                    $doctor_ids_ret = D('Doctor')->getDoctorList([], $cond_and);
-                    for($i=0;$i<count($doctor_ids_ret);$i++){
-                        array_push($doctor_ids, $doctor_ids_ret[$i]['id']);
+            $target_user_ids = [];
+            if (!isset($params['doctor_ids'])) {
+                if(!empty($hospital_office_ids)){
+                    $hospital_office_ids_implode = implode($hospital_office_ids, ',');
+
+                    $select = ['a.id as target_user_id'];
+                    $cond_and['c.id'] = ['in', $hospital_office_ids_implode];
+                    $user_ids_ret = D('UserAdmin')->getUserAdmin($select, $cond_and);
+                    for($i=0;$i<count($user_ids_ret);$i++){
+                        array_push($target_user_ids, $user_ids_ret[$i]['target_user_id']);
                     }
                 }
             }else{
-                $doctor_ids = $params['doctor_ids'];
-            }
-            $data['is_definite_purpose'] = 0;
-            if(!empty($office_ids)){
                 $data['is_definite_purpose'] = 1;
-            }
-
-            $data['target_doctor_ids'] = '-';
-            foreach ($doctor_ids as $id){
-                $data['target_doctor_ids'] = $data['target_doctor_ids'].$id.'-';
-            }
-
-            $data['target_office_ids'] = '-';
-            foreach ($office_ids as $id){
-                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
+                $doctor_ids = $params['doctor_ids'];
+                // 将医生ids转化成用户ids
+                $doctor_ids_implode = implode($doctor_ids, ',');
+                $select = ['a.id as target_user_id'];
+                $cond_and['b.id'] = ['in', $doctor_ids_implode];
+                $user_ids_ret = D('UserAdmin')->getUserAdmin($select, $cond_and);
+                for($i=0;$i<count($user_ids_ret);$i++){
+                    array_push($target_user_ids, $user_ids_ret[$i]['target_user_id']);
+                }
             }
 
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
+            $data['target_user_ids'] = $target_user_ids;
 
             if (!isset($params['patient'])) {
                 $patient = [];
             }else{
                 $patient = $params['patient'];
             }
-
             //如果病患不存在，手动输入
             if (!empty($patient) && !$patient['id']) {
                 $res = D('Patient')->addData($patient);
@@ -167,6 +186,7 @@ class Apply extends Common
                 }
                 $data['patient_id'] = $patient['id'];
             }
+
             $res = D('Apply')->addData($data);
             if(!empty($res['errors'])){
                 $ret['error_code'] = 1;
@@ -216,51 +236,86 @@ class Apply extends Common
         $id = input('post.id');
         $ret = ['error_code' => 0, 'msg' => ''];
 
-        $user_id = $this->getUserId();
-        $apply_info = D('Apply')->getById($id);
+        $select = ['a.id as id, k.id as patient_id, k.ID_number as patient_ID_number,k.name as patient_name, k.gender as patient_gender, 
+                 k.age as patient_age, k.phone as patient_phone, k.vision_left as patient_vision_left, 
+                 k.vision_right as patient_vision_right, k.pressure_left as patient_pressure_left, 
+                 k.pressure_right as patient_pressure_right, k.exam_img as patient_exam_img, 
+                 k.exam_img_origin as patient_exam_img_origin, k.eye_photo_left as patient_eye_photo_left,
+                 k.eye_photo_left_origin as patient_eye_photo_left_origin, k.eye_photo_right as patient_eye_photo_right,
+                 k.eye_photo_right_origin as patient_eye_photo_right_origin, k.ill_type as patient_ill_type, 
+                 k.other_ill_type as patient_other_ill_type, k.ill_state as patient_ill_state,
+                 k.diagnose_state as patient_diagnose_state, k.files_path as patient_files_path,
+                 k.files_path_origin as patient_files_path_origin, e.id as source_doctor_id, e.name as source_doctor_name,
+                 e.phone as source_doctor_phone, g.id as source_hospital_id, g.name as source_hospital_name, 
+                 h.id as target_doctor_id, h.name as target_doctor_name, h.phone as target_doctor_phone, 
+                 j.id as target_hospital_id, j.name as target_hospital_name, l.name as source_office_name,
+                 m.name as target_office_name, apply_type,apply_project, other_apply_project,is_green_channel,consultation_result,
+                 consultation_goal,apply_date,a.status,price,is_charge,a.create_time, a.update_time'];
+        $cond_and['a.id'] =  $id;
+        $all_info = D('Apply')->getList($select, [], $cond_and, []);
 
-        $patient_id = $apply_info['patient_id'];
-        $source_user_id = $apply_info['source_user_id'];
-        // 获取目标医院信息
-        $target_hospital_id = $apply_info['target_hospital_id'];
-        $target_hospital_info = D('Hospital')->getById($target_hospital_id);
-
-        $ret['target_hospital_info'] = $target_hospital_info;
-        $ret['target_doctor_info'] = [];
-        $ret['target_office_info'] = [];
-        $target_doctor_ids = $apply_info['target_doctor_ids'];
-        $target_office_ids = $apply_info['target_office_ids'];
-        $array_target_doctor_id = explode('-',$target_doctor_ids);
-        for($index=0;$index<count($array_target_doctor_id);$index++) {
-            if($array_target_doctor_id[$index] != ''){
-                array_push($ret['target_doctor_info'], D('Doctor')->getById((int)$array_target_doctor_id[$index]));
+        $apply_ids = [];
+        $data = [];
+        for($i=0;$i<count($all_info);$i++){
+            $apply_id = $all_info[$i]['id'];
+            if(!in_array($apply_id, $apply_ids)){
+                array_push($apply_ids, $apply_id);
+                array_push($data, $all_info[$i]);
+            } else{
+                $index = array_search($apply_id, $apply_ids);
+                $data[$index]['target_doctor_name'] .= '、'.$all_info[$i]['target_doctor_name'];
+                $data[$index]['target_doctor_phone'] .= '、'.$all_info[$i]['target_doctor_phone'];
+                if($data[$index]['target_office_name'] != $all_info[$i]['target_office_name']){
+                    $data[$index]['target_office_name'] .= '、'.$all_info[$i]['target_office_name'];
+                }
             }
         }
-        $array_target_office_id = explode('-',$target_office_ids);
-        for($index=0;$index<count($array_target_office_id);$index++) {
-            if($array_target_office_id[$index] != ''){
-                array_push($ret['target_office_info'], D('Office')->getById((int)$array_target_office_id[$index]));
+
+        $apply_info = [];
+        $patient_info = [];
+        $source_hospital_info = [];
+        $source_office_info = [];
+        $source_doctor_info = [];
+        $target_hospital_info = [];
+        $target_doctor_info = [];
+        $target_office_info = [];
+        $data = json_decode($data[0]);
+        foreach ($data as $k => $v){
+            if(strpos($k, 'patient_') !== false){
+                $k = str_replace('patient_', '', $k);
+                $patient_info[$k] = $v;
+            } else if(strpos($k, 'source_hospital_') !== false){
+                $k = str_replace('source_hospital_', '', $k);
+                $source_hospital_info[$k] = $v;
+            } else if(strpos($k, 'source_office_') !== false){
+                $k = str_replace('source_office_', '', $k);
+                $source_office_info[$k] = $v;
+            } else if(strpos($k, 'source_doctor_') !== false){
+                $k = str_replace('source_doctor_', '', $k);
+                $source_doctor_info[$k] = $v;
+            } else if(strpos($k, 'target_hospital_') !== false){
+                $k = str_replace('target_hospital_', '', $k);
+                $target_hospital_info[$k] = $v;
+            } else if(strpos($k, 'target_office_') !== false){
+                $k = str_replace('target_office_', '', $k);
+                $target_office_info[$k] = $v;
+            } else if(strpos($k, 'target_doctor_') !== false){
+                $k = str_replace('target_doctor_', '', $k);
+                $target_doctor_info[$k] = $v;
+            } else{
+                $apply_info[$k] = $v;
             }
         }
-
-        $source_user_info = D('UserAdmin')->getById($source_user_id);
-        $source_doctor_id = $source_user_info['doctor_id'];
-        $source_doctor_info = D('Doctor')->getById($source_doctor_id);
-        $source_hospital_office_id = $source_doctor_info['hospital_office_id'];
-        $source_hospital_office = D('HospitalOffice')->getById($source_hospital_office_id);
-        $source_hospital_id = $source_hospital_office['hospital_id'];
-        $source_office_id = $source_hospital_office['office_id'];
-
-        $source_hospital_info = D('Hospital')->getById($source_hospital_id);
-        $source_office_info = D('Office')->getById($source_office_id);
-
-        $patient_info = D('Patient')->getById($patient_id);
 
         $ret['apply_info'] = $apply_info;
         $ret['patient_info'] = $patient_info;
         $ret['source_hospital_info'] = $source_hospital_info;
         $ret['source_office_info'] = $source_office_info;
         $ret['source_doctor_info'] = $source_doctor_info;
+        $ret['target_hospital_info'] = $target_hospital_info;
+        $ret['target_doctor_info'] = $target_doctor_info;
+        $ret['target_office_info'] = $target_office_info;
+
         $this->jsonReturn($ret);
     }
 
@@ -273,12 +328,13 @@ class Apply extends Common
 
         $target_user_ids = [];
         $user_id = $this->getUserId();
-        $res = D('Apply')->getList(['a.id' => ['in', $ids]], [], []);
+        $select = ['c.target_user_id as target_user_id'];
+        $res = D('Apply')->getList($select,['a.id' => ['in', $ids]], [], []);
         for($i=0;$i<count($res);$i++){
-            array_push($target_user_ids, $res[$i]['user_id']);
+            array_push($target_user_ids, $res[$i]['target_user_id']);
         }
 
-        if(!in_array($user_id, $target_user_ids)){
+        if(in_array($user_id, $target_user_ids)){
             try{
                 $res = D('Apply')->markRead(['id' => ['in', $ids]]);
             }catch(MyException $e){
@@ -431,55 +487,50 @@ class Apply extends Common
             $data['source_user_id'] = $this->getUserId();
             $data['apply_project'] = input('post.apply_project', '');
             $data['apply_type'] =input('post.apply_type', '');
-            $data['target_hospital_id'] = input('post.hospital', '');
             $data['is_green_channel'] = input('post.is_green_channel', '');
+
             if (!isset($params['office_ids'])) {
-                $office_ids = [];
+                $hospital_office_ids = [];
             } else{
-                $office_ids = $params['office_ids'];
+                $hospital_office_ids = $params['office_ids'];
             }
 
-            if (!isset($params['doctor_ids'])) {
-                $doctor_ids = [];
-                if(!empty($office_ids)){
-                    $office_ids = [1];
-                    $hospital_id = 1;
-                    $office_ids_implode = implode($office_ids, ',');
+            $data['is_definite_purpose'] = 0;
 
-                    $cond_and['c.id'] = $hospital_id;
-                    $cond_and['d.id'] = ['in', $office_ids_implode];
-                    $doctor_ids_ret = D('Doctor')->getDoctorList([], $cond_and);
-                    for($i=0;$i<count($doctor_ids_ret);$i++){
-                        array_push($doctor_ids, $doctor_ids_ret[$i]['id']);
+            $target_user_ids = [];
+            if (!isset($params['doctor_ids'])) {
+                if(!empty($hospital_office_ids)){
+                    $hospital_office_ids_implode = implode($hospital_office_ids, ',');
+
+                    $select = ['a.id as target_user_id'];
+                    $cond_and['c.id'] = ['in', $hospital_office_ids_implode];
+                    $user_ids_ret = D('UserAdmin')->getUserAdmin($select, $cond_and);
+                    for($i=0;$i<count($user_ids_ret);$i++){
+                        array_push($target_user_ids, $user_ids_ret[$i]['target_user_id']);
                     }
                 }
             }else{
-                $doctor_ids = $params['doctor_ids'];
-            }
-            $data['is_definite_purpose'] = 0;
-            if(!empty($office_ids)){
                 $data['is_definite_purpose'] = 1;
-            }
-
-            $data['target_doctor_ids'] = '-';
-            foreach ($doctor_ids as $id){
-                $data['target_doctor_ids'] = $data['target_doctor_ids'].$id.'-';
-            }
-
-            $data['target_office_ids'] = '-';
-            foreach ($office_ids as $id){
-                $data['target_office_ids'] = $data['target_office_ids'].$id.'-';
+                $doctor_ids = $params['doctor_ids'];
+                // 将医生ids转化成用户ids
+                $doctor_ids_implode = implode($doctor_ids, ',');
+                $select = ['a.id as target_user_id'];
+                $cond_and['b.id'] = ['in', $doctor_ids_implode];
+                $user_ids_ret = D('UserAdmin')->getUserAdmin($select, $cond_and);
+                for($i=0;$i<count($user_ids_ret);$i++){
+                    array_push($target_user_ids, $user_ids_ret[$i]['target_user_id']);
+                }
             }
 
             $data['consultation_goal'] = input('post.consultation_goal', '');
             $data['other_apply_project'] = input('post.other_apply_project', '');
+            $data['target_user_ids'] = $target_user_ids;
 
             if (!isset($params['patient'])) {
                 $patient = [];
             }else{
                 $patient = $params['patient'];
             }
-
             //如果病患不存在，手动输入
             if (!empty($patient) && !$patient['id']) {
                 $res = D('Patient')->addData($patient);
@@ -500,6 +551,7 @@ class Apply extends Common
                 }
                 $data['patient_id'] = $patient['id'];
             }
+
             $res = D('Apply')->addData($data);
             if(!empty($res['errors'])){
                 $ret['error_code'] = 1;

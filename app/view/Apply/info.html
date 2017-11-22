@@ -39,18 +39,14 @@
                 </tr>
                 <tr>
                     <td>会诊医院</td>
-                    <td colspan="4">{{target_hospital_info.name}}</td>
+                    <td colspan="3">{{target_hospital_info.name}}</td>
                     <td>会诊科室</td>
                     <td>
-                        <template v-for="model in target_office_info">
-                            {{model.name}}&nbsp;&nbsp;
-                        </template>
+                        {{target_office_info.name}}
                     </td>
                     <td>会诊医生</td>
-                    <td>
-                        <template v-for="model in target_doctor_info">
-                            {{model.name}}&nbsp;&nbsp;
-                        </template>
+                    <td colspan="2">
+                        {{target_doctor_info.name}}
                     </td>
                 </tr>
                 <tr>
@@ -198,8 +194,8 @@
                 <tr>
                     <td>会诊医生签字</td>
                     <td colspan="2">
-                        <template v-for="model in target_doctor_info" v-if="apply_info.status == 3 || apply_info.status == 4">
-                            {{model.name}}
+                        <template v-if="apply_info.status == 3 || apply_info.status == 4">
+                            {{target_doctor_info.name}}
                         </template>
                     </td>
                     <td>会诊日期</td>

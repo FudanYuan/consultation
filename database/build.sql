@@ -128,20 +128,20 @@ INSERT INTO `consultation_office` (`name`, `describe`, `status`, `create_time`, 
 ('眼科', '', 1, 1503037656, NULL);
 
 
-# Dump of table consultation_hospital_patient
+# Dump of table consultation_doctor_patient
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `consultation_hospital_patient`;
+DROP TABLE IF EXISTS `consultation_doctor_patient`;
 
-CREATE TABLE `consultation_hospital_patient` (
+CREATE TABLE `consultation_doctor_patient` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `hospital_id` INT DEFAULT NULL COMMENT '医院id,外键',
+  `doctor_id` INT DEFAULT NULL COMMENT '医生id,外键',
   `patient_id` INT DEFAULT NULL COMMENT '患者id,外键',
   `status` TINYINT DEFAULT NULL COMMENT '状态：1->启用；2->关闭',
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
   `update_time` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (hospital_id) REFERENCES consultation_hospital(id),
+  FOREIGN KEY (doctor_id) REFERENCES consultation_doctor(id),
   FOREIGN KEY (patient_id) REFERENCES consultation_patient(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -195,9 +195,10 @@ CREATE TABLE `consultation_doctor` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 INSERT INTO `consultation_doctor` (`hospital_office_id`, `name`, `photo`, `gender`, `age`, `position`, `phone`, `remark`, `address`, `postcode`, `info`, `honor`, `status`, `create_time`, `update_time`) VALUES
-(1, 'Reply', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市天心区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL),
+(1, 'Reply1', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市天心区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL),
+(1, 'Reply2', '', 1, 31, '博导', '13623614251', '暂无', '湖南省长沙市天心区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL),
 (2, 'Apply1', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL),
-(3, 'Apply2', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL);
+(2, 'Apply2', '', 2, 21, '普通医师', '13623614251', '暂无', '湖南省长沙市芙蓉区', '417500', '暂无详细信息', '暂无详细信息', 3, 1503037656, NULL);
 
 
 # Dump of table consultation_apply
@@ -211,9 +212,6 @@ CREATE TABLE `consultation_apply` (
   `source_user_id` INT DEFAULT NULL COMMENT '送诊用户id,外键',
   `apply_type` TINYINT DEFAULT NULL COMMENT '会诊类型：1->正常会诊；2->紧急会诊',
   `is_definite_purpose` TINYINT DEFAULT NULL COMMENT '是否明确意向：0->不明确；1->明确',
-  `target_hospital_id` INT DEFAULT NULL COMMENT '会诊医院id，外键',
-  `target_office_ids` VARCHAR(200) DEFAULT NULL COMMENT '会诊科室ids，可多个',
-  `target_doctor_ids` VARCHAR(200) DEFAULT NULL COMMENT '会诊医生ids，可多个',
   `consultation_goal` TEXT DEFAULT NULL COMMENT '会诊目的',
   `apply_project` TINYINT DEFAULT NULL COMMENT '申请会诊项目:1->咨询;2->住院;3->手术;4->其他',
   `other_apply_project` VARCHAR(1000) DEFAULT NULL COMMENT '其他申请项目',
@@ -226,14 +224,31 @@ CREATE TABLE `consultation_apply` (
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
   `update_time` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (patient_id) REFERENCES consultation_patient(id),
   FOREIGN KEY (source_user_id) REFERENCES consultation_user_admin(id),
-  FOREIGN KEY (target_hospital_id) REFERENCES consultation_hospital(id)
+  FOREIGN KEY (patient_id) REFERENCES consultation_patient(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `consultation_apply` (`patient_id`, `source_user_id`, `apply_type`, `is_definite_purpose`, `target_hospital_id`, `target_office_ids`, `target_doctor_ids`, `consultation_goal`, `apply_project`, `other_apply_project`, `apply_date`, `consultation_result`, `price`, `is_charge`, `status`, `create_time`, `update_time`) VALUES
-(1, 2, 2, 1, 1, '-1-', '-2-3-', '发不过真的是个复杂的是官方代购', 2, '', 1510372800, '但是发达数电分复旦飒风', 1200, 0, 3, 1510378491, 1510372800),
-(1, 3, 2, 1, 1, '-1-', '-2-3-', '浮动工资法国政府多个', 3, '', 1510372800, NULL, 0, 0, 1, 1510379139, NULL);
+INSERT INTO `consultation_apply` (`patient_id`, `source_user_id`, `apply_type`, `is_definite_purpose`, `consultation_goal`, `apply_project`, `other_apply_project`, `apply_date`, `consultation_result`, `price`, `is_charge`, `status`, `create_time`, `update_time`) VALUES
+(1, 3, 2, 1, '发不过真的是个复杂的是官方代购', 2, '', 1510372800, '但是发达数电分复旦飒风', 1200, 0, 3, 1510378491, 1510372800),
+(1, 4, 2, 1, '浮动工资法国政府多个', 3, '', 1510372800, NULL, 0, 0, 1, 1510379139, NULL);
+
+# Dump of table consultation_apply_user
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `consultation_apply_user`;
+
+CREATE TABLE `consultation_apply_user` (
+  `apply_id` INT DEFAULT NULL COMMENT '会诊申请id,外键',
+  `target_user_id` INT DEFAULT NULL COMMENT '会诊用户id,外键',
+  `status` TINYINT DEFAULT NULL COMMENT '状态：1->启用；2->关闭',
+  `create_time` INT DEFAULT NULL COMMENT '创建时间',
+  `update_time` INT DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`apply_id`, `target_user_id`),
+  FOREIGN KEY (target_user_id) REFERENCES consultation_user_admin(id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO `consultation_apply_user` (`apply_id`, `target_user_id`, `status`, `create_time`, `update_time`) VALUES
+(1, 1, 1, 1510378491, 1510372800),
+(2, 1, 1, 1510379139, NULL);
 
 
 # Dump of table consultation_chat
@@ -302,8 +317,9 @@ CREATE TABLE `consultation_user_admin` (
 
 INSERT INTO `consultation_user_admin` (`doctor_id`, `username`, `pass`, `role_id`, `remark`, `status`, `login_time`, `create_time`, `update_time`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
-(2, 'role', '29a7e96467b69a9f5a93332e29e9b0de', 2, '县级医院管理员', 1, NULL, 1510115628, 1510115628),
-(3, 'test', '29a7e96467b69a9f5a93332e29e9b0de', 2, '县级医院管理员', 1, NULL, 1510115628, 1510115628);
+(2, 'admin2', '21232f297a57a5a743894a0e4a801fc3', 1, '附二医院管理员', 1, 1508462059, 1503213456, 1508462059),
+(3, 'role', '29a7e96467b69a9f5a93332e29e9b0de', 2, '县级医院管理员', 1, NULL, 1510115628, 1510115628),
+(4, 'test', '29a7e96467b69a9f5a93332e29e9b0de', 2, '县级医院管理员', 1, NULL, 1510115628, 1510115628);
 
 
 

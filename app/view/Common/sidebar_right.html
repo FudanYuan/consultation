@@ -1,3 +1,4 @@
+{if condition="authority('Chat')"}
 <div class="sidebar-right">
     <div class="sidebar-inner scrollable-sidebar" style="overflow: hidden; width: auto; height: 100%;" id="apply-right">
         <div class="sidebar-header clearfix">
@@ -18,7 +19,7 @@
                         <template v-for="model in normal">
                             <li>
                                 <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
-                                    <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
+                                    <img :src="model.doctor_photo != '' ? model.doctor_photo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
                                     <div class="chat-detail m-left-sm">
                                         <div class="chat-name">
                                             <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
@@ -58,7 +59,7 @@
                         <template v-for="model in green">
                             <li>
                                 <a :href="'__PRO_PATH__/Chat/index?id='+model.apply_id" class="clearfix">
-                                    <img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
+                                    <img :src="model.doctor_photo != '' ? model.doctor_photo : '__PUBLIC__/images/logo_default.png'" :title="model.doctor_name" class="img-circle">
                                     <div class="chat-detail m-left-sm">
                                         <div class="chat-name">
                                             <!--<a :href="'__PRO_PATH__/Doctor/info?id='+model.doctor_id">{{model.doctor_name}}</a>-->
@@ -103,6 +104,9 @@
             fail: true
         },
         mounted: function () {
+            $(function () {
+                getChatList();
+            })
         },
         methods:{
             enter:function(ev){
@@ -143,5 +147,5 @@
             }
         });
     }
-    getChatList();
 </script>
+{/if}

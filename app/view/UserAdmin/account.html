@@ -69,7 +69,9 @@
                             <form class="form-horizontal form-label-left" novalidate=""  id="account-info">
                                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                                     <label class="control-label col-sm-offset-3 col-md-3 col-sm-3 col-xs-12" for="logo">
-                                        <img id="logo" src="{$data.logo ??'__PUBLIC__/images/profile/profile1.jpg'}">
+                                        <a href="{$data.logo ?? ''}" data-lighter>
+                                            <img class="" id="logo" src="{$data.logo ?? ''}">
+                                        </a>
                                         <div id="upload_logo">
                                             <a id="pickfiles_logo" href="javascript:;" style="position: relative;z-index: 1; margin-right: 25px;">选择头像</a>
                                         </div>

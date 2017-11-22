@@ -17,45 +17,60 @@ class Chat extends Common
      */
     public function index(){
         $data = input('get.');
-        $apply_id = input('get.id', -1);
+        $apply_id = input('get.id', '');
+        // 获取当前userId
+        $user_id = $this->getUserId();
+        $select = ['a.id as id, a.source_user_id as source_user_id, 
+            c.target_user_id as target_user_id'];
         $cond_and = [];
-        $cond_and['a.status'] = ['>=', 2];
-        if($apply_id == -1){
-            $apply = D('Apply')->getList([], $cond_and, []);
-            if(count($apply) > 0){
-                $apply_id = $apply[0]['id'];
+        if(!$apply_id){ // 默认打开的apply_id
+            $cond_and['a.status'] = ['>=', 2];
+            $cond_and['a.source_user_id | c.target_user_id'] = $user_id;
+            $apply_info = D('Apply')->getList($select, [], $cond_and, ['a.create_time desc']);
+            if(count($apply_info) > 0){
+                $apply_id = $apply_info[0]['id'];
             } else {
                 return view('', ['error' => '您的会话记录为空，赶紧发起申请，激烈讨论吧!']);
             }
         }
-        // 获取当前userId
-        $source_user_id = $this->getUserId();
-        $apply_info = D('Apply')->getById($apply_id);
-        $target_doctor_ids = $apply_info['target_doctor_ids'];
-        $source_user_id_apply = $apply_info['source_user_id'];
-        if($source_user_id == $source_user_id_apply){
-            $target_user_id = [];
-            $array_target_doctor_id = explode('-',$target_doctor_ids);
-            $target_doctor_ids = [];
-            for($index=0;$index<count($array_target_doctor_id);$index++) {
-                if($array_target_doctor_id[$index] != ''){
-                    array_push($target_doctor_ids, $array_target_doctor_id[$index]);
+
+        $cond_and = [];
+        $cond_and['c.apply_id'] = $apply_id;
+        $apply_info = D('Apply')->getList($select, [], $cond_and, ['a.create_time desc']);
+
+        // 合并相同apply_id
+        $apply_ids = [];
+        $list = [];
+        for($i=0;$i<count($apply_info);$i++){
+            $apply_id_temp = $apply_info[$i]['id'];
+            if(!in_array($apply_id_temp, $apply_ids)){
+                array_push($apply_ids, $apply_id_temp);
+                if($user_id == (int)$apply_info[$i]['target_user_id']){
+                    $apply_info[$i]['target_user_id'] = '0';
+                }
+                array_push($list, $apply_info[$i]);
+            } else{
+                $index = array_search($apply_id_temp, $apply_ids);
+                if($user_id != (int)$apply_info[$i]['target_user_id']){
+                    $list[$index]['target_user_id'] .= '-'.$apply_info[$i]['target_user_id'];
                 }
             }
-            $ids = implode(",",$target_doctor_ids);
-            $select = ['a.id as id'];
-            $cond = ['b.id' => ['in', $ids]];
-            $user_ids = D('UserAdmin')->getUserAdmin($select,$cond);
+        }
 
-            for($i=0;$i<count($user_ids);$i++){
-                array_push($target_user_id, $user_ids[$i]['id']);
-            }
-            $target_user_id = implode("-",$target_user_id);
+        $source_user_id = $list[0]['source_user_id'];
+        $list[0]['target_user_id'] = str_replace('0-', '', $list[0]['target_user_id']);
+        if($user_id == $source_user_id){
+            $target_user_id = $list[0]['target_user_id'];
         }
         else{
-            $target_user_id = $source_user_id_apply;
+            if($list[0]['target_user_id']){
+                $target_user_id = $source_user_id . '-'. $list[0]['target_user_id'];
+            } else{
+                $target_user_id = $source_user_id;
+            }
         }
-        return view('', ['error' => '', 'apply_id' => $apply_id, 'source_user_id' => $source_user_id, 'target_user_id' => $target_user_id,]);
+
+        return view('', ['error' => '', 'apply_id' => $apply_id, 'source_user_id' => $user_id, 'target_user_id' => $target_user_id,]);
     }
 
     /**
@@ -65,14 +80,38 @@ class Chat extends Common
         $params = input('post.');
         $keywords = input('post.search','');
         $ret = ['error_code' => 0, 'msg' => '加载成功'];
-        $user_id = $this->getUserId();
+
         $cond_or = [];
         if($keywords){
-            $cond_or['d.name|f.name|g.name'] = ['like','%'.myTrim($keywords).'%'];
+            $cond_or['f.name|h.name|i.name|j.name|l.name|m.name'] = ['like','%'.myTrim($keywords).'%'];
         }
         // 获取所有的会诊申请记录
-        $select = ['b.id as apply_id, a.status as status, count(*) as count, b.source_user_id as source_user_id, b.target_doctor_ids as target_doctor_ids, c.id as target_user_id, d.id as doctor_id,d.name as doctor_name,
-        f.id as hospital_id, f.name as hospital_name, f.logo as hospital_logo, g.name as target_hospital_name, g.logo as target_hospital_logo, h.name as office, d.photo as logo'];
+        $select = ['b.id as apply_id, 
+        a.status as status, 
+        count(*) as count, 
+        b.source_user_id as source_user_id,
+        c.username as source_user_name,
+        c.logo as source_user_logo,
+        f.id as source_doctor_id,
+        f.name as source_doctor_name,
+        f.photo as source_doctor_photo,
+        h.id as source_hospital_id, 
+        h.name as source_hospital_name, 
+        h.logo as source_hospital_logo, 
+        i.id as source_office_id,
+        i.name as source_office_name,
+       
+        d.target_user_id as target_user_id,
+        e.username as target_user_name,
+        e.logo as target_user_logo,
+        j.id as target_doctor_id,
+        j.photo as target_doctor_photo,
+        j.name as target_doctor_name, 
+        l.id as target_hospital_id,
+        l.name as target_hospital_name, 
+        l.logo as target_hospital_logo'];
+        $cond_and = [];
+        $user_id = $this->getUserId();
         $cond_and['a.target_user_id'] = $user_id;
         $cond_and['a.status'] = ['<>', 2];
         $cond_and['b.status'] = ['<', 3];
@@ -81,54 +120,94 @@ class Chat extends Common
         $cond_and['b.is_green_channel'] = 1;
         $green = D('Chat')->getUserList($select,$cond_or,$cond_and,'a.apply_id, a.status');
 
+        $normal_info = [];
         for($i=0;$i<count($normal);$i++){
-            // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
-            if($normal[$i]['source_user_id'] == $user_id && $normal[$i]['target_doctor_ids']){
-                $normal[$i]['logo'] = $normal[$i]['target_hospital_logo'];
-                $normal[$i]['doctor_name'] = $normal[$i]['target_hospital_name'];
-                $normal[$i]['hospital_name'] = '';
+            if($normal[$i]['source_user_id'] == $user_id){ // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
+                $normal_info_temp = json_decode($normal[$i]);
+                foreach ($normal_info_temp as $k => $v){
+                    if(strpos($k, 'target_') !== false){
+                        $k = str_replace('target_', '', $k);
+                        $normal_info[$i][$k] = $v;
+                    } else if(strpos($k, 'source_') !== false){
+                        continue;
+                    } else {
+                        $normal_info[$i][$k] = $v;
+                    }
+                }
+            } else{ // 如果当前用户不是提出申请一方时，直接显示申请医生的信息
+                $normal_info_temp = json_decode($normal[$i]);
+                foreach ($normal_info_temp as $k => $v){
+                    if(strpos($k, 'source_') !== false){
+                        $k = str_replace('source_', '', $k);
+                        $normal_info[$i][$k] = $v;
+                    } else if(strpos($k, 'target_') !== false){
+                        continue;
+                    } else {
+                        $normal_info[$i][$k] = $v;
+                    }
+                }
             }
         }
 
+        $green_info = [];
         for($i=0;$i<count($green);$i++){
-            // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
-            if($green[$i]['source_user_id'] == $user_id && $green[$i]['target_doctor_ids']){
-                $green[$i]['logo'] = $green[$i]['target_hospital_logo'];
-                $green[$i]['doctor_name'] = $green[$i]['target_hospital_name'];
-                $green[$i]['hospital_name'] = '';
+            if($green[$i]['source_user_id'] == $user_id){ // 如果当前用户是提出申请一方并且会诊医生有多个时，直接显示会诊医院的logo
+                $green_info_temp = json_decode($green[$i]);
+                foreach ($green_info_temp as $k => $v){
+                    if(strpos($k, 'target_') !== false){
+                        $k = str_replace('target_', '', $k);
+                        $green_info[$i][$k] = $v;
+                    } else if(strpos($k, 'source_') !== false){
+                        continue;
+                    } else {
+                        $green_info[$i][$k] = $v;
+                    }
+                }
+            } else{ // 如果当前用户不是提出申请一方时，直接显示申请医生的信息
+                $green_info_temp = json_decode($green[$i]);
+                foreach ($green_info_temp as $k => $v){
+                    if(strpos($k, 'source_') !== false){
+                        $k = str_replace('source_', '', $k);
+                        $green_info[$i][$k] = $v;
+                    } else if(strpos($k, 'target_') !== false){
+                        continue;
+                    } else {
+                        $green_info[$i][$k] = $v;
+                    }
+                }
             }
         }
+
         // 根据apply_id合并
         $normal_ret = [];
         $normal_apply_ids = [];
-        for($i=0; $i<count($normal);$i++){
-            $apply_id_temp = $normal[$i]['apply_id'];
-            $status_temp = $normal[$i]['status'];
-            $normal[$i]['count'] = $status_temp == 0 ? $normal[$i]['count'] : 0;
+        for($i=0; $i<count($normal_info);$i++){
+            $apply_id_temp = $normal_info[$i]['apply_id'];
+            $status_temp = $normal_info[$i]['status'];
+            $normal_info[$i]['count'] = $status_temp == 0 ? $normal_info[$i]['count'] : 0;
             if(!in_array($apply_id_temp, $normal_apply_ids)){
                 array_push($normal_apply_ids, $apply_id_temp);
-                array_push($normal_ret, $normal[$i]);
+                array_push($normal_ret, $normal_info[$i]);
             } else{
                 $index = array_search($apply_id_temp, $normal_apply_ids);
-                $normal_ret[$index]['count'] += $normal[$i]['count'];
+                $normal_ret[$index]['count'] += $normal_info[$i]['count'];
             }
         }
 
         $green_ret = [];
         $green_apply_ids = [];
-        for($i=0; $i<count($green);$i++){
-            $apply_id_temp = $green[$i]['apply_id'];
-            $status_temp = $green[$i]['status'];
-            $green[$i]['count'] = $status_temp == 0 ? $green[$i]['count'] : 0;
+        for($i=0; $i<count($green_info);$i++){
+            $apply_id_temp = $green_info[$i]['apply_id'];
+            $status_temp = $green_info[$i]['status'];
+            $green_info[$i]['count'] = $status_temp == 0 ? $green_info[$i]['count'] : 0;
             if(!in_array($apply_id_temp, $green_apply_ids)){
                 array_push($green_apply_ids, $apply_id_temp);
-                array_push($green_ret, $green[$i]);
+                array_push($green_ret, $green_info[$i]);
             } else{
                 $index = array_search($apply_id_temp, $green_apply_ids);
-                $green_ret[$index]['count'] += $green[$i]['count'];
+                $green_ret[$index]['count'] += $green_info[$i]['count'];
             }
         }
-
         $ret['normal'] = $normal_ret;
         $ret['green'] = $green_ret;
         $this->jsonReturn($ret);

@@ -39,18 +39,14 @@
                 </tr>
                 <tr>
                     <td>会诊医院</td>
-                    <td colspan="4">{{target_hospital_info.name}}</td>
+                    <td colspan="3">{{target_hospital_info.name}}</td>
                     <td>会诊科室</td>
                     <td>
-                        <template v-for="model in target_office_info">
-                            {{model.name}}&nbsp;&nbsp;
-                        </template>
+                        {{target_office_info.name}}
                     </td>
                     <td>会诊医生</td>
-                    <td>
-                        <template v-for="model in target_doctor_info">
-                            {{model.name}}&nbsp;&nbsp;
-                        </template>
+                    <td colspan="2">
+                        {{target_doctor_info.name}}
                     </td>
                 </tr>
                 <tr>

@@ -7,6 +7,7 @@
 namespace app\model;
 
 use think\Model;
+use think\Db;
 
 class Apply extends Model{
     protected $table = 'consultation_apply';
@@ -34,24 +35,29 @@ class Apply extends Model{
 
     /**
      * 获取申请信息列表
+     * @param string $select
      * @param array $cond_or
      * @param array $cond_and
      * @param array $order
      * @return mixed
      */
-    public function getList($cond_or=[],$cond_and=[],$order=[]){
+    public function getList($select='*',$cond_or=[],$cond_and=[],$order=[]){
         if(!isset($cond_and['a.status'])){
             $cond_and['a.status'] = ['<>', 0];
         }
-        $res = $this->alias('a')->field('a.id as id,b.id as user_id, e.id as hospital_id,e.logo as hospital_logo,
-                e.name as hospital_name,c.id as doctor_id,c.name as doctor_name,
-                c.phone as phone,f.name as hospital_name_target, apply_type,apply_project,other_apply_project,is_green_channel,
-                consultation_goal,apply_date,a.status,price,is_charge,a.create_time')
+        $res = $this->alias('a')->field($select)
             ->join('consultation_user_admin b','b.id = a.source_user_id')
-            ->join('consultation_doctor c','c.id = b.doctor_id')
-            ->join('consultation_hospital_office d','d.id = c.hospital_office_id')
-            ->join('consultation_hospital e','e.id = d.hospital_id')
-            ->join('consultation_hospital f','f.id = a.target_hospital_id')
+            ->join('consultation_apply_user c','c.apply_id = a.id')
+            ->join('consultation_user_admin d','d.id = c.target_user_id')
+            ->join('consultation_doctor e','e.id = b.doctor_id')
+            ->join('consultation_hospital_office f','f.id = e.hospital_office_id')
+            ->join('consultation_hospital g','g.id = f.hospital_id')
+            ->join('consultation_doctor h','h.id = d.doctor_id')
+            ->join('consultation_hospital_office i','i.id = h.hospital_office_id')
+            ->join('consultation_hospital j','j.id = i.hospital_id')
+            ->join('consultation_patient k','k.id = a.patient_id')
+            ->join('consultation_office l','l.id = f.office_id')
+            ->join('consultation_office m','m.id = i.office_id')
             ->where($cond_and)
             ->where($cond_or)
             ->order($order)
@@ -96,12 +102,48 @@ class Apply extends Model{
         $ret['errors'] = $errors;
         if(empty($errors)){
             $data['status'] = 1;
-            $data['create_time'] = time();
-            $this->save($data);
+            $data['create_time'] = $_SERVER['REQUEST_TIME'];
+
+            $target_user_ids = $data['target_user_ids'];
+            unset($data['target_user_ids']);
+
+            Db::startTrans();
+            $flag = true;
+            $apply_id = Db::table('consultation_apply')->insertGetId($data);
+            if($apply_id){
+                // to do
+                $lines = $this->addApplyUser($target_user_ids, $apply_id);
+                if($lines != count($target_user_ids)){
+                    $errors['msg'] = '添加行数不相等';
+                    $flag = false;
+                }
+            }else{
+                $errors['msg'] = '申请新建失败';
+                $flag = false;
+            }
+            if($flag){
+                Db::commit();
+            }else{
+                Db::rollback();
+            }
         }
         return $ret;
     }
 
+    /**
+     * 添加角色权限
+     * @param $target_user_ids
+     * @param $apply_id
+     * @return int|string
+     */
+    public function addApplyUser($target_user_ids, $apply_id){
+        $data = [];
+        $time = $_SERVER['REQUEST_TIME'];
+        foreach($target_user_ids as $v){
+            array_push($data, ['apply_id' => $apply_id, 'target_user_id' => $v, 'status' => 1, 'create_time' => $time, 'update_time' => $time]);
+        }
+        return Db::table('consultation_apply_user')->insertAll($data);
+    }
 
     /**
      * 批量增加会诊申请
@@ -148,7 +190,7 @@ class Apply extends Model{
         $ret['errors'] = $errors;
         if(empty($errors)){
             if(!isset($data['update_time'])){
-                $data['update_time'] = time();
+                $data['update_time'] = $_SERVER['REQUEST_TIME'];
             }
             $this->save($data, ['id' => $id]);
         }
@@ -162,7 +204,7 @@ class Apply extends Model{
      * @throws MyException
      */
     public function markRead($cond = []){
-        $res = $this->save(['status' => 2, 'update_time' => time()], $cond);
+        $res = $this->save(['status' => 2, 'update_time' => $_SERVER['REQUEST_TIME']], $cond);
         if($res === false) throw new MyException('2', '标记失败');
         return $res;
     }
@@ -220,7 +262,7 @@ class Apply extends Model{
             $errors['apply_type'] = '申请类型不能为空';
         }
         if(isset($data['consultation_goal']) && !$data['consultation_goal']){
-            $errors['consultation_goal'] = '诊疗目的不能为空';
+            $errors['consultation_goal'] = '会诊要求及目的不能为空';
         }
         if(isset($data['apply_date']) && !$data['apply_date']){
             $errors['apply_date'] = '申请时间不能为空';

@@ -44,16 +44,11 @@
                     <tr>
                         <td>会诊科室</td>
                         <td colspan="2">
-                            <template v-for="model in target_office_info">
-                                {{model.name}}&nbsp;&nbsp;
-                            </template>
+                            {{target_office_info.name}}
                         </td>
-
                         <td>会诊医生</td>
                         <td colspan="2">
-                            <template v-for="model in target_doctor_info">
-                                {{model.name}}&nbsp;&nbsp;
-                            </template>
+                            {{target_doctor_info.name}}
                         </td>
 
                         <td>预约日期</td>
@@ -130,12 +125,10 @@
                         <td>附件上传</td>
                         <td colspan="3">
                             <div class="['form-group', errors.files_path != '' ? 'has-error' : '']" >
+                                <a  :href="patient.files_path" :title="patient.files_path_origin" target="_blank">
+                                    {{patient.files_path_origin}}
+                                </a>
                                 <div id="filelist">
-                                    <div>
-                                        <a :href="patient.files_path" :title="patient.files_path_origin" target="_blank">
-                                            {{patient.files_path_origin}}
-                                        </a>
-                                    </div>
                                 </div>
                                 <div id="upload_file_path">
                                     <a id="pickfiles" href="javascript:;">选择文件</a>
@@ -192,7 +185,7 @@
                         <td rowspan="2">辅助检查(图)</td>
                         <td colspan="2" rowspan="4">
                             <div :class="['form-group', errors.exam_img != '' ? 'has-error' : '']" >
-                                <a :href="patient.exam_img" title="patient.exam_img_origin" data-lighter>
+                                <a :href="patient.exam_img" :title="patient.exam_img_origin" data-lighter>
                                     <img id="exam_img" :src="patient.exam_img" :title="patient.exam_img_origin">
                                 </a>
 
@@ -209,7 +202,7 @@
                         <td rowspan="4">局部病变图(左眼)</td>
                         <td colspan="2" rowspan="4">
                             <div :class="['form-group', errors.eye_photo_left != '' ? 'has-error' : '']" >
-                                <a :href="patient.eye_photo_left" title="patient.eye_photo_left_origin" data-lighter>
+                                <a :href="patient.eye_photo_left" :title="patient.eye_photo_left_origin" data-lighter>
                                     <img id="eye_photo_left" :src="patient.eye_photo_left" :title="patient.eye_photo_left_origin">
                                 </a>
                                 <br/>
@@ -224,7 +217,7 @@
                         <td rowspan="4">局部病变图(右眼)</td>
                         <td colspan="2" rowspan="4">
                             <div :class="['form-group', errors.eye_photo_right != '' ? 'has-error' : '']" >
-                                <a :href="patient.eye_photo_right" title="patient.eye_photo_right_origin" data-lighter>
+                                <a :href="patient.eye_photo_right" :title="patient.eye_photo_right_origin" data-lighter>
                                     <img id="eye_photo_right" :src="patient.eye_photo_right" :title="patient.eye_photo_right_origin">
                                 </a>
                                 <br/>
@@ -378,7 +371,7 @@
             myupload({
                 container: 'upload_file_path',
                 browse: 'pickfiles',
-                url: '__PRO_PATH__/Media/upload?dir=member',
+                url: '__PRO_PATH__/Media/upload?dir=import',
                 img_types: 'jpg,gif,png',
                 zip_types: 'zip',
                 filelist: 'filelist',

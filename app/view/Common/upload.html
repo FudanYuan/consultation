@@ -37,7 +37,7 @@
 
             init: {
                 PostInit: function() {
-                    //document.getElementById(config.filelist).innerHTML = '';
+                    document.getElementById(config.filelist).innerHTML = '';
 
                     document.getElementById(config.uploadfiles).onclick = function() {
                         uploader.start();
@@ -126,7 +126,7 @@
                         var index1 = file_name.lastIndexOf(".");
                         var index2 = file_name.length;
                         var postf = file_name.substring(index1,index2);//后缀名
-                        if(postf != '.jpg' && postf != '.png'){
+                        if(postf != '.jpg' && postf != '.png' && postf != '.JPG' && postf != '.PNG'){
                             popWarn('格式不正确！');
                             return;
                         }

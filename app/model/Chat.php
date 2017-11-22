@@ -41,9 +41,10 @@ class Chat extends Model{
 
     /**
      * 获取用户列表
-     * @param $select
-     * @param $cond_or
-     * @param $cond_and
+     * @param string $select
+     * @param array $cond_or
+     * @param array $cond_and
+     * @param string $group
      * @return mixed
      */
     public function getUserList($select = '*',$cond_or = [],$cond_and = [], $group = ''){
@@ -51,13 +52,19 @@ class Chat extends Model{
             $cond_and['a.status'] = ['<>', 2];
         }
         $res = $this->alias('a')->field($select)
-            ->join('consultation_apply b','a.apply_id = b.id')
-            ->join('consultation_user_admin c','b.source_user_id = c.id')
-            ->join('consultation_doctor d','c.doctor_id = d.id')
-            ->join('consultation_hospital_office e','d.hospital_office_id = e.id')
-            ->join('consultation_hospital f','f.id = e.hospital_id')
-            ->join('consultation_hospital g','g.id = b.target_hospital_id')
-            ->join('consultation_office h','h.id = e.office_id')
+            ->join('consultation_apply b','b.id = a.apply_id')
+            ->join('consultation_user_admin c','c.id = a.source_user_id')
+            ->join('consultation_apply_user d','d.apply_id = b.id')
+            ->join('consultation_user_admin e','e.id = d.target_user_id')
+            ->join('consultation_doctor f','f.id = c.doctor_id')
+            ->join('consultation_hospital_office g','g.id = f.hospital_office_id')
+            ->join('consultation_hospital h','h.id = g.hospital_id')
+            ->join('consultation_office i','i.id = g.office_id')
+            ->join('consultation_doctor j','j.id = e.doctor_id')
+            ->join('consultation_hospital_office k','k.id = j.hospital_office_id')
+            ->join('consultation_hospital l','l.id = k.hospital_id')
+            ->join('consultation_office m','m.id = k.office_id')
+            ->join('consultation_patient n','n.id = b.patient_id')
             ->where($cond_and)
             ->where($cond_or)
             ->group($group)
