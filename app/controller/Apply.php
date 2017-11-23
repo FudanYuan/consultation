@@ -58,7 +58,7 @@ class Apply extends Common
                 $cond_and['e.id'] = $hospital;
             }
             if($keywords){
-                $cond_and['a.other_apply_project|e.name|c.name|c.phone'] = ['like','%'. myTrim($keywords) .'%'];
+                $cond_and['a.other_apply_project|e.name|h.name|e.phone|h.phone|g.name|j.name|k.name|k.phone'] = ['like','%'. myTrim($keywords) .'%'];
             }
             $cond_and['a.is_green_channel'] = $green_channel;
 

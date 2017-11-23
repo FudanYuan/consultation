@@ -16,9 +16,9 @@ class UserAdmin extends Common{
 		$data = input('post.');
 		if(!empty($data)){
 			$ret = ['error_code' => 0, 'msg' => '登陆成功'];
-			try{
-                $code = $data['code'];
-			    unset($data['code']);
+            $code = $data['code'];
+            unset($data['code']);
+            try{
 				D('UserAdmin')->dologin($data);
                 $log['user_id'] = $this->getUserId();
                 $log['IP'] = $this->getUserIp();
