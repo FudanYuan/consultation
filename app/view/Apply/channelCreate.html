@@ -263,7 +263,7 @@
     function getParams(){
         vm.params['office_ids'] = [];
         vm.params['doctor_ids'] = [];
-        var data = $('#new-apply-form').serializeArray();
+        var data = $('#apply-form-create').serializeArray();
         $.each(data, function() {
             if(this.name == 'office_ids' || this.name == 'doctor_ids'){
                 vm.params[this.name].push(this.value);
