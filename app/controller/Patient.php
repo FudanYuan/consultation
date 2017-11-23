@@ -98,41 +98,12 @@ class Patient extends Common
         $params = input('post.');
         if(!empty($params)) {
             $ret = ['error_code' => 0, 'msg' => '新建成功'];
-            $data['name'] = input('patient_name');
-            $data['ID_number'] = input('post.patient_ID_number');
-            $data['gender'] = input('post.patient_gender','');
-            $data['age'] = input('post.patient_age');
-            $data['occupation'] = input('post.patient_occupation');
-            $data['phone'] = input('post.patient_phone');
-            $data['email'] = input('post.patient_email');
-            $data['birthplace'] = input('post.patient_birthplace');
-            $data['address'] = input('post.patient_address');
-            $data['work_unit'] = input('post.patient_work_unit');
-            $data['postcode'] = input('post.patient_postcode');
-            $data['height'] = input('post.patient_height');
-            $data['weight'] = input('post.patient_weight');
-            $data['vision_left'] = input('post.patient_vision_left');
-            $data['vision_right'] = input('post.patient_vision_right');
-            $data['pressure_left'] = input('post.patient_pressure_left');
-            $data['pressure_right'] = input('post.patient_pressure_right');
-            $data['exam_img'] = input('post.exam_img');
-            $data['exam_img_origin'] = input('post.exam_img_origin');
-            $data['eye_photo_left'] = input('post.eye_photo_left');
-            $data['eye_photo_right'] = input('post.eye_photo_right');
-            $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
-            $data['eye_photo_right_origin'] = input('post.eye_photo_right_origin');
-            $data['ill_type'] = input('post.patient_eyes_type');
-            $data['other_ill_type'] = input('post.other_ill_type','');
-            $data['ill_state'] = input('post.patient_illness_state');
-            $data['diagnose_state'] = input('post.diagnose_state');
-            $data['files_path'] = input('post.files_path');
-            $data['files_path_origin'] = input('post.files_path_origin');
-            $data['in_hospital_time'] = input('post.in_hospital_time');
-            $data['narrator'] = input('post.narrator');
-            $data['main_narrate'] = input('post.main_narrate');
-            $data['in_hospital_time'] = strtotime($data['in_hospital_time']);
-            $res = D('Patient')->addData($data);
+            $gender = input('post.gender','');
+            $in_hospital_time = input('post.in_hospital_time');
+            $params['gender'] = $gender;
+            $params['in_hospital_time'] = strtotime($in_hospital_time);
             $ret['params'] = $params;
+            $res = D('Patient')->addData($params);
             if(!empty($res['errors'])) {
                 $ret['error_code'] = 1;
                 $ret['msg'] = '新建失败';
@@ -152,60 +123,20 @@ class Patient extends Common
             $params = input('post.');
             $patient = D('Patient')->getById($id);
             if(!empty($params)){
-                $ret = ['error_code' => 0, 'msg' => '编辑成功'];
-                $data['name'] = input('patient_name');
-                $data['ID_number'] = input('post.patient_ID_number');
-                $data['gender'] = input('post.patient_gender','');
-                $data['age'] = input('post.patient_age');
-                $data['occupation'] = input('post.patient_occupation');
-                $data['phone'] = input('post.patient_phone');
-                $data['email'] = input('post.patient_email');
-                $data['birthplace'] = input('post.patient_birthplace');
-                $data['address'] = input('post.patient_address');
-                $data['work_unit'] = input('post.patient_work_unit');
-                $data['postcode'] = input('post.patient_postcode');
-                $data['height'] = input('post.patient_height');
-                $data['weight'] = input('post.patient_weight');
-                $data['vision_left'] = input('post.patient_vision_left');
-                $data['vision_right'] = input('post.patient_vision_right');
-                $data['pressure_left'] = input('post.patient_pressure_left');
-                $data['pressure_right'] = input('post.patient_pressure_right');
-                $data['exam_img'] = input('post.exam_img');
-                $data['exam_img_origin'] = input('post.exam_img_origin');
-                $data['eye_photo_left'] = input('post.eye_photo_left');
-                $data['eye_photo_right'] = input('post.eye_photo_right');
-                $data['eye_photo_left_origin'] = input('post.eye_photo_left_origin');
-                $data['eye_photo_right_origin'] = input('post.eye_photo_right_origin');
-                $data['ill_type'] = input('post.ill_type');
-                $data['other_ill_type'] = input('post.other_ill_type','');
-                $data['ill_state'] = input('post.patient_illness_state');
-                $data['diagnose_state'] = input('post.diagnose_state');
-                $data['files_path'] = input('post.files_path');
-                $data['files_path_origin'] = input('post.files_path_origin');
+                $ret = ['error_code' => 1, 'msg' => '编辑成功'];
+                $gender = input('post.gender','');
                 $in_hospital_time = input('post.in_hospital_time');
-                $data['narrator'] = input('post.narrator');
-                $data['main_narrate'] = input('post.main_narrate');
-                $data['in_hospital_time'] = strtotime($in_hospital_time);
-                if(empty($data['eye_photo_left'])){
-                    unset($data['eye_photo_left']);
-                    unset($data['eye_photo_left_origin']);
-                }
-                if(empty($data['eye_photo_right'])){
-                    unset($data['eye_photo_right']);
-                    unset($data['eye_photo_right_origin']);
-                }
-                if(empty($patient)){
-                    unset($data['files_path']);
-                    unset($data['files_path_origin']);
-                }
-                $res = D('Patient')->saveData($params['patient_id'],$data);
+                $params['gender'] = $gender;
+                $params['in_hospital_time'] = strtotime($in_hospital_time);
+                $patient_id = $params['patient_id'];
+                unset($params['patient_id']);
+                $ret['params'] = $params;
+                $res = D('Patient')->saveData($patient_id,$params);
                 if(!empty($res['errors'])) {
                     $ret['error_code'] = 1;
                     $ret['msg'] = '编辑失败';
                     $ret['errors'] = $res['errors'];
                 }
-                $ret['time'] = $data['in_hospital_time'];
-                $ret['time2'] = $in_hospital_time;
                 $this->jsonReturn($ret);
             }else{
                 $in_hospital_time = date('Y-m-d H:i:s',$patient['in_hospital_time']);

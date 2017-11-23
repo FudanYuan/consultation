@@ -399,7 +399,7 @@
             file_size: '10mb',
             onUploaded: function (up, file, result) {
                 var res = JSON.parse(result.response);
-                $('#filelist_left_eye').attr('src',res.result.file);
+                $('#filelist_exam_img').attr('src',res.result.file);
                 $("input[name='exam_img_origin']").val(file.name);
                 $("input[name='exam_img']").val(res.result.file);
             },
