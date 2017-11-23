@@ -28,11 +28,9 @@
             {include file="Apply/apply_form_reply" /}
             <div style="text-align: center;margin: 5px 30px">
                 <a id="form-reply" class="btn btn-success" style="margin: 5px 30px" @click="submitReply(3)">回复</a>
-                <a class="btn btn-primary" style="margin: 5px 0 5px 30px" href="__PRO_PATH__/Chat/index?id={$id}">讨论</a>
-                <i class="fa fa-question-circle" aria-hidden="true"
-                   data-toggle="popover" title="提示"
-                   data-content="图片不清晰、申请文件不全? 点击'讨论'，在线沟通。"
-                   data-delay='{"show": 500, "hide": 500 }' data-trigger="hover" style="margin: 5px 30px 5px 0"></i>
+                <a class="btn btn-primary" style="margin: 5px 30px"
+                   data-toggle="tooltip" data-placement="top" title="图片不清晰、申请文件不全? 点击'讨论'，在线沟通。"
+                   href="__PRO_PATH__/Chat/index?id={$id}">讨论</a>
                 <a id="form-reject" class="btn btn-danger" style="margin: 5px 30px" @click="submitReply(4)">拒绝</a>
                 <a class="btn btn-info" style="margin: 5px 30px" href="__PRO_PATH__/Apply/channel">返回</a>
             </div>

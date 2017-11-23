@@ -90,7 +90,7 @@ return [
     // URL参数方式 0 按名称成对解析 1 按顺序解析
     'url_param_type' => 0,
     // 是否开启路由
-    'url_route_on' => false,
+    'url_route_on' => true,
     // 路由配置文件（支持配置多个）
     'route_config_file' => ['route'],
     // 是否强制使用路由
@@ -225,6 +225,17 @@ return [
         'httponly' => '',
         // 是否使用 setcookie
         'setcookie' => true,
+    ],
+
+    'captcha'  => [        // 验证码字符集合3.
+        'codeSet'  => '2345678abcdefhijkmnpqrstuvwxyzABCDEFGHJKLMNPQRTUVWXY',         // 验证码字体大小(px)5.
+        'fontSize' => 28,         // 是否画混淆曲线7.
+        'useCurve' => false,          // 验证码图片高度9.
+        'imageH'   => 50,        // 验证码图片宽度11.
+        'imageW'   => 200,         // 验证码位数13.
+        'length'   => 4,         // 验证成功后是否重置        15.
+        'reset'    => true,
+        'url_route_on' => true,
     ],
 
     //分页配置

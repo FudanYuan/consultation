@@ -17,6 +17,8 @@ class UserAdmin extends Common{
 		if(!empty($data)){
 			$ret = ['error_code' => 0, 'msg' => '登陆成功'];
 			try{
+                $code = $data['code'];
+			    unset($data['code']);
 				D('UserAdmin')->dologin($data);
                 $log['user_id'] = $this->getUserId();
                 $log['IP'] = $this->getUserIp();
@@ -30,6 +32,9 @@ class UserAdmin extends Common{
 				$ret['error_code'] = 1;
 				$ret['msg'] = $e->getMessage();
 			}
+			if(!$this->check_verify($code)){
+                $ret = ['error_code' => 1, 'msg' => '验证码错误'];
+            }
 			$this->jsonReturn($ret);
 		}
 		return view('', []);
@@ -315,6 +320,17 @@ class UserAdmin extends Common{
             $this->jsonReturn($ret);
         }
         $this->jsonReturn($ret);
+    }
+
+    /**
+     * 检测输入的验证码是否正确，$code为用户输入的验证码字符串，$id多个验证码标识
+     * @param $code
+     * @param string $id
+     * @return mixed
+     */
+    private function check_verify($code, $id = ''){
+        $captcha = new \think\captcha\Captcha;
+        return $captcha->check($code, $id);
     }
 }
 ?>

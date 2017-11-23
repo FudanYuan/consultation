@@ -28,6 +28,13 @@
             height: 380px;
             margin: 180px auto;
         }
+
+        #captcha{
+            width: 50%;
+            border-radius: 4px;
+            -moz-border-radius: 4px;
+            -webkit-border-radius: 4px;
+        }
     </style>
 </head>
 <body>
@@ -46,6 +53,13 @@
             <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
                 <input class="form-control input-lg" type="password" placeholder="密码" name="pass" @keyup.13="show($event)"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div>
+                <input style="width: 50%" class="form-control input-lg col-lg-10" type="text" name="code" placeholder="请输入验证码">
+                <img id="captcha" src="{:captcha_src()}" alt="captcha" onClick="this.src='{:captcha_src()}?'+Math.random();" />
             </div>
         </div>
         <div class="form-group">
@@ -82,6 +96,7 @@
         function submit() {
             var username = $('input[name="username"]').val();
             var pass = $('input[name="pass"]').val();
+            var code = $('input[name="code"]').val();
             if (!username) {
                 popWarn('用户名不能为空', '');
                 return;
@@ -90,7 +105,7 @@
                 popWarn('密码不能为空', '');
                 return;
             }
-            $.post('', {username: username, pass: pass}, function (res) {
+            $.post('', {username: username, pass: pass, code: code}, function (res) {
                 if (res.error_code == 0) {
                     window.location.href = '__PRO_PATH__/';
                 } else {
