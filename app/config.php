@@ -186,7 +186,7 @@ return [
         'timeout' => 0,
         'expire' => 0,
         'persistent' => false,
-        'prefix' => 'tax_server:'
+        'prefix' => 'consultation_server:'
     ],
 
     // +----------------------------------------------------------------------
@@ -197,7 +197,7 @@ return [
         // SESSION_ID的提交变量,解决flash上传跨域
         'var_session_id' => '',
         // SESSION 前缀
-        'prefix' => 'tax_session',
+        'prefix' => 'consultation_session',
         // 驱动方式 支持redis memcache memcached
         'type' => 'redis',
         // 是否自动开启 SESSION
@@ -235,7 +235,6 @@ return [
         'imageW'   => 200,         // 验证码位数13.
         'length'   => 4,         // 验证成功后是否重置        15.
         'reset'    => true,
-        'url_route_on' => true,
     ],
 
     //分页配置

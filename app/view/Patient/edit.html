@@ -131,8 +131,8 @@
                     <label class="col-sm-2 control-label">左眼照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_left_eye">
-                            <div>{$patient.eye_photo_left_origin??''}<b></b></div>
                         </div>
+                        <div>{$patient.eye_photo_left_origin??''}<b></b></div>
                         <br/>
                         <div id="upload_left_eye">
                             <a id="pickfiles_left_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
@@ -148,8 +148,8 @@
                     <label class="col-sm-2 control-label">右眼照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_right_eye">
-                            <div>{$patient.eye_photo_right_origin??''}<b></b></div>
                         </div>
+                        <div>{$patient.eye_photo_right_origin??''}<b></b></div>
                         <br/>
                         <div id="upload_right_eye">
                             <a id="pickfiles_right_eye" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
@@ -165,8 +165,8 @@
                     <label class="col-sm-2 control-label">辅助检查照片：</label>
                     <div class="col-sm-4">
                         <div id="filelist_exam_img">
-                            <div>{$patient.exam_img_origin??''}<b></b></div>
                         </div>
+                        <div>{$patient.exam_img_origin??''}<b></b></div>
                         <br/>
                         <div id="exam_img">
                             <a id="pickfiles_exam_img" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
@@ -237,8 +237,8 @@
                     <label class="col-sm-2 control-label">上传病情文件：</label>
                     <div class="col-sm-4">
                         <div id="filelist">
-                            <div>{$patient.files_path_origin??''}<b></b></div>
                         </div>
+                        <div>{$patient.files_path_origin??''}<b></b></div>
                         <br/>
                         <div id="upload-wrapper">
                             <a id="pickfiles" href="javascript:;" style="position: relative;z-index: 1;">选择文件</a>
@@ -399,7 +399,7 @@
             file_size: '10mb',
             onUploaded: function (up, file, result) {
                 var res = JSON.parse(result.response);
-                $('#filelist_left_eye').attr('src',res.result.file);
+                $('#filelist_exam_img').attr('src',res.result.file);
                 $("input[name='exam_img_origin']").val(file.name);
                 $("input[name='exam_img']").val(res.result.file);
             },
