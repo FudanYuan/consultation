@@ -144,7 +144,8 @@
 
     function myMoment(value, formatString) {
         formatString = formatString || 'YYYY-MM-DD HH:mm';
-        return new Date(parseInt(value) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ");
+        var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+        return time;
     }
 
     $('.logout').on('click', function () {
