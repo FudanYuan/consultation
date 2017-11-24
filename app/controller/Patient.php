@@ -151,12 +151,12 @@ class Patient extends Common
      * 删除患者信息
      */
     public function remove(){
-        $ret = ['code' =>0, 'msg' => '删除成功'];
+        $ret = ['error_code' =>0, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
             $res = D('Patient')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
-            $ret['code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '删除失败';
         }
         $this->jsonReturn($ret);

@@ -29,7 +29,7 @@ class Inform extends Common
         $user_id = $this->getUserId();
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
-        $ret = ['errorcode' => 0, 'data' => [], 'msg' => ""];
+        $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
         $cond['target_user_id'] = ['=', $user_id];
         $list = D('Inform')->getList($cond);
         //分页时需要获取记录总数，键值为 total
@@ -44,12 +44,12 @@ class Inform extends Common
      * 删除公告
      */
     public function remove(){
-        $ret = ['code' => 1, 'msg' => '删除成功'];
+        $ret = ['error_code' => 0, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
             $res = D('Inform')->remove(['id' => ['in', $ids]]);
         }catch(MyException $e){
-            $ret['code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '删除失败';
         }
         $this->jsonReturn($ret);

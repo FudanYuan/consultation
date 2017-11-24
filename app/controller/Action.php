@@ -30,11 +30,11 @@ class Action extends Common
      */
     public function create(){
         $params = input('post.');
-        $ret = ['code' => 1, 'msg' => '导入成功'];
+        $ret = ['error_code' => 0, 'msg' => '导入成功'];
         $res = D('JSON')->import($params);
         if(!empty($res['errors'])){
             $ret['errors'] = $res['errors'];
-            $ret['code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '导入失败';
         }else{
             $data = $res['data'];
@@ -63,11 +63,11 @@ class Action extends Common
      * 清空权限表
      */
     public function remove(){
-        $ret = ['code' => 1, 'msg' => '清空成功'];
+        $ret = ['error_code' => 0, 'msg' => '清空成功'];
         try{
             $res = D('Action')->remove();
         }catch(MyException $e){
-            $ret['code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '删除失败';
         }
         $this->jsonReturn($ret);
@@ -80,16 +80,16 @@ class Action extends Common
         try{
             $res = D('Action')->remove();
         }catch(MyException $e){
-            $ret['code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '删除失败';
             $this->jsonReturn($ret);
         }
         $params = input('post.');
-        $ret = ['code' => 1, 'msg' => '导入成功'];
+        $ret = ['error_code' => 0, 'msg' => '导入成功'];
         $res = D('JSON')->import($params);
         if(!empty($res['errors'])){
             $ret['errors'] = $res['errors'];
-            $ret['code'] = 2;
+            $ret['error_code'] = 1;
             $ret['msg'] = '导入失败';
         }else{
             $data = $res['data'];
@@ -97,7 +97,7 @@ class Action extends Common
             // 添加权限
             $res_action = D('Action')->addAllData($data);
             if (!empty($res_action['errors'])) {
-                $ret['code'] = 2;
+                $ret['error_code'] = 1;
                 $ret['msg'] = '新建失败';
                 $ret['errors'] = $res_action['errors'];
                 $this->jsonReturn($ret);

@@ -20,7 +20,7 @@ function popupEdit(config){
 	$('.confirm-do').on('click', function(){
 		$('#confirm-popup').popup('hide');
 		$.post(config.remove, {ids: config.id}, function(res){
-			if(res['code'] == 1){
+			if(res['error_code'] == 1){
 				popWarn(res.msg, config.list);
 			}else{
 				popWarn('删除失败');

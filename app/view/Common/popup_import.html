@@ -46,19 +46,19 @@
             params['file'] = file;
             $.post(config.import, params, function (res) {
                 console.log(JSON.stringify(res));
-                if (res.code == 1) {
+                if (res.error_code == 1) {
                     $('#form-popup').popup('hide');
                     clearFormData();
                     if(config.callback != undefined && config.callback != ''){
                         popWarn(res.msg, config.callback);
                     }
-                } else if(res.code == 2){
+                } else if(res.error_code == 2){
                     $.each(res.errors, function(k, v){
                         var obj = k == 'all' ? $('#import-form-all') : $('#import-form [name="'+k+'"]');
                         obj.siblings('.help-block').html(v);
                         obj.parent().addClass('has-error');
                     });
-                } else if(res.code == 3){
+                } else if(res.error_code == 3){
                     popWarn(res.msg);
                 }
             });

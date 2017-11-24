@@ -226,12 +226,12 @@ class UserAdmin extends Common{
 	 * 批量删除
 	 */
 	public function remove(){
-		$ret = ['code' => 1, 'msg' => '删除成功'];
+		$ret = ['error_code' => 0, 'msg' => '删除成功'];
 		$ids = input('post.ids');
 		try{
 			$res = D('UserAdmin')->remove(['id' => ['in', $ids]]);
 		}catch(MyException $e){
-			$ret['code'] = 2;
+			$ret['error_code'] = 1;
 			$ret['msg'] = '删除失败';
 		}
         $log['user_id'] = $this->getUserId();
