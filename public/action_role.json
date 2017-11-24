@@ -73,6 +73,15 @@
   },
   {
     "id": 10,
+    "name": "通知公告",
+    "tag": "Infom",
+    "pid": 0,
+    "pids": "0",
+    "level": 1
+  },
+
+  {
+    "id": 11,
     "name": "操作权限",
     "tag": "Authority",
     "pid": 1,
@@ -80,57 +89,57 @@
     "level": 2
   },
   {
-    "id": 11,
+    "id": 12,
     "name": "查看",
     "tag": "AuthorityResult",
-    "pid": 10,
-    "pids": "1-10",
-    "level": 3
-  },
-  {
-    "id": 12,
-    "name": "新建",
-    "tag": "AuthorityCreate",
-    "pid": 10,
-    "pids": "1-10",
+    "pid": 11,
+    "pids": "1-11",
     "level": 3
   },
   {
     "id": 13,
-    "name": "删除",
-    "tag": "AuthorityRemove",
-    "pid": 10,
-    "pids": "1-10",
+    "name": "新建",
+    "tag": "AuthorityCreate",
+    "pid": 11,
+    "pids": "1-11",
     "level": 3
   },
   {
     "id": 14,
-    "name": "清空",
-    "tag": "AuthorityClear",
-    "pid": 10,
-    "pids": "1-10",
+    "name": "删除",
+    "tag": "AuthorityRemove",
+    "pid": 11,
+    "pids": "1-11",
     "level": 3
   },
   {
     "id": 15,
-    "name": "导入",
-    "tag": "AuthorityImport",
-    "pid": 10,
-    "pids": "1-10",
+    "name": "清空",
+    "tag": "AuthorityClear",
+    "pid": 11,
+    "pids": "1-11",
     "level": 3
   },
   {
     "id": 16,
+    "name": "导入",
+    "tag": "AuthorityImport",
+    "pid": 11,
+    "pids": "1-11",
+    "level": 3
+  },
+  {
+    "id": 17,
     "name": "导出",
     "tag": "AuthorityExport",
-    "pid": 10,
-    "pids": "1-10",
+    "pid": 11,
+    "pids": "1-11",
     "level": 3
   },
 
 
   {
-    "id": 17,
+    "id": 18,
     "name": "用户角色",
     "tag": "Role",
     "pid": 1,
@@ -138,64 +147,63 @@
     "level": 2
   },
   {
-    "id": 18,
+    "id": 19,
     "name": "查询",
     "tag": "RoleSelect",
-    "pid": 17,
-    "pids": "1-17",
-    "level": 3
-  },
-  {
-    "id": 19,
-    "name": "查看",
-    "tag": "RoleResult",
-    "pid": 17,
-    "pids": "1-17",
+    "pid": 18,
+    "pids": "1-18",
     "level": 3
   },
   {
     "id": 20,
-    "name": "新建",
-    "tag": "RoleCreate",
-    "pid": 17,
-    "pids": "1-17",
+    "name": "查看",
+    "tag": "RoleResult",
+    "pid": 18,
+    "pids": "1-18",
     "level": 3
   },
   {
     "id": 21,
-    "name": "编辑",
-    "tag": "RoleEdit",
-    "pid": 17,
-    "pids": "1-17",
+    "name": "新建",
+    "tag": "RoleCreate",
+    "pid": 18,
+    "pids": "1-18",
     "level": 3
   },
   {
     "id": 22,
-    "name": "删除",
-    "tag": "RoleRemove",
-    "pid": 17,
-    "pids": "1-17",
+    "name": "编辑",
+    "tag": "RoleEdit",
+    "pid": 18,
+    "pids": "1-18",
     "level": 3
   },
   {
     "id": 23,
-    "name": "导入",
-    "tag": "RoleImport",
-    "pid": 17,
-    "pids": "1-17",
+    "name": "删除",
+    "tag": "RoleRemove",
+    "pid": 18,
+    "pids": "1-18",
     "level": 3
   },
   {
     "id": 24,
-    "name": "导出",
-    "tag": "RoleExport",
-    "pid": 17,
-    "pids": "1-17",
+    "name": "导入",
+    "tag": "RoleImport",
+    "pid": 18,
+    "pids": "1-18",
     "level": 3
   },
-
   {
     "id": 25,
+    "name": "导出",
+    "tag": "RoleExport",
+    "pid": 18,
+    "pids": "1-18",
+    "level": 3
+  },
+  {
+    "id": 26,
     "name": "用户设置",
     "tag": "User",
     "pid": 1,
@@ -203,64 +211,64 @@
     "level": 2
   },
   {
-    "id": 26,
+    "id": 27,
     "name": "查询",
     "tag": "UserSelect",
-    "pid": 25,
-    "pids": "1-25",
-    "level": 3
-  },
-  {
-    "id": 27,
-    "name": "查看",
-    "tag": "UserResult",
-    "pid": 25,
-    "pids": "1-25",
+    "pid": 26,
+    "pids": "1-26",
     "level": 3
   },
   {
     "id": 28,
-    "name": "新建",
-    "tag": "UserCreate",
-    "pid": 25,
-    "pids": "1-25",
+    "name": "查看",
+    "tag": "UserResult",
+    "pid": 26,
+    "pids": "1-26",
     "level": 3
   },
   {
     "id": 29,
-    "name": "编辑",
-    "tag": "UserEdit",
-    "pid": 25,
-    "pids": "1-25",
+    "name": "新建",
+    "tag": "UserCreate",
+    "pid": 26,
+    "pids": "1-26",
     "level": 3
   },
   {
     "id": 30,
-    "name": "删除",
-    "tag": "UserRemove",
-    "pid": 25,
-    "pids": "1-25",
+    "name": "编辑",
+    "tag": "UserEdit",
+    "pid": 26,
+    "pids": "1-26",
     "level": 3
   },
   {
     "id": 31,
-    "name": "导入",
-    "tag": "UserImport",
-    "pid": 25,
-    "pids": "1-25",
+    "name": "删除",
+    "tag": "UserRemove",
+    "pid": 26,
+    "pids": "1-26",
     "level": 3
   },
   {
     "id": 32,
+    "name": "导入",
+    "tag": "UserImport",
+    "pid": 26,
+    "pids": "1-26",
+    "level": 3
+  },
+  {
+    "id": 33,
     "name": "导出",
     "tag": "UserExport",
-    "pid": 25,
-    "pids": "1-25",
+    "pid": 26,
+    "pids": "1-26",
     "level": 3
   },
 
   {
-    "id": 33,
+    "id": 34,
     "name": "账户编辑",
     "tag": "AccountEdit",
     "pid": 2,
@@ -268,7 +276,7 @@
     "level": 2
   },
   {
-    "id": 34,
+    "id": 35,
     "name": "更改密码",
     "tag": "AccountPwd",
     "pid": 2,
@@ -276,7 +284,7 @@
     "level": 2
   },
   {
-    "id": 35,
+    "id": 36,
     "name": "查询",
     "tag": "OperationLogSelect",
     "pid": 3,
@@ -284,7 +292,7 @@
     "level": 2
   },
   {
-    "id": 36,
+    "id": 37,
     "name": "查看",
     "tag": "OperationLogResult",
     "pid": 3,
@@ -292,7 +300,7 @@
     "level": 2
   },
   {
-    "id": 37,
+    "id": 38,
     "name": "导出",
     "tag": "OperationLogExport",
     "pid": 3,
@@ -300,7 +308,7 @@
     "level": 2
   },
   {
-    "id": 38,
+    "id": 39,
     "name": "查询",
     "tag": "ApplySelect",
     "pid": 4,
@@ -308,7 +316,7 @@
     "level": 2
   },
   {
-    "id": 39,
+    "id": 40,
     "name": "查看",
     "tag": "ApplyResult",
     "pid": 4,
@@ -316,31 +324,31 @@
     "level": 2
   },
   {
-    "id": 40,
+    "id": 41,
     "name": "详情",
     "tag": "ApplyInfo",
-    "pid": 39,
-    "pids": "4-39",
-    "level": 3
-  },
-  {
-    "id": 41,
-    "name": "回复",
-    "tag": "ApplyReply",
-    "pid": 39,
-    "pids": "4-39",
+    "pid": 40,
+    "pids": "4-40",
     "level": 3
   },
   {
     "id": 42,
-    "name": "讨论",
-    "tag": "ApplyCommunication",
-    "pid": 39,
-    "pids": "4-39",
+    "name": "回复",
+    "tag": "ApplyReply",
+    "pid": 40,
+    "pids": "4-40",
     "level": 3
   },
   {
     "id": 43,
+    "name": "讨论",
+    "tag": "ApplyCommunication",
+    "pid": 40,
+    "pids": "4-40",
+    "level": 3
+  },
+  {
+    "id": 44,
     "name": "新建",
     "tag": "ApplyCreate",
     "pid": 4,
@@ -348,7 +356,7 @@
     "level": 2
   },
   {
-    "id": 44,
+    "id": 45,
     "name": "编辑",
     "tag": "ApplyEdit",
     "pid": 4,
@@ -356,16 +364,23 @@
     "level": 2
   },
   {
-    "id": 45,
+    "id": 46,
     "name": "删除",
     "tag": "ApplyRemove",
     "pid": 4,
     "pids": "4",
     "level": 2
   },
-
   {
-    "id": 46,
+    "id": 47,
+    "name": "导航",
+    "tag": "ApplyNavigation",
+    "pid": 4,
+    "pids": "4",
+    "level": 2
+  },
+  {
+    "id": 48,
     "name": "查询",
     "tag": "ChannelSelect",
     "pid": 5,
@@ -373,7 +388,7 @@
     "level": 2
   },
   {
-    "id": 47,
+    "id": 49,
     "name": "查看",
     "tag": "ChannelResult",
     "pid": 5,
@@ -381,15 +396,31 @@
     "level": 2
   },
   {
-    "id": 48,
+    "id": 50,
     "name": "详情",
     "tag": "ChannelInfo",
-    "pid": 47,
-    "pids": "5-47",
+    "pid": 49,
+    "pids": "5-49",
     "level": 3
   },
   {
-    "id": 49,
+    "id": 51,
+    "name": "回复",
+    "tag": "ChannelReply",
+    "pid": 49,
+    "pids": "5-49",
+    "level": 3
+  },
+  {
+    "id": 52,
+    "name": "讨论",
+    "tag": "ChannelCommunication",
+    "pid": 49,
+    "pids": "5-49",
+    "level": 3
+  },
+  {
+    "id": 53,
     "name": "新建",
     "tag": "ChannelCreate",
     "pid": 5,
@@ -397,7 +428,7 @@
     "level": 2
   },
   {
-    "id": 50,
+    "id": 54,
     "name": "编辑",
     "tag": "ChannelEdit",
     "pid": 5,
@@ -405,7 +436,7 @@
     "level": 2
   },
   {
-    "id": 51,
+    "id": 55,
     "name": "删除",
     "tag": "ChannelRemove",
     "pid": 5,
@@ -414,7 +445,7 @@
   },
 
   {
-    "id": 52,
+    "id": 56,
     "name": "查询",
     "tag": "HospitalSelect",
     "pid": 6,
@@ -422,7 +453,7 @@
     "level": 2
   },
   {
-    "id": 53,
+    "id": 57,
     "name": "查看",
     "tag": "HospitalResult",
     "pid": 6,
@@ -430,15 +461,15 @@
     "level": 2
   },
   {
-    "id": 54,
+    "id": 58,
     "name": "详情",
     "tag": "HospitalInfo",
-    "pid": 53,
-    "pids": "6-53",
+    "pid": 57,
+    "pids": "6-57",
     "level": 3
   },
   {
-    "id": 55,
+    "id": 59,
     "name": "新建",
     "tag": "HospitalCreate",
     "pid": 6,
@@ -446,7 +477,7 @@
     "level": 2
   },
   {
-    "id": 56,
+    "id": 60,
     "name": "编辑",
     "tag": "HospitalEdit",
     "pid": 6,
@@ -454,7 +485,7 @@
     "level": 2
   },
   {
-    "id": 57,
+    "id": 61,
     "name": "删除",
     "tag": "HospitalRemove",
     "pid": 6,
@@ -463,7 +494,7 @@
   },
 
   {
-    "id": 58,
+    "id": 62,
     "name": "查询",
     "tag": "DoctorSelect",
     "pid": 7,
@@ -471,7 +502,7 @@
     "level": 2
   },
   {
-    "id": 59,
+    "id": 63,
     "name": "查看",
     "tag": "DoctorResult",
     "pid": 7,
@@ -479,23 +510,23 @@
     "level": 2
   },
   {
-    "id": 60,
+    "id": 64,
     "name": "详情",
     "tag": "DoctorInfo",
-    "pid": 59,
-    "pids": "7-59",
+    "pid": 63,
+    "pids": "7-63",
     "level": 3
   },
   {
-    "id": 61,
+    "id": 65,
     "name": "所有医生",
     "tag": "DoctorAll",
-    "pid": 59,
-    "pids": "7-59",
+    "pid": 63,
+    "pids": "7-63",
     "level": 3
   },
   {
-    "id": 62,
+    "id": 66,
     "name": "新建",
     "tag": "DoctorCreate",
     "pid": 7,
@@ -503,7 +534,7 @@
     "level": 2
   },
   {
-    "id": 63,
+    "id": 67,
     "name": "编辑",
     "tag": "DoctorEdit",
     "pid": 7,
@@ -511,7 +542,7 @@
     "level": 2
   },
   {
-    "id": 64,
+    "id": 68,
     "name": "删除",
     "tag": "DoctorRemove",
     "pid": 7,
@@ -520,7 +551,7 @@
   },
 
   {
-    "id": 65,
+    "id": 69,
     "name": "查询",
     "tag": "PatientSelect",
     "pid": 8,
@@ -528,7 +559,7 @@
     "level": 2
   },
   {
-    "id": 66,
+    "id": 70,
     "name": "查看",
     "tag": "PatientResult",
     "pid": 8,
@@ -536,47 +567,47 @@
     "level": 2
   },
   {
-    "id": 67,
+    "id": 71,
     "name": "详情",
     "tag": "PatientInfo",
-    "pid": 66,
-    "pids": "8-66",
-    "level": 3
-  },
-  {
-    "id": 68,
-    "name": "所有患者",
-    "tag": "PatientAll",
-    "pid": 66,
-    "pids": "8-66",
-    "level": 3
-  },
-  {
-    "id": 69,
-    "name": "同医院患者",
-    "tag": "PatientHospital",
-    "pid": 66,
-    "pids": "8-66",
-    "level": 3
-  },
-  {
-    "id": 70,
-    "name": "同科室患者",
-    "tag": "PatientOffice",
-    "pid": 66,
-    "pids": "8-66",
-    "level": 3
-  },
-  {
-    "id": 71,
-    "name": "同医生患者",
-    "tag": "PatientDoctor",
-    "pid": 66,
-    "pids": "8-66",
+    "pid": 70,
+    "pids": "8-70",
     "level": 3
   },
   {
     "id": 72,
+    "name": "所有患者",
+    "tag": "PatientAll",
+    "pid": 70,
+    "pids": "8-70",
+    "level": 3
+  },
+  {
+    "id": 73,
+    "name": "同医院患者",
+    "tag": "PatientHospital",
+    "pid": 70,
+    "pids": "8-70",
+    "level": 3
+  },
+  {
+    "id": 74,
+    "name": "同科室患者",
+    "tag": "PatientOffice",
+    "pid": 70,
+    "pids": "8-70",
+    "level": 3
+  },
+  {
+    "id": 75,
+    "name": "同医生患者",
+    "tag": "PatientDoctor",
+    "pid": 70,
+    "pids": "8-70",
+    "level": 3
+  },
+  {
+    "id": 76,
     "name": "新建",
     "tag": "PatientCreate",
     "pid": 8,
@@ -584,7 +615,7 @@
     "level": 2
   },
   {
-    "id": 73,
+    "id": 77,
     "name": "编辑",
     "tag": "PatientEdit",
     "pid": 8,
@@ -592,27 +623,53 @@
     "level": 2
   },
   {
-    "id": 74,
+    "id": 78,
     "name": "删除",
     "tag": "PatientRemove",
     "pid": 8,
     "pids": "8",
     "level": 2
   },
+
+
   {
-    "id": 75,
-    "name": "回复",
-    "tag": "ChannelReply",
-    "pid": 47,
-    "pids": "5-47",
+    "id": 79,
+    "name": "新建",
+    "tag": "InfomCreate",
+    "pid": 10,
+    "pids": "10",
+    "level": 2
+  },
+  {
+    "id": 80,
+    "name": "标为已读",
+    "tag": "InfomMarkRead",
+    "pid": 10,
+    "pids": "10",
+    "level": 2
+  },
+  {
+    "id": 81,
+    "name": "查看",
+    "tag": "InfomResult",
+    "pid": 10,
+    "pids": "10",
+    "level": 2
+  },
+  {
+    "id": 82,
+    "name": "详情",
+    "tag": "InfomInfo",
+    "pid": 81,
+    "pids": "10-81",
     "level": 3
   },
   {
-    "id": 76,
-    "name": "讨论",
-    "tag": "ChannelCommunication",
-    "pid": 47,
-    "pids": "5-47",
-    "level": 3
+    "id": 83,
+    "name": "删除",
+    "tag": "InfomRemove",
+    "pid": 10,
+    "pids": "10",
+    "level": 2
   }
 ]
