@@ -251,7 +251,7 @@
 
                         {include file="Common/nav_inform" }
 
-                        {if condition="authority('ChatNotification')"}
+                        {if condition="authority('Chat')"}
                         <li class="chat-notification">
                             <a href="javascript:;" class="sidebarRight-toggle"><i class="fa fa-comments fa-lg"></i></a>
                             <span class="badge badge-danger bounceIn"><span id="chat_count"></span></span>
@@ -352,8 +352,20 @@
                     </li>
                     {/if}
 
+                    {if condition="authority('Inform')"}
+                    <li class="bg-palette2" id="consultation-nav-inform">
+                        <a href="__PRO_PATH__/Inform/index">
+                            <span class="menu-content block">
+                                <span class="menu-icon"><i class="fa fa-bell fa-lg"></i></span>
+								<span class="text m-left-sm">通知公告</span>
+                            </span>
+                            <span class="menu-content-hover block">Inform</span>
+                        </a>
+                    </li>
+                    {/if}
+
                     {if condition="authority('OperationLog')"}
-                    <li class="bg-palette2" id="consultation-nav-log">
+                    <li class="bg-palette3" id="consultation-nav-log">
                         <a href="__PRO_PATH__/OperationLog/index">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-bookmark-o fa-lg"></i></span>
@@ -365,25 +377,13 @@
                     {/if}
 
                     {if condition="authority('Account')"}
-                    <li class="bg-palette3" id="consultation-nav-account">
+                    <li class="bg-palette4" id="consultation-nav-account">
                         <a href="__PRO_PATH__/UserAdmin/account">
                             <span class="menu-content block">
                                 <span class="menu-icon"><i class="fa fa-user-circle-o fa-lg"></i></span>
 								<span class="text m-left-sm">账户信息</span>
                             </span>
                             <span class="menu-content-hover block">Account</span>
-                        </a>
-                    </li>
-                    {/if}
-
-                    {if condition="authority('Inform')"}
-                    <li class="bg-palette4" id="consultation-nav-inform">
-                        <a href="__PRO_PATH__/Inform/index">
-                            <span class="menu-content block">
-                                <span class="menu-icon"><i class="fa fa-bell fa-lg"></i></span>
-								<span class="text m-left-sm">通知公告</span>
-                            </span>
-                            <span class="menu-content-hover block">Inform</span>
                         </a>
                     </li>
                     {/if}

@@ -74,7 +74,7 @@
   {
     "id": 10,
     "name": "通知公告",
-    "tag": "Infom",
+    "tag": "Inform",
     "pid": 0,
     "pids": "0",
     "level": 1
@@ -635,7 +635,7 @@
   {
     "id": 79,
     "name": "新建",
-    "tag": "InfomCreate",
+    "tag": "InformCreate",
     "pid": 10,
     "pids": "10",
     "level": 2
@@ -643,7 +643,7 @@
   {
     "id": 80,
     "name": "标为已读",
-    "tag": "InfomMarkRead",
+    "tag": "InformMarkRead",
     "pid": 10,
     "pids": "10",
     "level": 2
@@ -651,7 +651,7 @@
   {
     "id": 81,
     "name": "查看",
-    "tag": "InfomResult",
+    "tag": "InformResult",
     "pid": 10,
     "pids": "10",
     "level": 2
@@ -659,7 +659,7 @@
   {
     "id": 82,
     "name": "详情",
-    "tag": "InfomInfo",
+    "tag": "InformInfo",
     "pid": 81,
     "pids": "10-81",
     "level": 3
@@ -667,7 +667,15 @@
   {
     "id": 83,
     "name": "删除",
-    "tag": "InfomRemove",
+    "tag": "InformRemove",
+    "pid": 10,
+    "pids": "10",
+    "level": 2
+  },
+  {
+    "id": 84,
+    "name": "导航",
+    "tag": "InformNavigation",
     "pid": 10,
     "pids": "10",
     "level": 2

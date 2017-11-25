@@ -37,7 +37,7 @@ class Apply extends Common
             $apply_date = input('post.apply_date_str','');
             $hospital = input('post.hospital','');
             $keywords = input('post.keywords','');
-            $green_channel = input('post.is_green_channel', 0);
+            $green_channel = input('post.is_green_channel', -1);
             $cond_and = [];
             if($apply_type){
                 $cond_and['a.apply_type'] = $apply_type;
@@ -60,7 +60,9 @@ class Apply extends Common
             if($keywords){
                 $cond_and['a.other_apply_project|e.name|h.name|e.phone|h.phone|g.name|j.name|k.name|k.phone'] = ['like','%'. myTrim($keywords) .'%'];
             }
-            $cond_and['a.is_green_channel'] = $green_channel;
+            if($green_channel != -1){
+                $cond_and['a.is_green_channel'] = $green_channel;
+            }
 
             // 获取当前用户信息，并判读是否具有会诊权限
             $user_id = $this->getUserId();
@@ -378,7 +380,7 @@ class Apply extends Common
             $data['operation'] = '查看';
             $data['priority'] = 1;
             $data['status'] = 0;
-            $data['url'] = '/Apply/Reply?id=' . $id; // 跳转链接
+            $data['url'] = '/Apply/info?id=' . $id; // 跳转链接
             // 添加Inform
             $res_inform = D('Inform')->addData($data);
             if (!empty($res_inform['errors'])) {
@@ -474,6 +476,7 @@ class Apply extends Common
         if(!empty($data)){
             $ret = ['error_code' => 0, 'msg' => '回复成功'];
             $id = $data['id'];
+            $source_user_id = $data['source_user_id'];
             if($data['status'] == 4){
                 $data = [];
                 $data['id'] = $id;
@@ -486,12 +489,31 @@ class Apply extends Common
                 $ret['error_code'] = 1;
                 $ret['errors'] = $res['errors'];
                 $ret['msg'] = '回复失败';
+                $this->jsonReturn($ret);
             }
+
+            $data = [];
+            $data['type'] = 1; // 提醒类
+            $data['target_user_id'] = $source_user_id;
+            $data['title'] = '#'.$id.'申请有了回复，快来看呀！';
+            $data['content'] = '提醒类信息：' . $data['title'];
+            $data['operation'] = '查看';
+            $data['priority'] = 1;
+            $data['status'] = 0;
+            $data['url'] = '/Apply/channelInfo?id=' . $id; // 跳转链接
+            // 添加Inform
+            $res_inform = D('Inform')->addData($data);
+            if (!empty($res_inform['errors'])) {
+                $ret['error_code'] = 1;
+                $ret['msg'] = '新建失败';
+                $ret['errors'] = $res_inform['errors'];
+            }
+
             $this->jsonReturn($ret);
         }
         $id = input('get.id');
-        $status = D('Apply')->getStatusById($id);
-        return view('', ['id' => $id, 'status' => $status]);
+        $info = D('Apply')->getById($id);
+        return view('', ['id' => $id, 'status' => $info['status'], 'source_user_id' => $info['source_user_id']]);
     }
 
     /**
