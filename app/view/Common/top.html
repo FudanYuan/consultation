@@ -129,11 +129,11 @@
                             </li>
                             {/if}
 
-                            {if condition="authority('Chat')"}
+                            {if condition="authority('Inform')"}
                             <li>
-                                <a href="__PRO_PATH__/Chat/index">
-                                    <i class="fa fa-comments fa-lg"></i>
-                                    <span class="m-left-xs">在线互动</span>
+                                <a href="__PRO_PATH__/Inform/index">
+                                    <i class="fa fa-bell fa-lg"></i>
+                                    <span class="m-left-xs">通知公告</span>
                                 </a>
                             </li>
                             {/if}
@@ -141,8 +141,17 @@
                             {if condition="authority('OperationLog')"}
                             <li>
                                 <a href="__PRO_PATH__/OperationLog/index">
-                                    <i class="fa fa-bookmark-o fa-lg"></i>
+                                    <i class="fa fa-bookmark fa-lg"></i>
                                     <span class="m-left-xs">操作日志</span>
+                                </a>
+                            </li>
+                            {/if}
+
+                            {if condition="authority('Chat')"}
+                            <li>
+                                <a href="__PRO_PATH__/Chat/index">
+                                    <i class="fa fa-comments fa-lg"></i>
+                                    <span class="m-left-xs">在线互动</span>
                                 </a>
                             </li>
                             {/if}
@@ -192,10 +201,20 @@
                                         </a>
                                     </li>
                                     {/if}
+
+                                    {if condition="authority('Inform')"}
+                                    <li>
+                                        <a href="__PRO_PATH__/Inform/index">
+                                            <i class="fa fa-bell fa-lg"></i>
+                                            <span class="m-left-xs">通知公告</span>
+                                        </a>
+                                    </li>
+                                    {/if}
+
                                     {if condition="authority('OperationLog')"}
                                     <li>
                                         <a href="__PRO_PATH__/OperationLog/index">
-                                            <i class="fa fa-bookmark-o fa-lg"></i>
+                                            <i class="fa fa-bookmark fa-lg"></i>
                                             <span class="m-left-xs">操作日志</span>
                                         </a>
                                     </li>
@@ -227,36 +246,12 @@
                                 <i class="fa fa-power-off fa-lg"></i>
                             </a>
                         </li>
-                        {if condition="authority('Apply')"}
-                        <li id="nav-notification">
-                            <a href="#" data-toggle="dropdown"><i class="fa fa-envelope fa-lg"></i></a>
-                            <span class="badge badge-purple bounceIn animation-delay5 active" v-if="total != 0">{{total}}</span>
-                            <ul class="dropdown-menu message pull-right">
-                                <li style="text-align: center"><a>您有<span style="color: red">{{total}}</span>条新申请</a></li>
-                                <template v-if="list.length != 0">
-                                    <template v-for="(model, index) in list">
-                                    <li>
-                                        <a class="clearfix" :href="'__PRO_PATH__/Apply/Reply?id='+model.id">
-                                            <img :src="model.hospital_logo != '' ? 'model.hospital_logo' : '__PUBLIC__/images/img_none.png' " alt="model.hospital_name">
-                                            <div class="detail">
-                                                <strong>{{model.hospital_name}}</strong>
-                                                <p class="no-margin">
-                                                    {{model.consultation_goal | formatText(30, model.consultation_goal)}}
-                                                </p>
-                                                <small class="text-muted" style="margin: 0; color: darkgreen"><i class="fa fa-check text-success"></i>
-                                                    {{model.create_time | formatTime}}
-                                                </small>
-                                            </div>
-                                        </a>
-                                    </li>
-                                    </template>
-                                </template>
-                                <li><a href="__PRO_PATH__/Apply/index">查看所有申请</a></li>
-                            </ul>
-                        </li>
-                        {/if}
 
-                        {if condition="authority('Chat')"}
+                        {include file="Common/nav_apply" }
+
+                        {include file="Common/nav_inform" }
+
+                        {if condition="authority('ChatNotification')"}
                         <li class="chat-notification">
                             <a href="javascript:;" class="sidebarRight-toggle"><i class="fa fa-comments fa-lg"></i></a>
                             <span class="badge badge-danger bounceIn"><span id="chat_count"></span></span>

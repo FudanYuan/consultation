@@ -209,9 +209,10 @@ function testLog($title, $con)
 }
 
 /**
- * 将错误信息添加到错误队列  other main
- * @param unknown $errors
- * @param unknown $error
+ * 将错误信息添加到错误队列
+ * @param $errors
+ * @param $error
+ * @param string $type
  */
 function put_errors(&$errors, $error, $type = 'other')
 {

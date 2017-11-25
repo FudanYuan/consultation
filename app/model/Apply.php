@@ -152,12 +152,13 @@ class Apply extends Model{
      */
     public function addAllData($dataSet){
         $ret = [];
-        foreach ($dataSet as $data) {
+        foreach ($dataSet as &$data) {
             $errors = $this->filterField($data);
             $ret['errors'] = $errors;
             if(!empty($errors)){
                 return $ret;
             }
+            $data['create_time'] = $_SERVER['REQUEST_TIME'];
         }
         $ret['result'] = $this->saveAll($dataSet);
         return $ret;

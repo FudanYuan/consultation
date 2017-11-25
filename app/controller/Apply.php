@@ -70,7 +70,7 @@ class Apply extends Common
             $user_role = $user_info[0]['role'];
 
             if($user_role == 1){ // 具有会诊能力, 显示申请方信息
-                $select = ['a.id as id, b.id as user_id, e.id as doctor_id, e.name as doctor_name,
+                $select = ['a.id as id, b.id as user_id, e.id as doctor_id, e.name as doctor_name, g.logo as hospital_logo, 
                  e.phone as phone, g.id as hospital_id, g.name as hospital_name, apply_type,apply_project,
                  other_apply_project,is_green_channel,consultation_goal,apply_date,a.status,price,is_charge,
                  a.create_time'];
@@ -353,6 +353,8 @@ class Apply extends Common
         if(!empty($data)){
             $ret = ['error_code' => 0, 'msg' => '回复成功'];
             $id = $data['id'];
+            $source_user_id = $data['source_user_id'];
+            unset($data['source_user_id']);
             if($data['status'] == 4){
                 $data = [];
                 $data['id'] = $id;
@@ -365,12 +367,30 @@ class Apply extends Common
                 $ret['error_code'] = 1;
                 $ret['errors'] = $res['errors'];
                 $ret['msg'] = '回复失败';
+                $this->jsonReturn($ret);
+            }
+
+            $data = [];
+            $data['type'] = 1; // 提醒类
+            $data['target_user_id'] = $source_user_id;
+            $data['title'] = '#'.$id.'申请有了回复，快来看呀！';
+            $data['content'] = '提醒类信息：' . $data['title'];
+            $data['operation'] = '查看';
+            $data['priority'] = 1;
+            $data['status'] = 0;
+            $data['url'] = '/Apply/Reply?id=' . $id; // 跳转链接
+            // 添加Inform
+            $res_inform = D('Inform')->addData($data);
+            if (!empty($res_inform['errors'])) {
+                $ret['error_code'] = 1;
+                $ret['msg'] = '新建失败';
+                $ret['errors'] = $res_inform['errors'];
             }
             $this->jsonReturn($ret);
         }
         $id = input('get.id');
-        $status = D('Apply')->getStatusById($id);
-        return view('', ['id' => $id, 'status' => $status]);
+        $info = D('Apply')->getById($id);
+        return view('', ['id' => $id, 'status' => $info['status'], 'source_user_id' => $info['source_user_id']]);
     }
 
     /**

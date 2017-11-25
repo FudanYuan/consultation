@@ -1,0 +1,270 @@
+{if condition="authority('Chat')"}
+{include file="Common/popup_preview" /}
+<!-- 系统通知，用以通知用户系统消息，以及是否有会诊回复 Navigation -->
+<li id="nav-inform">
+    <a href="javascript:;" data-toggle="dropdown" aria-expanded="true">
+        <i class="fa fa-bell fa-lg"></i>
+    </a>
+    <template v-if="total != 0">
+        <span class="badge badge-info bounceIn animation-delay4 active">{{total}}</span>
+    </template>
+    <ul class="dropdown-menu notification dropdown-3 pull-right">
+        <li><a href="javascript:;">您有<span style="color: red">{{total}}</span>条系统消息</a></li>
+        <template v-for="(model, index) in list">
+            <li>
+                <a href="javascript:;" @click="info(index)">
+                    <template v-if="model.type == 1">
+                        <span class="notification-icon bg-info">
+                            <i class="fa fa-info"></i>
+                        </span>
+                    </template>
+                    <template v-else-if="model.type == 2">
+                        <span class="notification-icon bg-primary">
+                            <i class="fa fa-envelope"></i>
+                        </span>
+                    </template>
+                    <template v-else-if="model.type == 3">
+                        <span class="notification-icon bg-warning">
+                            <i class="fa fa-warning"></i>
+                        </span>
+                    </template>
+
+                    <template v-else-if="model.type == 4">
+                        <span class="notification-icon bg-danger">
+                            <i class="fa fa-bolt"></i>
+                        </span>
+                    </template>
+
+                    <template v-else>
+                        <span class="notification-icon bg-primary">
+                            <i class="fa fa-support"></i>
+                        </span>
+                    </template>
+
+                    <span class="m-left-xs">
+                        {{model.title | formatText(30, model.title)}}
+                    </span>
+                    <span class="time text-muted">{{model.create_time | formatTime}}</span>
+                </a>
+            </li>
+        </template>
+
+        <li><a href="__PRO_PATH__/Inform/index">查看所有通知</a></li>
+    </ul>
+</li>
+
+<script>
+    var vm_inform = new Vue({
+        el: '#nav-inform',
+        data: {
+            list: [],
+            params: {},
+            check_all: false,
+            select: [],
+            total: 0,
+            per_page: 10,
+            current_page: 1,
+            pages: 1,
+            fore_omit: false,
+            back_omit: false,
+            fore_pages: [],
+            mid_pages: [],
+            back_pages: [],
+            side: 3,
+            window: 6
+        },
+        updated: function () {
+            this.fore_pages = [];
+            this.mid_pages = [];
+            this.back_pages = [];
+            if(this.pages < this.window + 6){
+                this.fore_omit = false;
+                this.back_omit = false;
+                for(var i=1; i<=this.pages; i++){
+                    this.fore_pages.push(i);
+                }
+            }
+            else if(this.current_page <= this.window){
+                this.fore_omit = false;
+                this.back_omit = true;
+                for(var i=1; i<= this.window + 2; i++){
+                    this.fore_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+            else if(this.current_page > this.pages - this.window){
+                this.fore_omit = true;
+                this.back_omit = false;
+                for(var i=this.pages-(this.window+2); i<= this.pages; i++){
+                    this.back_pages.push(i);
+                }
+                this.fore_pages = [1, 2];
+            }
+            else{
+                this.fore_omit = true;
+                this.back_omit = true;
+                this.fore_pages = [1, 2];
+                for(var i=parseInt(this.current_page) - parseInt(this.side);
+                    i <= parseInt(this.current_page) + parseInt(this.side); i++){
+                    this.mid_pages.push(i);
+                }
+                this.back_pages = [this.pages - 1, this.pages];
+            }
+        },
+        mounted: function () {
+            $(function () {
+                vm_inform.submit();
+            })
+        },
+        methods:{
+            resetParams: function () {
+                this.select = [];
+                this.check_all = false;
+            },
+            // 转到某页
+            gotoPage: function (page) {
+                if(page == this.current_page) return;
+                this.current_page = page;
+                vm_inform.submit();
+            },
+            selectClick: function (id) {
+                if(this.select.indexOf(id) == -1){
+                    this.select.push(id);
+                }
+                else{
+                    this.select.remove(id);
+                }
+                if(this.list.length == this.select.length){
+                    this.check_all = true;
+                } else {
+                    this.check_all = false;
+                }
+            },
+            checkAll: function () {
+                if(!this.check_all){
+                    for(var i=0;i<this.list.length;i++){
+                        var id = this.list[i]['id'];
+                        if(this.select.indexOf(id) == -1){
+                            this.select.push(id);
+                        }
+                    }
+                } else {
+                    this.select = [];
+                }
+                this.check_all = !this.check_all;
+            },
+            info: function (index) {
+                if(this.list[index]['status'] == 0){
+                    $.post('__PRO_PATH__/Inform/markRead', {ids: this.list[index]['id']}, function (res) {
+                        if (res['error_code'] == 0) {
+                            vm_inform.submit();
+                        }
+                    });
+                }
+                if(this.list[index]['url'] != ''){
+                    window.location.href = this.list[index]['url'];
+//                            + '&inform=' + this.list[index]['id'];
+                    return;
+                }
+                popupPreview(this.list[index]);
+            },
+            createInform: function () {
+                window.location.href = '__PRO_PATH__/Inform/create';
+            },
+            markRead: function (id) {
+                var ids = [];
+                if(id.length==0){
+                    ids = this.select;
+                }
+                else{
+                    if(this.select.indexOf(id[0]) == -1){
+                        this.select.push(id[0]);
+                    }
+                    ids = id;
+                }
+                this.select = ids;
+                // 标为已读
+                popupList({
+                    mark: '__PRO_PATH__/Inform/markRead',
+                    ids: vm_inform.select
+                }, function () {
+                    vm_inform.submit();
+                });
+                $('#mark-confirm-popup').popup('show');
+            },
+            remove: function (id) {
+                var ids = [];
+                if(id.length==0){
+                    ids = this.select;
+                }
+                else{
+                    if(this.select.indexOf(id[0]) == -1){
+                        this.select.push(id[0]);
+                    }
+                    ids = id;
+                }
+                this.select = ids;
+                // 删除
+                popupList({
+                    remove: '__PRO_PATH__/Inform/remove',
+                    ids: vm_inform.select
+                }, function () {
+                    vm_inform.submit();
+                });
+                $('#confirm-popup').popup('show');
+            },
+
+            // 获取参数设置
+            getParams: function () {
+                vm_inform.params['status'] = 0;
+                vm_inform.params['per_page'] = vm_inform.per_page;
+                vm_inform.params['current_page'] = vm_inform.current_page;
+            },
+            // 异步提交数据
+            submit: function () {
+                vm_inform.getParams();
+                vm_inform.resetParams();
+                $.post('__PRO_PATH__/Inform/getInformList', vm_inform.params, function (res) {
+                    if (res.error_code == 0) {
+                        vm_inform.total = res.total;
+                        vm_inform.pages = Math.ceil(res.total / vm_inform.per_page);
+                        vm_inform.current_page = res.current_page;
+                        vm_inform.list = res.data;
+                    }
+                });
+            }
+        },
+        filters:{
+            getInformStatus: function (value) {
+                var ret = "";
+                if(value==0){
+                    ret = "未读";
+                }
+                if(value==1){
+                    ret = "已读";
+                }
+                return ret;
+            },
+            formatText: function (text, len) {
+                return cutString(text, len);
+            },
+            formatTime: function (time) {
+                if (!time) return '';
+                var formatTime = '';
+                var curTime = Math.ceil(new Date().getTime() / 1000);
+                var interval = parseInt(curTime) - parseInt(time);
+                if (interval >= 3600 * 24) {
+                    formatTime = new Date(parseInt(time) * 1000).format('yyyy年M月d日 hh:mm');
+                } else if(interval >= 3600) {
+                    formatTime= Math.floor(interval / 3600) + '小时前';
+                } else if(interval >= 60) {
+                    formatTime = Math.floor(interval / 60) + '分钟前';
+                } else {
+                    formatTime = '刚刚';
+                }
+                return formatTime;
+            }
+        }
+    });
+</script>
+{/if}

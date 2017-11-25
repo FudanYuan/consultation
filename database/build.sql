@@ -278,17 +278,17 @@ DROP TABLE IF EXISTS `consultation_inform`;
 
 CREATE TABLE `consultation_inform` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `source_user_id` INT unsigned NOT NULL  COMMENT '外键，发送用户',
+  `type` TINYINT DEFAULT NULL COMMENT '通知类型，1->提醒类；2->公告类；3->警告类；4->错误类；5->其他',
   `target_user_id` INT unsigned NOT NULL  COMMENT '外键，接收用户',
   `title` VARCHAR(200) DEFAULT NULL COMMENT '通知标题',
   `content` text DEFAULT NULL COMMENT '通知内容',
+  `url` VARCHAR(200) DEFAULT '' COMMENT '跳转链接，放在导航栏直接跳转至目的页面',
   `operation` VARCHAR(50) DEFAULT NULL COMMENT '操作',
-  `priority` TINYINT DEFAULT NULL COMMENT '优先级',
+  `priority` TINYINT DEFAULT NULL COMMENT '优先级，1最高',
   `status` TINYINT DEFAULT NULL COMMENT '是否处理：0->未处理；1->已处理, 2->关闭',
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
   `update_time` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
-  FOREIGN KEY (source_user_id) REFERENCES consultation_user_admin(id),
   FOREIGN KEY (target_user_id) REFERENCES consultation_user_admin(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 

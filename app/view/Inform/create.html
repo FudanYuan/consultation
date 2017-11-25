@@ -18,6 +18,48 @@
                     </div>
                 </div>
 
+                <div :class="['form-group', errors.type != '' ? 'has-error' : '']" >
+                    <label for="new-inform-form-type" class="col-sm-2 control-label">通知类型：</label>
+                    <div class="col-sm-4" id="new-inform-form-type" >
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="type1" name="type" value="1">
+                                <label for="type1"></label>
+                            </div>
+                            <div class="inline-block vertical-top">提醒类</div>
+                        </div>
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="type2" name="type" value="2" checked>
+                                <label for="type2"></label>
+                            </div>
+                            <div class="inline-block vertical-top">公告类</div>
+                        </div>
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="type3" name="type" value="3">
+                                <label for="type3"></label>
+                            </div>
+                            <div class="inline-block vertical-top">警告类</div>
+                        </div>
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="type4" name="type" value="4">
+                                <label for="type4"></label>
+                            </div>
+                            <div class="inline-block vertical-top">错误类</div>
+                        </div>
+                        <div class="radio inline-block">
+                            <div class="custom-radio m-right-xs">
+                                <input type="radio" id="type5" name="type" value="5">
+                                <label for="type5"></label>
+                            </div>
+                            <div class="inline-block vertical-top">错误类</div>
+                        </div>
+                    </div>
+                    <p class="help-block">{{errors.type}}</p>
+                </div>
+
                 <div :class="['form-group', errors.priority != '' ? 'has-error' : '']" >
                     <label for="new-inform-form-priority" class="col-sm-2 control-label">优先级别：</label>
                     <div class="col-sm-4" id="new-inform-form-priority" >
@@ -62,6 +104,7 @@
                     <label class="col-sm-2 control-label">通知内容：</label>
                     <span class="help-block">{{errors.content}}</span>
                 </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <script id="editor" type="text/plain" style="width:100%;height:300px;" name="content"></script>
@@ -96,6 +139,7 @@
         data: {
             params: {},
             errors:{
+                type: '',
                 title: '',
                 content: '',
                 priority: '',
@@ -121,9 +165,9 @@
             createNewInform: function () {
                 getParams();
                 $.post('__PRO_PATH__/Inform/create', vm.params, function(res){
-                    if(res.code == 1){
+                    if(res.error_code == 0){
                         popWarn('新建成功', '__PRO_PATH__/Inform/index');
-                    }else if(res.code == 2){
+                    }else if(res.error_code == 1){
                         $.each(res.errors, function(k, v){
                             vm.errors[k] = v;
                         });
@@ -144,8 +188,6 @@
                 vm.params[this.name] = this.value;
             }
         });
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
     }
 </script>
 {else /}
