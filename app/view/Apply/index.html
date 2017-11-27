@@ -362,6 +362,7 @@
                     this.check_all = false;
                 }
             },
+
             checkAll: function () {
                 if(!this.check_all){
                     for(var i=0;i<this.list.length;i++){
@@ -404,8 +405,8 @@
         },
         filters:{
             moment: function (value, formatString) {
-                formatString = formatString || 'YYYY-MM-DD HH:mm';
-                var time=new Date(parseInt(value) * 1000).format('yyyy年M月d日 hh:mm');
+                formatString = formatString || 'yyyy年M月d日 hh:mm';
+                var time=new Date(parseInt(value) * 1000).format(formatString);
                 return time;
             },
             getApplyStatus: function (value) {

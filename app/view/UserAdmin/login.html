@@ -58,7 +58,7 @@
 
         <div class="form-group">
             <div>
-                <input style="width: 50%" class="form-control input-lg col-lg-10" type="text" name="code" placeholder="请输入验证码">
+                <input style="width: 50%" class="form-control input-lg col-lg-10" type="text" name="code" placeholder="请输入验证码" @keyup.13="show($event)">
                 <img id="captcha" src="{:captcha_src()}" alt="captcha" onClick="this.src='{:captcha_src()}?'+Math.random();" />
             </div>
         </div>
@@ -103,6 +103,10 @@
             }
             if (!pass) {
                 popWarn('密码不能为空', '');
+                return;
+            }
+            if (!code) {
+                popWarn('验证码不能为空', '');
                 return;
             }
             $.post('', {username: username, pass: pass, code: code}, function (res) {

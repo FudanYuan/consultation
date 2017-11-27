@@ -6,7 +6,7 @@
  */
 namespace app\controller;
 
-class Media extends Common{
+class Upload extends Common{
     /**
      * 上传多媒体
      */
