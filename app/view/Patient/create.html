@@ -9,7 +9,7 @@
             <li>新建</li>
         </ul>
         <div class="form-wrapper" style="background-color: #fff">
-            <form class="form-horizontal" method="post" id="new-apply-form">
+            <form class="form-horizontal" method="post" id="patient-create-form">
 
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                     <label for="name" class="col-sm-2 control-label">患者姓名：</label>
@@ -109,8 +109,8 @@
                 <div :class="['form-group']" >
                     <label class="col-sm-2 control-label">身高体重：</label>
                     <div class="col-sm-9">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="height"   value="" placeholder="身高" id="height">
-                        <input class="form-control"  style="display: inline;width:78px" type="text" name="weight"   value="" placeholder="体重" id="weight">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="height"   value="" placeholder="身高(cm)" id="height">
+                        <input class="form-control"  style="display: inline;width:78px" type="text" name="weight"   value="" placeholder="体重(kg)" id="weight">
                     </div>
                 </div>
 
@@ -279,7 +279,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
+                        <a class="btn btn-success" id="patient-create-form-save" @click="create">保存</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>
@@ -309,7 +309,7 @@
     }
 
     var vm = new Vue({
-        el: '#new-apply-form',
+        el: '#patient-create-form',
         data: {
             params: {},
 
@@ -319,7 +319,6 @@
             },
 
             errors:{
-                diagnose_state:'',
                 ID_number:'',
                 age:'',
                 ill_state:'',
@@ -335,7 +334,6 @@
                 multiple: true,
                 selectAll: true
             });
-            $(".flatpickr").flatpickr({time_24hr:true});
             myupload({
                 container: 'upload-wrapper',
                 browse: 'pickfiles',
@@ -405,55 +403,36 @@
         },
 
         methods: {
-            createNewApply: function () {
+            resetErrors: function () {
+                $.each(vm.errors, function (k) {
+                    vm.errors[k] = '';
+                });
+            },
+            create: function () {
                 getParams();
-                console.log("herhrhrhrrr");
-                console.log(JSON.stringify(vm.params));
+                vm.resetErrors();
                 $.post('__PRO_PATH__/Patient/create', vm.params, function (res) {
                     if (res.error_code == 0) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
                         popWarn('新建成功','__PRO_PATH__/Patient/index');
-                        //window.location.href = ;
-                    } else if (res.error_code == 2) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
+                    } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });
-                        console.log(JSON.stringify(vm.errors));
                     }
                 });
             },
         }
     });
 
-
     $('#form-cancel').on('click', function(){
         window.location.href = '__PRO_PATH__/Patient/index';
     });
 
-    function change_hospital(){
-        console.log("执行了");
-        var hospital_id = $('#consultation_hospital').val();
-        console.log(hospital_id);
-        $.post('__PRO_PATH__/Hospital/getHospitalById', {'id':hospital_id }, function (res) {});
-    }
-
     function getParams(){
-        var data = $('#new-apply-form').serializeArray();
-        console.log(JSON.stringify(data));
+        var data = $('#patient-create-form').serializeArray();
         $.each(data, function() {
             vm.params[this.name] = this.value;
         });
-
-        /*$.each(vm.patient, function (k, v) {
-            vm.params[k] = v;
-        });*/
-        /*console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));*/
     }
 </script>
 {else /}

@@ -129,14 +129,16 @@ class Doctor extends Model{
             $errors['position'] = '职称不能为空';
         }
         if(isset($data['phone']) && !$data['phone']){
-            $errors['phone'] = '电话不能为空';
+            $errors['phone'] = '联系方式不能为空';
         }
         if(isset($data['email']) && !$data['email']){
-            $errors['email'] = '邮箱不能为空';
+            $errors['email'] = '常用邮箱不能为空';
+        }
+        if(isset($data['address']) && !$data['address']){
+            $errors['address'] = '联系地址不能为空';
         }
         return $errors;
     }
-    //////未修改/////
 
     /**
      * 批量增加医生信息

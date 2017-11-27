@@ -113,6 +113,7 @@
                 if (res.error_code == 0) {
                     window.location.href = '__PRO_PATH__/';
                 } else {
+                    updateCode();
                     popWarn(res.msg);
                 }
             });
@@ -121,7 +122,13 @@
         $('.contact').on('click', function () {
             popWarn('请联系管理员：Admin <br/><br/> 联系方式：1234567890');
         });
-    </script>
 
+
+        function updateCode(){
+            $('input[name="code"]').val('');
+            var src='{:captcha_src()}?' + Math.random();
+            $('#captcha').attr('src', src);
+        }
+    </script>
 </body>
 </html>

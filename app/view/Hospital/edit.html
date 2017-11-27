@@ -1,5 +1,4 @@
 {include file="Common/top" title="首页" metas='' /}
-
 {if condition="authority('HospitalEdit')"}
 <div class="main-container">
     <div class="padding-md">
@@ -30,8 +29,8 @@
 
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医院logo：</label>
-                    <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="logo" style="max-height: 80px;max-width: 80px" src="{$Hospital.logo?? '/__PUBLIC__/images/profile/profile1.jpg'}">
+                    <div class="col-sm-4">
+                        <img id="logo" style="max-height: 80px;max-width: 80px" src="{$Hospital.logo ?? ''}">
                         <br/>
                         <div id="upload_logo">
                             <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
@@ -201,7 +200,7 @@
                         });
                         popWarn('保存成功', '__PRO_PATH__/Hospital/index');
                         //window.location.href = '__PRO_PATH__/Hospital/index';
-                    } else if (res.error_code == 2) {
+                    } else if (res.error_code == 1) {
                         $.each(vm.errors, function (k) {
                             vm.errors[k] = '';
                         });
@@ -225,12 +224,6 @@
         $.each(data, function() {
             vm.params[this.name] = this.value;
         });
-
-        /*$.each(vm.patient, function (k, v) {
-         vm.params[k] = v;
-         });*/
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
     }
 </script>
 {else /}

@@ -51,8 +51,8 @@
                 <tr>
                     <th><input type="checkbox" v-model="check_all" @click="checkAll"/></th>
                     <th>医院名称</th>
-                    <th>院长姓名</th>
                     <th>医院标志</th>
+                    <th>院长姓名</th>
                     <th>联系方式</th>
                     <th>电子邮箱</th>
                     <th>医院地址</th>
@@ -67,8 +67,8 @@
                     <tr v-for="(model, index) in list">
                         <td><input type="checkbox" v-model="select" :value="model.id" @click="selectClick(model.id)"/></td>
                         <td>{{model.name | formatText(22, model.name)}}</td>
-                        <td>{{model.master}}</td>
                         <td><img :src="model.logo != '' ? model.logo : '__PUBLIC__/images/img_none.png'" alt="model.name"></td>
+                        <td>{{model.master}}</td>
                         <td>{{model.phone}}</td>
                         <td>{{model.email}}</td>
                         <td>{{model.address}}</td>
@@ -76,15 +76,23 @@
                         <td>{{model.type}}</td>
                         <td>{{model.level}}</td>
                         <td>
+                            {if condition="authority('HospitalInfo')"}
                             <a :href="'__PRO_PATH__/Hospital/info?id='+model.id" title="详情">
                                 <i class="fa fa-info-circle fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
+                            {/if}
+
+                            {if condition="authority('HospitalEdit')"}
                             <a :href="'__PRO_PATH__/Hospital/edit?id='+model.id" title="编辑">
                                 <i class="fa fa-pencil-square  fa-lg" aria-hidden="true" style="margin-right: 10px;"></i>
                             </a>
+                            {/if}
+
+                            {if condition="authority('HospitalRemove')"}
                             <a href="javascript:;" @click="remove([model.id])" title="删除">
                                 <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
                             </a>
+                            {/if}
                         </td>
                     </tr>
                 </template>
@@ -127,6 +135,9 @@
         },
         mounted: function() {
             $("#district").citySelect({prov:"不限",nodata:"none"});
+            $(function () {
+                submit();
+            });
         },
         updated: function () {
             this.fore_pages = [];
@@ -275,8 +286,6 @@
             }
         }
     });
-
-    submit();
 
     // 异步提交数据
     function submit() {

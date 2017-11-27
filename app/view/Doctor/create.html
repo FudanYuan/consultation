@@ -1,6 +1,5 @@
 {include file="Common/top" title="首页" metas='' /}
 {if condition="authority('DoctorCreate')"}
-<script src="__PUBLIC__/js/multiple-select/multiple-select.js"></script>
 <div class="main-container">
     <div class="padding-md">
         <ul class="breadcrumb">
@@ -32,8 +31,8 @@
 
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医生照片：</label>
-                    <div class="col-sm-4" style="height: 100px;width: 120px">
-                        <img id="logo" style="max-height: 80px;max-width: 80px" src="{$doctor.doctor_photo?? '/__PUBLIC__/images/profile/profile1.jpg'}">
+                    <div class="col-sm-4">
+                        <img id="logo" style="max-height: 80px;max-width: 80px" src="{$doctor.doctor_photo?? ''}">
                         <br/>
                         <div id="upload_logo">
                             <a id="upload_logo_logo" href="javascript:;" style="position: relative;z-index: 1;">
@@ -90,52 +89,56 @@
                 </div>
 
                 <div :class="['form-group', errors.email != '' ? 'has-error' : '']" >
-                    <label for="email" class="col-sm-2 control-label">邮箱：</label>
+                    <label for="email" class="col-sm-2 control-label">常用邮箱：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="email" value="" placeholder="请输入邮箱" id="email">
                         <p class="help-block">{{errors.email}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
-                    <label for="address" class="col-sm-2 control-label">地址：</label>
+                <div :class="['form-group', errors.address != '' ? 'has-error' : '']" >
+                    <label for="address" class="col-sm-2 control-label">联系地址：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="address" value="" placeholder="请输入地址" id="address">
+                        <p class="help-block">{{errors.address}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.postcode != '' ? 'has-error' : '']" >
                     <label for="postcode" class="col-sm-2 control-label">邮编：</label>
                     <div class="col-sm-4">
                         <input class="form-control" type="text" name="postcode" value="" placeholder="请输入邮编" id="postcode">
-
+                        <p class="help-block">{{errors.postcode}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.info != '' ? 'has-error' : '']" >
                     <label for="info" class="col-sm-2 control-label">详细信息：</label>
                     <div class="col-sm-4">
                         <textarea class="form-control" type="text" name="info" value="" placeholder="请输入详细信息" id="info"></textarea>
+                        <p class="help-block">{{errors.postcode}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.honor != '' ? 'has-error' : '']" >
                     <label for="honor" class="col-sm-2 control-label">所获荣誉：</label>
                     <div class="col-sm-4">
                         <textarea class="form-control" type="text" name="honor" value="" placeholder="请输入所获荣誉奖项" id="honor"></textarea>
+                        <p class="help-block">{{errors.honor}}</p>
                     </div>
                 </div>
 
-                <div :class="['form-group']" >
+                <div :class="['form-group', errors.remark != '' ? 'has-error' : '']" >
                     <label for="remark" class="col-sm-2 control-label">备注：</label>
                     <div class="col-sm-4">
                         <textarea class="form-control" type="text" name="remark" value="" placeholder="例如自己的诊疗特长" id="remark"></textarea>
+                        <p class="help-block">{{errors.remark}}</p>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
+                        <a class="btn btn-success" @click="create">保存</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>
@@ -144,27 +147,15 @@
     </div>
 </div><!-- /main-container -->
 {include file="Common/progress"}
-{include file="Common/calendar" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
-{include file="Common/calendar" /}
 {include file="Common/bottom" /}
 {include file="Common/upload"}
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>
-<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.config.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/ueditor.all.min.js"></script>-->
+<!--<script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>-->
 <script>
     $('#consultation-nav-doctor').addClass('active');
-    $(".flatpickr").flatpickr({time_24hr:true});
-
-    function clickRadio(value)
-    {
-        if(value == 5){
-            vm.seen['ill_type'] = !vm.seen['ill_type'];
-        } else{
-            vm.seen['ill_type'] = false;
-        }
-    }
 
     var vm = new Vue({
         el: '#new-apply-form',
@@ -180,16 +171,18 @@
                 'name':'',
                 'phone':'',
                 'position':'',
-                'gender':''
+                'gender' : '',
+                'address' : '',
+                'postcode' : '',
+                'info' : '',
+                'honor' : '',
+                'remark' : ''
             }
         },
 
         mounted:function () {
-            $(".multiple").multipleSelect({
-                filter: true,
-                multiple: true,
-                selectAll: true
-            });
+            $("input[name='gender'][value='1']").attr("checked",true);
+
             changeLogo({
                 container: 'upload_logo',
                 browse: 'upload_logo_logo',
@@ -211,38 +204,25 @@
         },
 
         methods: {
-            createNewApply: function () {
+            resetErrors: function () {
+                $.each(vm.errors, function (k) {
+                    vm.errors[k] = '';
+                });
+            },
+            create: function () {
                 getParams();
+                vm.resetErrors();
                 $.post('__PRO_PATH__/Doctor/create', vm.params, function (res) {
                     if (res.error_code == 0) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
                         popWarn('新建成功','__PRO_PATH__/Doctor/index');
-                        //window.location.href = '__PRO_PATH__/Doctor/index';
-                    } else if (res.error_code == 2) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
+                    } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });
-                        console.log(JSON.stringify(vm.errors));
                     }
                 });
-            },
-
+            }
         }
-    });
-
-    $(".multiple").multipleSelect({
-        filter: true,
-        multiple: true,
-        selectAll: true
-    });
-
-    $(function () {
-        $("#new-apply-form-target").multipleSelect("checkAll");
     });
 
     $('#form-cancel').on('click', function(){
@@ -254,11 +234,6 @@
         $.each(data, function() {
             vm.params[this.name] = this.value;
         });
-        /*$.each(vm.patient, function (k, v) {
-         vm.params[k] = v;
-         });*/
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
     }
 </script>
 {else /}

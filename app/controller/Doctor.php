@@ -174,7 +174,7 @@ class Doctor extends Common
         $doctor = D('Doctor')->getById($id);
         if(!empty($params)){
             $ret['data'] = $params;
-            $ret = ['error_code' => 1, 'msg' => '编辑成功'];
+            $ret = ['error_code' => 0, 'msg' => '编辑成功'];
             $doctor_id = $params['doctor_id'];
             unset($params['doctor_id']);
             $res = D('Doctor')->saveData($doctor_id,$params);

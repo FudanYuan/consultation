@@ -118,40 +118,39 @@ class Patient extends Common
      * 编辑患者信息
      * @return \think\response\View
      */
-    public function edit(){
-            $id = input('get.id');
-            $params = input('post.');
-            $patient = D('Patient')->getById($id);
-            if(!empty($params)){
-                $ret = ['error_code' => 1, 'msg' => '编辑成功'];
-                $gender = input('post.gender','');
-                $in_hospital_time = input('post.in_hospital_time');
-                $params['gender'] = $gender;
-                $params['in_hospital_time'] = strtotime($in_hospital_time);
-                $patient_id = $params['patient_id'];
-                unset($params['patient_id']);
-                $ret['params'] = $params;
-                $res = D('Patient')->saveData($patient_id,$params);
-                if(!empty($res['errors'])) {
-                    $ret['error_code'] = 1;
-                    $ret['msg'] = '编辑失败';
-                    $ret['errors'] = $res['errors'];
-                }
-                $this->jsonReturn($ret);
-            }else{
-                $in_hospital_time = date('Y-m-d H:i:s',$patient['in_hospital_time']);
-                $patient['in_hospital_time'] = $in_hospital_time;
-                mydump($patient);
-                return view('',['patient' => $patient]);
+    public function edit()
+    {
+        $id = input('get.id');
+        $params = input('post.');
+        $patient = D('Patient')->getById($id);
+        if (!empty($params)) {
+            $ret = ['error_code' => 0, 'msg' => '编辑成功'];
+            $gender = input('post.gender', '');
+            $in_hospital_time = input('post.in_hospital_time');
+            $params['gender'] = $gender;
+            $params['in_hospital_time'] = strtotime($in_hospital_time);
+            $patient_id = $params['patient_id'];
+            unset($params['patient_id']);
+            $ret['params'] = $params;
+            $res = D('Patient')->saveData($patient_id, $params);
+            if (!empty($res['errors'])) {
+                $ret['error_code'] = 1;
+                $ret['msg'] = '编辑失败';
+                $ret['errors'] = $res['errors'];
             }
+            $this->jsonReturn($ret);
+        } else {
+            $in_hospital_time = date('Y-m-d H:i:s', $patient['in_hospital_time']);
+            $patient['in_hospital_time'] = $in_hospital_time;
+            return view('', ['patient' => $patient]);
+        }
     }
 
-    ///////////未修改////
     /**
      * 删除患者信息
      */
     public function remove(){
-        $ret = ['error_code' =>0, 'msg' => '删除成功'];
+        $ret = ['error_code' => 0, 'msg' => '删除成功'];
         $ids = input('post.ids');
         try{
             $res = D('Patient')->remove(['id' => ['in', $ids]]);
@@ -161,6 +160,4 @@ class Patient extends Common
         }
         $this->jsonReturn($ret);
     }
-
-
 }

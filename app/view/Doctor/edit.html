@@ -9,7 +9,7 @@
         </ul>
 
         <div class="form-wrapper">
-            <form class="form-horizontal" method="post" id="new-apply-form">
+            <form class="form-horizontal" method="post" id="apply-edit-form">
 
                 <div :class="['form-group', errors.name != '' ? 'has-error' : '']" >
                     <label for="name" class="col-sm-2 control-label">医生姓名：</label>
@@ -21,7 +21,7 @@
 
                 <div class="form-group }">
                     <label class="col-sm-2 control-label">医生照片：</label>
-                    <div class="col-sm-4" style="height: 100px;width: 120px">
+                    <div class="col-sm-4">
                         <img id="photo" style="max-height: 80px;max-width: 80px" src="{$doctor.photo??'__PUBLIC__/images/profile/profile1.jpg'}">
                         <br/>
                         <div id="upload_photo">
@@ -35,7 +35,7 @@
 
                 <div :class="['form-group', errors.gender!= '' ? 'has-error' : '']" >
                     <label for="gender" class="col-sm-2 control-label">医生性别：</label>
-                    <div class="col-sm-4" id="gender" >
+                    <div class="col-sm-4" id="gender">
                         <div class="radio inline-block">
                             <div class="custom-radio m-right-xs">
                                 <input type="radio" id="patient_gender1" name="gender" value="1">
@@ -123,7 +123,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10 lab-btns">
-                        <a class="btn btn-success" id="new-apply-form-save" @click="createNewApply">保存</a>
+                        <a class="btn btn-success" @click="create">保存</a>
                         <a id="form-cancel" class="btn btn-info">取消</a>
                     </div>
                 </div>
@@ -132,8 +132,7 @@
     </div>
 </div>
 
-{include file="Common/progress"}
-{include file="Common/calendar" /}
+{include file="Common/progress" /}
 {include file="Common/popup_warn" /}
 {include file="Common/popup_list" /}
 {include file="Common/calendar" /}
@@ -144,18 +143,8 @@
 <script type="text/javascript" charset="utf-8" src="__PUBLIC__/js/ueditor/lang/zh-cn/zh-cn.js"></script>
 <script>
     $('#consultation-nav-doctor').addClass('active');
-
-    function clickRadio(value)
-    {
-        if(value == 5){
-            vm.seen['ill_type'] = !vm.seen['ill_type'];
-        } else{
-            vm.seen['ill_type'] = false;
-        }
-    }
-
     var vm = new Vue({
-        el: '#new-apply-form',
+        el: '#apply-edit-form',
         data: {
             params: {
                 doctor_id: '{$doctor.id}'
@@ -164,17 +153,22 @@
                 ill_type: false
             },
             errors:{
+                'target_office_id':'',
                 'age':'',
                 'email':'',
                 'name':'',
                 'phone':'',
                 'position':'',
-                'gender':''
+                'gender' : '',
+                'address' : '',
+                'postcode' : '',
+                'info' : '',
+                'honor' : '',
+                'remark' : '',
             }
         },
 
         mounted:function () {
-            $(".flatpickr").flatpickr({time_24hr:true});
             $("input[name='gender'][value='{$doctor.gender?? ''}']").attr("checked",true);
 
             changeLogo({
@@ -187,7 +181,6 @@
                 uploadfiles: 'uploadfiles_hospital_logo',
                 file_size: '10mb',
                 onUploaded: function (up, file, result) {
-//                    $("input[name='hospital_logo_origin']").val(file.name);
                     var res = JSON.parse(result.response);
                     $('#photo').attr('src',res.result.file);
                     $("input[name='photo']").val(res.result.file);
@@ -196,48 +189,39 @@
                 },
                 isMulti: true
             });
-
         },
 
         methods: {
-            createNewApply: function () {
+            resetErrors: function () {
+                $.each(vm.errors, function (k) {
+                    vm.errors[k] = '';
+                });
+            },
+            create: function () {
                 getParams();
+                vm.resetErrors();
                 $.post('__PRO_PATH__/Doctor/edit', vm.params, function (res) {
                     if (res.error_code == 0) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
                         popWarn('保存成功', '__PRO_PATH__/Doctor/index');
-                        //window.location.href = '__PRO_PATH__/Doctor/index';
-                    } else if (res.error_code == 2) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
+                    } else if (res.error_code == 1) {
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });
-                        console.log(JSON.stringify(vm.errors));
                     }
                 });
             },
         }
     });
-    
 
     $('#form-cancel').on('click', function(){
         window.location.href = '__PRO_PATH__/Doctor/index';
     });
 
     function getParams(){
-        var data = $('#new-apply-form').serializeArray();
+        var data = $('#apply-edit-form').serializeArray();
         $.each(data, function() {
             vm.params[this.name] = this.value;
         });
-        /*$.each(vm.patient, function (k, v) {
-         vm.params[k] = v;
-         });*/
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(vm.params));
     }
 </script>
 {else /}
