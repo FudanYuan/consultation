@@ -2,7 +2,7 @@
 <div class="sidebar-right">
     <div class="sidebar-inner scrollable-sidebar" style="overflow: hidden; width: auto; height: 100%;" id="apply-right">
         <div class="sidebar-header clearfix">
-            <input class="form-control dark-input" placeholder="搜索···" type="text" v-model="search" @keyup.13="enter($event)">
+            <input style="color: #fff" class="form-control dark-input" placeholder="搜索···" type="text" v-model="search" @keyup.13="enter($event)">
         </div>
         <template v-if="fail">
             <div class="title-block" style="color: #e36159; text-align: center">
@@ -138,7 +138,7 @@
                     $('#chat_count').html(chat_count);
                     setTimeout(function() {
                         $('.chat-notification').find('.badge').addClass('active');
-                    }, 2000);
+                    }, 1000);
                 } else{
                     $('.chat-notification').find('.badge').removeClass('active');
                 }

@@ -101,7 +101,9 @@ class Apply extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
-            $data['status'] = 1;
+            if(!isset($data['status'])){
+                $data['status'] = 1;
+            }
             $data['create_time'] = $_SERVER['REQUEST_TIME'];
 
             $target_user_ids = $data['target_user_ids'];
@@ -131,7 +133,7 @@ class Apply extends Model{
     }
 
     /**
-     * 添加角色权限
+     * 添加申请用户
      * @param $target_user_ids
      * @param $apply_id
      * @return int|string

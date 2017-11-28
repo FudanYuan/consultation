@@ -46,7 +46,7 @@
             <div class="col-lg-12">
                 <div class="smart-widget widget-purple">
                     <div class="smart-widget-header">
-                        <i class="fa fa-comment"></i> {{chat_to_user.name}}
+                        <i class="fa fa-comment"></i> {{item}}
                         <span class="smart-widget-option">
                             <span class="refresh-icon-animated">
                                 <i class="fa fa-circle-o-notch fa-spin"></i>
@@ -89,13 +89,13 @@
 
                                 <ul class="chat">
                                     <template v-for="model in chat">
-                                        <li :class="[model.source_user_id != vm3.user_id ? 'left' : 'right' ,'clearfix']">
-                                        <span :class="['chat-img', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">
-                                            <img class="logo" :src="model.source_user_id != vm3.user_id ? chat_to_user.logo : chat_user.logo" :title="model.source_user_id != vm3.user_id ? chat_to_user.name : chat_user.name">
+                                        <li :class="[model.source_user_id != chat_user.id ? 'left' : 'right' , 'clearfix']">
+                                        <span :class="['chat-img', model.source_user_id != chat_user.id ? 'pull-left' : 'pull-right']">
+                                            <img class="logo" :src="model.source_user_id != chat_user.id ? model.doctor_logo : chat_user.logo" :title="model.source_user_id != chat_user.id ? model.doctor_name : chat_user.name">
                                         </span>
                                             <div class="chat-body clearfix">
                                                 <div class="header">
-                                                    <strong :class="['primary-font', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">{{model.source_user_id != vm3.user_id ? chat_to_user.name : chat_user.name}}</strong>
+                                                    <strong :class="['primary-font', model.source_user_id != chat_user.id ? 'pull-left' : 'pull-right']">{{model.source_user_id != chat_user.id ? model.doctor_name : chat_user.name}}</strong>
                                                     <small class="pull-right text-muted">
                                                         <i class="fa fa-clock-o"></i>
                                                         {{model.create_time | formatTime}}
@@ -103,7 +103,7 @@
                                                 </div>
                                                 <!-- 1 - text -->
                                                 <template v-if="model.type == 1">
-                                                    <p :class="['chat-img', model.source_user_id != vm3.user_id ? 'pull-left' : 'pull-right']">
+                                                    <p :class="['chat-img', model.source_user_id != chat_user.id ? 'pull-left' : 'pull-right']">
                                                         {{model.content}}
                                                     </p>
                                                 </template>
@@ -189,7 +189,7 @@
                 type: '',
                 content: '',
                 content_origin: '',
-                status: 0
+                status: 1
             },
             receive_params:{
                 apply_id: "{$apply_id ?? ''}",
@@ -200,18 +200,14 @@
                 current_page: 0,
                 pages: 0
             },
-            item: '讨论4号病患的病情',
+            item: '#{$apply_id}会诊申请讨论组',
             content: '',
-            chat_to_user: {
-                id: "{$target_user_id ?? ''}",
-                logo: '__PUBLIC__/images/profile/profile1.jpg',
-                name: 'Jeremy'
-            },
             chat_user: {
-                id: vm3.user_id,
-                logo: '__PUBLIC__/images/profile/profile2.jpg',
-                name: 'Smith'
+                id: '{$chat_user.id}',
+                logo: '{$chat_user.logo}',
+                name: '{$chat_user.name}'
             },
+
             seen:{
             },
 
@@ -245,7 +241,6 @@
                         data: {
                             request_time: Date.parse(new Date()) / 1000,
                             apply_id: "{$apply_id ?? ''}",
-                            target_user_id: "{$target_user_id ?? ''}",
                             source_user_id: "{$source_user_id ?? ''}"
                         },
                         dataType: "json",
@@ -327,8 +322,9 @@
             /**
              *  显示发送信息
              */
-            pushMessage: function (type, content, content_origin) {
+            pushMessage: function (type, content, content_origin, target_user_id) {
                 content_origin = content_origin || '';
+                target_user_id = target_user_id || "{$target_user_id ?? ''}";
                 if(content == ''){
                     return false;
                 }
@@ -340,7 +336,7 @@
                     vm.content = '';
                 }
                 vm.to_send = true;
-                vm.chat.push({'source_user_id': "{$source_user_id ?? ''}", 'target_user_id': "{$target_user_id ?? ''}", 'type': type, 'content': content, 'content_origin': content_origin, 'create_time': vm.params['create_time'], 'status': 0});
+                vm.chat.push({'source_user_id': "{$source_user_id ?? ''}", 'target_user_id': target_user_id, 'type': type, 'content': content, 'content_origin': content_origin, 'create_time': vm.params['create_time'], 'status': 1});
                 return true;
             },
 
@@ -380,8 +376,9 @@
                             $('#chatScroll').slimScroll({
                                 scrollTo : ($('#chatScroll ul').height())+'px'
                             });
+                            getChatList();
                         } else{
-                            console.log(res.msg);
+                            popWarn(res.msg);
                         }
                     });
                 }
@@ -414,7 +411,7 @@
                             scrollTo : ($('#chatScroll ul').height())+'px'
                         });
                     } else{
-                        // 报错
+                        popWarn(res.msg);
                     }
                 });
             },
@@ -430,7 +427,6 @@
                 console.log('receiving ', vm.chat);
                 for(var i=0; i<vm.list.length; i++){
                     vm.chat.push(vm.list[i]);
-                    console.log(vm.chat);
                 }
 
                 console.log('after receive', vm.chat);

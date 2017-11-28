@@ -259,18 +259,43 @@ CREATE TABLE `consultation_chat` (
   `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `apply_id` INT DEFAULT NULL COMMENT '申请id,外键',
   `source_user_id` INT DEFAULT NULL COMMENT '发送方医生id,外键',
-  `target_user_id` INT DEFAULT NULL COMMENT '接收方医生id,外键, 私聊用此字段',
   `type` TINYINT DEFAULT NULL COMMENT '信息格式',
   `content` TEXT DEFAULT '' COMMENT '信息内容',
   `content_origin` TEXT DEFAULT '' COMMENT '信息附件地址',
-  `status` TINYINT DEFAULT NULL COMMENT '状态：0->未读；1->已读；2->关闭',
+  `status` TINYINT DEFAULT NULL COMMENT '状态：1->开启；2->关闭',
   `create_time` INT DEFAULT NULL COMMENT '创建时间',
   `update_time` INT DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   FOREIGN KEY (`apply_id`) REFERENCES consultation_apply(id),
-  FOREIGN KEY (`source_user_id`) REFERENCES consultation_user_admin(id),
+  FOREIGN KEY (`source_user_id`) REFERENCES consultation_user_admin(id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+INSERT INTO `consultation_chat` (`id`, `apply_id`, `source_user_id`, `type`, `content`, `content_origin`, `status`, `create_time`, `update_time`) VALUES
+(1, 2, 3, 1, '数电古代诗歌', NULL, 1, 1503037656, NULL),
+(2, 1, 3, 1, 'fdsfa ', NULL, 1, 1503037656, NULL);
+
+
+# Dump of table consultation_chat_user
+# ------------------------------------------------------------
+DROP TABLE IF EXISTS `consultation_chat_user`;
+
+CREATE TABLE `consultation_chat_user` (
+  `id` INT unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `chat_id` INT DEFAULT NULL COMMENT '会话id,外键',
+  `target_user_id` INT DEFAULT NULL COMMENT '接收方用户id,外键',
+  `status` TINYINT DEFAULT NULL COMMENT '状态：0->未读；1->已读',
+  `create_time` INT DEFAULT NULL COMMENT '创建时间',
+  `update_time` INT DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`chat_id`) REFERENCES consultation_chat(id),
   FOREIGN KEY (`target_user_id`) REFERENCES consultation_user_admin(id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+INSERT INTO `consultation_chat_user` (`chat_id`, `target_user_id`, `status`, `create_time`, `update_time`) VALUES
+(1, 1, 0, 1503037656, NULL),
+(1, 2, 0, 1503037656, NULL),
+(2, 1, 0, 1503037656, NULL),
+(2, 2, 0, 1503037656, NULL);
+
 
 # Dump of table consultation_inform
 # ------------------------------------------------------------
