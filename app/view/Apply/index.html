@@ -253,7 +253,7 @@
                             {/if}
 
                             {if condition="authority('ApplyRemove')"}
-                            <a href="javascript:;" @click="remove([model.id])" title="删除">
+                            <a href="javascript:;" @click="remove([model.id])" title="删除" v-if="model.status > 2">
                                 <i class="fa fa-trash  fa-lg" aria-hidden="true" style="margin-right: 0;"></i>
                             </a>
                             {/if}
