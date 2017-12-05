@@ -96,7 +96,7 @@ class Apply extends Model{
      */
     public function addData($data){
         $ret = [];
-        $this->timeTostamp($data);
+        $this->timeToStamp($data);
         $this->unsetOtherField($data);
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
@@ -187,7 +187,7 @@ class Apply extends Model{
      */
     public function saveData($id, $data){
         $ret = [];
-        $this->timeTostamp($data);
+        $this->timeToStamp($data);
         $this->unsetOtherField($data);
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
@@ -240,7 +240,7 @@ class Apply extends Model{
      * 转时间戳
      * @param $data
      */
-    private function timeTostamp(&$data)
+    private function timeToStamp(&$data)
     {
         isset($data['apply_date_str']) && $data['apply_date'] = $data['apply_date_str'] ?
             strtotime($data['apply_date_str']) : 0;
