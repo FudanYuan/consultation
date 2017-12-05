@@ -266,7 +266,6 @@ class UserAdmin extends Common{
             $ret = ['error_code' => 0, 'msg' => '编辑账户成功'];
             $logo = input('post.logo', '');
             if($logo != ''){
-                $ret['res'] = $logo;
                 $user_id = $this->getUserId();
                 $res = D('UserAdmin')->saveData($user_id, ['logo' => $logo]);
                 if(!$res){

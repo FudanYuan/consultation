@@ -145,7 +145,7 @@ class Chat extends Model{
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
-            $data['update_time'] = time();
+            $data['update_time'] = $_SERVER['REQUEST_TIME'];
             $this->save($data, ['id' => $id]);
         }
         return $ret;
