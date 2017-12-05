@@ -97,7 +97,7 @@ class Apply extends Model{
     public function addData($data){
         $ret = [];
         $this->timeTostamp($data);
-        $this->unsetOhterField($data);
+        $this->unsetOtherField($data);
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
@@ -188,7 +188,7 @@ class Apply extends Model{
     public function saveData($id, $data){
         $ret = [];
         $this->timeTostamp($data);
-        $this->unsetOhterField($data);
+        $this->unsetOtherField($data);
         $errors = $this->filterField($data);
         $ret['errors'] = $errors;
         if(empty($errors)){
@@ -228,7 +228,7 @@ class Apply extends Model{
      * 过滤数据库不需要的字符串字段
      * @param $data
      */
-    private function unsetOhterField(&$data)
+    private function unsetOtherField(&$data)
     {
         foreach ($this->strField as $v) {
             $str = $v . '_str';
@@ -300,10 +300,12 @@ class Apply extends Model{
      * @param $data
      * @return array
      */
-    public function unsetOtherField($data){
+    public function getTableField($data){
         $list = [];
         foreach ($this->fields as $v){
-            $list[$v] = $data[$v];
+            if(isset($data[$v])){
+                $list[$v] = $data[$v];
+            }
         }
         return $list;
     }
