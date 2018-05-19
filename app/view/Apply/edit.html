@@ -197,15 +197,10 @@
             saveEdit: function () {
                 getParams();
                 $.post('__PRO_PATH__/Apply/Edit', vm.params, function (res) {
+                    vm.resetError();
                     if (res.error_code == 0) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
                         popWarn(res.msg, '__PRO_PATH__/Apply/index');
                     } else if (res.error_code == 1) {
-                        $.each(vm.errors, function (k) {
-                            vm.errors[k] = '';
-                        });
                         $.each(res.errors, function (k, v) {
                             vm.errors[k] = v;
                         });

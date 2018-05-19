@@ -50,6 +50,16 @@ class UserAdmin extends Model{
     }
 
     /**
+     * 根据ID获取roldId
+     * @param $id
+     * @return mixed
+     */
+    public function getRoleIdById($id){
+        return $this->field('id,role_id')
+            ->where('id', $id)
+            ->find();
+    }
+    /**
      * 根据医生ID获取用户
      * @param $doctor_id
      * @return mixed

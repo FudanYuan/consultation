@@ -30,7 +30,12 @@ class Inform extends Common
         $page = input('post.current_page',0);
         $per_page = input('post.per_page',0);
         $ret = ['error_code' => 0, 'data' => [], 'msg' => ""];
-        $cond['target_user_id'] = $user_id;
+        $role_id = D('UserAdmin')->getRoleIdById($user_id)['role_id'];
+        $cond = [];
+        if($role_id != 1){
+            $cond['target_user_id'] = $user_id;
+        }
+
         $status = input('post.status', -1);
         if($status != -1){
             $cond['status'] = $status;
